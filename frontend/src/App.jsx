@@ -429,9 +429,9 @@ const AppContent = () => {
           
           if (isAdminSection) navigate("/AdminLogin");
           else if (isBdaSection) navigate("/TeamLogin");
-          else if (isAdvTeamSection) navigate("/AdvTeamLogin");
+          else if (isAdvTeamSection) navigate("/employlogin");
           else if (isOpSection) navigate("/OperationLogin");
-          else if (isAdvOpSection) navigate("/AdvOperationLogin");
+          else if (isAdvOpSection) navigate("/operationlogin");
           else if (isMarketingSection) navigate("/marketing/login");
         }
       }
@@ -457,7 +457,7 @@ const AppContent = () => {
   const noFooterPaths = ["/operationdashboard", "/bookedpayment", "/fullpayment", "/defaultpayment", "/operationrevenuesheet", "/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advteam/home", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
   const placementcoodinatorHeaderPaths = ["/pcdashboard", "/jobpost"];
   const userheaderPaths = ["/profile", "/resume-builder"];
-  const headerPaths = ["/", "/login", "/loginwithotp", "/forgotpassword", "/contactus", "/aboutus", "/career", "/collabration", "/advancecourses", "/terms", "/privacy", "/refundpolicy", "/feestructure", "/advance", "/advance-apply", "/mentorship", "/datascience", "/vlsi", "/dataanalytics", "/digitalmarket", "/mernstack", "/investmentbanking", "/productmanagement", "/automationtesting", "/promptengineering", "/generativeai", "/operationlogin", "/advoperationlogin", "/teamlogin", "/adminlogin", "/managerlogin", "/loginadmin", "/pclogin", "/advteamlogin", "/dashboardaccessform", "/registrationform", "/verify", "/marketing/login", "/interviewer-login", "/interviewerlogin", "/hrlogin", "/advanceform", "/agenticandgenai", "/softwaredeveloper", "/blog", "/aiml", "/cybersecurity", "/cloudcomputing", "/iotrobotics", "/devops", "/embeddedsystems", "/autocad", "/graphicdesign", "/fullstackweb"];
+  const headerPaths = ["/", "/login", "/loginwithotp", "/forgotpassword", "/contactus", "/aboutus", "/career", "/collabration", "/advancecourses", "/terms", "/privacy", "/refundpolicy", "/feestructure", "/advance", "/advance-apply", "/mentorship", "/datascience", "/vlsi", "/dataanalytics", "/digitalmarket", "/mernstack", "/investmentbanking", "/productmanagement", "/automationtesting", "/promptengineering", "/generativeai", "/operationlogin", "/operationlogin", "/teamlogin", "/adminlogin", "/managerlogin", "/loginadmin", "/pclogin", "/employlogin", "/dashboardaccessform", "/registrationform", "/verify", "/marketing/login", "/interviewer-login", "/interviewerlogin", "/hrlogin", "/advanceform", "/agenticandgenai", "/softwaredeveloper", "/blog", "/aiml", "/cybersecurity", "/cloudcomputing", "/iotrobotics", "/devops", "/embeddedsystems", "/autocad", "/graphicdesign", "/fullstackweb"];
 
   return (
     <div>
@@ -591,7 +591,7 @@ const AppContent = () => {
           isAuthenticatedAdmin() ? <AdvLeadManagement /> : <Navigate to="/AdminLogin" />
         } /> */}
 {/*         <Route path="/advteam/lead-management" element={
-          isAuthenticatedAdvTeam() ? <AdvTeamLeadManagement /> : <Navigate to="/AdvTeamLogin" />
+          isAuthenticatedAdvTeam() ? <AdvTeamLeadManagement /> : <Navigate to="/employlogin" />
         } /> */}
 {/*         <Route path="/AdminAnalytics" element={isAuthenticatedAdmin() ? (<AdminAnalytics />) : (<Navigate to="/AdminLogin" />)} /> */}
 
@@ -624,17 +624,17 @@ const AppContent = () => {
         <Route path="/FullPayment" element={isAuthenticatedOperation() ? <FullPayment /> : <Navigate to="/OperationLogin" />} />
         <Route path="/DefaultPayment" element={isAuthenticatedOperation() ? <DefaultPayment /> : <Navigate to="/OperationLogin" />} />
         <Route path="/OperationRevenueSheet" element={isAuthenticatedOperation() ? <OperationRevenueSheets /> : <Navigate to="/OperationLogin" />} />
-        <Route path="/OperationLogin" element={<OperationLogin />} />
+        {/* <Route path="/OperationLogin" element={<OperationLogin />} /> */}
         {/* Operation Panel End */}
 
         {/* ADV Operation Panel Start */}
-        <Route path="/AdvOperationLogin" element={<AdvOperationLogin />} />
+        <Route path="/operationlogin" element={<AdvOperationLogin />} />
         <Route path="/AdvOperationAgainLogin" element={<AdvOperationAgainLogin />} />
-        <Route path="/AdvOperationDashboard" element={isAuthenticatedAdvOperation() ? <AdvOperationDashboard /> : <Navigate to="/AdvOperationLogin" />} />
-        <Route path="/AdvBookedPayment" element={isAuthenticatedAdvOperation() ? <AdvBookedPayment /> : <Navigate to="/AdvOperationLogin" />} />
-        <Route path="/AdvFullPayment" element={isAuthenticatedAdvOperation() ? <AdvFullPayment /> : <Navigate to="/AdvOperationLogin" />} />
-        <Route path="/AdvDefaultPayment" element={isAuthenticatedAdvOperation() ? <AdvDefaultPayment /> : <Navigate to="/AdvOperationLogin" />} />
-        <Route path="/AdvOperationRevenueSheet" element={isAuthenticatedAdvOperation() ? <AdvOperationRevenueSheets /> : <Navigate to="/AdvOperationLogin" />} />
+        <Route path="/AdvOperationDashboard" element={isAuthenticatedAdvOperation() ? <AdvOperationDashboard /> : <Navigate to="/operationlogin" />} />
+        <Route path="/AdvBookedPayment" element={isAuthenticatedAdvOperation() ? <AdvBookedPayment /> : <Navigate to="/operationlogin" />} />
+        <Route path="/AdvFullPayment" element={isAuthenticatedAdvOperation() ? <AdvFullPayment /> : <Navigate to="/operationlogin" />} />
+        <Route path="/AdvDefaultPayment" element={isAuthenticatedAdvOperation() ? <AdvDefaultPayment /> : <Navigate to="/operationlogin" />} />
+        <Route path="/AdvOperationRevenueSheet" element={isAuthenticatedAdvOperation() ? <AdvOperationRevenueSheets /> : <Navigate to="/operationlogin" />} />
         {/* ADV Operation Panel End */}
 
 
@@ -667,19 +667,19 @@ const AppContent = () => {
         {/* bda panel ends */}
 
         {/* Advance Team Panel Start */}
-        <Route path="/AdvTeamLogin" element={<AdvTeamLogin />} />
-        <Route path="/advteam/home" element={isAuthenticatedAdvTeam() ? <AdvTeamHome /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/onboarding" element={isAuthenticatedAdvTeam() ? <AdvTeamOnBoarding /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/revenue" element={isAuthenticatedAdvTeam() ? <AdvTeamRevenue /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/booked" element={isAuthenticatedAdvTeam() ? <AdvTeamBooked /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/fullpaid" element={isAuthenticatedAdvTeam() ? <AdvTeamFullPaid /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/default" element={isAuthenticatedAdvTeam() ? <AdvTeamDefault /> : <Navigate to="/AdvTeamLogin" />} />
-        <Route path="/advteam/adduser" element={isAuthenticatedAdvTeam() ? <AdvAddUser /> : <Navigate to="/AdvTeamLogin" />} />
-{/*         <Route path="/advteam/my-leads" element={isAuthenticatedAdvTeam() ? <AdvTeamMyLeads /> : <Navigate to="/AdvTeamLogin" />} /> */}
-{/*         <Route path="/advteam/leads-book" element={isAuthenticatedAdvTeam() ? <AdvLeadsBook /> : <Navigate to="/AdvTeamLogin" />} /> */}
-{/*         <Route path="/advteam/record" element={isAuthenticatedAdvTeam() ? <AdvTeamRecord /> : <Navigate to="/AdvTeamLogin" />} /> */}
-        <Route path="/advteam/team-login" element={isAuthenticatedAdvTeam() ? <AdvTeamTeamLogin /> : <Navigate to="/AdvTeamLogin" />} />
-{/*         <Route path="/advteam/leaderboard" element={isAuthenticatedAdvTeam() ? <AdvLeaderBoard /> : <Navigate to="/AdvTeamLogin" />} /> */}
+        <Route path="/employlogin" element={<AdvTeamLogin />} />
+        <Route path="/advteam/home" element={isAuthenticatedAdvTeam() ? <AdvTeamHome /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/onboarding" element={isAuthenticatedAdvTeam() ? <AdvTeamOnBoarding /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/revenue" element={isAuthenticatedAdvTeam() ? <AdvTeamRevenue /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/booked" element={isAuthenticatedAdvTeam() ? <AdvTeamBooked /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/fullpaid" element={isAuthenticatedAdvTeam() ? <AdvTeamFullPaid /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/default" element={isAuthenticatedAdvTeam() ? <AdvTeamDefault /> : <Navigate to="/employlogin" />} />
+        <Route path="/advteam/adduser" element={isAuthenticatedAdvTeam() ? <AdvAddUser /> : <Navigate to="/employlogin" />} />
+{/*         <Route path="/advteam/my-leads" element={isAuthenticatedAdvTeam() ? <AdvTeamMyLeads /> : <Navigate to="/employlogin" />} /> */}
+{/*         <Route path="/advteam/leads-book" element={isAuthenticatedAdvTeam() ? <AdvLeadsBook /> : <Navigate to="/employlogin" />} /> */}
+{/*         <Route path="/advteam/record" element={isAuthenticatedAdvTeam() ? <AdvTeamRecord /> : <Navigate to="/employlogin" />} /> */}
+        <Route path="/advteam/team-login" element={isAuthenticatedAdvTeam() ? <AdvTeamTeamLogin /> : <Navigate to="/employlogin" />} />
+{/*         <Route path="/advteam/leaderboard" element={isAuthenticatedAdvTeam() ? <AdvLeaderBoard /> : <Navigate to="/employlogin" />} /> */}
         {/* Advance Team Panel End */}
 
         {/* User Panel */}

@@ -33,8 +33,8 @@ const AdminHeader = () => {
 
   const isActive = (path) => {
     return location.pathname === path 
-      ? "bg-gradient-to-r from-indigo-500/10 to-transparent text-indigo-400 border-l-4 border-indigo-500 font-bold" 
-      : "text-slate-400 hover:bg-white/5 hover:text-slate-200 border-l-4 border-transparent font-medium";
+      ? "bg-indigo-500/10 text-indigo-400 font-semibold shadow-[0_2px_10px_rgba(99,102,241,0.05)] border border-indigo-500/20" 
+      : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 font-medium border border-transparent";
   };
 
   const menuItems = [
@@ -105,8 +105,8 @@ const AdminHeader = () => {
 
         <div className="flex flex-col py-6 relative z-10">
           
-          <div className="px-3 mb-2">
-            <Link to="/AdminDashboard" className={`flex items-center gap-3 px-4 py-3 rounded-r-xl transition-all text-sm group ${isActive('/AdminDashboard')}`}>
+          <div className="px-4 mb-2">
+            <Link to="/AdminDashboard" className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-[13px] group ${isActive('/AdminDashboard')}`}>
               <Home size={18} className={`${location.pathname === '/AdminDashboard' ? 'text-indigo-400' : 'text-slate-400 group-hover:text-indigo-300'} transition-colors`} /> 
               <span>Home</span>
             </Link>
@@ -116,7 +116,10 @@ const AdminHeader = () => {
             if (item.category) {
               return (
                 <div key={index} className="mt-8 mb-3 px-7">
-                  <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{item.category}</h3>
+                  <h3 className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.15em] flex items-center gap-2">
+                    <span className="w-2 h-px bg-slate-700"></span>
+                    {item.category}
+                  </h3>
                 </div>
               );
             }
@@ -125,16 +128,16 @@ const AdminHeader = () => {
             const Icon = item.icon;
 
             return (
-              <div key={index} className="px-3 mb-1">
-                <Link to={item.to} className={`flex items-center justify-between px-4 py-2.5 rounded-r-xl transition-all text-sm group ${isActive(item.to)}`}>
+              <div key={index} className="px-4 mb-1">
+                <Link to={item.to} className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all text-[13px] group ${isActive(item.to)}`}>
                   <div className="flex items-center gap-3">
                     <Icon size={18} className={`${active ? 'text-indigo-400' : 'text-slate-400 group-hover:text-indigo-300'} transition-colors`} /> 
                     <span className="truncate">{item.text}</span>
                   </div>
                   {item.isLive && (
-                    <span className="relative flex h-2.5 w-2.5">
+                    <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </span>
                   )}
                 </Link>

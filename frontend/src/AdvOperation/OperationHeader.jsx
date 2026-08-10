@@ -44,7 +44,7 @@ const OperationHeader = () => {
       localStorage.removeItem("advOperationName");
       localStorage.removeItem("advOperationToken");
       localStorage.removeItem("sessionStartTime");
-      navigate("/AdvOperationLogin");
+      navigate("/operationlogin");
     }, 1500);
   };
 
@@ -59,10 +59,10 @@ const OperationHeader = () => {
         localStorage.removeItem("advOperationName");
         localStorage.removeItem("advOperationToken");
         localStorage.removeItem("sessionStartTime");
-        navigate("/AdvOperationLogin");
+        navigate("/operationlogin");
       }
     } else {
-      navigate("/AdvOperationLogin");
+      navigate("/operationlogin");
     }
   };
 

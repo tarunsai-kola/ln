@@ -49,7 +49,7 @@ const AdvTeamHeader = () => {
       localStorage.removeItem("advTeamToken");
       localStorage.removeItem("advTeamSessionStartTime");
 
-      navigate("/AdvTeamLogin");
+      navigate("/employlogin");
     }, 1500);
   };
 
@@ -65,10 +65,10 @@ const AdvTeamHeader = () => {
         localStorage.removeItem("advTeamToken");
         localStorage.removeItem("advTeamSessionStartTime");
 
-        navigate("/AdvTeamLogin");
+        navigate("/employlogin");
       }
     } else {
-      navigate("/AdvTeamLogin");
+      navigate("/employlogin");
     }
   };
 

@@ -64,9 +64,9 @@ axios.interceptors.response.use(
                 if (currentPath.includes("admin") || adminPaths.includes(currentPath)) {
                     window.location.href = "/AdminLogin";
                 } else if (currentPath.includes("advteam")) {
-                    window.location.href = "/AdvTeamLogin";
+                    window.location.href = "/employlogin";
                 } else if (currentPath.includes("advoperation")) {
-                    window.location.href = "/AdvOperationLogin";
+                    window.location.href = "/operationlogin";
                 } else if (currentPath.includes("bda") || currentPath.startsWith("/home") || currentPath.startsWith("/booked")) {
                     window.location.href = "/TeamLogin";
                 } else if (currentPath.includes("operation")) {

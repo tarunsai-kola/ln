@@ -76,7 +76,7 @@ const OperationAgainLogin = () => {
                 </form>
                 <p>--------------------or--------------------</p>
                 <div className='loginwith'>
-                    <Link to="/AdvOperationLogin">Login with OTP</Link>
+                    <Link to="/operationlogin">Login with OTP</Link>
                 </div>
             </div>
         </div>
