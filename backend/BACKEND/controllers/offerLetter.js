@@ -19,26 +19,26 @@ const createOfferLetterPDF = async (pdfword1, pdfword2) => {
     const pdfDoc = await PDFDocument.create();
 
     // Load and embed image for page 1
-    const imagePath = path.join(__dirname, "offer.jpg");
+    const imagePath = path.join(__dirname, "image.png");
     const imageBytes = fs.readFileSync(imagePath);
-    const jpgImage = await pdfDoc.embedJpg(imageBytes);
+    const pngImage = await pdfDoc.embedPng(imageBytes);
 
     // Load and embed image for page 2
-    const imagePath2 = path.join(__dirname, "offerback.jpg"); // Make sure this image exists
+    const imagePath2 = path.join(__dirname, "image.png");
     const imageBytes2 = fs.readFileSync(imagePath2);
-    const jpgImage2 = await pdfDoc.embedJpg(imageBytes2);
+    const pngImage2 = await pdfDoc.embedPng(imageBytes2);
 
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
     const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
-    const { width, height } = jpgImage.scale(1);
+    const { width, height } = pngImage.scale(1);
 
     const a4Width = 595.28;
     const a4Height = 841.89;
 
     // Page 1 "
     const page1 = pdfDoc.addPage([a4Width, a4Height]); // A4 size
-    page1.drawImage(jpgImage, {
+    page1.drawImage(pngImage, {
         x: 0,
         y: 0,
         width: a4Width,
@@ -60,17 +60,11 @@ const createOfferLetterPDF = async (pdfword1, pdfword2) => {
         maxWidth: 495,
         lineHeight: 14,
     });
-    page1.drawText("Bangalore, Karnataka |7829104024", {
-        x: (a4Width - timesRomanFont.widthOfTextAtSize("Bangalore, Karnataka |7829104024", 12)) / 2, // Center text
-        y: 200,
-        size: 12,
-        font: timesRomanFont,
-        color: rgb(0, 0, 0),
-    });
+
 
     // Page 2 with pdfword
     const page2 = pdfDoc.addPage([a4Width, a4Height]);
-    page2.drawImage(jpgImage2, {
+    page2.drawImage(pngImage2, {
         x: 0,
         y: 0,
         width: a4Width,
@@ -85,13 +79,7 @@ const createOfferLetterPDF = async (pdfword1, pdfword2) => {
         maxWidth: 495,
         lineHeight: 14,
     });
-    page2.drawText("Bangalore, Karnataka |7829104024", {
-        x: (a4Width - timesRomanFont.widthOfTextAtSize("Bangalore, Karnataka |7829104024", 12)) / 2, // Center text
-        y: 200,
-        size: 12,
-        font: timesRomanFont,
-        color: rgb(0, 0, 0),
-    });
+
 
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;

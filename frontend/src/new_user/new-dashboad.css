@@ -734,7 +734,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #c084fc 100%);
+  background: url('../assets/welcome_banner_bg.png') center/cover no-repeat;
   border-radius: 20px;
   padding: 28px 32px;
   color: white;
