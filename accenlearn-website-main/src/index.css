@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+
+
+*{
+
+}
+
+:root {
+  --color-primary: #080331;
+  /* --color-secondary: oklch(76.8% 0.233 130.85); */
+  --color-secondary: #7ccf00;
+
+}
+
+*{
+  font-family: 'Poppins', sans-serif !important;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar{
+  height: 0px !important;
+  scrollbar-width: 5px !important;
+  scrollbar-color: var(--color-primary) var(--color-secondary);
+}
+::-webkit-scrollbar-thumb{
+  background-color: var(--color-primary);
+}
+
+
+@keyframes blink-effect {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+.animate-blink {
+  animation: blink-effect 1.5s ease-in-out infinite;
+}
+
+@theme {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-gradient: gradient-animation 6s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+/* Custom Color Changing Animation for Mobile/Desktop */
+.animate-color-pulse {
+  animation: color-pulse 4s infinite;
+}
+
+@keyframes color-pulse {
+  0%, 100% { color: var(--color-primary); }
+  50% { color: var(--color-secondary); }
+}
+
+.animate-bg-pulse {
+  animation: bg-pulse 4s infinite;
+}
+
+@keyframes bg-pulse {
+  0%, 100% { background-color: rgba(8, 3, 49, 0.05); } /* primary/5 */
+  50% { background-color: rgba(124, 207, 0, 0.1); } /* secondary/10 */
+}
+
+
+@layer component {
+  
+  .gradient_text {
+    @apply bg-clip-text text-transparent bg-gradient-to-tr from-primary to-primary;
+  }
+  .gradient_bg {
+    @apply !bg-linear-to-tr !from-primary !to-secondary;
+  }
+  .global_text{
+    @apply !text-gray-800 !leading-relaxed  leading-relaxed sm:leading-loose text-sm sm:text-base md:text-lg lg:text-xl 
+  }
+  .title_text{
+    @apply !text-3xl lg:!text-4xl !font-semibold
+  }
+}
+
+
+.marquee {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation-duration: 90s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Left direction */
+.marquee-left .marquee-track {
+  animation-name: marquee-left;
+}
+
+/* Right direction */
+.marquee-right .marquee-track {
+  animation-name: marquee-right;
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.typing-effect {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--color-secondary);
+  animation: typing 3.2s steps(17, end) infinite, blink 0.9s step-end infinite;
+}
+
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  60% {
+    width: 100%;
+  }
+  70% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    border-color: var(--color-secondary);
+  }
+  50.1%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+/* Explicit page top offsets to ensure no overlap with fixed navbar across production builds */
+.page-top-offset {
+  padding-top: 165px !important;
+}
+@media (min-width: 640px) {
+  .page-top-offset {
+    padding-top: 185px !important;
+  }
+}
+@media (min-width: 1024px) {
+  .page-top-offset {
+    padding-top: 275px !important;
+  }
+}
+

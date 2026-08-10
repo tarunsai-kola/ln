@@ -1,0 +1,190 @@
+// const express = require("express");
+// const router = express.Router();
+// const nodemailer = require("nodemailer");
+// require("dotenv").config();
+// const path = require("path");
+
+
+// router.post("/sendedOfferLetterMail", async (req, res) => {
+//     const { fullname, email, domain, monthOpted } = req.body;
+//     const emailMessage = `
+//     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+//       <div style="background-color: #F15B29; color: #fff; text-align: center; padding: 20px;">
+//         <h1>Offer Letter - ${domain} Intern</h1>
+//       </div>
+//       <div style="padding: 20px;">
+//         <p style="font-size: 16px; color: #333;">Dear ${fullname},</p>
+//         <p style="font-size: 14px; color: #555;">We at Accenlearn Campus are happy to inform you that based on your application and subsequent interview, you have secured the role of ${domain} Intern with us. This email is to be considered as a formal offer for the mentioned role.</p>
+//         <p style="font-size: 14px; color: #555;">Kindly find attached an offer letter with the particulars of your employment. We are extremely happy to offer you this role and look forward to having you on board with us. The date of commencement of your employment is 5th of ${monthOpted}.</p>
+//         <p style="font-size: 14px; color: #555;">For any further information, please do not hesitate to contact us via this mail ID <a href="mailto:support@Accenlearn Campus.com" style="color: #0066cc;">support@Accenlearn Campus.com</a></p>
+//         <p style="font-size: 14px; color: #555;">Wishing you all the best on your new journey.</p>
+//         <p style="font-size: 14px; color: #333;">Best regards,</p>
+//         <p style="font-size: 14px; color: #333;">Team Accenlearn Campus</p>
+//       </div>
+//       <div style="text-align: center; font-size: 12px; color: #888; padding: 10px 0; border-top: 1px solid #ddd;">
+//         <p>&copy; 2024 Accenlearn Campus. All Rights Reserved.</p>
+//       </div>
+//     </div>
+//   `;
+//     try {
+//       const transporter = nodemailer.createTransport({
+//         host: process.env.SMTP_HOST,
+//         port: process.env.SMTP_PORT,
+//         secure: false,
+//         auth: {
+//           user: process.env.SMTP_MAIL,
+//           pass: process.env.SMTP_PASSWORD,
+//         },
+//         tls: {
+//           rejectUnauthorized: false,
+//         },
+//         pool: true,
+//       });
+
+//       const mailOptions = {
+//         from: process.env.SMTP_MAIL,
+//         to: email,
+//         cc: "help@Accenlearn Campus.com",
+//         subject: `Offer Letter - ${domain} Intern`,
+//         html: emailMessage,
+//         priority: "high",
+//         // attachments: [
+//         //   {
+//         //     path: file.path,
+//         //     filename: file.originalname,
+//         //   },
+//         // ],
+//       };
+
+//       await new Promise((resolve, reject) => {
+//         transporter.sendMail(mailOptions, (error, info) => {
+//           if (error) {
+//             console.error("Error sending email:", error);
+//             reject(error);
+//           } else {
+//             console.log("Email sent successfully!", info.response);
+//             resolve(info.response);
+//           }
+//         });
+//       });
+
+//       res.status(200).json({ message: "Offer letter email sent successfully!" });
+//     } catch (error) {
+//       console.error("Error sending email:", error);
+//       res
+//         .status(500)
+//         .json({ message: "Error sending email.", error: error.message });
+//     }
+//   }
+// );
+
+// module.exports = router;
+
+const express = require("express");
+const router = express.Router();
+const nodemailer = require("nodemailer");
+const formidable = require("formidable"); 
+const path = require("path");
+const fs = require("fs");
+const { buildPremiumEmail, SVGS, COMPANY_NAME, COMPANY_SUPPORT_EMAIL } = require("../utils/emailTemplate");
+
+router.post("/sendedOfferLetterMail", (req, res) => {
+  const form = new formidable.IncomingForm();
+  form.uploadDir = path.join(__dirname, 'uploads'); 
+  form.keepExtensions = true;
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Error parsing the form:", err);
+      return res.status(500).json({ message: "Error parsing form data", error: err.message });
+    }
+    console.log("Form Fields:", fields);  // Log form fields
+    console.log("Uploaded Files:", files);  // Log uploaded files
+    const { fullname, email, domain, monthOpted } = fields;
+    const file = files.offerLetter;
+
+    if (!file) {
+        return res.status(400).json({ message: "No file uploaded." });
+      }
+
+      console.log("File details:", file);
+    const content = `
+      <p style="font-size: 16px; color: #0f172a; font-weight: 600;">Dear ${fullname},</p>
+      
+      <p>We at <strong>${COMPANY_NAME}</strong> are thrilled to inform you that based on your application and subsequent interview, you have successfully secured the role of <strong>${domain} Intern</strong> with us. Please consider this email as a formal offer for the mentioned role.</p>
+      
+      <div class="highlight-box" style="margin: 25px 0;">
+        <p style="margin: 0; ">${SVGS.info} <span style="margin-top: 2px;">Kindly find attached an offer letter detailing the particulars of your employment. We are extremely happy to offer you this role and look forward to having you on board with us.</span></p>
+      </div>
+
+      <div class="highlight-box" style="background: #ecfdf5; border-left-color: #10b981;">
+        <p style="margin: 0; font-weight: 600; color: #0f172a; ">${SVGS.calendar} Date of Commencement: <span style="color: #059669; margin-left: 5px;">5th of ${monthOpted}</span></p>
+      </div>
+
+      <p style="margin-top: 25px;">Wishing you all the best on your new journey!</p>
+    `;
+    const emailMessage = buildPremiumEmail({ title: `Offer Letter - ${domain} Intern`, content });
+
+
+    try {
+      const transporter = nodemailer.createTransport({
+        host: "smtp.resend.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "resend",
+          pass: process.env.RESEND_API_KEY,
+        },
+      });
+
+      const attachment = {
+        path: file.filepath,
+        filename: file.originalFilename,
+        contentType: 'application/pdf', 
+      };
+
+
+      const mailOptions = {
+        from: process.env.RESEND_FROM_EMAIL,
+        to: email,
+        // cc: "help@Accenlearn Campus.com",
+        subject: `Offer Letter - ${domain} Intern`,
+        html: emailMessage,
+        priority: "high",
+        attachments: [attachment],
+      };
+      console.log("Sending email with attachment path:", file.path);
+      // Send the email
+      await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Error sending email:", error);
+            reject(error);
+          } else {
+            console.log("Email sent successfully!", info.response);
+            resolve(info.response);
+          }
+        });
+      });
+     
+      console.log("File Path to Delete:", file.filepath);
+      if (file.filepath) {
+        fs.unlink(file.filepath, (err) => {
+          if (err) {
+            console.error("Error deleting file:", err);
+          } else {
+            console.log("File deleted successfully.");
+          }
+        });
+      }
+
+
+      res.status(200).json({ message: "Offer letter email sent successfully!" });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ message: "Error sending email.", error: error.message });
+    }
+  });
+});
+
+module.exports = router;

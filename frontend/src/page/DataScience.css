@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap');
+
+/* Scope CSS variables to .ds-bg so it doesn't conflict globally */
+.ds-bg {
+  --bg: #0d0f14;
+  --surface: #111318;
+  --surface-2: #171922;
+  --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9;
+  --text-muted: #64748b;
+  
+  /* Golden Yellow Theme */
+  --primary: #eab2085d;
+  --primary-hover: #ca8b0492;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.ag-font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Stable Keyframe Animations */
+@keyframes agSpinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ag-animate-spin-slow {
+  animation: agSpinSlow 4s linear infinite;
+}
+
+@keyframes agPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.ag-pulse {
+  animation: agPulse 2s ease-in-out infinite;
+}
+
+@keyframes agMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ag-marquee {
+  animation: agMarquee 28s linear infinite;
+}
+
+/* Grids */
+.ag-cp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.ag-curr-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .ag-cp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hover effects */
+.ag-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+
+.ag-card:hover {
+  border-color: rgba(234,179,8, 0.4);
+  transform: translateY(-4px);
+}

@@ -1,0 +1,656 @@
+/* Cinematic Landing Page Redesign */
+
+:root {
+  /* Newton School-inspired dark theme */
+  --cine-midnight: #0F1115;
+  --cine-midnight-light: #16181D;
+  --cine-border: rgba(255, 255, 255, 0.08);
+  --cine-surface: rgba(255, 255, 255, 0.05);
+
+  /* ONE accent: Newton School blue */
+  --cine-primary: #1462EE;
+  --cine-primary-hover: #0D4FC0;
+  --cine-primary-glow: rgba(20, 98, 238, 0.3);
+  --cine-primary-tint: rgba(20, 98, 238, 0.08);
+
+  /* Label accent: Newton School orange */
+  --cine-label: #FF8803;
+
+  /* Typography */
+  --cine-white: #FFFFFF;
+  --cine-slate: #A1A1AA;
+  --cine-text-light: #FFFFFF;
+}
+
+/* Base Styles */
+.cine-landing {
+  background-color: var(--cine-midnight);
+  color: var(--cine-white);
+  font-family: "Sora", "Montserrat", sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.cine-container {
+  width: min(92%, 1400px);
+  margin: 0 auto;
+}
+
+.cine-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cine-label);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cine-h2 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.cine-text-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cine-text-electric {
+  /* ALL white — uniform headline, never split-colour */
+  color: var(--cine-white);
+}
+
+.cine-subtext {
+  font-size: clamp(16px, 1.5vw, 20px);
+  color: var(--cine-slate);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* Buttons */
+.cine-btn-primary {
+  background: var(--cine-primary);
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px var(--cine-primary-glow);
+  text-decoration: none;
+}
+
+.cine-btn-primary:hover {
+  background: var(--cine-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--cine-primary-glow);
+}
+
+.cine-btn-secondary {
+  background: transparent;
+  color: var(--cine-white);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.cine-btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Chapter 1: Hero - Cinematic Redesign */
+.cine-hero-chapter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 60px 0 40px;
+  overflow: hidden;
+  background-color: var(--cine-midnight);
+}
+
+/* Layer 1: Atmosphere */
+.cine-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 70% 40%, rgba(20, 98, 238, 0.06) 0%, transparent 55%);
+  z-index: 0;
+}
+
+/* Newton School-style flat grid */
+.cine-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Interactive Concave Spotlight Grid */
+.cine-hero-grid-interactive {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(20, 98, 238, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 98, 238, 0.25) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 1;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 0, 0, 1),
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 0, 0, 1),
+    transparent 100%
+  );
+}
+
+/* Layer 2: Message */
+.cine-hero-content {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.cine-hero-headline {
+  font-size: clamp(48px, 6.5vw, 84px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 32px;
+}
+
+.cine-hero-headline .block-line {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.cine-text-gradient-bold {
+  /* ALL white — no split-colour headlines */
+  color: var(--cine-white);
+  -webkit-text-fill-color: var(--cine-white);
+}
+
+.cine-hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+/* Layer 3: Proof Dashboard */
+.cine-hero-dashboard {
+  position: relative;
+  min-height: 700px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.cine-dash-panel {
+  position: absolute;
+  /* Glassmorphic background */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  /* Subtle directional lighting borders */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 22px 24px;
+  /* Deep depth blur */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  /* Depth shadows */
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  overflow: hidden;
+}
+
+.cine-dash-panel:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* No rope decorations — clean Newton School style */
+.cine-dash-panel::before,
+.cine-dash-panel::after {
+  display: none;
+}
+
+/* Specific Dashboard Panels - Cascading Structure */
+.card-hero { 
+  width: 340px; height: 220px; top: 40px; right: 0; z-index: 10; 
+  /* Special hero ambient glow */
+  background: linear-gradient(135deg, rgba(20, 98, 238, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(20, 98, 238, 0.2);
+  border-top-color: rgba(20, 98, 238, 0.5);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(20, 98, 238, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.card-hero:hover {
+  border-color: rgba(20, 98, 238, 0.4);
+  border-top-color: rgba(20, 98, 238, 0.7);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(20, 98, 238, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.card-pill-a { width: 250px; top: 10px; left: 20px; z-index: 5; }
+.card-pill-b { width: 230px; top: 120px; left: 0; z-index: 6; }
+.card-stat { width: 230px; top: 250px; left: 60px; height: 170px; z-index: 7; }
+.card-pill-c { width: 240px; top: 290px; right: 20px; z-index: 8; }
+.card-pill-d { width: 260px; top: 400px; right: 0; z-index: 3; }
+.card-testimonial { width: 310px; top: 460px; left: 20px; z-index: 9; }
+.card-placement { width: 280px; top: 510px; right: 30px; z-index: 4; }
+
+.dash-label-sm {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--cine-slate);
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Chapter 2: Proof / Authority Marquee */
+.cine-proof-chapter {
+  background-color: var(--cine-white);
+  color: var(--cine-midnight);
+  padding: 100px 0;
+  overflow: hidden;
+}
+
+.cine-proof-chapter .cine-eyebrow {
+  color: var(--cine-primary);
+}
+
+.cine-proof-chapter .cine-h2 {
+  color: var(--cine-midnight);
+}
+
+.cine-proof-chapter .cine-subtext {
+  color: #475569;
+}
+
+.cine-marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 40px;
+  padding: 40px 0;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.cine-marquee-track {
+  display: flex;
+  gap: 60px;
+  flex-shrink: 0;
+  min-width: 100%;
+  animation: marquee-scroll 30s linear infinite;
+  align-items: center;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+.cine-marquee-logo {
+  height: 40px;
+  filter: grayscale(100%) opacity(0.6);
+  transition: all 0.3s ease;
+}
+
+.cine-marquee-logo:hover {
+  filter: grayscale(0%) opacity(1);
+}
+
+/* Chapter 3: Programs / Transformation */
+.cine-programs-chapter {
+  padding: 120px 0;
+  background: var(--cine-midnight-light);
+  position: relative;
+}
+
+.cine-programs-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+.cine-program-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 100px;
+}
+
+.cine-program-tab {
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--cine-slate);
+  text-align: left;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cine-program-tab:hover {
+  color: var(--cine-white);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cine-program-tab.active {
+  background: var(--cine-surface);
+  border-color: var(--cine-border);
+  color: var(--cine-white);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cine-program-content-card {
+  background: var(--cine-midnight);
+  border: 1px solid var(--cine-border);
+  border-radius: 32px;
+  padding: 60px;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cine-program-content-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(20, 98, 238, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+.cine-program-meta {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.cine-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cine-slate);
+  font-size: 15px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+.cine-meta-item svg {
+  color: var(--cine-primary);
+}
+
+.cine-program-title {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.cine-program-desc {
+  font-size: 18px;
+  color: var(--cine-slate);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.cine-program-outcomes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.cine-outcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cine-outcome-icon {
+  color: var(--cine-primary);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.cine-outcome-text {
+  color: var(--cine-text-light);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Chapter 4: Outcomes / Trust */
+.cine-trust-chapter {
+  padding: 120px 0;
+  background: var(--cine-midnight);
+}
+
+.cine-trust-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.cine-testimonial-slider {
+  position: relative;
+  height: 400px;
+}
+
+.cine-testimonial-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--cine-surface);
+  border: 1px solid var(--cine-border);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.cine-quote-mark {
+  font-size: 80px;
+  color: rgba(20, 98, 238, 0.15);
+  line-height: 1;
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  font-family: serif;
+}
+
+.cine-testimonial-text {
+  font-size: 20px;
+  color: var(--cine-white);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.cine-testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cine-author-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--cine-border);
+  border: 1px solid var(--cine-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--cine-slate);
+}
+
+.cine-author-info h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cine-author-info p {
+  font-size: 14px;
+  color: var(--cine-slate);
+}
+
+/* Chapter 5: Conversion */
+.cine-conversion-chapter {
+  padding: 140px 0;
+  background: linear-gradient(to bottom, var(--cine-midnight-light), var(--cine-midnight));
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cine-conversion-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(20, 98, 238, 0.12) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cine-conversion-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cine-conversion-h2 {
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.cine-conversion-sub {
+  font-size: 20px;
+  color: var(--cine-slate);
+  margin-bottom: 48px;
+  line-height: 1.6;
+}
+
+.cine-conversion-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Utilities & Media Queries */
+@media (max-width: 1024px) {
+  .cine-hero-content, .cine-programs-layout, .cine-trust-grid {
+    grid-template-columns: 1fr;
+  }
+  .cine-hero-dashboard {
+    display: none;
+  }
+  .cine-program-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    position: relative;
+    top: 0;
+    padding-bottom: 16px;
+  }
+  .cine-program-tab {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .cine-hero-chapter {
+    padding: 100px 0 60px;
+  }
+  .cine-hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .cine-hero-actions a {
+    width: 100%;
+    justify-content: center;
+  }
+  .cine-program-content-card {
+    padding: 32px;
+  }
+  .cine-program-outcomes {
+    grid-template-columns: 1fr;
+  }
+  .cine-conversion-actions {
+    flex-direction: column;
+  }
+  .cine-conversion-actions a {
+    width: 100%;
+    justify-content: center;
+  }
+}

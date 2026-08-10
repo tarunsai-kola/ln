@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-bg-main: #F8FAFC;
+  --color-bg-alt: #EFF6FF;
+  --color-surface: #FFFFFF;
+  --color-heading: #0F172A;
+  --color-body: #475569;
+  --color-muted: #64748B;
+  --color-border: #E2E8F0;
+  --color-accent-soft: #DBEAFE;
+  --color-success-bg: #DCFCE7;
+  --color-success-text: #15803D;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.lp-bg {
+  background: var(--color-bg-main);
+  color: var(--color-body);
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Light Theme Glass System */
+.glass-panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Subtle Glowing Indicators for Light Mode */
+.dot-glow-indigo, .dot-glow-emerald {
+  background: var(--color-primary);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Premium Typography System */
+.lp-font-outfit {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--color-heading);
+}
+
+.text-glow {
+  text-shadow: none; /* Removed for light theme */
+}
+
+/* Premium Gradients (Replaced with Solid for Clean Look) */
+.subtle-gradient-text, .subtle-gradient-green {
+  color: var(--color-primary);
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+
+/* Keyframe Marquee Animations */
+@keyframes lpMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.lp-marquee {
+  animation: lpMarquee 35s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.lp-animate-spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+/* Layout Grids */
+.lp-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.lp-tracks-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 40px;
+}
+
+.lp-trust-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.bento-large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Interactive Pedagogy Slider Styles */
+.slide-control-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.slide-control-btn:hover {
+  background: var(--color-accent-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* General Layout Tweaks */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 99px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .lp-hero-grid,
+  .lp-tracks-layout,
+  .lp-trust-grid,
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-large {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-hero-grid {
+    padding: 90px 16px 30px;
+  }
+}
+
+/* Premium Program Slider Styles */
+.program-slider-canvas {
+  --slide-width: 960px;
+  --slide-gap: 40px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .program-slider-canvas {
+    --slide-width: 82vw;
+    --slide-gap: 24px;
+  }
+}
+
+.program-slider-track {
+  display: flex;
+  gap: var(--slide-gap);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.program-slide-card {
+  width: var(--slide-width);
+  flex-shrink: 0;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Premium 3D Spatial System ─── */
+.scene-3d {
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Floating Glass Panel with Deep Shadow */
+.glass-panel-3d {
+  background: var(--color-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.05), 
+    0 10px 15px rgba(0, 0, 0, 0.02);
+  border-radius: 20px;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-3d:hover {
+  box-shadow: 
+    0 30px 60px rgba(37, 99, 235, 0.08), 
+    0 15px 25px rgba(0, 0, 0, 0.04);
+}
+
+/* 3D Dashboard Mockups */
+.dashboard-card-3d {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
+  will-change: transform;
+}
+
+/* Blur & Volumetric Glows */
+.volumetric-glow {
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Premium Hero Stat Cards (Light Theme) */
+.premium-stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.premium-stat-card:hover {
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+  border-color: var(--color-primary);
+}
+
+.premium-stat-icon-box {
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+  border-radius: 12px;
+}
+
+/* Premium Bento Card Wash */
+.bento-card-gradient {
+  position: relative;
+  z-index: 1;
+}
+
+.bento-card-gradient::after, .bento-card-gradient::before {
+  display: none;
+}
+
+/* Remove Dark Premium Backgrounds */
+.bento-dark-gradient, .outcome-dark-gradient {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-heading) !important;
+}
+
+.bento-dark-gradient h3, .bento-dark-gradient h4, .bento-dark-gradient p {
+  color: var(--color-heading) !important;
+}
+
+.bento-dark-gradient p {
+  color: var(--color-body) !important;
+}

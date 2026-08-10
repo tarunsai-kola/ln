@@ -1,0 +1,1131 @@
+/* ============================================================
+   ACCENLEARN LANDING PAGE — Premium Design System v3
+   Midnight Blue + Electric Blue + White
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --midnight:    #0B1E3A;
+  --navy:        #0f2344;
+  --navy-light:  #102A4C;
+  --electric:    #1E90FF;
+  --hover-blue:  #4DA3FF;
+  --white:       #FFFFFF;
+  --soft-bg:     #F4F8FF;
+  --border:      #D6E4FF;
+  --muted:       #6B7A90;
+  --dark-muted:  rgba(255,255,255,0.45);
+  --sp-xl:       112px 24px;
+  --sp-lg:       88px 24px;
+  --sp-md:       64px 24px;
+  --radius-lg:   20px;
+  --radius-md:   14px;
+  --radius-sm:   10px;
+}
+
+/* ─── BASE ─── */
+#landingpage, #landingpage.landing-neo {
+  background: var(--soft-bg);
+  color: #1a2740;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── SHARED CONTAINER ─── */
+.atx-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── SECTION FOUNDATIONS ─── */
+.atx-dark-section {
+  background: var(--midnight);
+  position: relative;
+}
+
+.atx-light-section {
+  background: var(--white);
+  position: relative;
+}
+
+/* Subtle separator between sections */
+.atx-dark-section + .atx-light-section,
+.atx-light-section + .atx-dark-section {
+  border-top: 1px solid rgba(30,144,255,0.08);
+}
+
+/* ─── TYPOGRAPHY ─── */
+.atx-h2-dark {
+  font-size: clamp(30px, 4.2vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #0B1E3A;
+  margin: 0 0 18px;
+}
+
+.atx-section-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.atx-section-header-left {
+  margin-bottom: 48px;
+}
+
+.atx-section-header-left h2 {
+  font-size: clamp(30px, 4.2vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin: 0 0 18px;
+}
+
+.atx-section-header-left .atx-section-sub {
+  text-align: left;
+  margin: 0;
+}
+
+.atx-section-sub {
+  font-size: 16px;
+  line-height: 1.78;
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* ─── ACCENT TEXT ─── */
+.atx-accent       { color: var(--electric); }
+.atx-accent-light { color: var(--hover-blue); }
+
+/* ─── EYEBROW ─── */
+.atx-eyebrow {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--electric);
+  background: rgba(30,144,255,0.08);
+  border: 1px solid rgba(30,144,255,0.22);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+
+.atx-eyebrow-light {
+  color: rgba(77,163,255,0.9);
+  background: rgba(30,144,255,0.1);
+  border-color: rgba(30,144,255,0.25);
+}
+
+/* ─── BUTTONS ─── */
+.atx-btn-primary-el {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--electric);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  letter-spacing: 0.015em;
+  box-shadow: 0 6px 24px rgba(30,144,255,0.3);
+  transition: background 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.atx-btn-primary-el:hover {
+  background: var(--hover-blue);
+  box-shadow: 0 12px 36px rgba(30,144,255,0.42);
+}
+
+/* Shimmer sweep on hover */
+.atx-btn-primary-el::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -80%; width: 50%; height: 200%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+  transform: skewX(-15deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.atx-btn-primary-el:hover::after { left: 140%; }
+
+.atx-btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.82);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 26px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.22);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.atx-btn-outline-light:hover {
+  border-color: rgba(30,144,255,0.6);
+  color: #4DA3FF;
+  background: rgba(30,144,255,0.07);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   02. PROOF BAR
+═══════════════════════════════════════════════════════════ */
+.atx-proof-bar {
+  background: var(--navy);
+  border-top: 1px solid rgba(30,144,255,0.12);
+  border-bottom: 1px solid rgba(30,144,255,0.08);
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.atx-proof-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 40px;
+  border-right: 1px solid rgba(30,144,255,0.1);
+  flex: 1;
+  cursor: default;
+  transition: background 0.2s;
+  max-width: 240px;
+}
+
+.atx-proof-item:last-child { border-right: none; }
+.atx-proof-item:hover { background: rgba(30,144,255,0.06); }
+
+.atx-proof-num {
+  font-size: clamp(22px,2.8vw,32px);
+  font-weight: 800;
+  color: var(--electric);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.atx-proof-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .atx-proof-bar { flex-wrap: wrap; }
+  .atx-proof-item { flex: 0 0 50%; border-bottom: 1px solid rgba(30,144,255,0.1); max-width: 100%; }
+  .atx-proof-item:nth-child(even) { border-right: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   03. OUTCOMES — Editorial bento split
+═══════════════════════════════════════════════════════════ */
+.atx-outcomes-section {
+  padding: var(--sp-xl);
+}
+
+.atx-outcomes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.atx-outcomes-left {}
+
+.atx-outcomes-sub {
+  font-size: 15.5px;
+  line-height: 1.78;
+  color: var(--muted);
+  margin: 0 0 28px;
+  max-width: 440px;
+}
+
+.atx-outcomes-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atx-outcomes-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  color: #344063;
+  line-height: 1.55;
+}
+
+/* ─── Bento grid right ─── */
+.atx-outcomes-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+
+.atx-bento-large {
+  grid-column: 1 / 3;
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 24px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.atx-bento-num {
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--electric);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.atx-bento-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0B1E3A;
+  margin-bottom: 4px;
+}
+
+.atx-bento-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.atx-bento-bar {
+  height: 4px;
+  background: rgba(30,144,255,0.12);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.atx-bento-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1E90FF, #4DA3FF);
+  border-radius: 100px;
+}
+
+.atx-bento-small {
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.atx-bento-icon {
+  color: var(--electric);
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.atx-bento-sm-num {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0B1E3A;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+
+.atx-bento-sm-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.atx-bento-wide {
+  grid-column: 1 / 3;
+  background: var(--midnight);
+  border: 1px solid rgba(30,144,255,0.18);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.atx-bento-quote {
+  font-size: 15px;
+  font-style: italic;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.65;
+  margin: 0 0 10px;
+}
+
+.atx-bento-attribution {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--electric);
+}
+
+@media (max-width: 960px) {
+  .atx-outcomes-grid { grid-template-columns: 1fr; gap: 48px; }
+  .atx-outcomes-section { padding: var(--sp-lg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   04. COURSES — Dark productized
+═══════════════════════════════════════════════════════════ */
+.atx-courses-dark-section {
+  padding: var(--sp-xl);
+}
+
+/* ─── Course card overrides inside dark section ─── */
+.atx-courses-dark-section .course > div {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(30,144,255,0.16) !important;
+  border-radius: var(--radius-md) !important;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s !important;
+}
+
+.atx-courses-dark-section .course > div:hover {
+  border-color: rgba(30,144,255,0.42) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4) !important;
+}
+
+.atx-courses-dark-section .course > div img {
+  transition: transform 0.45s ease !important;
+}
+
+.atx-courses-dark-section .course > div:hover img {
+  transform: scale(1.04) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   05. ADVANTAGE — Asymmetric bento
+═══════════════════════════════════════════════════════════ */
+.atx-advantage-section {
+  padding: var(--sp-xl);
+}
+
+.atx-advantage-bento {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.atx-adv-hero-card {
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  height: 100%;
+}
+
+.atx-adv-hero-card:hover {
+  box-shadow: 0 20px 56px rgba(30,144,255,0.1);
+}
+
+.atx-adv-hero-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  background: rgba(30,144,255,0.1);
+  border: 1px solid rgba(30,144,255,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--electric);
+  font-size: 22px;
+  margin-bottom: 22px;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.atx-adv-hero-card:hover .atx-adv-hero-icon {
+  background: rgba(30,144,255,0.18);
+  transform: scale(1.07);
+}
+
+.atx-adv-hero-card h3 {
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 800;
+  color: #0B1E3A;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 14px;
+}
+
+.atx-adv-hero-card p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 0 0 auto;
+}
+
+.atx-adv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--electric);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 28px;
+  letter-spacing: 0.01em;
+  transition: gap 0.2s, color 0.2s;
+}
+
+.atx-adv-link:hover {
+  gap: 11px;
+  color: var(--hover-blue);
+}
+
+/* ─── Right-side small card grid ─── */
+.atx-adv-grid-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.atx-adv-small-card {
+  background: var(--soft-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.atx-adv-sm-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: rgba(30,144,255,0.09);
+  border: 1px solid rgba(30,144,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--electric);
+  font-size: 16px;
+  margin-bottom: 14px;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.atx-adv-small-card:hover .atx-adv-sm-icon {
+  background: rgba(30,144,255,0.16);
+  transform: scale(1.08);
+}
+
+.atx-adv-small-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0B1E3A;
+  margin: 0 0 7px;
+}
+
+.atx-adv-small-card p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Top border reveal on card hover */
+.atx-adv-hero-card::before,
+.atx-adv-small-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--electric), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.atx-adv-hero-card { position: relative; overflow: hidden; }
+.atx-adv-small-card { position: relative; overflow: hidden; }
+
+.atx-adv-hero-card:hover::before,
+.atx-adv-small-card:hover::before {
+  opacity: 1;
+}
+
+@media (max-width: 960px) {
+  .atx-advantage-bento { grid-template-columns: 1fr; }
+  .atx-advantage-section { padding: var(--sp-lg); }
+  .atx-adv-hero-card { height: auto; }
+}
+
+@media (max-width: 520px) {
+  .atx-adv-grid-right { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   06. IN-PERSON — Dark horizontal split
+═══════════════════════════════════════════════════════════ */
+.atx-inperson-section {
+  padding: var(--sp-xl);
+}
+
+.atx-inperson-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.atx-inperson-image img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  max-height: 420px;
+  border: 1px solid rgba(30,144,255,0.18);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.45);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.atx-inperson-image img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.55);
+}
+
+.atx-inperson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.atx-inperson-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.atx-inperson-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--electric);
+  margin-top: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(30,144,255,0.5);
+}
+
+.atx-inperson-item-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.atx-inperson-item-desc {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.48);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .atx-inperson-grid { grid-template-columns: 1fr; gap: 40px; }
+  .atx-inperson-section { padding: var(--sp-lg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   07. HIRING PARTNERS — Light logo belt
+═══════════════════════════════════════════════════════════ */
+.atx-partners-light-section {
+  padding: var(--sp-xl) 0;
+  overflow: hidden;
+}
+
+.atx-partners-light-section .atx-container {
+  padding-bottom: 48px;
+}
+
+/* Logo images in light context */
+.atx-partners-light-section .client-img {
+  filter: grayscale(0.5) opacity(0.65) !important;
+  transition: filter 0.35s ease, transform 0.35s ease !important;
+}
+
+.atx-partners-light-section .client-img:hover {
+  filter: grayscale(0) opacity(1) !important;
+  transform: scale(1.1) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   08. CERTIFICATIONS — Premium dark prestige
+═══════════════════════════════════════════════════════════ */
+.atx-cert-premium-section {
+  padding: var(--sp-xl);
+}
+
+.atx-cert-premium-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.atx-cert-proof-row {
+  display: flex;
+  gap: 16px;
+}
+
+.atx-cert-proof-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(30,144,255,0.18);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  flex: 1;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.atx-cert-proof-item:hover {
+  border-color: rgba(30,144,255,0.4);
+  background: rgba(30,144,255,0.06);
+}
+
+.atx-cert-proof-val {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--electric);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.atx-cert-proof-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Stacked certificate cards ─── */
+.atx-cert-cards-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.atx-cert-stacked-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(30,144,255,0.2);
+  overflow: hidden;
+  background: #0a1a30;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.atx-cert-stacked-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.atx-cert-stacked-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-top: 1px solid rgba(30,144,255,0.15);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+@media (max-width: 900px) {
+  .atx-cert-premium-grid { grid-template-columns: 1fr; gap: 48px; }
+  .atx-cert-premium-section { padding: var(--sp-lg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   09. TESTIMONIALS — Light premium
+═══════════════════════════════════════════════════════════ */
+.atx-testimonial-light-section {
+  padding-top: var(--sp-xl);
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.atx-testimonial-light-section .atx-container {
+  padding-bottom: 40px;
+}
+
+.atx-testimonial-light-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Testimonial card overrides */
+.atx-testimonial-light-wrap .atx-tcard {
+  background: var(--soft-bg) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.atx-testimonial-light-wrap .atx-tcard p {
+  color: var(--muted) !important;
+}
+
+.atx-testimonial-light-wrap [style*="color: '#fff'"],
+.atx-testimonial-light-wrap [style*="color:#fff"] {
+  color: #0B1E3A !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. TRANSFORMATION — Dark numbered steps
+═══════════════════════════════════════════════════════════ */
+.atx-transform-section {
+  padding: var(--sp-xl);
+}
+
+.atx-transform-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.atx-transform-image {
+  position: relative;
+}
+
+.atx-transform-image img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  max-height: 480px;
+  border: 1px solid rgba(30,144,255,0.18);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.45);
+  display: block;
+}
+
+.atx-transform-image-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at 40% 50%, rgba(30,144,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.atx-transform-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 8px;
+}
+
+.atx-transform-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(30,144,255,0.12);
+  background: rgba(255,255,255,0.025);
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.atx-transform-step:hover {
+  border-color: rgba(30,144,255,0.35);
+  background: rgba(30,144,255,0.05);
+}
+
+.atx-step-num {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--electric);
+  background: rgba(30,144,255,0.12);
+  border: 1px solid rgba(30,144,255,0.25);
+  border-radius: 8px;
+  padding: 6px 10px;
+  flex-shrink: 0;
+  min-width: 38px;
+  text-align: center;
+}
+
+.atx-step-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.atx-step-desc {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.45);
+}
+
+@media (max-width: 900px) {
+  .atx-transform-grid { grid-template-columns: 1fr; gap: 44px; }
+  .atx-transform-section { padding: var(--sp-lg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. FINAL CTA — Cinematic close scene
+═══════════════════════════════════════════════════════════ */
+.atx-final-scene {
+  position: relative;
+  padding: 120px 24px;
+  background: var(--midnight);
+  overflow: hidden;
+  text-align: center;
+}
+
+.atx-final-scene-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 10%, rgba(30,144,255,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(77,163,255,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Animated scan line */
+.atx-final-scene::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: auto;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(30,144,255,0.5), transparent);
+  animation: scan-line 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scan-line {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Dot grid overlay */
+.atx-final-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(30,144,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.atx-final-scene-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atx-final-scene-h2 {
+  font-size: clamp(32px, 5vw, 62px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  margin: 0 0 20px;
+}
+
+.atx-final-blue { color: var(--electric); }
+
+.atx-final-scene-sub {
+  font-size: 16px;
+  line-height: 1.78;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  margin: 0 0 40px;
+}
+
+.atx-final-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.atx-final-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  color: var(--midnight);
+  font-size: 15px;
+  font-weight: 800;
+  padding: 16px 36px;
+  border-radius: 14px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  box-shadow: 0 12px 40px rgba(255,255,255,0.18);
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.atx-final-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -80%; width: 50%; height: 200%;
+  background: linear-gradient(105deg, transparent 40%, rgba(30,144,255,0.1) 50%, transparent 60%);
+  transform: skewX(-15deg);
+  transition: left 0.5s ease;
+}
+.atx-final-btn-primary:hover::after { left: 140%; }
+
+.atx-final-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: rgba(255,255,255,0.82);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 15px 32px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.atx-final-btn-ghost:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+/* ─── Social proof strip ─── */
+.atx-final-proof {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.atx-final-avatars {
+  display: flex;
+}
+
+.atx-final-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(30,144,255,0.15);
+  border: 2px solid rgba(30,144,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  margin-left: -8px;
+}
+
+.atx-final-avatar:first-child { margin-left: 0; }
+
+.atx-final-proof-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+}
+
+.atx-final-proof-text strong { color: rgba(255,255,255,0.75); }
+
+@media (max-width: 520px) {
+  .atx-final-scene { padding: 80px 16px; }
+  .atx-final-btns { flex-direction: column; align-items: center; }
+  .atx-final-btn-primary, .atx-final-btn-ghost { width: 100%; justify-content: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TESTIMONIAL — Light mode card overrides
+═══════════════════════════════════════════════════════════ */
+.atx-testimonial-light-wrap .atx-tcard {
+  background: var(--soft-bg) !important;
+  border-color: var(--border) !important;
+  --atx-tcard-bg: var(--soft-bg);
+  --atx-tcard-border: var(--border);
+}
+
+/* Override dark text in light context */
+.atx-testimonial-light-wrap .atx-tcard p {
+  color: var(--muted) !important;
+}
+
+.atx-testimonial-light-wrap .atx-tcard > div:last-child > div:first-child {
+  color: #0B1E3A !important;
+}
+
+.workatslider .client-img {
+  filter: grayscale(0.4) opacity(0.72);
+  transition: filter 0.35s ease, transform 0.35s ease !important;
+}
+
+.workatslider .client-img:hover {
+  filter: grayscale(0) opacity(1) !important;
+  transform: scale(1.12) !important;
+}
+
+/* Dark section logos */
+.atx-courses-dark-section .client-img,
+.atx-cert-premium-section .client-img,
+.atx-inperson-section .client-img {
+  filter: grayscale(1) invert(1) opacity(0.4) !important;
+}
+
+.atx-courses-dark-section .client-img:hover,
+.atx-cert-premium-section .client-img:hover {
+  filter: grayscale(0.1) invert(0) opacity(0.9) brightness(1.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER TWEAKS
+═══════════════════════════════════════════════════════════ */
+footer {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PREFERS REDUCED MOTION
+═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --sp-xl: 72px 20px;
+    --sp-lg: 56px 20px;
+    --sp-md: 44px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .atx-section-header h2, .atx-h2-dark { font-size: 26px; }
+  .atx-proof-bar { padding: 0; }
+  .atx-outcomes-bento { grid-template-columns: 1fr; }
+  .atx-bento-large { grid-column: 1; }
+  .atx-bento-wide { grid-column: 1; }
+}

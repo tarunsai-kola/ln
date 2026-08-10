@@ -1,0 +1,324 @@
+import PaymentPlanWidget from "../../Components/PaymentPlanWidget";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  CheckCircle2, 
+  ChevronDown, 
+  Download, 
+  TrendingUp, 
+  Award, 
+  Briefcase, 
+  ArrowRight,
+  ShieldCheck,
+  Zap, 
+  BarChart3, 
+  PieChart, 
+  Repeat, 
+  Layout,
+  PhoneCall,
+  UserCheck,
+  Video,
+  MessagesSquare,
+  FileText,
+  Rocket,
+  Globe,
+  Star,
+  Users,
+  Target,
+  Search,
+  Monitor,
+  Terminal,
+  Share2,
+  Cpu,
+  Mail,
+  Smartphone
+} from "lucide-react";
+
+import posterImage from "../../../Accenlearn/images/poster/digitalmarketing.png";
+import Flashaidlogo from "../../assets/Flashaidlogo.jpg";
+import Certification from "./Components/Certification";
+import ClientsCarousel from "../../Components/our_alumni";
+import ApplyNowButton from "./Components/ApplyNowButton";
+import ApplyForm from "./Components/ApplyForm";
+import CourseHeroBanner from "./Components/CourseHeroBanner";
+import ImageSlider from "./Components/ImageSlider";
+
+import ToolStack from "./Components/ToolStack";
+import TopOnePercent from "../../Components/TopOnePercent";
+import CareerSupport from "../../Components/CareerSupport";
+import ProgramCohorts from "./Components/ProgramCohorts";
+import AdvanceBanner from "./Components/AdvanceBanner";
+
+import DownloadBrochureButton from "./Components/DownloadBrochureButton";
+import CountdownTimer from "./Components/CountdownTimer";
+import dmBrochure from "../../../Accenlearn/Digital Marketing Advanced Program.pdf";
+const heroStats = [
+  { label: "Placement Rate", value: "93%" },
+  { label: "Hiring Partners", value: "500+" },
+  { label: "Student Rating", value: "4.7/5" },
+  { label: "Batch Starting", value: "31st May" },
+];
+
+const audience = [
+  { title: "Students & Graduates", desc: "Build a professional marketing portfolio and land your first role in the digital economy.", icon: <Award size={20} /> },
+  { title: "Career Switchers", desc: "Pivot from traditional sales, admin, or support roles into high-growth performance marketing.", icon: <Repeat size={20} /> },
+  { title: "Business Owners", desc: "Master the tools to scale your own brand and manage campaigns without expensive agencies.", icon: <Rocket size={20} /> },
+  { title: "Working Professionals", desc: "Upskill in data-driven marketing and automation to move into senior strategy or growth roles.", icon: <Briefcase size={20} /> },
+  { title: "Freelancers", desc: "Broaden your service offerings from simple posting to full-funnel execution and SEO strategy.", icon: <Globe size={20} /> },
+  { title: "Content Creators", desc: "Learn the technical side of distribution, SEO, and paid growth to monetize your brand effectively.", icon: <Star size={20} /> }
+];
+
+const marketOpportunity = [
+  { title: "Budget Shift", desc: "Global ad spend is aggressively moving from TV and print to digital-first platforms.", icon: <TrendingUp size={24} /> },
+  { title: "Skill Gap", desc: "Businesses are struggling to find marketers who understand both creative strategy and technical data.", icon: <Target size={24} /> },
+  { title: "Universal Demand", desc: "Digital presence is no longer optional; every industry from local retail to SaaS needs experts.", icon: <Globe size={24} /> }
+];
+
+const techStack = [
+  { group: "Fundamentals", tools: ["Google Forms", "ChatGPT", "Notion", "Google Drive"] },
+  { group: "Content & Design", tools: ["Canva", "QuillBot", "Grammarly", "copy.ai", "Figma"] },
+  { group: "Social Media", tools: ["Meta Business Suite", "LinkedIn", "Instagram", "Hootsuite", "Buffer"] },
+  { group: "SEO & Search", tools: ["SEMrush", "Ahrefs", "Google Search Console", "Screaming Frog", "Ubersuggest", "Yoast"] },
+  { group: "Performance & Ads", tools: ["Google Ads", "Meta Ads Manager", "LinkedIn Ads Manager"] },
+  { group: "Analytics & Data", tools: ["GA4", "Looker Studio", "Microsoft Clarity", "Google Tag Manager"] },
+  { group: "Automation & CRM", tools: ["Zapier", "HubSpot", "Mailchimp", "ActiveCampaign", "Brevo"] },
+  { group: "E-Commerce", tools: ["Shopify", "Webflow", "AppsFlyer", "MoEngage"] }
+];
+
+const curriculumRoadmap = [
+  { module: "Module 1", title: "Social Media Marketing", summary: "Strategy, Content & Growth Funnels.", topics: "Instagram Reels, LinkedIn Branding, YouTube Growth, AI Content Tools, Viral Loops.", details: "Master the platform ecosystem and build brand-level case studies using AI-driven content generation." },
+  { module: "Module 2", title: "Search Engine Optimization", summary: "Organic Rankings & Technical Authority.", topics: "Keywords, On-Page SEO, Technical Audits, Backlinks, Search Console.", details: "Master the art of organic growth and site authority to drive high-intent traffic without ad spend." },
+  { module: "Module 3", title: "Performance Marketing", summary: "ROI-Focused Paid Ads & Analytics.", topics: "Google Ads, Meta Ads Manager, GA4, ROAS, A/B Testing.", details: "Learn to manage multi-million budgets with data-driven precision and cross-channel optimization." },
+  { module: "Module 4", title: "Advanced Automation", summary: "Omnichannel Growth & Scaling.", topics: "Email Marketing, CRO, Zapier, Retargeting, WhatsApp/SMS.", details: "Build automated systems that nurture leads and scale revenue through omnichannel integration." },
+  { module: "Module 5", title: "Career Acceleration", summary: "Job Readiness & Portfolio Execution.", topics: "Resume, Mock Interviews, Live Projects, Referrals.", details: "Final phase focused on personal branding and technical interview preparation for top hiring partners." }
+];
+
+const portfolioProjects = [
+  { title: "Full-Funnel Meta Campaign", problem: "Launching a scalable acquisition system for a premium D2C brand.", outcome: "Master ad-set structure and budget optimization." },
+  { title: "E-commerce SEO Audit", problem: "Identifying technical bottlenecks for a marketplace with 10k+ pages.", outcome: "Build professional site audits for hiring managers." },
+  { title: "LinkedIn Thought Leadership", problem: "Building a personal executive brand for a high-value SaaS founder.", outcome: "Master B2B content and distribution strategy." },
+  { title: "Omnichannel Automation", problem: "Integrating Email, WhatsApp, and SMS for a holiday discount event.", outcome: "Master CRM logic and multi-channel workflows." }
+];
+
+const careerRoles = [
+  { role: "Performance Marketer", range: "12 - 22 LPA" },
+  { role: "Paid Media Specialist", range: "10 - 18 LPA" },
+  { role: "Social Media Manager", range: "08 - 14 LPA" },
+  { role: "SEO Specialist", range: "09 - 16 LPA" },
+  { role: "Growth Lead", range: "18 - 35 LPA" },
+  { role: "Digital Marketing Head", range: "25 - 50 LPA" }
+];
+
+
+
+const alumniOutcomes = [
+  { name: "Ananya Iyer", role: "Journalism Grad", target: "Performance Marketer", company: "Zomato", desc: "Bridging the gap between writing and data-driven ads was the game-changer." },
+  { name: "Rohan Verma", role: "Business Owner", target: "Growth Specialist", company: "Nykaa", desc: "I optimized my own store's ROAS from 1.2 to 4.5 before joining my current role." },
+  { name: "Priya Sharma", role: "Fresher", target: "SEO Specialist", company: "Microsoft", desc: "The technical SEO module helped me crack one of the hardest agency technical rounds." }
+];
+
+const faqCategories = {
+  "Program Details": [
+    { q: "Is this program for beginners?", a: "Yes. Our curriculum is designed to take you from fundamentals to advanced execution, ensuring a smooth learning curve for all skill levels." },
+    { q: "What is the duration and format?", a: "The program spans 6 Months with live interactive sessions on weekends and weekday evenings to accommodate working professionals." },
+    { q: "Do I need any prior knowledge?", a: "No prior experience is required. We teach you everything from scratch, focusing on logic, psychology, and technical execution." },
+    { q: "What are the timings?", a: "Live sessions happen on weekends and weekday evenings to accommodate work schedules." }
+  ],
+  "Career & Certification": [
+    { q: "Do you offer placement support?", a: "We provide 100% career support, including resume audits, mock interviews, LinkedIn optimization, and direct referrals to our 500+ hiring partners." },
+    { q: "Will I receive a certificate?", a: "Yes, upon successful completion of the program and projects, you will receive an industry-recognized Professional Certification." },
+    { q: "What projects will I build?", a: "You will work on multiple industry-grade projects and capstones that mimic real-world challenges, allowing you to build a production-ready portfolio." },
+    { q: "How many case studies or projects will I complete?", a: "You will graduate with at least 3-4 deep, evidence-based case studies or production-ready projects in your portfolio." }
+  ],
+  "Admissions & Policy": [
+    { q: "How do I attend the classes?", a: "You will receive meeting links on your registered email. Classes are conducted via premium platforms like Zoom or Google Meet." },
+    { q: "Do I get access to recorded sessions?", a: "Yes! Simply log in to the LMS portal to access the recorded sessions of any classes you missed." },
+    { q: "What is the refund policy?", a: "Our courses are crafted with care and commitment. Therefore, we do not offer refunds as we provide immediate access to high-value resources." },
+    { q: "Are there any prerequisites before starting?", a: "There are no prerequisites required! Our courses are designed for all skill levels." }
+  ]
+};
+
+const DigitalMarket = () => {
+  const [expandedModule, setExpandedModule] = useState(null);
+  const [activeFaqCat, setActiveFaqCat] = useState("Program Details");
+  const [openFaqIdx, setOpenFaqIdx] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="dm-page">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap');
+
+        :root {
+          --dm-bg: #F7F6F2;
+          --dm-text: #1F2937;
+          --dm-text-dim: #6B7280;
+          --dm-primary: #4F46E5;
+          --dm-accent: #818CF8;
+          --dm-border: rgba(31, 41, 55, 0.08);
+        }
+
+        .dm-page { background: var(--dm-bg); color: var(--dm-text); font-family: 'Plus Jakarta Sans', sans-serif; }
+        .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        .dm-section { padding: 100px 0; }
+        .dm-sec-white { padding: 100px 0; background: #fff; border-top: 1px solid var(--dm-border); border-bottom: 1px solid var(--dm-border); }
+
+        .sec-title { font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 800; margin-bottom: 16px; color: var(--dm-text); text-align: left; }
+        .sec-sub { font-size: 17px; color: var(--dm-text-dim); max-width: 600px; margin-bottom: 48px; text-align: left; line-height:1.6; }
+
+        .p-card { 
+          background: #fff; 
+          border: 1px solid var(--dm-border); 
+          border-radius: 12px; 
+          padding: 24px; 
+          transition: 0.3s;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        .p-card:hover { border-color: var(--dm-accent); box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
+
+        .btn-sec { border: 1px solid var(--dm-border); color: var(--dm-text); padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 15px; background:#fff; }
+
+        .faq-item { border: 1px solid var(--dm-border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; background: #fff; }
+        .faq-quest { width:100%; text-align:left; padding: 20px 24px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .faq-ans { padding: 0 24px 24px; font-size: 14px; color: var(--dm-text-dim); line-height: 1.6; }
+
+        .sticky-bar { 
+          position: fixed; 
+          bottom: 0; 
+          left: 0; 
+          width: 100%; 
+          height: 80px; 
+          background: var(--dm-primary); 
+          color: #fff;
+          z-index: 100; 
+          transform: translateY(100%); 
+          transition: 0.4s; 
+          display: flex; 
+          align-items: center; 
+          box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+        }
+        .sticky-bar.visible { transform: translateY(0); }
+        .countdown-box { background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 6px; font-variant-numeric: tabular-nums; }
+
+        @media (max-width: 768px) { 
+          .sec-title { font-size: 28px; } 
+          .dm-section, .dm-sec-white { padding: 60px 0; }
+        }
+      `}</style>
+
+      {/* 1. HERO */}
+      <CourseHeroBanner
+        badge="Growth Accelerator"
+        icon="🚀"
+        title="Digital Marketing"
+        highlight="Career Certification"
+        sub="Master the skills required to lead performance marketing, organic growth, and technical automation for global product brands."
+        stats={heroStats}
+        bg="linear-gradient(135deg, #1E1B4B 0%, #312E81 45%, #4338CA 100%)"
+        accent="#818CF8"
+        shape="DM"
+      >
+        <ImageSlider />
+      </CourseHeroBanner>
+
+      
+
+      <TopOnePercent />
+
+      {/* 2. AUDIENCE */}
+      
+
+      {/* PRICING */}
+      <section id="pricing" style={{padding: '100px 0', background: '#fff'}}>
+        <div style={{maxWidth: '1200px', margin: '0 auto', padding: '0 24px'}}>
+           <h2 style={{fontSize: '32px', fontWeight: 800, marginBottom: '16px'}}>Fees & Payment Options</h2>
+           <p style={{fontSize: '17px', color: '#6B7280', marginBottom: '48px'}}>Transparent program cost with structured installment plans and financial assistance.</p>
+           <PaymentPlanWidget basePrice={51999} durationMonths={3} courseName="DigitalMarket" />
+        </div>
+      </section>
+
+      <AdvanceBanner />
+
+      {/* 13. FAQ */}
+      <section className="dm-sec-white">
+        <div className="shell">
+           <h2 className="sec-title">Common Questions</h2>
+           <p className="sec-sub">Everything you need to know about the enrollment, learning, and job transition process.</p>
+           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'60px', alignItems:'start'}}>
+              <div style={{display:'grid', gap:'8px'}}>
+                 {Object.keys(faqCategories).map(cat => (
+                    <button key={cat} onClick={() => { setActiveFaqCat(cat); setOpenFaqIdx(null); }} style={{textAlign:'left', padding:'16px 24px', borderRadius:'10px', fontWeight:700, fontSize:'14px', transition:'0.2s', background: activeFaqCat === cat ? 'var(--dm-primary)' : 'transparent', color: activeFaqCat === cat ? '#fff' : 'var(--dm-text)'}} className={activeFaqCat !== cat ? 'hover:bg-gray-100' : ''}>{cat}</button>
+                 ))}
+              </div>
+              <div style={{display:'grid', gap:'8px'}}>
+                 {faqCategories[activeFaqCat].map((faq, i) => (
+                    <div key={i} className="faq-item" onClick={() => setOpenFaqIdx(openFaqIdx === i ? null : i)}>
+                       <div className="faq-quest">{faq.q} <ChevronDown size={14} style={{transform: openFaqIdx === i ? 'rotate(180deg)' : 'none', transition:'0.3s'}} /></div>
+                       <AnimatePresence>{openFaqIdx === i && <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="faq-ans"><div style={{paddingTop:'20px', borderTop:'1px solid var(--dm-border)'}}>{faq.a}</div></motion.div>}</AnimatePresence>
+                    </div>
+                 ))}
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* 14. FORM */}
+      <section className="dm-section">
+        <div className="shell">
+           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:'80px', alignItems:'start'}}>
+              <div>
+                 <h2 className="sec-title">Request a Consultation</h2>
+                 <p className="sec-sub">Request a Callback to review your career roadmap and cohort eligibility.</p>
+                 <div style={{display:'grid', gap:'16px'}}>
+                    {['24-hour advisor response', 'One-on-one session planning', 'Program suitability audit'].map(t => (
+                       <div key={t} style={{display:'flex', alignItems:'center', gap:'12px', fontSize:'14px', fontWeight:700}}><CheckCircle2 size={18} className="text-indigo-600" /> {t}</div>
+                    ))}
+                 </div>
+              </div>
+              <div className="p-card" style={{padding:'32px', maxWidth:'520px'}}>
+                 <div style={{marginBottom:'24px'}}><h3 style={{fontSize:'20px', fontWeight:800, marginBottom:'4px'}}>Request a Callback</h3><p style={{fontSize:'13px', color:'var(--dm-text-dim)'}}>Connect with the ACCENLEARN team today.</p></div>
+                 <ApplyForm courseValue="Digital Marketing" isPremium={true} />
+              </div>
+           </div>
+        </div>
+      </section>
+
+      <div className={`sticky-bar ${scrolled ? 'visible' : ''}`}>
+        <div className="shell flex justify-between items-center w-full">
+           <div className="flex items-center gap-2 md:gap-6">
+              <div className="flex items-center gap-2 text-sm md:text-lg font-bold">
+                 <span className="animate-pulse">🚨</span>
+                 <span>30% Scholarship closing in just 2 days.</span>
+              </div>
+              <div className="hidden lg:flex items-center gap-3 text-sm font-bold opacity-90">
+                 <span>Batch closing in</span>
+                 <CountdownTimer />
+              </div>
+           </div>
+           <div className="flex gap-6 items-center">
+              <button onClick={() => window.location.href='tel:9380736449'} className="text-xs font-black uppercase hidden xl:flex items-center gap-2 hover:opacity-80 transition-all text-white"><PhoneCall size={14} /> Request a Callback</button>
+              <ApplyNowButton 
+                 courseValue="Digital Marketing" 
+                 label="Connect Now" 
+                 className="!bg-white !from-white !to-white !text-indigo-700 !px-10 !py-3 !rounded-lg !shadow-none hover:!scale-105"
+              />
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DigitalMarket;
+
+
+
+
+
