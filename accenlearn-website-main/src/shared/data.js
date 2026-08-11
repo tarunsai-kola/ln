@@ -36,7 +36,7 @@ export const CONTACT_INFO = [
     id: 2,
     icon: FaMailBulk,
     type: "email",
-    value: "accenlearn@gmail.com",
+    value: "support@accenlearn.com",
   },
 ];
 
