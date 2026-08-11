@@ -85,6 +85,7 @@ const AdvanceDashboardAccess = () => {
   
   const [monthsToShow, setMonthsToShow] = useState([]);
   const [endMonthsToShow, setEndMonthsToShow] = useState([]);
+  const [startMonthsToShow, setStartMonthsToShow] = useState([]);
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   const generateMonths = (startOffset, count) => {
@@ -106,7 +107,7 @@ const AdvanceDashboardAccess = () => {
     setMonthsToShow(generateMonths(0, 4));
   }, []);
 
-  // When start month changes, compute end months starting 3 months after start
+  // When start month changes, compute end months for the next 3 months
   useEffect(() => {
     if (!internshipstartsmonth) {
       setEndMonthsToShow([]);
@@ -116,7 +117,7 @@ const AdvanceDashboardAccess = () => {
     const startMonthIndex = monthNames.indexOf(startMonthName);
     const startYear = parseInt(startYearStr);
     const result = [];
-    for (let i = 3; i <= 6; i++) {
+    for (let i = 1; i <= 3; i++) {
       const totalMonths = startMonthIndex + i;
       const monthIndex = totalMonths % 12;
       const year = startYear + Math.floor(totalMonths / 12);
@@ -125,6 +126,26 @@ const AdvanceDashboardAccess = () => {
     setEndMonthsToShow(result);
     setInternshipEndsMonth("");
   }, [internshipstartsmonth]);
+
+  // When opted month changes, compute start months for the next 3 months
+  useEffect(() => {
+    if (!monthOpted) {
+      setStartMonthsToShow([]);
+      return;
+    }
+    const [optedMonthName, optedYearStr] = monthOpted.split(" ");
+    const optedMonthIndex = monthNames.indexOf(optedMonthName);
+    const optedYear = parseInt(optedYearStr);
+    const result = [];
+    for (let i = 1; i <= 3; i++) {
+      const totalMonths = optedMonthIndex + i;
+      const monthIndex = totalMonths % 12;
+      const year = optedYear + Math.floor(totalMonths / 12);
+      result.push(`${monthNames[monthIndex]} ${year}`);
+    }
+    setStartMonthsToShow(result);
+    setInternshipStartsMonth("");
+  }, [monthOpted]);
 
   const fetchCourses = async () => {
     try {
@@ -367,9 +388,9 @@ const AdvanceDashboardAccess = () => {
             {/* Row 7 */}
             <div className="flex flex-col space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Internship starts month</label>
-              <select value={internshipstartsmonth} onChange={(e) => setInternshipStartsMonth(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-md p-3 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-colors appearance-none">
-                <option value="" disabled>Internship starts month</option>
-                {monthsToShow.map((month, index) => (<option key={index} value={month}>{month}</option>))}
+              <select value={internshipstartsmonth} onChange={(e) => setInternshipStartsMonth(e.target.value)} required disabled={!monthOpted} className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-md p-3 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
+                <option value="" disabled>{monthOpted ? "Internship starts month" : "Select Opted Month first"}</option>
+                {startMonthsToShow.map((month, index) => (<option key={index} value={month}>{month}</option>))}
               </select>
             </div>
             

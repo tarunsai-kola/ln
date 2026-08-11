@@ -105,6 +105,7 @@ const DashboardAccessForm = () => {
 
   const [monthsToShow, setMonthsToShow] = useState([]);
   const [endsMonthsToShow, setEndsMonthsToShow] = useState([]);
+  const [startMonthsToShow, setStartMonthsToShow] = useState([]);
 
   const monthNames = [
     "January",
@@ -162,7 +163,7 @@ const DashboardAccessForm = () => {
     const startMonthIndex = monthNames.indexOf(startMonthName);
     const startYear = parseInt(startYearStr);
 
-    const ends = [1, 2, 3, 4, 5, 6].map((offset) => {
+    const ends = [1, 2, 3].map((offset) => {
       const index = (startMonthIndex + offset) % 12;
       const year = startMonthIndex + offset > 11 ? startYear + 1 : startYear;
       return `${monthNames[index]} ${year}`;
@@ -171,6 +172,26 @@ const DashboardAccessForm = () => {
     setEndsMonthsToShow(ends);
     setInternshipEndsMonth(""); // Reset end month when start month changes
   }, [internshipstartsmonth]);
+
+  // Dynamically calculate next 3 months for internship start based on selected opted month
+  useEffect(() => {
+    if (!monthOpted) {
+      setStartMonthsToShow([]);
+      return;
+    }
+    const [optedMonthName, optedYearStr] = monthOpted.split(" ");
+    const optedMonthIndex = monthNames.indexOf(optedMonthName);
+    const optedYear = parseInt(optedYearStr);
+
+    const starts = [1, 2, 3].map((offset) => {
+      const index = (optedMonthIndex + offset) % 12;
+      const year = optedMonthIndex + offset > 11 ? optedYear + 1 : optedYear;
+      return `${monthNames[index]} ${year}`;
+    });
+
+    setStartMonthsToShow(starts);
+    setInternshipStartsMonth(""); // Reset start month when opted month changes
+  }, [monthOpted]);
 
   const fetchCourses = async () => {
     try {
@@ -619,11 +640,12 @@ const DashboardAccessForm = () => {
               value={internshipstartsmonth}
               onChange={(e) => setInternshipStartsMonth(e.target.value)}
               required
+              disabled={!monthOpted}
             >
               <option value="" selected disabled>
-                Internship starts month
+                {monthOpted ? "Internship starts month" : "Select Opted Month first"}
               </option>
-              {monthsToShow.map((month, index) => (
+              {startMonthsToShow.map((month, index) => (
                 <option key={index} value={month}>
                   {month}
                 </option>
