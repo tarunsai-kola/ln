@@ -5,7 +5,7 @@ import API from "../API";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 
-import playerlogo from "./playerlogo.jpg";
+import playerlogo from "../assets/accenlearn-logo.png";
 
 const AdvanceLearning = () => {
     const [selectedSession, setSelectedSession] = useState(null);
