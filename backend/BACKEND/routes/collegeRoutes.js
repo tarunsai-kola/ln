@@ -3,6 +3,7 @@ const router = express.Router();
 const College = require("../models/College");
 const MicroUser = require("../models/MicroUser");
 const MicroCourse = require("../models/MicroCourse");
+const { transporter } = require("../utils/emailService");
 
 // 1. College Login
 router.post("/college/login", async (req, res) => {
@@ -126,20 +127,12 @@ router.post("/college/students/:id/send-credentials", async (req, res) => {
             </div>
         `;
 
-        const transporter = nodemailer.createTransport({
-            host: "smtp.resend.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: "resend",
-                pass: process.env.RESEND_API_KEY,
-            },
-        });
+        // Send email via standard SMTP
 
         const mailOptions = {
-            from: process.env.RESEND_FROM_EMAIL,
+            from: process.env.SMTP_NOREPLY_EMAIL,
             to: student.email,
-            bcc: process.env.DIKSHANNT_ADMIN_MAIL,
+            bcc: process.env.DIKSHANNT_ADMIN_MAIL || process.env.SMTP_OPERATIONS_EMAIL,
             subject: "Your Login Credentials for Dikshannt",
             html: emailMessage,
             priority: "high",

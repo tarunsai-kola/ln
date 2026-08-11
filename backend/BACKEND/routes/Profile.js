@@ -10,7 +10,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
     if (userId !== req.user.id) return res.status(403).json({ message: "Unauthorized access to profile" });
     try {
         const profile = await Profile.findOne({ userId }).lean();
-        if (!profile) return res.status(404).json({ message: "Profile not found" });
+        if (!profile) return res.status(200).json(null); // Return null gracefully instead of 404 to prevent console errors
         return res.status(200).json(profile);
     } catch (error) {
         console.error("GET /profile error:", error);

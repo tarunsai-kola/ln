@@ -379,7 +379,7 @@ const PopupModal = ({ immediate = false }) => {
         </div>
       </div>
       
-      <style jsx="true">{`
+      <style>{`
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }

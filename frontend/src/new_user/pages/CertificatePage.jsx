@@ -135,36 +135,36 @@ const CertificatePage = () => {
                     onClick={() => setSelectedCertificate(null)}
                 >
                     <div
-                        className="bg-white rounded-2xl max-w-3xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300"
+                        className="bg-[#12121e] border border-white/10 rounded-2xl max-w-3xl w-full shadow-[0_0_40px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in zoom-in duration-300"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-[#8b5cf6] to-orange-500 px-6 py-4 flex items-center justify-between">
+                        <div className="bg-[#1a1a2e] border-b border-white/5 px-6 py-4 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-white text-2xl">verified</span>
+                                <div className="bg-[#8b5cf6]/20 border border-[#8b5cf6]/30 rounded-full p-2 flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-[#8b5cf6] text-2xl">verified</span>
                                 </div>
                                 <div>
                                     <h3 className="text-white font-bold text-lg leading-tight">Certificate of Completion</h3>
-                                    <p className="text-white/90 text-sm font-medium">{selectedCertificate.domain}</p>
+                                    <p className="text-gray-400 text-sm font-medium">{selectedCertificate.domain}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setSelectedCertificate(null)}
-                                className="text-white/80 hover:text-white hover:bg-white/20 rounded-full p-1.5 transition-colors flex items-center justify-center"
+                                className="text-gray-400 hover:text-white hover:bg-white/10 rounded-full p-1.5 transition-colors flex items-center justify-center"
                             >
                                 <span className="material-symbols-outlined">close</span>
                             </button>
                         </div>
 
                         {/* Toggle: Internship / Training */}
-                        <div className="flex justify-center py-4 bg-gray-50 border-b border-gray-100">
-                            <div className="flex items-center gap-0 bg-gray-200 rounded-full p-1 border border-gray-300">
+                        <div className="flex justify-center py-4 bg-[#12121e] border-b border-white/5">
+                            <div className="flex items-center gap-0 bg-[#1a1a2e] rounded-full p-1 border border-white/5">
                                 <button
                                     onClick={() => setShowTraining(false)}
                                     className={`px-5 py-1.5 rounded-full text-sm flex items-center gap-1.5 font-semibold transition-all duration-300 ${!showTraining
-                                        ? 'bg-white text-[#8b5cf6] shadow-sm'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                        ? 'bg-[#8b5cf6] text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                                        : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
                                     🎓 Internship
@@ -172,8 +172,8 @@ const CertificatePage = () => {
                                 <button
                                     onClick={() => setShowTraining(true)}
                                     className={`px-5 py-1.5 rounded-full text-sm flex items-center gap-1.5 font-semibold transition-all duration-300 ${showTraining
-                                        ? 'bg-white text-[#8b5cf6] shadow-sm'
-                                        : 'text-gray-500 hover:text-gray-700'
+                                        ? 'bg-[#8b5cf6] text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                                        : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
                                     📘 Training
@@ -182,27 +182,43 @@ const CertificatePage = () => {
                         </div>
 
                         {/* Certificate Image */}
-                        <div className="p-6 bg-gray-50">
-                            <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 p-2">
+                        <div className="p-6 bg-[#0f0f17]">
+                            <div className="bg-white/5 rounded-xl shadow-md overflow-hidden border border-white/10 p-2 relative group">
                                 <img
                                     src={showTraining ? getTrainingCertUrl() : selectedCertificate.rawUrl}
                                     alt="Certificate"
-                                    className="w-full object-contain rounded border border-gray-100"
+                                    className="w-full object-contain rounded border border-white/5"
                                 />
+                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm rounded-xl">
+                                   <button 
+                                      className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                                      onClick={() => {
+                                          if (showTraining) {
+                                              const trainingUrl = getTrainingCertUrl();
+                                              const proxyUrl = `${API}/download-proxy?url=${encodeURIComponent(trainingUrl)}`;
+                                              window.open(proxyUrl, '_self');
+                                          } else {
+                                              downloadInternshipCertificate();
+                                          }
+                                      }}
+                                   >
+                                      <span className="material-symbols-outlined">download</span> Download High-Res
+                                   </button>
+                                </div>
                             </div>
                         </div>
 
                         {/* Footer Actions */}
-                        <div className="px-6 py-5 bg-white border-t border-gray-100">
+                        <div className="px-6 py-5 bg-[#12121e] border-t border-white/5">
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                                 {/* Left side - Info */}
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <div className="flex items-center gap-4 text-sm text-gray-400">
                                     <div className="flex items-center gap-2">
                                         <span className="material-symbols-outlined text-[#8b5cf6] text-lg">business</span>
-                                        <span>Issued by <strong className="text-gray-900">ACCENLEARN</strong></span>
+                                        <span>Issued by <strong className="text-white">ACCENLEARN</strong></span>
                                     </div>
                                     <a
-                                        className="text-[#8b5cf6] hover:text-orange-700 flex items-center gap-1 font-medium transition-colors"
+                                        className="text-[#8b5cf6] hover:text-[#a78bfa] flex items-center gap-1 font-medium transition-colors"
                                         href={showTraining ? getTrainingCertUrl() : selectedCertificate.rawUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -215,16 +231,16 @@ const CertificatePage = () => {
                                 {/* Right side - Action Buttons */}
                                 <div className="flex flex-wrap items-center gap-3">
                                     <button
-                                        className="bg-[#0077B5] hover:bg-[#006097] text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold transition-colors shadow-sm text-sm"
+                                        className="bg-[#0077B5] hover:bg-[#006097] text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold transition-colors shadow-sm text-sm border border-[#0077b5]/50"
                                         onClick={() => addLinkedin(selectedCertificate, showTraining)}
                                     >
                                         <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                                         </svg>
-                                        {showTraining ? 'Add Training to LinkedIn' : 'Add Internship to LinkedIn'}
+                                        Add to LinkedIn
                                     </button>
                                     <button
-                                        className="bg-[#8b5cf6] hover:bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold transition-colors shadow-sm text-sm"
+                                        className="bg-[#1e1e2d] hover:bg-[#2a2a3c] text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold transition-colors shadow-sm text-sm border border-white/10"
                                         onClick={() => {
                                             if (showTraining) {
                                                 const trainingUrl = getTrainingCertUrl();
@@ -237,7 +253,7 @@ const CertificatePage = () => {
                                         }}
                                     >
                                         <span className="material-symbols-outlined text-[18px]">download</span>
-                                        Download Certificate
+                                        Download
                                     </button>
                                 </div>
                             </div>

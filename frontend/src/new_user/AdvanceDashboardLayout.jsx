@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { DashboardProvider, useDashboard } from "./DashboardContext";
 import { TopNav } from "./new-dashboad";
 import "./new-dashboad.css";
+import "./bento-dashboard.css";
 
 /* ─────────────────────────────────────────────
    SIDEBAR — URL-aware active highlight
@@ -17,6 +18,7 @@ const sidebarItems = [
     { id: "placement", path: "/advancedashboard/placement", emoji: "🚀", icon: "rocket_launch", label: "Placement" },
     { id: "resume-builder", path: "/advancedashboard/resume-builder", emoji: "📄", icon: "edit_document", label: "Resume Builder" },
     { id: "meeting", path: "/advancedashboard/meeting", emoji: "🤝", icon: "groups", label: "Meeting" },
+    { id: "certificates", path: "/advancedashboard/certificates", emoji: "🎓", icon: "workspace_premium", label: "Certificates" },
     { id: "profile", path: "/advancedashboard/profile", emoji: "🧑", icon: "account_circle", label: "Profile" },
     { id: "payments", path: "/advancedashboard/payments", emoji: "💳", icon: "payments", label: "Payments" },
 ];
@@ -39,7 +41,7 @@ const Sidebar = ({ collapsed, setCollapsed, onLogout, mobileOpen, setMobileOpen 
     };
 
     return (
-        <aside className={`nd-sidebar hidden md:block ${collapsed ? "nd-sidebar-collapsed" : ""} ${mobileOpen ? "nd-sidebar-open" : ""}`}>
+        <aside className={`nd-sidebar ${collapsed ? "nd-sidebar-collapsed" : ""} ${mobileOpen ? "nd-sidebar-open" : ""}`}>
             {/* Mobile Close Button - visible only on mobile when sidebar is open */}
             {mobileOpen && (
                 <div className="md:hidden flex justify-between items-center p-4 border-b border-gray-100">

@@ -11,7 +11,7 @@ const Footer = () => {
   const workshopsItem = NAV_ITEMS.find(item => item.name === "Programs");
 
   return (
-    <div className="w-full text-white rounded-t-4xl relative overflow-hidden" style={{ backgroundColor: "#3d9aa3" }}>
+    <div className="w-full text-white rounded-t-4xl relative overflow-hidden" style={{ backgroundColor: "#112455" }}>
       <div className="relative z-10 px-4 sm:px-6 md:px-12 lg:px-24 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
         {/* Top Section */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 lg:gap-8 mb-6">

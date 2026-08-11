@@ -37,7 +37,6 @@ const AdvanceQueries = () => {
         (query.email && query.email.toLowerCase().includes(value.toLowerCase())) ||
         (query.phone && query.phone.toLowerCase().includes(value.toLowerCase())) ||
         (query.name && query.name.toLowerCase().includes(value.toLowerCase())) ||
-        (query.currentRole && query.currentRole.toLowerCase().includes(value.toLowerCase())) ||
         (query.interestedDomain && query.interestedDomain.toLowerCase().includes(value.toLowerCase()))
       );
     });
@@ -155,7 +154,7 @@ const AdvanceQueries = () => {
                 <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider w-16">#</th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Candidate Profile</th>
-                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Professional Background</th>
+                  <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Education</th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Program Interest</th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status & Action</th>
                   <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Details</th>
@@ -206,22 +205,17 @@ const AdvanceQueries = () => {
                             </div>
                           </td>
 
-                          {/* Professional Background */}
+                          {/* Education */}
                           <td className="px-6 py-4">
                             <div className="flex flex-col gap-1.5">
                               <div className="flex items-center gap-2 text-sm">
-                                <span className="font-semibold text-slate-700 capitalize">
-                                  {query.currentRole || "N/A"}
-                                </span>
-                                {query.passedOutYear && (
+                                {query.passedOutYear ? (
                                   <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                                     Class of {query.passedOutYear}
                                   </span>
+                                ) : (
+                                  <span className="text-xs text-slate-500">N/A</span>
                                 )}
-                              </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-500">
-                                <i className="fa fa-briefcase text-slate-400"></i>
-                                {query.experience ? `${query.experience} Experience` : "No experience listed"}
                               </div>
                             </div>
                           </td>
@@ -340,18 +334,10 @@ const AdvanceQueries = () => {
                     </div>
                   </div>
 
-                  {/* Professional Background */}
+                  {/* Education Background */}
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-100">Professional Background</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-100">Education Background</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="flex flex-col">
-                        <span className="text-xs text-slate-500 mb-1">Current Role</span>
-                        <span className="text-sm font-semibold text-slate-800 capitalize">{dialogData.currentRole || "N/A"}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-slate-500 mb-1">Experience Level</span>
-                        <span className="text-sm font-semibold text-slate-800">{dialogData.experience || "N/A"}</span>
-                      </div>
                       <div className="flex flex-col">
                         <span className="text-xs text-slate-500 mb-1">Passed Out Year</span>
                         <span className="text-sm font-semibold text-slate-800">{dialogData.passedOutYear || "N/A"}</span>

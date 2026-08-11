@@ -1,6 +1,7 @@
 export const WORKSHOP_CONTENT = {
   "Artificial Intelligence": {
     title: "Artificial Intelligence",
+    heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/artificial-intelligence.pdf",
     highlights: [
@@ -24,6 +25,7 @@ export const WORKSHOP_CONTENT = {
   },
   "DevOps": {
     title: "DevOps",
+    heroImage: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/devops.pdf",
     highlights: [
@@ -47,6 +49,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Medical Coding": {
     title: "Medical Coding",
+    heroImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/medical-coding.pdf",
     highlights: [
@@ -70,6 +73,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Psychology": {
     title: "Psychology",
+    heroImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/psychology.pdf",
     highlights: [
@@ -93,6 +97,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Data Science": {
     title: "Data Science",
+    heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/data-science.pdf",
     highlights: [
@@ -116,6 +121,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Full Stack Software Development": {
     title: "Full Stack Software Development",
+    heroImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/full-stack-software-development.pdf",
     highlights: [
@@ -139,6 +145,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Digital Marketing": {
     title: "Digital Marketing",
+    heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/digital-marketing.pdf",
     highlights: [
@@ -162,6 +169,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Machine Learning": {
     title: "Machine Learning",
+    heroImage: "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/machine-learning.pdf",
     highlights: [
@@ -185,6 +193,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Data Analytics": {
     title: "Data Analytics",
+    heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/data-analytics.pdf",
     highlights: [
@@ -208,6 +217,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Cloud Computing": {
     title: "Cloud Computing",
+    heroImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/cloud-computing.pdf",
     highlights: [
@@ -231,6 +241,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Cyber Security": {
     title: "Cyber Security",
+    heroImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/cyber-security.pdf",
     highlights: [
@@ -254,6 +265,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Data Structures and Algorithms": {
     title: "Data Structures and Algorithms",
+    heroImage: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/data-structures-and-algorithms.pdf",
     highlights: [
@@ -277,6 +289,7 @@ export const WORKSHOP_CONTENT = {
   },
   "SQL": {
     title: "SQL",
+    heroImage: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/sql.pdf",
     highlights: [
@@ -300,6 +313,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Human Resource": {
     title: "Human Resource",
+    heroImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/human-resource.pdf",
     highlights: [
@@ -323,6 +337,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Finance": {
     title: "Finance",
+    heroImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/finance.pdf",
     highlights: [
@@ -346,6 +361,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Stock Market": {
     title: "Stock Market",
+    heroImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/stock-market.pdf",
     highlights: [
@@ -369,6 +385,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Business Analytics": {
     title: "Business Analytics",
+    heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/business-analytics.pdf",
     highlights: [
@@ -392,6 +409,7 @@ export const WORKSHOP_CONTENT = {
   },
   "Graphics Designing": {
     title: "Graphics Designing",
+    heroImage: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=2000&auto=format&fit=crop",
     duration: "2–3 Months",
     brochure: "/brochures/graphics-designing.pdf",
     highlights: [

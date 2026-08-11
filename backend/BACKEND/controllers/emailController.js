@@ -1,26 +1,15 @@
 
 require("dotenv").config();
-const nodemailer = require("nodemailer");
+const { transporter, operationsTransporter } = require("../utils/emailService");
 
-// Resend transporter for all emails
-let transporter = nodemailer.createTransport({
-  host: "smtp.resend.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "resend",
-    pass: process.env.RESEND_API_KEY,
-  },
-});
-
+// Aliases for backwards compatibility in this file
 let dikshanntOtpTransporter = transporter;
-let operationsTransporter = transporter;
 let eventsTransporter = transporter;
 
-// General email function (for OTP, etc.) - uses RESEND_FROM_EMAIL
+// General email function (for OTP, etc.) - uses SMTP_NOREPLY_EMAIL
 const sendEmail = async ({ email, subject, message, bcc }) => {
   const mailOptions = {
-    from: process.env.RESEND_FROM_EMAIL,
+    from: process.env.SMTP_NOREPLY_EMAIL,
     to: email,
     cc: "help@Accenlearn Campus.com",
     bcc: bcc,
@@ -44,8 +33,8 @@ const sendEmail = async ({ email, subject, message, bcc }) => {
 
 // OTP sender for new-project admin login
 const sendDikshanntOtpEmail = async ({ email, subject, message, bcc }) => {
-  const fromEmail = process.env.RESEND_FROM_EMAIL;
-  const adminBcc = process.env.DIKSHANNT_ADMIN_MAIL;
+  const fromEmail = process.env.SMTP_NOREPLY_EMAIL;
+  const adminBcc = process.env.DIKSHANNT_ADMIN_MAIL || process.env.SMTP_OPERATIONS_EMAIL;
 
   const mailOptions = {
     from: fromEmail,
@@ -69,10 +58,10 @@ const sendDikshanntOtpEmail = async ({ email, subject, message, bcc }) => {
   });
 };
 
-// Payment reminder email function - uses RESEND_FROM_EMAIL
+// Payment reminder email function - uses SMTP_NOREPLY_EMAIL
 const sendPaymentReminderEmail = async ({ email, subject, message, bcc }) => {
   const mailOptions = {
-    from: process.env.RESEND_FROM_EMAIL,
+    from: process.env.SMTP_NOREPLY_EMAIL,
     to: email,
     bcc: bcc,
     subject: subject,
@@ -93,10 +82,10 @@ const sendPaymentReminderEmail = async ({ email, subject, message, bcc }) => {
   });
 };
 
-// Event reminder email function - uses RESEND_FROM_EMAIL
+// Event reminder email function - uses SMTP_NOREPLY_EMAIL
 const sendEventReminderEmail = async ({ email, subject, message, bcc, textVersion }) => {
   const mailOptions = {
-    from: `Accenlearn Campus Events <${process.env.RESEND_FROM_EMAIL}>`,
+    from: `Accenlearn Campus Events <${process.env.SMTP_NOREPLY_EMAIL}>`,
     to: email,
     cc: "help@Accenlearn Campus.com",
     bcc: bcc,

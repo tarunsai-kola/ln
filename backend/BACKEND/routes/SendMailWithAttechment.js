@@ -86,6 +86,7 @@ const nodemailer = require("nodemailer");
 const formidable = require("formidable"); 
 const path = require("path");
 const fs = require("fs");
+const { transporter } = require("../utils/emailService");
 const { buildPremiumEmail, SVGS, COMPANY_NAME, COMPANY_SUPPORT_EMAIL } = require("../utils/emailTemplate");
 
 router.post("/sendedOfferLetterMail", (req, res) => {
@@ -127,16 +128,6 @@ router.post("/sendedOfferLetterMail", (req, res) => {
 
 
     try {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.resend.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "resend",
-          pass: process.env.RESEND_API_KEY,
-        },
-      });
-
       const attachment = {
         path: file.filepath,
         filename: file.originalFilename,
@@ -145,7 +136,7 @@ router.post("/sendedOfferLetterMail", (req, res) => {
 
 
       const mailOptions = {
-        from: process.env.RESEND_FROM_EMAIL,
+        from: process.env.SMTP_NOREPLY_EMAIL,
         to: email,
         // cc: "help@Accenlearn Campus.com",
         subject: `Offer Letter - ${domain} Intern`,

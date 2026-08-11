@@ -418,7 +418,7 @@ const Internship = () => {
         </div>
       </div>
 
-      <style jsx="true">{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0); }
           50% { transform: translateY(-20px) rotate(5deg); }

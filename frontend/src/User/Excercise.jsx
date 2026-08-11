@@ -210,8 +210,8 @@ const Exercise = () => {
 
 
           <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-sm border border-border-light shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-            <div className="w-full md:w-2/5 min-h-[200px] bg-gray-100 relative">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}></div>
+            <div className="w-full md:w-2/5 min-h-[200px] bg-gray-100 relative overflow-hidden">
+              <div className="absolute inset-0 bg-cover bg-center transition-transform hover:scale-105 duration-700" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}></div>
             </div>
             <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-center gap-6">
               <div>

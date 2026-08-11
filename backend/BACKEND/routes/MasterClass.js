@@ -188,7 +188,9 @@ router.get("/masterclassauth/:id/:email", async (req, res) => {
     const date = formatDate(masterClass.start);
     const value = `${masterClass.title} held on ${date}.`;
 
-    const certificateUrl = `https://res.cloudinary.com/dtchuqy2n/image/upload/co_rgb:000000,l_text:times%20new%20roman_150_bold_normal_left:${encodeURIComponent(user.name)}/fl_layer_apply,y_-45/co_rgb:000000,l_text:times%20new%20roman_35_normal_left:${encodeURIComponent(value)}/fl_layer_apply,y_170/masterclass/cdxtjxpgefkcjgejotg0`;
+    // TODO: Replace with the Accenlearn Cloudinary Certificate Template URL
+    // const certificateUrl = `https://res.cloudinary.com/dtchuqy2n/image/upload/co_rgb:000000,l_text:times%20new%20roman_150_bold_normal_left:${encodeURIComponent(user.name)}/fl_layer_apply,y_-45/co_rgb:000000,l_text:times%20new%20roman_35_normal_left:${encodeURIComponent(value)}/fl_layer_apply,y_170/masterclass/cdxtjxpgefkcjgejotg0`;
+    const certificateUrl = ""; // Placeholder until new template is ready
 
     return res.status(200).json({ message: "User found", certificate: certificateUrl });
   } catch (error) {

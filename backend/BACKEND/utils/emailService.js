@@ -1,21 +1,31 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.resend.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true,
     auth: {
-        user: "resend",
-        pass: process.env.RESEND_API_KEY,
+        user: process.env.SMTP_NOREPLY_EMAIL,
+        pass: process.env.SMTP_NOREPLY_PASS,
+    }
+});
+
+const operationsTransporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.SMTP_OPERATIONS_EMAIL,
+        pass: process.env.SMTP_OPERATIONS_PASS,
     }
 });
 
 const admissionsTransporter = transporter;
+const admissionsSender = process.env.SMTP_NOREPLY_EMAIL;
+const senderEmail = process.env.SMTP_NOREPLY_EMAIL;
+const adminBcc = process.env.DIKSHANNT_ADMIN_MAIL || process.env.SMTP_OPERATIONS_EMAIL;
 
-const admissionsSender = process.env.RESEND_FROM_EMAIL;
 
-const senderEmail = process.env.RESEND_FROM_EMAIL;
-const adminBcc = process.env.DIKSHANNT_ADMIN_MAIL;
 
 const resolveLoginUrl = () => {
     const explicitUrl = (process.env.DIKSHANNT_LOGIN_URL || '').trim();
@@ -26,10 +36,10 @@ const resolveLoginUrl = () => {
         .map((value) => value.trim())
         .filter(Boolean);
 
-    const preferred = configured.find((value) => /dikshannt\.com/i.test(value));
+    const preferred = configured.find((value) => /dik\.com/i.test(value));
     if (preferred) return `${preferred.replace(/\/$/, '')}/login`;
 
-    return 'https://dikshannt.com/login';
+    return 'https:///login';
 };
 
 const loginUrl = resolveLoginUrl();
@@ -102,10 +112,11 @@ const sendCredentialsEmail = async (userEmail, userName, password) => {
         return false;
     }
 };
+
 const sendCollegeCredentialsEmail = async (collegeEmail, authorizerName, collegeName, password) => {
     try {
         await transporter.sendMail({
-            from: `"Dikshannt Institutional Support" <${senderEmail}>`,
+            from: `" Institutional Support" <${senderEmail}>`,
             to: collegeEmail,
             bcc: adminBcc,
             subject: "Your Institutional Portal Credentials - Dikshannt",
@@ -148,6 +159,7 @@ const sendCollegeCredentialsEmail = async (collegeEmail, authorizerName, college
         return false;
     }
 };
+
 
 const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) => {
     try {
@@ -883,8 +895,8 @@ const sendSkillEvaluationWelcomeEmail = async (userEmail, fullName, slotDate, sl
 const sendSkillEvaluationAdminNotification = async (assessmentDetails) => {
     try {
         const mailOptions = {
-            from: senderEmail,
-            to: "",
+            from: process.env.SMTP_OPERATIONS_EMAIL,
+            to: process.env.SMTP_OPERATIONS_EMAIL, // Send to operations
             subject: "New Enrollment: Career Assessment Submitted - Accenlearn Campus",
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
@@ -902,7 +914,7 @@ const sendSkillEvaluationAdminNotification = async (assessmentDetails) => {
                 </div>
             `,
         };
-        await transporter.sendMail(mailOptions);
+        await operationsTransporter.sendMail(mailOptions);
         console.log(`Admin notification sent for new career assessment: ${assessmentDetails.fullName}`);
     } catch (error) {
         console.error("Error sending admin notification email:", error);
@@ -912,7 +924,7 @@ const sendSkillEvaluationAdminNotification = async (assessmentDetails) => {
 const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessmentDetails) => {
     try {
         const mailOptions = {
-            from: senderEmail,
+            from: process.env.SMTP_OPERATIONS_EMAIL,
             to: executiveEmail,
             subject: "SUCCESS! Your Lead Enrolled for Career Assessment - Accenlearn Campus",
             html: `
@@ -932,7 +944,7 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
                 </div>
             `,
         };
-        await transporter.sendMail(mailOptions);
+        await operationsTransporter.sendMail(mailOptions);
         console.log(`Executive notification sent to ${executiveEmail}`);
     } catch (error) {
         console.error("Error sending executive notification email:", error);
@@ -940,6 +952,8 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
 };
 
 module.exports = { 
+    transporter,
+    operationsTransporter,
     sendWelcomeEmail, 
     sendCredentialsEmail, 
     sendCollegeCredentialsEmail,

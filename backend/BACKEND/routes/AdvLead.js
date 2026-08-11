@@ -2206,18 +2206,18 @@ router.post("/send-lead-mail", async (req, res) => {
 
     try {
         let smtpConfig = {
-            host: "smtp.resend.com",
+            host: "smtp.gmail.com",
             port: 465,
             secure: true,
             auth: {
-                user: "resend",
-                pass: process.env.RESEND_API_KEY,
+                user: process.env.SMTP_NOREPLY_EMAIL,
+                pass: process.env.SMTP_NOREPLY_PASS,
             }
         };
 
         let fromName = senderName || "Accenlearn Campus Support";
-        let fromEmail = process.env.RESEND_FROM_EMAIL;
-        let replyTo = process.env.RESEND_FROM_EMAIL;
+        let fromEmail = process.env.SMTP_NOREPLY_EMAIL;
+        let replyTo = process.env.SMTP_NOREPLY_EMAIL;
 
         // Try to fetch personal SMTP config if userId is provided
         if (userId && mongoose.Types.ObjectId.isValid(userId)) {

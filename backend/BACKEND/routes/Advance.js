@@ -33,15 +33,13 @@ router.get("/advancequeries", verifyAnyAuth, async (req, res) => {
 });
 
 router.post("/advance/register", async (req, res) => {
-  const { name, email, phone, currentRole, experience, goal, goalOther, domain, domainOther, interestedDomain, reason, passedOutYear } = req.body;
+  const { name, email, phone, goal, goalOther, domain, domainOther, interestedDomain, reason, passedOutYear } = req.body;
   // console.log(req.body);
   try {
     const newRegistration = new Advance({
       name,
       email,
       phone,
-      currentRole,
-      experience,
       goal,
       goalOther: goal === "Other" ? goalOther : undefined,
       domain,
@@ -80,14 +78,11 @@ router.put("/advancequery/:id", verifyAnyAuth, async (req, res) => {
                 phone_number: query.phone,
                 opted_domain: query.interestedDomain,
                 education_background: query.passedOutYear || "",
-                current_status: query.currentRole,
                 source: "Website Lead",
                 last_interaction_at: new Date(),
                 extra_fields: {
-                  "what_best_describes_your_current_situation?": query.currentRole,
                   "what_is_your_primary_goal_right_now?": query.goal === "Other" ? query.goalOther : query.goal,
                   "what_is_your_biggest_career_challenge?": query.reason,
-                  "experience": query.experience,
                   "domain": query.domain === "Other" ? query.domainOther : query.domain,
                   "passed_out_year": query.passedOutYear || ""
                 }
@@ -114,70 +109,6 @@ router.put("/advancequery/:id", verifyAnyAuth, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "An error occurred while updating data", error: error.message });
-  }
-});
-
-const AdvanceOtp = require("../models/AdvanceOtp");
-
-// ✅ Send OTP
-router.post("/advance-send-otp", async (req, res) => {
-  const { email } = req.body;
-
-  try {
-    const otp = crypto.randomInt(100000, 999999);
-
-    await AdvanceOtp.findOneAndUpdate(
-      { email },
-      { otp, createdAt: Date.now() },
-      { upsert: true, new: true }
-    );
-
-    const content = `
-      <p style="font-size: 16px; color: #0f172a; font-weight: 600;">Hello,</p>
-      <p>To complete your Advanced Program application, please use the OTP below to verify your email address:</p>
-      
-      <div style="background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
-          <p style="font-size: 32px; font-weight: 800; color: #4f46e5; margin: 0; letter-spacing: 4px;">${otp}</p>
-      </div>
-
-      <div class="highlight-box" style="background: #fef2f2; border-left-color: #ef4444; margin-bottom: 25px;">
-          <p style="margin: 0;  color: #b91c1c;">
-              ${SVGS.warning} <span style="margin-top: 2px;">This OTP is valid for <strong>10 minutes</strong>. Please do not share it with anyone.</span>
-          </p>
-      </div>
-      <p style="font-size: 13px; color: #64748b;">If you did not request this OTP, please ignore this email.</p>
-    `;
-    const EmailMessage = buildPremiumEmail({ title: 'Application OTP', content });
-
-    await sendEmail({ email, subject: "Your OTP for Advanced Program Application", message: EmailMessage });
-
-    res.status(200).json({ message: "OTP sent successfully" });
-  } catch (err) {
-    console.error("Error sending OTP:", err);
-    res.status(500).json({ message: "Error sending OTP. Please try again later." });
-  }
-});
-
-// ✅ Verify OTP
-router.post("/advance-verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
-
-  try {
-    const record = await AdvanceOtp.findOne({ email });
-
-    if (!record) {
-      return res.status(400).json({ success: false, message: "OTP expired or not sent." });
-    }
-
-    if (record.otp !== parseInt(otp)) {
-      return res.status(400).json({ success: false, message: "Invalid OTP. Please try again." });
-    }
-
-    await AdvanceOtp.deleteOne({ email });
-    res.status(200).json({ success: true, message: "OTP verified successfully!" });
-  } catch (error) {
-    console.error("OTP verification error:", error);
-    res.status(500).json({ success: false, message: "Server error during OTP verification." });
   }
 });
 

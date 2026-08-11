@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import React, { useState, useEffect, useRef } from 'react';
+import { IoChevronDown } from 'react-icons/io5';
 import FAQImg from '../../assets/FAQ/FAQimg.png';
 import { trackEvent } from "../../utils/analytics";
 
@@ -109,6 +109,18 @@ const FAQ_DATA = {
 const FAQ = () => {
   const [selectedDomain, setSelectedDomain] = useState("Web Development");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleAccordion = (index) => {
     const isOpening = activeIndex !== index;
@@ -119,113 +131,124 @@ const FAQ = () => {
   };
 
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-primary text-3xl md:text-5xl font-extrabold mb-4">
-            Most Frequent Questions
+    <section className="bg-gray-50/50 py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Decorators */}
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-secondary/5 blur-3xl"></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-bold text-sm tracking-widest uppercase mb-6 shadow-sm border border-primary/10">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Got Questions?
+          </div>
+          <h2 className="text-gray-900 text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
+            Frequently Asked <span className="text-primary relative inline-block">
+              Questions
+              <svg className="absolute w-full h-3 -bottom-1 left-0 text-primary/30" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 50 10 100 5" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </span>
           </h2>
           <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">
-            Everything students and institutions usually ask before getting started.
+            Everything you need to know about our courses, curriculum, and how we can help you accelerate your career.
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
           {/* Left Side: FAQ Accordion */}
           <div className="w-full lg:w-3/5 order-2 lg:order-1">
-            {/* Domain Selector */}
-            <div className="mb-10 relative">
-              <label className="block text-primary font-bold text-xs uppercase tracking-widest mb-3 ml-1">
-                Select Your Interest
+            {/* Custom Domain Selector */}
+            <div className="mb-8 relative" ref={dropdownRef}>
+              <label className="block text-gray-400 font-bold text-xs uppercase tracking-widest mb-3 ml-2">
+                Select Your Interest Area
               </label>
               <div className="relative">
-                <select
-                  value={selectedDomain}
-                  onChange={(e) => {
-                    const newDomain = e.target.value;
-                    setSelectedDomain(newDomain);
-                    setActiveIndex(0); // Reset accordion on domain change
-                    trackEvent("FAQ", "Domain Change", newDomain);
-                  }}
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-700 py-3 sm:py-4 px-4 sm:px-6 rounded-2xl appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer text-base sm:text-lg font-medium shadow-sm"
+                <button
+                  type="button"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className={`w-full flex items-center justify-between bg-white border ${isDropdownOpen ? 'border-primary ring-4 ring-primary/10' : 'border-gray-200'} text-gray-800 py-4 px-6 rounded-2xl hover:border-primary/50 focus:outline-none transition-all shadow-sm font-medium text-left text-lg`}
                 >
-                  {Object.keys(FAQ_DATA).map((domain) => (
-                    <option key={domain} value={domain}>
-                      {domain}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-primary">
-                  <IoChevronDown size={24} />
-                </div>
+                  <span>{selectedDomain}</span>
+                  <IoChevronDown size={24} className={`text-primary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl max-h-80 overflow-y-auto py-2 custom-scrollbar">
+                    {Object.keys(FAQ_DATA).map((domain) => (
+                      <button
+                        key={domain}
+                        onClick={() => {
+                          setSelectedDomain(domain);
+                          setIsDropdownOpen(false);
+                          setActiveIndex(0);
+                          trackEvent("FAQ", "Domain Change", domain);
+                        }}
+                        className={`w-full text-left px-6 py-3.5 transition-colors text-base ${selectedDomain === domain ? 'bg-primary/5 text-primary font-bold border-l-4 border-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-4 border-transparent'}`}
+                      >
+                        {domain}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Accordion List */}
-            <div className="space-y-2 sm:space-y-4">
-              {FAQ_DATA[selectedDomain].map((faq, index) => (
-                <div 
-                  key={index} 
-                  className="border-b border-gray-100 last:border-0"
-                >
-                  <button
-                    onClick={() => toggleAccordion(index)}
-                    className="w-full flex items-center justify-between py-4 sm:py-6 text-left group transition-all"
-                  >
-                    <span className={`text-lg sm:text-xl font-bold transition-colors ${activeIndex === index ? 'text-primary' : 'text-gray-800 group-hover:text-primary'}`}>
-                      {faq.q}
-                    </span>
-                    <span className={`flex-shrink-0 ml-4 transition-transform duration-300 ${activeIndex === index ? 'rotate-180 text-primary' : 'text-gray-400'}`}>
-                      <IoChevronDown size={20} className="sm:w-6 sm:h-6" />
-                    </span>
-                  </button>
+            <div className="space-y-4">
+              {FAQ_DATA[selectedDomain].map((faq, index) => {
+                const isOpen = activeIndex === index;
+                return (
                   <div 
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${activeIndex === index ? 'max-h-96 opacity-100 pb-6 sm:pb-8' : 'max-h-0 opacity-0'}`}
+                    key={index} 
+                    className={`border rounded-2xl overflow-hidden transition-all duration-300 bg-white ${isOpen ? 'ring-1 ring-primary/20 border-primary/20 shadow-md' : 'border-gray-100 hover:border-gray-300 hover:shadow-sm'}`}
                   >
-                    <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                      {faq.a}
-                    </p>
+                    <button
+                      onClick={() => toggleAccordion(index)}
+                      className="w-full flex items-center justify-between p-5 sm:p-6 text-left transition-all group"
+                    >
+                      <span className={`text-lg font-bold transition-colors pr-4 ${isOpen ? 'text-primary' : 'text-gray-800 group-hover:text-primary'}`}>
+                        {faq.q}
+                      </span>
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-primary/10 text-primary rotate-180' : 'bg-gray-50 text-gray-400 group-hover:bg-primary/5 group-hover:text-primary/70'}`}>
+                        <IoChevronDown size={18} />
+                      </div>
+                    </button>
+                    <div 
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100 pb-6 px-5 sm:px-6' : 'max-h-0 opacity-0 px-5 sm:px-6'}`}
+                    >
+                      <p className="text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-4">
+                        {faq.a}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Right Side: Image */}
-          <div className="w-full lg:w-2/5 relative lg:sticky lg:top-24 order-1 lg:order-2 mb-10 lg:mb-0 self-start">
+          <div className="w-full lg:w-2/5 relative lg:sticky lg:top-32 order-1 lg:order-2 mb-10 lg:mb-0 self-start">
             <div className="relative group max-w-md mx-auto lg:max-w-none">
               {/* Decorative Background Elements */}
-              <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] blur-3xl group-hover:bg-primary/10 transition-all duration-500"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-[3rem] blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
               
-              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 sm:border-8 border-white">
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 sm:border-[6px] border-white bg-white">
                 <img 
                   src={FAQImg} 
-                  alt="FAQ Illustration" 
+                  alt="Students and Mentor" 
                   className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
-              {/* Stats Card Overlay */}
-              <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl shadow-xl border border-gray-50 hidden sm:block animate-float z-20">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-secondary">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                      <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 1010-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest">Support Rate</p>
-                    <p className="text-lg sm:text-xl font-extrabold text-primary">99.9% Success</p>
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx="true">{`
+      <style>{`
         @keyframes float {
           0% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
@@ -234,9 +257,24 @@ const FAQ = () => {
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
       `}</style>
     </section>
   );
 };
 
 export default FAQ;
+

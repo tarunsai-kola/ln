@@ -52,119 +52,149 @@ const OverviewPage = () => {
     const paymentStatusText = isFullyPaid ? "Paid in Full" : "Payment Due";
 
     return (
-        <>
+        <div className="bento-container">
             {/* Welcome Banner */}
-            <div className="nd-welcome-banner">
-                <div className="nd-welcome-text">
-                    <p className="nd-welcome-greeting">
-                        Here's your program overview
-                    </p>
-                    <p className="nd-welcome-sub">Click a section in the sidebar to explore Training, Internship, Payments, and more.</p>
-                </div>
+            <div className="bento-panel bento-welcome">
+                <h1>Welcome back, {enrollment?.userId?.name || "Student"}!</h1>
+                <p>Here is your advanced program overview. Continue learning and tracking your progress below.</p>
             </div>
 
             {/* Stat Cards */}
             {loading ? (
-                <div className="nd-stats-grid">
-                    {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="nd-stat-card nd-skeleton" />
-                    ))}
+                <>
+                    <div className="bento-panel bento-stat bento-skeleton"></div>
+                    <div className="bento-panel bento-stat bento-skeleton"></div>
+                    <div className="bento-panel bento-stat bento-skeleton"></div>
+                    <div className="bento-panel bento-stat bento-skeleton"></div>
+                </>
+            ) : (
+                <>
+                    <div className="bento-panel bento-stat">
+                        <div className="bento-stat-header">
+                            <div className="bento-stat-icon"><span className="material-symbols-outlined">school</span></div>
+                            <span className={`bento-stat-pill ${completionStatus}`}>{completionText}</span>
+                        </div>
+                        <div>
+                            <p className="bento-stat-value">{programCompletion}%</p>
+                            <p className="bento-stat-label">Completion</p>
+                        </div>
+                    </div>
+                    <div className="bento-panel bento-stat">
+                        <div className="bento-stat-header">
+                            <div className="bento-stat-icon"><span className="material-symbols-outlined">assignment</span></div>
+                            <span className={`bento-stat-pill ${assignmentStatus}`}>{assignmentText}</span>
+                        </div>
+                        <div>
+                            <p className="bento-stat-value">{assignmentScore}%</p>
+                            <p className="bento-stat-label">Best Score</p>
+                        </div>
+                    </div>
+                    <div className="bento-panel bento-stat">
+                        <div className="bento-stat-header">
+                            <div className="bento-stat-icon"><span className="material-symbols-outlined">work</span></div>
+                            <span className={`bento-stat-pill ${internshipStatus}`}>{iPhase}</span>
+                        </div>
+                        <div>
+                            <p className="bento-stat-value">{internshipPct}%</p>
+                            <p className="bento-stat-label">Internship</p>
+                        </div>
+                    </div>
+                    <div className="bento-panel bento-stat">
+                        <div className="bento-stat-header">
+                            <div className="bento-stat-icon"><span className="material-symbols-outlined">payments</span></div>
+                            <span className={`bento-stat-pill ${paymentStatusColor}`}>{paymentStatusText}</span>
+                        </div>
+                        <div>
+                            <p className="bento-stat-value">{isFullyPaid ? "Paid" : "Pending"}</p>
+                            <p className="bento-stat-label">Status</p>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Program Overview Card */}
+            {loading ? (
+                <div className="bento-panel bento-program bento-skeleton" style={{ height: 160 }} />
+            ) : enrollment ? (
+                <div className="bento-panel bento-program">
+                    <div className="bento-program-left">
+                        <div className="bento-program-icon-lg">
+                            <span className="material-symbols-outlined">auto_stories</span>
+                        </div>
+                        <div>
+                            <h2 className="bento-program-title">{programName}</h2>
+                            <p className="bento-program-sub">{enrollment?.domain?.category || "Professional Program"}</p>
+                            <div className="bento-tags">
+                                <span className="bento-tag">{totalSessions} Sessions</span>
+                                <span className="bento-tag" style={{ color: isFullyPaid ? 'var(--bento-success)' : 'var(--bento-danger)' }}>
+                                    {isFullyPaid ? "Active" : "Payment Pending"}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bento-program-right">
+                        <div className="bento-ring-container">
+                            <svg viewBox="0 0 80 80" className="bento-ring-svg">
+                                <circle cx="40" cy="40" r="34" className="bento-ring-track" />
+                                <circle
+                                    cx="40" cy="40" r="34"
+                                    className="bento-ring-fill"
+                                    strokeDasharray={`${2 * Math.PI * 34}`}
+                                    strokeDashoffset={`${2 * Math.PI * 34 * (1 - progressPct / 100)}`}
+                                />
+                            </svg>
+                            <div className="bento-ring-label">
+                                <span className="bento-ring-pct">{progressPct}%</span>
+                                <span className="bento-ring-sub">Done</span>
+                            </div>
+                        </div>
+                        <button
+                            className="bento-btn"
+                            onClick={() => navigate("/advancedashboard/learning", {
+                                state: {
+                                    courseTitle: enrollment?.domain?.title,
+                                    sessions: null,
+                                    enrollmentId: enrollment?._id,
+                                    watchedSessionsFromDB: enrollment?.watchedSessions,
+                                    thumbnail: getThumbnail(enrollment?.domain?.title || ""),
+                                    isAdvance: enrollment?.advance || !!enrollment?.domainId?.sessions || !!localStorage.getItem("isAdvance"),
+                                },
+                            })}
+                        >
+                            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>play_arrow</span>
+                            Continue
+                        </button>
+                    </div>
                 </div>
             ) : (
-                <div className="nd-stats-grid">
-                    <StatCard icon="school" label="Program Completion" value={`${programCompletion}%`} status={completionStatus} statusText={completionText} />
-                    <StatCard icon="assignment" label="Assignment Score" value={`${assignmentScore}%`} status={assignmentStatus} statusText={assignmentText} />
-                    <StatCard icon="work" label="Internship Status" value={`${internshipPct}%`} status={internshipStatus} statusText={iPhase} />
-                    <StatCard icon="payments" label="Payment Status" value={isFullyPaid ? "Paid" : "Pending"} status={paymentStatusColor} statusText={paymentStatusText} />
+                <div className="bento-panel bento-program">
+                    <p style={{ color: 'var(--bento-subtext)' }}>No enrollment found. Contact support to get started.</p>
                 </div>
             )}
 
             {/* Attendance Streak Heatmap */}
-            <AttendanceStreak userId={localStorage.getItem("userId")} />
-
-            {/* Program Overview Card */}
-            <section className="nd-section">
-                <div className="nd-section-header">
-                    <h2 className="nd-section-title">
-                        <span className="material-symbols-outlined nd-section-icon">school</span>
-                        Program Overview
-                    </h2>
-                    <Link to="/advancedashboard/training" className="nd-section-link">View All →</Link>
+            <div className="bento-panel bento-streak">
+                <div style={{ transform: 'scale(0.9)', width: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+                    <AttendanceStreak userId={localStorage.getItem("userId")} />
                 </div>
-
-                {loading ? (
-                    <div className="nd-program-card nd-skeleton" style={{ height: 160 }} />
-                ) : enrollment ? (
-                    <div className="nd-program-card">
-                        <div className="nd-program-card-left">
-                            <div className="nd-program-badge">
-                                <span className="material-symbols-outlined">auto_stories</span>
-                            </div>
-                            <div>
-                                <p className="nd-program-card-title">{programName}</p>
-                                <p className="nd-program-card-sub">{enrollment?.domain?.category || "Professional Program"}</p>
-                                <div className="nd-program-tags">
-                                    <span className="nd-tag nd-tag-blue">{totalSessions} Sessions</span>
-                                    <span className={`nd-tag ${isFullyPaid ? "nd-tag-green" : "nd-tag-red"}`}>
-                                        {isFullyPaid ? "Active" : "Payment Pending"}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="nd-program-card-right">
-                            <div className="nd-program-progress-ring">
-                                <svg viewBox="0 0 80 80" className="nd-ring-svg">
-                                    <circle cx="40" cy="40" r="34" className="nd-ring-track" />
-                                    <circle
-                                        cx="40" cy="40" r="34"
-                                        className="nd-ring-fill"
-                                        strokeDasharray={`${2 * Math.PI * 34}`}
-                                        strokeDashoffset={`${2 * Math.PI * 34 * (1 - progressPct / 100)}`}
-                                    />
-                                </svg>
-                                <div className="nd-ring-label">
-                                    <span className="nd-ring-pct">{progressPct}%</span>
-                                    <span className="nd-ring-sub">Done</span>
-                                </div>
-                            </div>
-                            <button
-                                className="nd-start-btn"
-                                onClick={() => navigate("/advancedashboard/learning", {
-                                    state: {
-                                        courseTitle: enrollment?.domain?.title,
-                                        sessions: null, // Let NewLearning fetch them dynamically
-                                        enrollmentId: enrollment?._id,
-                                        watchedSessionsFromDB: enrollment?.watchedSessions,
-                                        thumbnail: getThumbnail(enrollment?.domain?.title || ""),
-                                        isAdvance: enrollment?.advance || !!enrollment?.domainId?.sessions || !!localStorage.getItem("isAdvance"), // Help the learning page know which API to use
-                                    },
-                                })}
-                            >
-                                <span className="material-symbols-outlined">play_arrow</span>
-                                Continue Learning
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="nd-empty-state">
-                        <span className="material-symbols-outlined nd-empty-icon">school</span>
-                        <p>No enrollment found. Contact support to get started.</p>
-                    </div>
-                )}
-            </section>
+            </div>
 
             {/* Assignment Score Matrix */}
-            <AssignmentMatrixSection
-                assignmentMatrix={metrics?.assignmentMatrix}
-                loading={metricsLoading}
-            />
+            <div className="bento-panel bento-matrix">
+                <AssignmentMatrixSection
+                    assignmentMatrix={metrics?.assignmentMatrix}
+                    loading={metricsLoading}
+                />
+            </div>
 
             {/* 24-Week Internship Readiness */}
-            <InternshipReadinessSection
-                internshipReadiness={metrics?.internshipReadiness}
-                loading={metricsLoading}
-            />
-        </>
+            <div className="bento-panel bento-matrix">
+                <InternshipReadinessSection
+                    internshipReadiness={metrics?.internshipReadiness}
+                    loading={metricsLoading}
+                />
+            </div>
+        </div>
     );
 };
 

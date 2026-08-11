@@ -13,14 +13,6 @@ const AdvanceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  currentRole: {
-    type: String,
-    required: true,
-  },
-  experience: {
-    type: String,
-    required: true,
-  },
   interestedDomain: {
   type: String,
   },

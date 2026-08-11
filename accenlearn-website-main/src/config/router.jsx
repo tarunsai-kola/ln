@@ -24,7 +24,9 @@ import ResumeTemplates from "../pages/Resources/ResumeTemplates/ResumeTemplates.
 import ServicesPage from "../pages/Services/ServicesPage";
 import CoursesPage from "../pages/Courses/CoursesPage.jsx";
 import CourseDetailsPage from "../pages/Courses/CourseDetailsPage.jsx";
-
+import TechPrograms from "../pages/Programs/TechPrograms.jsx";
+import ManagementPrograms from "../pages/Programs/ManagementPrograms.jsx";
+import MedicalPrograms from "../pages/Programs/MedicalPrograms.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +62,18 @@ export const router = createBrowserRouter([
         element: <Navigate to="/programs" replace />,
       },
       {
+        path: "/programs/tech-it",
+        element: <TechPrograms />
+      },
+      {
+        path: "/programs/management",
+        element: <ManagementPrograms />
+      },
+      {
+        path: "/programs/medical",
+        element: <MedicalPrograms />
+      },
+      {
         path: "/programs/tech/artificial-intelligence",
         element: <Workshop2 title="Artificial Intelligence" />
       },
@@ -92,28 +106,28 @@ export const router = createBrowserRouter([
         element: <Workshop2 title="SQL" />
       }, {
         path: "/programs/management/digital-marketing",
-        element: <Workshopindex title="Digital Marketing" />
+        element: <Workshop2 title="Digital Marketing" />
       }, {
         path: "/programs/management/human-resource",
-        element: <Workshopindex title="Human Resource" />
+        element: <Workshop2 title="Human Resource" />
       }, {
         path: "/programs/management/finance",
-        element: <Workshopindex title="Finance" />
+        element: <Workshop2 title="Finance" />
       }, {
         path: "/programs/management/business-analytics",
-        element: <Workshopindex title="Business Analytics" />
+        element: <Workshop2 title="Business Analytics" />
       }, {
         path: "/programs/management/stock-market",
-        element: <Workshopindex title="Stock Market" />
+        element: <Workshop2 title="Stock Market" />
       }, {
         path: "/programs/management/graphics-designing",
-        element: <Workshopindex title="Graphics Designing" />
+        element: <Workshop2 title="Graphics Designing" />
       }, {
         path: "/programs/medical/psychology",
-        element: <Workshopindex title="Psychology" />
+        element: <Workshop2 title="Psychology" />
       }, {
         path: "/programs/medical/medical-coding",
-        element: <Workshopindex title="Medical Coding" />
+        element: <Workshop2 title="Medical Coding" />
       },
       {
         path: "/contact",

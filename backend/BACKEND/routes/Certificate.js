@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Certificate = require("../models/Certificate");
 const mongoose = require("mongoose");
+const { uploadImageToS3, getPresignedCertificateUrl } = require("../utils/s3Uploader");
 
 // Create a new certificate entry
 router.post("/applycertificate", async (req, res) => {
@@ -18,20 +19,31 @@ router.post("/applycertificate", async (req, res) => {
             return res.status(400).json({ error: "Certificate already exists for this email" });
         }
         // Auto-generate certificate details
-        // const date = new Date();
-        // const startdate = date.toISOString();
-        // const finalOutput = `${domain} on ${date.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+        const date = new Date();
+        const startdate = date.toISOString();
+        const finalOutput = `${domain} on ${date.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
 
         // Cloudinary URL generation matching frontend logic
-        // const url = `https://res.cloudinary.com/do5gatqvs/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_20/co_rgb:000000,l_text:times%20new%20roman_25_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,y_225/training_certificate_demo_vknkst`;
+        // TODO: Replace with the Accenlearn Cloudinary Certificate Template URL
+        // const cloudinaryUrl = `https://res.cloudinary.com/do5gatqvs/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_20/co_rgb:000000,l_text:times%20new%20roman_25_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,y_225/training_certificate_demo_vknkst`;
+        const cloudinaryUrl = ""; // Placeholder until new template is ready
+
+        let s3Url;
+        try {
+            const s3FileName = `certificates/${formattedName.replace(/ /g, '_')}_${Date.now()}.png`;
+            s3Url = await uploadImageToS3(cloudinaryUrl, s3FileName);
+        } catch (uploadError) {
+            console.error("S3 upload failed, falling back to Cloudinary URL", uploadError);
+            s3Url = cloudinaryUrl;
+        }
 
         const newCertificate = new Certificate({
             name: formattedName,
             email,
             domain,
-            // delivered: true,
-            // startdate: startdate,
-            // url: url
+            delivered: true,
+            startdate: startdate,
+            url: s3Url
         });
 
         await newCertificate.save();
@@ -54,6 +66,12 @@ router.get("/getcertificate", async (req, res) => {
         if (!certificate) {
             return res.status(404).json({ error: "Certificate not found" });
         }
+        
+        // Generate a presigned URL if it's an S3 URL
+        if (certificate.url) {
+            certificate.url = await getPresignedCertificateUrl(certificate.url);
+        }
+        
         res.json(certificate);
     } catch (error) {
         console.error(error);
@@ -80,7 +98,15 @@ router.get("/verify-certificate/:id", async (req, res) => {
             return res.status(404).json({ error: "Certificate not found." });
         }
 
-        res.json(certificate);
+        // Convert the mongoose document to a plain object to modify the url
+        const certificateObj = certificate.toObject();
+        
+        // Generate a presigned URL if it's an S3 URL
+        if (certificateObj.url) {
+            certificateObj.url = await getPresignedCertificateUrl(certificateObj.url);
+        }
+
+        res.json(certificateObj);
 
     } catch (error) {
         res.status(500).json({ error: "Server error." });

@@ -11,6 +11,7 @@ import { Tooltip } from "antd";
 import { IMAGE_HELPER } from "../shared/ImageHelper";
 import { initGA, trackPageView, trackOutboundLink } from "../utils/analytics";
 import CourseEnquiryPopup from "../components/leads/CourseEnquiryPopup";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   const location = useLocation();
@@ -147,17 +148,17 @@ const Layout = () => {
 
       {/* Homepage hero */}
       {location.pathname === "/" && (
-        <div className="pt-[145px] sm:pt-[155px] lg:pt-[165px]">
+        <div className="w-full">
           <Hero />
         </div>
       )}
 
       {/* Page content */}
       <main
-        className={`min-h-inherit mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 ${
-          location.pathname !== "/"
-            ? "pt-[155px] sm:pt-[165px] lg:pt-[175px]"
-            : ""
+        className={`min-h-inherit mx-auto w-full ${
+          location.pathname === "/" || location.pathname.startsWith("/programs/")
+            ? ""
+            : "max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 pt-[155px] sm:pt-[165px] lg:pt-[175px]"
         }`}
       >
         <Outlet />
@@ -260,6 +261,8 @@ const Layout = () => {
 
       {/* Homepage course enquiry popup */}
       {location.pathname === "/" && <CourseEnquiryPopup />}
+      
+      <Toaster position="top-center" />
     </div>
   );
 };

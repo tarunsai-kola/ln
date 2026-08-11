@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const WorkshopRegistration = require("../models/WorkshopRegistration");
 const MasterclassWorkshop = require("../models/MasterclassWorkshop");
-const nodemailer = require("nodemailer");
+const { transporter } = require("../utils/emailService");
 const { parse } = require("json2csv");
 
 // Register for a workshop
@@ -25,19 +25,10 @@ router.post("/register", async (req, res) => {
         });
         await newRegistration.save();
 
-        // Send Confirmation Email via Resend SMTP
-        const transporter = nodemailer.createTransport({
-            host: "smtp.resend.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: "resend",
-                pass: process.env.RESEND_API_KEY,
-            },
-        });
+        // Send Confirmation Email via standard SMTP
 
         const mailOptions = {
-            from: process.env.RESEND_FROM_EMAIL || "onboarding@kolasolution.com",
+            from: process.env.SMTP_NOREPLY_EMAIL || "onboarding@accenlearn.com",
             to: email,
             subject: `Workshop Registration Confirmed: ${workshopTitle}`,
             html: `

@@ -4,16 +4,7 @@ const nodemailer = require("nodemailer");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
-
-let transporter = nodemailer.createTransport({
-    host: "smtp.resend.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: "resend",
-        pass: process.env.RESEND_API_KEY,
-    }
-});
+const { transporter } = require("../utils/emailService");
 
 const createOfferLetterPDF = async (pdfword1, pdfword2) => {
     const pdfDoc = await PDFDocument.create();
@@ -152,8 +143,8 @@ DATE:
     const pdfBuffer = await createOfferLetterPDF(pdfword1, pdfword2);
 
     const mailOptions = {
-        from: `"Accenlearn Campus HR Team" <${process.env.RESEND_FROM_EMAIL}>`,
-        replyTo: process.env.RESEND_FROM_EMAIL,
+        from: `"Accenlearn Campus HR Team" <${process.env.SMTP_NOREPLY_EMAIL}>`,
+        replyTo: process.env.SMTP_NOREPLY_EMAIL,
         to: email,
         cc: "help@Accenlearn Campus.com",
         subject,
