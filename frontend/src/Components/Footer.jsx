@@ -1,7 +1,7 @@
 import React from "react";
 import { FaInstagram, FaLinkedin, FaFacebook, FaPhone, FaEnvelope, FaQuestionCircle } from "react-icons/fa";
 
-const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "http://localhost:5173";
+const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.in";
 
 const CONTACT_INFO = [
   { id: 1, icon: FaPhone, value: "+91 9344322482" },

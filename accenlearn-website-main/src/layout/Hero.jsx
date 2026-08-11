@@ -8,7 +8,7 @@ const Hero = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="bg-white min-h-screen pt-28 lg:pt-36 pb-20 text-slate-900 w-full relative">
+    <section className="bg-white pt-28 lg:pt-36 pb-12 lg:pb-20 text-slate-900 w-full relative">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Section: 2 Columns */}
