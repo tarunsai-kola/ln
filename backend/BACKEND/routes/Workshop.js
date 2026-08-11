@@ -35,10 +35,10 @@ router.post("/register", async (req, res) => {
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <h2 style="color: #1a56db;">Registration Successful!</h2>
                     <p>Dear ${name},</p>
-                    <p>Thank you for registering for the <strong>${workshopTitle}</strong> workshop hosted by Accenlearn Campus in collaboration with IEEE, IET, and the R&D Cell of CRD College of Engineering.</p>
+                    <p>Thank you for registering for the <strong>${workshopTitle}</strong> workshop hosted by Accenlearn in collaboration with IEEE, IET, and the R&D Cell of CRD College of Engineering.</p>
                     <p>We are thrilled to have you onboard! We will send you more details and the exact schedule as we get closer to the event.</p>
                     <br/>
-                    <p>Best regards,<br/>The Accenlearn Campus Team</p>
+                    <p>Best regards,<br/>The Accenlearn Team</p>
                 </div>
             `,
         };

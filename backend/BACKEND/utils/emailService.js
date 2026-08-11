@@ -60,7 +60,7 @@ const sendWelcomeEmail = async (userEmail, userName, courseName) => {
                 <p>If you have any questions, feel free to reply to this email.</p>
                 <br/>
                 <p>Best regards,</p>
-                <p><strong>Accenlearn Campus Team</strong></p>
+                <p><strong>Accenlearn Team</strong></p>
             </div>
         `
     };
@@ -81,7 +81,7 @@ const sendCredentialsEmail = async (userEmail, userName, password) => {
             from: `"Dikshannt Support" <${senderEmail}>`,
             to: userEmail,
             bcc: adminBcc,
-            subject: "Your Accenlearn Campus MicroCourses Credentials",
+            subject: "Your Accenlearn MicroCourses Credentials",
             html: `
                 <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; color: #1a1a1a; max-width: 600px; margin: auto; border: 1px solid #eee;">
                     <h2 style="color: #000; font-weight: 300; border-bottom: 2px solid #FE4323; padding-bottom: 15px; margin-bottom: 30px;">Your Learning Access</h2>
@@ -100,7 +100,7 @@ const sendCredentialsEmail = async (userEmail, userName, password) => {
                         <em>Security Note: Please change your password after your first login. Do not share these credentials with anyone.</em>
                     </p>
                     <div style="margin-top: 40px; border-top: 1px solid #eee; pt: 20px;">
-                        <p style="font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 1px;">© 2024 Accenlearn Campus. Professional Excellence.</p>
+                        <p style="font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 1px;">© 2024 Accenlearn. Professional Excellence.</p>
                     </div>
                 </div>
             `,
@@ -164,9 +164,9 @@ const sendCollegeCredentialsEmail = async (collegeEmail, authorizerName, college
 const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) => {
     try {
         await admissionsTransporter.sendMail({
-            from: `"Accenlearn Campus Admissions" <${admissionsSender}>`,
+            from: `"Accenlearn Admissions" <${admissionsSender}>`,
             to: userEmail,
-            subject: "Application Received: Accenlearn Campus Advanced Program",
+            subject: "Application Received: Accenlearn Advanced Program",
             html: `
                 <!DOCTYPE html>
                 <html>
@@ -286,7 +286,7 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
                         <table class="main" width="100%">
                             <tr>
                                 <td class="header">
-                                    <div style="font-size: 22px; font-weight: 900; letter-spacing: 4px; color: #000; text-transform: uppercase;">ACCENLEARN CAMPUS</div>
+                                    <div style="font-size: 22px; font-weight: 900; letter-spacing: 4px; color: #000; text-transform: uppercase;">Accenlearn</div>
                                     <div style="font-size: 9px; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase; margin-top: 8px; font-weight: 600;">Advanced Placement Acceleration</div>
                                 </td>
                             </tr>
@@ -294,7 +294,7 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
                                 <td class="content">
                                     <h1 class="greeting">Welcome to the Journey, ${userName}.</h1>
                                     <p class="text">
-                                        We have successfully received your application for the <strong>Accenlearn Campus Advanced Program</strong> in <strong>${domainName}</strong>. 
+                                        We have successfully received your application for the <strong>Accenlearn Advanced Program</strong> in <strong>${domainName}</strong>. 
                                         Our admissions committee is currently reviewing your credentials to assess the strategic alignment with our upcoming cohort.
                                     </p>
                                     <p class="text">
@@ -337,16 +337,16 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
                                     </div>
 
                                     <div class="cta-wrapper">
-                                        <a href="https://Accenlearn Campus.in" class="button">Explore Success Stories</a>
+                                        <a href="https://Accenlearn.in" class="button">Explore Success Stories</a>
                                     </div>
                                 </td>
                             </tr>
                         </table>
                         <div class="footer">
                             <p class="footer-text">
-                                &copy; 2024 Accenlearn Campus. Professional Excellence.<br>
-                                You are receiving this because you applied for the Accenlearn Campus Advanced Program.<br>
-                                <a href="https://Accenlearn Campus.in" style="color: #6366f1; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #6366f1; text-decoration: none;">Privacy Policy</a>
+                                &copy; 2024 Accenlearn. Professional Excellence.<br>
+                                You are receiving this because you applied for the Accenlearn Advanced Program.<br>
+                                <a href="https://Accenlearn.in" style="color: #6366f1; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #6366f1; text-decoration: none;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>
@@ -365,7 +365,7 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
 const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle, startDateTime, whatsappLink) => {
     try {
         await admissionsTransporter.sendMail({
-            from: `"Accenlearn Campus Masterclasses" <${admissionsSender}>`,
+            from: `"Accenlearn Masterclasses" <${admissionsSender}>`,
             to: userEmail,
             subject: `Registration Confirmed: ${masterclassTitle}`,
             html: `
@@ -469,7 +469,7 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
                         <table class="main" width="100%">
                             <tr>
                                 <td style="background-color: #ff6b2d; padding: 35px 0; text-align: center; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn Campus</div>
+                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn</div>
                                 </td>
                             </tr>
                             <tr>
@@ -516,7 +516,7 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
                                     </div>
 
                                     <div class="cta-wrapper">
-                                        <a href="https://Accenlearn Campus.in" class="button">Visit Our Platform</a>
+                                        <a href="https://Accenlearn.in" class="button">Visit Our Platform</a>
                                         ${whatsappLink ? `
                                         <div style="margin-top: 20px;">
                                             <a href="${whatsappLink}" class="button" style="background-color: #25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
@@ -530,9 +530,9 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
                         </table>
                         <div class="footer">
                             <p class="footer-text">
-                                &copy; 2024 Accenlearn Campus. Professional Excellence.<br>
-                                You are receiving this because you registered for a Accenlearn Campus Masterclass.<br>
-                                <a href="https://Accenlearn Campus.in" style="color: #ff6b2d; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #ff6b2d; text-decoration: none;">Privacy Policy</a>
+                                &copy; 2024 Accenlearn. Professional Excellence.<br>
+                                You are receiving this because you registered for a Accenlearn Masterclass.<br>
+                                <a href="https://Accenlearn.in" style="color: #ff6b2d; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #ff6b2d; text-decoration: none;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>
@@ -551,7 +551,7 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
 const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitle, startDateTime, whatsappLink) => {
     try {
         await admissionsTransporter.sendMail({
-            from: `"Accenlearn Campus Masterclasses" <${admissionsSender}>`,
+            from: `"Accenlearn Masterclasses" <${admissionsSender}>`,
             to: userEmail,
             subject: `Reminder: Upcoming Masterclass - ${masterclassTitle}`,
             html: `
@@ -576,7 +576,7 @@ const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitl
                         <table class="main" width="100%">
                             <tr>
                                 <td class="header">
-                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn Campus</div>
+                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn</div>
                                 </td>
                             </tr>
                             <tr>
@@ -595,7 +595,7 @@ const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitl
                                     </div>
 
                                     <div style="text-align: center; margin-top: 40px;">
-                                        <a href="https://Accenlearn Campus.in" class="button">Visit Platform</a>
+                                        <a href="https://Accenlearn.in" class="button">Visit Platform</a>
                                         ${whatsappLink ? `
                                         <div style="margin-top: 20px;">
                                             <a href="${whatsappLink}" class="button" style="background-color: #25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">Join WhatsApp Community</a>
@@ -606,7 +606,7 @@ const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitl
                             </tr>
                         </table>
                         <div style="text-align: center; padding: 40px 20px; font-size: 12px; color: #94a3b8;">
-                            &copy; 2024 Accenlearn Campus. Professional Excellence.
+                            &copy; 2024 Accenlearn. Professional Excellence.
                         </div>
                     </div>
                 </body>
@@ -623,7 +623,7 @@ const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitl
 const sendMasterclassTodayReminder = async (userEmail, userName, masterclassTitle, startDateTime, meetingLink) => {
     try {
         await admissionsTransporter.sendMail({
-            from: `"Accenlearn Campus Masterclasses" <${admissionsSender}>`,
+            from: `"Accenlearn Masterclasses" <${admissionsSender}>`,
             to: userEmail,
             subject: `🚨 TODAY is the day: ${masterclassTitle}`,
             html: `
@@ -648,7 +648,7 @@ const sendMasterclassTodayReminder = async (userEmail, userName, masterclassTitl
                         <table class="main" width="100%">
                             <tr>
                                 <td class="header">
-                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn Campus</div>
+                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn</div>
                                 </td>
                             </tr>
                             <tr>
@@ -674,7 +674,7 @@ const sendMasterclassTodayReminder = async (userEmail, userName, masterclassTitl
                             </tr>
                         </table>
                         <div style="text-align: center; padding: 40px 20px; font-size: 12px; color: #94a3b8;">
-                            &copy; 2024 Accenlearn Campus. Professional Excellence.
+                            &copy; 2024 Accenlearn. Professional Excellence.
                         </div>
                     </div>
                 </body>
@@ -691,7 +691,7 @@ const sendMasterclassTodayReminder = async (userEmail, userName, masterclassTitl
 const sendCareerAssessmentWelcomeEmail = async (userEmail, userName) => {
     try {
         await admissionsTransporter.sendMail({
-            from: `"Accenlearn Campus Career Experts" <${admissionsSender}>`,
+            from: `"Accenlearn Career Experts" <${admissionsSender}>`,
             to: userEmail,
             subject: "Your Career Assessment is Under Review 🚀",
             html: `
@@ -716,7 +716,7 @@ const sendCareerAssessmentWelcomeEmail = async (userEmail, userName) => {
                         <table class="main" width="100%">
                             <tr>
                                 <td class="header">
-                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">ACCENLEARN CAMPUS</div>
+                                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 1px; color: #ffffff; margin: 0;">Accenlearn</div>
                                     <div style="font-size: 10px; font-weight: 600; letter-spacing: 2px; color: #94a3b8; margin-top: 5px; text-transform: uppercase;">Career Growth Experts</div>
                                 </td>
                             </tr>
@@ -769,13 +769,13 @@ const sendCareerAssessmentWelcomeEmail = async (userEmail, userName) => {
 
                                     <div style="text-align: center; margin-top: 40px;">
                                         <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">While you wait, explore how we've helped others accelerate their careers.</p>
-                                        <a href="https://Accenlearn Campus.com" class="button">Explore Our Programs</a>
+                                        <a href="https://Accenlearn.com" class="button">Explore Our Programs</a>
                                     </div>
                                 </td>
                             </tr>
                         </table>
                         <div style="text-align: center; padding: 40px 20px; font-size: 12px; color: #94a3b8;">
-                            &copy; 2024 Accenlearn Campus. Professional Excellence.<br>
+                            &copy; 2024 Accenlearn. Professional Excellence.<br>
                             You are receiving this because you took the Career Growth Assessment.
                         </div>
                     </div>
@@ -796,7 +796,7 @@ const sendSkillEvaluationWelcomeEmail = async (userEmail, fullName, slotDate, sl
         const mailOptions = {
             from: senderEmail,
             to: userEmail,
-            subject: "Your Career Assessment & Consultation Slot is Confirmed - Accenlearn Campus",
+            subject: "Your Career Assessment & Consultation Slot is Confirmed - Accenlearn",
             html: `
 <div style="background:#f5f7fb;padding:40px 20px;font-family:'Segoe UI',Arial,sans-serif;">
     <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;box-shadow:0 4px 20px rgba(0,0,0,0.05);">
@@ -804,7 +804,7 @@ const sendSkillEvaluationWelcomeEmail = async (userEmail, fullName, slotDate, sl
         <!-- Header -->
         <div style="background:#4f46e5;padding:30px;text-align:center;">
             <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">
-                Accenlearn Campus
+                Accenlearn
             </h1>
         </div>
 
@@ -869,7 +869,7 @@ const sendSkillEvaluationWelcomeEmail = async (userEmail, fullName, slotDate, sl
 
             <p style="color:#374151;font-size:16px;line-height:1.7;margin-bottom:0;">
                 Regards,<br>
-                <strong>Team Accenlearn Campus</strong>
+                <strong>Team Accenlearn</strong>
             </p>
 
         </div>
@@ -877,7 +877,7 @@ const sendSkillEvaluationWelcomeEmail = async (userEmail, fullName, slotDate, sl
         <!-- Footer -->
         <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px;text-align:center;">
             <p style="margin:0;color:#6b7280;font-size:13px;">
-                &copy; 2026 Accenlearn Campus. All rights reserved.
+                &copy; 2026 Accenlearn. All rights reserved.
             </p>
         </div>
 
@@ -897,11 +897,11 @@ const sendSkillEvaluationAdminNotification = async (assessmentDetails) => {
         const mailOptions = {
             from: process.env.SMTP_OPERATIONS_EMAIL,
             to: process.env.SMTP_OPERATIONS_EMAIL, // Send to operations
-            subject: "New Enrollment: Career Assessment Submitted - Accenlearn Campus",
+            subject: "New Enrollment: Career Assessment Submitted - Accenlearn",
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
                     <h2 style="color: #4f46e5;">New Career Assessment Enrollment</h2>
-                    <p style="color: #34495e;">A new candidate has successfully paid and booked their slot on Accenlearn Campus.</p>
+                    <p style="color: #34495e;">A new candidate has successfully paid and booked their slot on Accenlearn.</p>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                         <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Name</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${assessmentDetails.fullName}</td></tr>
                         <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Email</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${assessmentDetails.email}</td></tr>
@@ -926,12 +926,12 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
         const mailOptions = {
             from: process.env.SMTP_OPERATIONS_EMAIL,
             to: executiveEmail,
-            subject: "SUCCESS! Your Lead Enrolled for Career Assessment - Accenlearn Campus",
+            subject: "SUCCESS! Your Lead Enrolled for Career Assessment - Accenlearn",
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #27ae60; border-radius: 10px;">
                     <h2 style="color: #27ae60;">Great News! Your Lead Enrolled!</h2>
                     <p style="color: #34495e;">Dear Executive,</p>
-                    <p style="color: #34495e;">One of your leads has successfully paid and enrolled for the <strong>Career Growth Assessment & Consultation</strong> on Accenlearn Campus.</p>
+                    <p style="color: #34495e;">One of your leads has successfully paid and enrolled for the <strong>Career Growth Assessment & Consultation</strong> on Accenlearn.</p>
                     <p style="color: #34495e; font-weight: bold;">Please take care of this candidate and prepare for their upcoming slot!</p>
                     <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px;">
                         <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Lead Name</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${assessmentDetails.fullName}</td></tr>
@@ -939,8 +939,8 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
                         <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Mobile Number</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${assessmentDetails.mobileNumber}</td></tr>
                         <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Slot Time</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${assessmentDetails.bookedDate} at ${assessmentDetails.bookedTimeSlot}</td></tr>
                     </table>
-                    <p style="color: #34495e;">You can view the full details of their assessment on the Accenlearn Campus ADV Dashboard.</p>
-                    <p style="color: #34495e;">Best regards,<br><strong>Accenlearn Campus Admin</strong></p>
+                    <p style="color: #34495e;">You can view the full details of their assessment on the Accenlearn ADV Dashboard.</p>
+                    <p style="color: #34495e;">Best regards,<br><strong>Accenlearn Admin</strong></p>
                 </div>
             `,
         };

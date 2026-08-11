@@ -1,7 +1,7 @@
-const COMPANY_NAME = "Accenlearn Campus";
-const COMPANY_WEBSITE = "www.Accenlearn Campus.com";
-const COMPANY_SUPPORT_EMAIL = "support@Accenlearn Campus.com";
-const LOGO_URL = "https://Accenlearn Campus.in/posters/image.png"; // Premium placeholder logo
+const COMPANY_NAME = "Accenlearn";
+const COMPANY_WEBSITE = "www.accenlearn.in";
+const COMPANY_SUPPORT_EMAIL = "support@accenlearn.in";
+const LOGO_URL = ""; // Text-based branding used instead
 
 // Reusable SVG icons for emails (replacing emojis)
 const SVGS = {
@@ -15,7 +15,7 @@ const SVGS = {
 };
 
 /**
- * Wraps email content inside a premium, professional Accenlearn Campus template.
+ * Wraps email content inside a premium, professional Accenlearn template.
  * @param {Object} options
  * @param {string} options.title - The main heading inside the email
  * @param {string} options.content - The HTML content to place in the body
@@ -66,11 +66,14 @@ const buildPremiumEmail = ({ title, content }) => {
             border-bottom: 4px solid #8b5cf6;
         }
 
-        .header img {
-            max-width: 200px;
-            height: auto;
+        .header-logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
             display: block;
             margin: 0 auto;
+            font-family: 'Inter', -apple-system, sans-serif;
         }
 
         .header h1 {
@@ -195,7 +198,7 @@ const buildPremiumEmail = ({ title, content }) => {
     <div class="email-wrapper">
         <div class="container">
             <div class="header">
-                <img src="${LOGO_URL}" alt="${COMPANY_NAME} Logo" />
+                <span class="header-logo-text">Accenlearn</span>
                 <h1>${title}</h1>
             </div>
 

@@ -664,13 +664,13 @@ Mode: ${event.mode || 'Online'}
 Location: Online
 ${event.shortDescription ? `\nAbout: ${event.shortDescription}` : ''}
 
-Event Link: https://www.Accenlearn Campus.com/events
+Event Link: https://www.Accenlearn.com/events
 
 Important: Please make sure you're prepared and join on time!
 
-Accenlearn Campus Solutions
+Accenlearn Solutions
 This is an automated reminder.
-© ${currentYear} Accenlearn Campus. All rights reserved.
+© ${currentYear} Accenlearn. All rights reserved.
         `;
 
         await sendEventReminderEmail({

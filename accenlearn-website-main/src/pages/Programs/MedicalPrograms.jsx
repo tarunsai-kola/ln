@@ -111,34 +111,34 @@ const MedicalPrograms = () => {
 
             {/* Right Form - Stark Editorial Style */}
             <div className="w-full lg:w-[440px] shrink-0">
-              <div className="bg-white p-10 shadow-2xl relative">
+              <div className="bg-white p-10 shadow-2xl relative rounded-3xl overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-slate-900"></div>
                 <div className="flex justify-between items-end mb-8 border-b border-slate-200 pb-4">
                   <div>
                     <h2 className="text-lg font-bold text-slate-900 leading-tight">Medical Programs</h2>
                     <p className="text-xs font-semibold text-slate-500">Advance your healthcare career</p>
                   </div>
-                  <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-widest mb-1">
+                  <span className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest mb-1 rounded-lg">
                     Limited Seats
                   </span>
                 </div>
                 
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Full Name</label>
-                    <input type="text" className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-slate-900 focus:outline-none focus:border-slate-900 transition-colors rounded-none" />
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
+                    <input type="text" className="w-full bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 transition-all rounded-xl" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Phone Number</label>
-                    <input type="tel" className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-slate-900 focus:outline-none focus:border-slate-900 transition-colors rounded-none" />
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Phone Number</label>
+                    <input type="tel" className="w-full bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 transition-all rounded-xl" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Email Address</label>
-                    <input type="email" className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-slate-900 focus:outline-none focus:border-slate-900 transition-colors rounded-none" />
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Email Address</label>
+                    <input type="email" className="w-full bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 transition-all rounded-xl" />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Domain of Interest</label>
-                    <select className="w-full bg-transparent border-b border-slate-300 px-0 py-2 text-slate-900 focus:outline-none focus:border-slate-900 transition-colors rounded-none appearance-none cursor-pointer">
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Domain of Interest</label>
+                    <select className="w-full bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-900/10 transition-all rounded-xl cursor-pointer">
                       <option value="" disabled selected>Select an option</option>
                       <option value="ai">Artificial Intelligence</option>
                       <option value="fsd">Full Stack Development</option>
@@ -146,7 +146,7 @@ const MedicalPrograms = () => {
                       <option value="cloud">Cloud & DevOps</option>
                     </select>
                   </div>
-                  <button type="submit" className="w-full py-4 mt-4 bg-slate-900 text-white font-bold uppercase tracking-widest text-sm hover:bg-slate-800 transition-colors rounded-none">
+                  <button type="submit" className="w-full py-4 mt-6 bg-slate-900 text-white font-bold uppercase tracking-widest text-sm hover:bg-slate-800 transition-all rounded-xl hover:-translate-y-1 hover:shadow-xl">
                     Request Callback
                   </button>
                 </form>

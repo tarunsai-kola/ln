@@ -189,7 +189,7 @@ router.post("/advoperationsendotp", async (req, res) => {
       </div>
       <p style="font-size: 13px; color: #64748b;">If you didn't request this OTP, please ignore this email or contact our IT team immediately.</p>
       <div style="text-align: center; margin: 30px 0;">
-          <a href="https://www.Accenlearn Campus.com/AdvOperationLogin" target="_blank" style="background-color: #4f46e5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Login Here</a>
+          <a href="https://www.Accenlearn.com/AdvOperationLogin" target="_blank" style="background-color: #4f46e5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Login Here</a>
       </div>
     `;
     const emailMessage = buildPremiumEmail({ title: 'Team Login OTP', content });
@@ -291,7 +291,7 @@ router.post("/sendmailtoadvoperation", async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 30px 0;">
-          <a href="https://www.Accenlearn Campus.com/AdvOperationLogin" target="_blank" style="background-color: #4f46e5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Login to Dashboard</a>
+          <a href="https://www.Accenlearn.com/AdvOperationLogin" target="_blank" style="background-color: #4f46e5; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Login to Dashboard</a>
       </div>
     `;
     const emailMessage = buildPremiumEmail({ title: 'Account Created', content });

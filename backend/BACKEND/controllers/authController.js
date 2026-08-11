@@ -97,7 +97,7 @@ exports.sendOtp = async (req, res) => {
     // Send Real Email
     const emailData = {
       email: email.toLowerCase(),
-      subject: "Your Accenlearn Campus Attendance Verification Code",
+      subject: "Your Accenlearn Attendance Verification Code",
       message: `
         <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;">
           <h2 style="color: #0f172a; text-align: center;">Identity Verification</h2>

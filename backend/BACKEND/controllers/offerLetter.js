@@ -81,7 +81,7 @@ const sendOfferLetter = async ({ email, fullname, date, start, end, domain, dura
     const subject = `Offer Letter - ${domain} Intern`;
     const body = `
     <p> <strong>Dear</strong> ${fullname},</p>
-    <p>We at <strong>Accenlearn Campus</strong> are happy to inform you that based on your application and subsequent interview, you have secured the role of <strong> ${domain} Intern </strong>with us.<strong> This email is to be considered as a formal offer for the mentioned role.</strong></p>
+    <p>We at <strong>Accenlearn</strong> are happy to inform you that based on your application and subsequent interview, you have secured the role of <strong> ${domain} Intern </strong>with us.<strong> This email is to be considered as a formal offer for the mentioned role.</strong></p>
     <p>Kindly find attached an offer letter with the particulars of your employment. We are extremely happy to offer you this role and look forward to having you on board with us.<strong> The date of commencement of your employment is ${start}.</strong></p>
     <p>For any further information please do not hesitate to contact us via mail to this mail ID.</p>
     <p>Wishing you all the best on your new journey.</p>
@@ -93,7 +93,7 @@ ${date}
    
 Dear ${fullname},
     
-With reference to your application regarding, we are pleased to offer you internship with Accenlearn Campus.
+With reference to your application regarding, we are pleased to offer you internship with Accenlearn.
     
 We take this opportunity in wishing you the very best in you training as well as advising you that our offer letter is on the following terms and conditions:
     
@@ -129,7 +129,7 @@ Job Type: Internship
 Reporting Location: ${location || 'Online'}
     
     
-I have read and understood the above terms and conditions and I accept this offer, as set forth above with Accenlearn Campus.
+I have read and understood the above terms and conditions and I accept this offer, as set forth above with Accenlearn.
     
 NAME:
     
@@ -143,15 +143,15 @@ DATE:
     const pdfBuffer = await createOfferLetterPDF(pdfword1, pdfword2);
 
     const mailOptions = {
-        from: `"Accenlearn Campus HR Team" <${process.env.SMTP_NOREPLY_EMAIL}>`,
+        from: `"Accenlearn HR Team" <${process.env.SMTP_NOREPLY_EMAIL}>`,
         replyTo: process.env.SMTP_NOREPLY_EMAIL,
         to: email,
-        cc: "help@Accenlearn Campus.com",
+        cc: "help@Accenlearn.com",
         subject,
         html: body,
         priority: "normal", // Change from "high" to "normal" - high priority can trigger spam filters
         headers: {
-            'X-Mailer': 'Accenlearn Campus',
+            'X-Mailer': 'Accenlearn',
             'X-Priority': '3',
             'Importance': 'Normal'
         },

@@ -643,7 +643,7 @@ router.post("/add-form-lead-to-crm", async (req, res) => {
             email: formLead.email,
             phone_number: formLead.contactNumber,
             opted_domain: formLead.domain,
-            source: formLead.source || "Accenlearn Campus Advance Form",
+            source: formLead.source || "Accenlearn Advance Form",
             status: "fresh",
             stage: "Fresh Lead",
             disposition: "New Lead",
@@ -2215,7 +2215,7 @@ router.post("/send-lead-mail", async (req, res) => {
             }
         };
 
-        let fromName = senderName || "Accenlearn Campus Support";
+        let fromName = senderName || "Accenlearn Support";
         let fromEmail = process.env.SMTP_NOREPLY_EMAIL;
         let replyTo = process.env.SMTP_NOREPLY_EMAIL;
 
@@ -2274,7 +2274,7 @@ router.post("/send-lead-mail", async (req, res) => {
             const fileName = brochureMap[domain];
 
             if (fileName) {
-                const brochurePath = path.join(__dirname, "../Accenlearn Campus/", fileName);
+                const brochurePath = path.join(__dirname, "../Accenlearn/", fileName);
                 if (fs.existsSync(brochurePath)) {
                     mailOptions.attachments.push({
                         filename: fileName,

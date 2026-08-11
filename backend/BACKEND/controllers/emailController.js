@@ -11,7 +11,7 @@ const sendEmail = async ({ email, subject, message, bcc }) => {
   const mailOptions = {
     from: process.env.SMTP_NOREPLY_EMAIL,
     to: email,
-    cc: "help@Accenlearn Campus.com",
+    cc: "help@Accenlearn.com",
     bcc: bcc,
     subject: subject,
     html: message,
@@ -85,9 +85,9 @@ const sendPaymentReminderEmail = async ({ email, subject, message, bcc }) => {
 // Event reminder email function - uses SMTP_NOREPLY_EMAIL
 const sendEventReminderEmail = async ({ email, subject, message, bcc, textVersion }) => {
   const mailOptions = {
-    from: `Accenlearn Campus Events <${process.env.SMTP_NOREPLY_EMAIL}>`,
+    from: `Accenlearn Events <${process.env.SMTP_NOREPLY_EMAIL}>`,
     to: email,
-    cc: "help@Accenlearn Campus.com",
+    cc: "help@Accenlearn.com",
     bcc: bcc,
     subject: subject,
     text: textVersion || 'Please enable HTML to view this email.',
@@ -95,7 +95,7 @@ const sendEventReminderEmail = async ({ email, subject, message, bcc, textVersio
     priority: "normal",
     headers: {
       'X-Entity-Ref-ID': `EVENT-${Date.now()}`,
-      'X-Mailer': 'Accenlearn Campus Event System',
+      'X-Mailer': 'Accenlearn Event System',
       'List-Unsubscribe': '<mailto:?subject=Unsubscribe>',
     },
   };

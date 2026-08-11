@@ -10,7 +10,7 @@ import { IoClose } from "react-icons/io5";
 import { Tooltip } from "antd";
 import { IMAGE_HELPER } from "../shared/ImageHelper";
 import { initGA, trackPageView, trackOutboundLink } from "../utils/analytics";
-import CourseEnquiryPopup from "../components/leads/CourseEnquiryPopup";
+import AdvancedApplyPopup from "../components/AdvancedApplyPopup";
 import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
@@ -19,6 +19,18 @@ const Layout = () => {
   const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showAdvancedPopup, setShowAdvancedPopup] = useState(false);
+
+  useEffect(() => {
+    const popupAlreadyShown = sessionStorage.getItem("accenlearnAdvancedPopupShown");
+    if (!popupAlreadyShown && location.pathname === "/") {
+      const timer = setTimeout(() => {
+        setShowAdvancedPopup(true);
+        sessionStorage.setItem("accenlearnAdvancedPopupShown", "true");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     AOS.init({
@@ -260,7 +272,7 @@ const Layout = () => {
       )}
 
       {/* Homepage course enquiry popup */}
-      {location.pathname === "/" && <CourseEnquiryPopup />}
+      {showAdvancedPopup && <AdvancedApplyPopup onClose={() => setShowAdvancedPopup(false)} />}
       
       <Toaster position="top-center" />
     </div>

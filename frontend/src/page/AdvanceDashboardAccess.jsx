@@ -84,20 +84,47 @@ const AdvanceDashboardAccess = () => {
   const [lead, setLead] = useState("");
   
   const [monthsToShow, setMonthsToShow] = useState([]);
+  const [endMonthsToShow, setEndMonthsToShow] = useState([]);
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  useEffect(() => {
+  const generateMonths = (startOffset, count) => {
     const currentDate = new Date();
     const currentMonthIndex = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
-    const nextMonthIndex = (currentMonthIndex + 1) % 12;
-    const nextMonthYear = currentMonthIndex + 1 > 11 ? currentYear + 1 : currentYear;
+    const result = [];
+    for (let i = 0; i < count; i++) {
+      const totalOffset = currentMonthIndex + startOffset + i;
+      const monthIndex = totalOffset % 12;
+      const year = currentYear + Math.floor(totalOffset / 12);
+      result.push(`${monthNames[monthIndex]} ${year}`);
+    }
+    return result;
+  };
 
-    setMonthsToShow([
-      `${monthNames[currentMonthIndex]} ${currentYear}`,
-      `${monthNames[nextMonthIndex]} ${nextMonthYear}`,
-    ]);
+  useEffect(() => {
+    // Show current month + next 3 (4 total) for start month
+    setMonthsToShow(generateMonths(0, 4));
   }, []);
+
+  // When start month changes, compute end months starting 3 months after start
+  useEffect(() => {
+    if (!internshipstartsmonth) {
+      setEndMonthsToShow([]);
+      return;
+    }
+    const [startMonthName, startYearStr] = internshipstartsmonth.split(" ");
+    const startMonthIndex = monthNames.indexOf(startMonthName);
+    const startYear = parseInt(startYearStr);
+    const result = [];
+    for (let i = 3; i <= 6; i++) {
+      const totalMonths = startMonthIndex + i;
+      const monthIndex = totalMonths % 12;
+      const year = startYear + Math.floor(totalMonths / 12);
+      result.push(`${monthNames[monthIndex]} ${year}`);
+    }
+    setEndMonthsToShow(result);
+    setInternshipEndsMonth("");
+  }, [internshipstartsmonth]);
 
   const fetchCourses = async () => {
     try {
@@ -206,7 +233,7 @@ const AdvanceDashboardAccess = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4 py-10 font-sans">
+    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4 pt-24 pb-10 font-sans">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 md:p-10 text-slate-700">
         
@@ -348,9 +375,9 @@ const AdvanceDashboardAccess = () => {
             
             <div className="flex flex-col space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Internship ends month</label>
-              <select value={internshipendsmonth} onChange={(e) => setInternshipEndsMonth(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-md p-3 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-colors appearance-none">
-                <option value="" disabled>Internship ends month</option>
-                {monthsToShow.map((month, index) => (<option key={index} value={month}>{month}</option>))}
+              <select value={internshipendsmonth} onChange={(e) => setInternshipEndsMonth(e.target.value)} required disabled={!internshipstartsmonth} className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-md p-3 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition-colors appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
+                <option value="" disabled>{internshipstartsmonth ? "Internship ends month" : "Select start month first"}</option>
+                {endMonthsToShow.map((month, index) => (<option key={index} value={month}>{month}</option>))}
               </select>
             </div>
             

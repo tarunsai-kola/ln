@@ -174,7 +174,7 @@ router.post('/sendmailtooperation', async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 35px 0;">
-          <a href="https://www.Accenlearn Campus.com/operationLogin" target="_blank" class="cta-button">Access Your Portal</a>
+          <a href="https://www.Accenlearn.com/operationLogin" target="_blank" class="cta-button">Access Your Portal</a>
       </div>
 
       <p>If you need further assistance with your account setup, feel free to reach out to the IT support team.</p>
@@ -226,7 +226,7 @@ router.post('/sendmailtobda', async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 35px 0;">
-          <a href="https://www.Accenlearn Campus.com/teamlogin" target="_blank" class="cta-button">Access Your Portal</a>
+          <a href="https://www.Accenlearn.com/teamlogin" target="_blank" class="cta-button">Access Your Portal</a>
       </div>
 
       <p>If you need further assistance with your account setup, feel free to reach out to the IT support team.</p>
@@ -279,7 +279,7 @@ router.post('/sendmailtoadvteam', async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 35px 0;">
-          <a href="https://www.Accenlearn Campus.com/advteamlogin" target="_blank" class="cta-button">Access Your Portal</a>
+          <a href="https://www.Accenlearn.com/advteamlogin" target="_blank" class="cta-button">Access Your Portal</a>
       </div>
 
       <p>If you need further assistance with your account setup, feel free to reach out to the IT support team.</p>
@@ -332,7 +332,7 @@ router.post('/sendmailtohr', async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 35px 0;">
-          <a href="https://www.Accenlearn Campus.com/hrlogin" target="_blank" class="cta-button">Access Your Portal</a>
+          <a href="https://www.Accenlearn.com/hrlogin" target="_blank" class="cta-button">Access Your Portal</a>
       </div>
 
       <p>If you need further assistance with your account setup, feel free to reach out to the IT support team.</p>
@@ -383,7 +383,7 @@ router.post("/sendmailtoplacementcoordinator", async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 35px 0;">
-          <a href="https://www.Accenlearn Campus.com/pclogin" target="_blank" class="cta-button">Access Your Portal</a>
+          <a href="https://www.Accenlearn.com/pclogin" target="_blank" class="cta-button">Access Your Portal</a>
       </div>
 
       <p>If you need further assistance with your account setup, feel free to reach out to the IT support team.</p>

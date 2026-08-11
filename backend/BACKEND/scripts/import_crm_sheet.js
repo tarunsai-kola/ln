@@ -1,5 +1,5 @@
 /**
- * 🚀 Accenlearn Campus Meta Ads Sync Script (Automated Version)
+ * 🚀 Accenlearn Meta Ads Sync Script (Automated Version)
  * ---------------------------------------
  */
 

@@ -17,7 +17,7 @@
 //   },
 //   password: {
 //     type: String,
-//    default: 'Accenlearn Campus@123',
+//    default: 'Accenlearn@123',
 //   },
 //   status: {
 //     type: String,
@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    default: 'Accenlearn Campus@123',
+    default: 'Accenlearn@123',
   },
   status: {
     type: String,
