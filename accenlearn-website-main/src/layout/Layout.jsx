@@ -142,7 +142,7 @@ const Layout = () => {
           aria-label="Chat with AccenLearn on WhatsApp"
         >
           <Tooltip title="Chat with us on WhatsApp">
-            <FaWhatsapp className="h-10 w-10 cursor-pointer rounded-full bg-secondary p-2 text-white shadow-lg transition-all duration-300 hover:scale-110 sm:h-12 sm:w-12" />
+            <FaWhatsapp className="h-10 w-10 cursor-pointer rounded-full bg-green-500 p-2 text-white shadow-lg transition-all duration-300 hover:scale-110 sm:h-12 sm:w-12" />
           </Tooltip>
         </a>
       </div>

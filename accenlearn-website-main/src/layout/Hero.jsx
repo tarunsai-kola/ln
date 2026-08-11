@@ -17,7 +17,8 @@ const Hero = () => {
           {/* Left Column (Content) */}
           <div className="flex flex-col space-y-8 pr-0 lg:pr-10">
             <h1 className="text-4xl md:text-5xl lg:text-[52px] leading-[1.1] font-medium text-slate-900 tracking-tight">
-              Industry-Ready Training & <span className="font-bold">Placement Support</span>
+              Join the <span className="font-bold text-blue-600">Top 1%</span> of Tech Talent <br className="hidden md:block" />
+              with Industry Experts
             </h1>
             
             {/* Detail Row (Icons + Text) */}
@@ -122,56 +123,56 @@ const Hero = () => {
            
            {/* Card 1 */}
            <div className="flex flex-col bg-[#faf9f6] rounded-[24px] overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-40 w-full relative">
+              <div className="h-32 md:h-40 w-full relative">
                  <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop" alt="Learners" className="w-full h-full object-cover" />
               </div>
-              <div className="p-5 flex items-start gap-4">
-                 <h3 className="text-3xl font-black text-[#2563eb] leading-none">8,023<span className="text-xl">+</span></h3>
-                 <p className="text-slate-900 font-bold leading-tight text-[15px]">Active<br/>Learners</p>
+              <div className="p-3 md:p-5 flex items-center md:items-start gap-2 md:gap-4">
+                 <h3 className="text-2xl md:text-3xl font-black text-[#2563eb] leading-none tracking-tight">8k<span className="text-lg md:text-xl">+</span></h3>
+                 <p className="text-slate-900 font-bold leading-tight text-xs md:text-[15px]">Active<br/>Learners</p>
               </div>
            </div>
            
            {/* Card 2 */}
            <div className="flex flex-col bg-[#faf9f6] rounded-[24px] overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-40 w-full relative">
+              <div className="h-32 md:h-40 w-full relative">
                  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=600&auto=format&fit=crop" alt="Domains" className="w-full h-full object-cover" />
               </div>
-              <div className="p-5 flex items-start gap-4">
-                 <h3 className="text-4xl font-black text-[#2563eb] leading-none">3</h3>
-                 <p className="text-slate-900 font-bold leading-tight text-[15px]">Main<br/>Domains</p>
+              <div className="p-3 md:p-5 flex items-center md:items-start gap-2 md:gap-4">
+                 <h3 className="text-3xl md:text-4xl font-black text-[#2563eb] leading-none">3</h3>
+                 <p className="text-slate-900 font-bold leading-tight text-xs md:text-[15px]">Main<br/>Domains</p>
               </div>
            </div>
 
            {/* Card 3 */}
            <div className="flex flex-col bg-[#faf9f6] rounded-[24px] overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-40 w-full relative">
+              <div className="h-32 md:h-40 w-full relative">
                  <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop" alt="Hiring Partners" className="w-full h-full object-cover" />
               </div>
-              <div className="p-5 flex items-start gap-4">
-                 <h3 className="text-4xl font-black text-[#2563eb] leading-none">250<span className="text-2xl">+</span></h3>
-                 <p className="text-slate-900 font-bold leading-tight text-[15px]">Hiring<br/>Partners</p>
+              <div className="p-3 md:p-5 flex items-center md:items-start gap-2 md:gap-4">
+                 <h3 className="text-3xl md:text-4xl font-black text-[#2563eb] leading-none tracking-tight">250<span className="text-lg md:text-2xl">+</span></h3>
+                 <p className="text-slate-900 font-bold leading-tight text-xs md:text-[15px]">Hiring<br/>Partners</p>
               </div>
            </div>
 
            {/* Card 4 */}
            <div className="flex flex-col bg-[#faf9f6] rounded-[24px] overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-40 w-full relative">
+              <div className="h-32 md:h-40 w-full relative">
                  <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop" alt="Mentors" className="w-full h-full object-cover" />
               </div>
-              <div className="p-5 flex items-start gap-4">
-                 <h3 className="text-4xl font-black text-[#2563eb] leading-none">170<span className="text-2xl">+</span></h3>
-                 <p className="text-slate-900 font-bold leading-tight text-[15px]">Global<br/>Mentors</p>
+              <div className="p-3 md:p-5 flex items-center md:items-start gap-2 md:gap-4">
+                 <h3 className="text-3xl md:text-4xl font-black text-[#2563eb] leading-none tracking-tight">170<span className="text-lg md:text-2xl">+</span></h3>
+                 <p className="text-slate-900 font-bold leading-tight text-xs md:text-[15px]">Global<br/>Mentors</p>
               </div>
            </div>
 
            {/* Card 5 */}
            <div className="flex flex-col bg-[#faf9f6] rounded-[24px] overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="h-40 w-full relative">
+              <div className="h-32 md:h-40 w-full relative">
                  <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=600&auto=format&fit=crop" alt="Placements" className="w-full h-full object-cover" />
               </div>
-              <div className="p-5 flex items-start gap-3">
-                 <h3 className="text-4xl font-black text-[#2563eb] leading-none">300<span className="text-2xl">+</span></h3>
-                 <p className="text-slate-900 font-bold leading-tight text-[14px]">Alumni<br/>Placed</p>
+              <div className="p-3 md:p-5 flex items-center md:items-start gap-2 md:gap-3">
+                 <h3 className="text-3xl md:text-4xl font-black text-[#2563eb] leading-none tracking-tight">300<span className="text-lg md:text-2xl">+</span></h3>
+                 <p className="text-slate-900 font-bold leading-tight text-xs md:text-[14px]">Alumni<br/>Placed</p>
               </div>
            </div>
 

@@ -15,6 +15,7 @@ import SalaryGrowth from "./components/SalaryGrowth";
 import CareerOutcomes from "./components/CareerOutcomes";
 import TestimonialsInstructors from "./components/TestimonialsInstructors";
 import PricingFAQ from "./components/PricingFAQ";
+import IbmCertificationPath from "../../components/IbmCertificationPath";
 
 const Workshop2 = ({ title = "Technical Domains" }) => {
   const [isApplyOpen, setIsApplyOpen] = useState(false);
@@ -72,6 +73,7 @@ const Workshop2 = ({ title = "Technical Domains" }) => {
       
       <TestimonialsInstructors />
       
+      <IbmCertificationPath />
       <PricingFAQ onEnroll={handleOpenApplyModal} />
 
       {isApplyOpen && (

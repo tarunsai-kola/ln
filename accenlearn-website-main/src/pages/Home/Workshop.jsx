@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TitleText from "../../components/TitleText";
 import TopImageCard from "../../components/TopImageCard";
+import IbmCertificationPath from "../../components/IbmCertificationPath";
 import SwiperComponent from "../../components/SwiperComponent";
 import { SwiperSlide } from "swiper/react";
 import { COMPANY_IMAGES, IMAGE_HELPER } from "../../shared/ImageHelper";
@@ -292,6 +293,9 @@ const Workshop = () => {
           </div>
         </div>
       </div>
+      {/* IBM Certification Section */}
+      <IbmCertificationPath />
+      
       {/* 300+ Alumni Placed At Leading Companies */}
       <div className="flex flex-col items-center gap-2">
         <TitleText

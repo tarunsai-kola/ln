@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import SharedBreadcrumb from "../../components/SharedBreadcrumb";
 import TitleText from "../../components/TitleText";
 import Feedback from "../Home/Feedback";
@@ -10,6 +12,7 @@ import { IMAGE_HELPER } from "../../shared/ImageHelper";
 import { WORKSHOP_CONTENT, DEFAULT_WORKSHOP_CONTENT } from "../../shared/workshopContent";
 import ProgramCTA from "../../components/ProgramCTA";
 import OverviewModal from "../../components/OverviewModal";
+import IbmCertificationPath from "../../components/IbmCertificationPath";
 
 const Workshopindex = ({ title }) => {
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);

@@ -4,6 +4,7 @@ import { FaReact, FaNodeJs, FaPython, FaAws, FaDocker, FaChevronDown, FaWhatsapp
 import { DiMongodb, DiPostgresql } from "react-icons/di";
 import { SiGooglecloud, SiTensorflow, SiKubernetes } from "react-icons/si";
 import { IMAGE_HELPER } from "../../shared/ImageHelper";
+import IbmCertificationPath from "../../components/IbmCertificationPath";
 
 const MEDICAL_COURSES = [
   {
@@ -297,6 +298,9 @@ const MedicalPrograms = () => {
           </div>
         </div>
       </div>
+
+      {/* IBM Certification Section */}
+      <IbmCertificationPath />
 
       {/* 5. Mentor Grid */}
       <div className="bg-[#f8fafc] relative pt-12 pb-48">

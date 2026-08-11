@@ -4,6 +4,7 @@ import { FaReact, FaNodeJs, FaPython, FaAws, FaDocker, FaChevronDown, FaWhatsapp
 import { DiMongodb, DiPostgresql } from "react-icons/di";
 import { SiGooglecloud, SiTensorflow, SiKubernetes } from "react-icons/si";
 import { IMAGE_HELPER } from "../../shared/ImageHelper";
+import IbmCertificationPath from "../../components/IbmCertificationPath";
 
 const TECH_COURSES = [
   {
@@ -421,10 +422,12 @@ const TechPrograms = () => {
             <div className="relative group">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
               <img src={IMAGE_HELPER.TRAINING} alt="Training Certificate" className="relative w-full max-w-[500px] h-auto rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-4 border-white transform transition-transform duration-500 group-hover:-translate-y-2" />
-            </div>
           </div>
         </div>
       </div>
+      
+      {/* IBM Certification Section */}
+      <IbmCertificationPath />
 
       {/* 5. Mentor Grid */}
       <div className="bg-[#f8fafc] relative pt-12 pb-48">
