@@ -336,7 +336,7 @@ const Workshop = () => {
           initialDomain={activeCourse}
         />
       )}
-    </section>
+      </div>
   );
 };
 
