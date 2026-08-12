@@ -24,7 +24,7 @@ router.post("/applycertificate", async (req, res) => {
         const finalOutput = domain;
 
         // Cloudinary URL generation matching frontend logic
-        const cloudName = process.env.CLOUD_NAME || "jjrmrykm";
+        const cloudName = process.env.CLOUD_NAME || "lrclnysv";
         const isInternship = domain.toLowerCase().includes("intern");
         const templateId = isInternship
             ? "certificates_templates/intenship"
@@ -32,7 +32,7 @@ router.post("/applycertificate", async (req, res) => {
         const domainX = isInternship ? "-580" : "70";
         const domainY = isInternship ? "168" : "165";
         const domainAlign = "left";
-        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-115/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/${templateId}`;
+        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-125/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/${templateId}`;
 
         let s3Url;
         try {

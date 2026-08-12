@@ -107,14 +107,14 @@ const NewDashboard = () => {
   const getTrainingCertUrl = () => {
     if (!selectedCertificate) return "";
     let finalOutput = selectedCertificate.domain;
-    return `https://res.cloudinary.com/jjrmrykm/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-100/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_70,y_165/certificates_templates/trainining`;
+    return `https://res.cloudinary.com/lrclnysv/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-100/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_70,y_165/certificates_templates/trainining`;
   };
 
   /* Helper to generate Internship Certificate URL */
   const getInternCertUrl = () => {
     if (!selectedCertificate) return "";
     let finalOutput = selectedCertificate.domain;
-    return `https://res.cloudinary.com/jjrmrykm/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-115/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_-580,y_168/certificates_templates/intenship`;
+    return `https://res.cloudinary.com/lrclnysv/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-125/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_-580,y_168/certificates_templates/intenship`;
   };
 
   /* Helper to add to LinkedIn */
