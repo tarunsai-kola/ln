@@ -290,10 +290,11 @@ h1 {
     width: 100%;
   }
   .four_zero_four_bg {
-    background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+    background-image: url(/404_image.png);
     height: 400px;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
   }
   .four_zero_four_bg h1 {
     font-size: 80px;

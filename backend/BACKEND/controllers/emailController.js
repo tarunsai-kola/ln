@@ -11,7 +11,7 @@ const sendEmail = async ({ email, subject, message, bcc }) => {
   const mailOptions = {
     from: process.env.SMTP_NOREPLY_EMAIL,
     to: email,
-    cc: "help@Accenlearn.com",
+   
     bcc: bcc,
     subject: subject,
     html: message,
@@ -87,7 +87,7 @@ const sendEventReminderEmail = async ({ email, subject, message, bcc, textVersio
   const mailOptions = {
     from: `Accenlearn Events <${process.env.SMTP_NOREPLY_EMAIL}>`,
     to: email,
-    cc: "help@Accenlearn.com",
+    
     bcc: bcc,
     subject: subject,
     text: textVersion || 'Please enable HTML to view this email.',

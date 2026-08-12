@@ -146,7 +146,7 @@ DATE:
         from: `"Accenlearn HR Team" <${process.env.SMTP_NOREPLY_EMAIL}>`,
         replyTo: process.env.SMTP_NOREPLY_EMAIL,
         to: email,
-        cc: "help@Accenlearn.com",
+      
         subject,
         html: body,
         priority: "normal", // Change from "high" to "normal" - high priority can trigger spam filters

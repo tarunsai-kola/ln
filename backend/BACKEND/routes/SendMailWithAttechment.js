@@ -44,7 +44,7 @@
 //       const mailOptions = {
 //         from: process.env.SMTP_MAIL,
 //         to: email,
-//         cc: "help@Accenlearn.com",
+
 //         subject: `Offer Letter - ${domain} Intern`,
 //         html: emailMessage,
 //         priority: "high",
@@ -137,8 +137,7 @@ router.post("/sendedOfferLetterMail", (req, res) => {
 
       const mailOptions = {
         from: process.env.SMTP_NOREPLY_EMAIL,
-        to: email,
-        // cc: "help@Accenlearn.com",
+       
         subject: `Offer Letter - ${domain} Intern`,
         html: emailMessage,
         priority: "high",
