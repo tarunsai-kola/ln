@@ -21,12 +21,18 @@ router.post("/applycertificate", async (req, res) => {
         // Auto-generate certificate details
         const date = new Date();
         const startdate = date.toISOString();
-        const finalOutput = `${domain} on ${date.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+        const finalOutput = domain;
 
         // Cloudinary URL generation matching frontend logic
-        // TODO: Replace with the Accenlearn Cloudinary Certificate Template URL
-        // const cloudinaryUrl = `https://res.cloudinary.com/do5gatqvs/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_20/co_rgb:000000,l_text:times%20new%20roman_25_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,y_225/training_certificate_demo_vknkst`;
-        const cloudinaryUrl = ""; // Placeholder until new template is ready
+        const cloudName = process.env.CLOUD_NAME || "jjrmrykm";
+        const isInternship = domain.toLowerCase().includes("intern");
+        const templateId = isInternship
+            ? "certificates_templates/intenship"
+            : "certificates_templates/trainining";
+        const domainX = isInternship ? "-580" : "70";
+        const domainY = isInternship ? "168" : "165";
+        const domainAlign = "left";
+        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-115/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/${templateId}`;
 
         let s3Url;
         try {

@@ -106,16 +106,23 @@ const NewDashboard = () => {
   /* Helper to generate Training Certificate URL */
   const getTrainingCertUrl = () => {
     if (!selectedCertificate) return "";
-    let finalOutput = selectedCertificate.domain + " on " + new Date(selectedCertificate.startdate).toLocaleString('en-US', { month: 'long', year: 'numeric' });
-    return `https://res.cloudinary.com/do5gatqvs/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_20/co_rgb:000000,l_text:times%20new%20roman_25_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,y_225/training_certificate_demo_vknkst`;
+    let finalOutput = selectedCertificate.domain;
+    return `https://res.cloudinary.com/jjrmrykm/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-100/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_70,y_165/certificates_templates/trainining`;
+  };
+
+  /* Helper to generate Internship Certificate URL */
+  const getInternCertUrl = () => {
+    if (!selectedCertificate) return "";
+    let finalOutput = selectedCertificate.domain;
+    return `https://res.cloudinary.com/jjrmrykm/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(selectedCertificate.name)}/fl_layer_apply,y_-115/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_left:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_-580,y_168/certificates_templates/intenship`;
   };
 
   /* Helper to add to LinkedIn */
   const addLinkedin = (data, isTraining = false) => {
     let year = new Date(data.date).toLocaleDateString("en-US", { year: "numeric" });
     let month = new Date(data.date).toLocaleDateString("en-US", { month: "numeric" });
-    let certUrl = isTraining ? getTrainingCertUrl() : data.url;
-    let certName = isTraining ? `Training Certificate - ${data.domain}` : data.domain;
+    let certUrl = isTraining ? getTrainingCertUrl() : getInternCertUrl();
+    let certName = isTraining ? `Training Certificate - ${data.domain}` : `Internship Certificate - ${data.domain}`;
 
     let linkurl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${certName}&organizationName=Accenlearn&issueYear=${year}&issueMonth=${month}&certUrl=${certUrl}&certId=${data._id}`;
     window.open(linkurl, "_blank");
@@ -124,7 +131,8 @@ const NewDashboard = () => {
   /* Download Internship Certificate via Proxy */
   const downloadInternshipCertificate = () => {
     // Use backend proxy to force download and avoid CORS issues
-    const proxyUrl = `${API}/download-proxy?url=${encodeURIComponent(selectedCertificate.url)}`;
+    const internUrl = getInternCertUrl();
+    const proxyUrl = `${API}/download-proxy?url=${encodeURIComponent(internUrl)}`;
     window.open(proxyUrl, "_self"); // Trigger download in same tab
     toast.success("Download started...");
   };
@@ -319,7 +327,7 @@ const NewDashboard = () => {
             <div className="p-6 bg-gray-50">
               <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                 <img
-                  src={showTraining ? getTrainingCertUrl() : selectedCertificate.url}
+                  src={showTraining ? getTrainingCertUrl() : getInternCertUrl()}
                   alt="Certificate"
                   className="w-full object-contain"
                 />
@@ -337,7 +345,7 @@ const NewDashboard = () => {
                   </div>
                   <a
                     className="text-primary hover:text-orange-600 flex items-center gap-1 font-medium transition-colors"
-                    href={showTraining ? getTrainingCertUrl() : selectedCertificate.url}
+                    href={showTraining ? getTrainingCertUrl() : getInternCertUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -574,7 +582,6 @@ const NewDashboard = () => {
                             )}
                           </td>
                           <td className="p-4 text-right">
-                            {certificate.delivered ? (
                               <button
                                 onClick={() => { setShowTraining(false); setSelectedCertificate(certificate); }}
                                 className="text-primary hover:text-orange-700 font-medium inline-flex items-center gap-1"
@@ -582,12 +589,6 @@ const NewDashboard = () => {
                                 View
                                 <span className="material-symbols-outlined text-[16px]">open_in_new</span>
                               </button>
-                            ) : (
-                              <span className="text-gray-300 cursor-not-allowed flex items-center justify-end gap-1">
-                                View
-                                <span className="material-symbols-outlined text-[16px]">lock</span>
-                              </span>
-                            )}
                           </td>
                         </tr>
                       ) : (
