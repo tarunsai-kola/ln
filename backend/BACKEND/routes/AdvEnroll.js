@@ -43,7 +43,8 @@ router.post("/advenroll", async (req, res) => {
       companyName,
       role,
       languages,
-      batchTiming
+      batchTiming,
+      modeofclasses
     } = req.body;
 
     console.log(`[AdvEnroll] POST /advenroll - Looking up domain: "${domain}"`);
@@ -211,7 +212,8 @@ router.post("/advenroll", async (req, res) => {
       languages,
       companyName,
       role,
-      batchTiming
+      batchTiming,
+      modeofclasses
     });
 
     console.log('[AdvEnroll] Creating new advance student with executiveId:', newAdvStudent.executiveId);
@@ -792,6 +794,36 @@ router.get("/advgetmonthlyrevenue", verifyAnyAuth, async (req, res) => {
   } catch (error) {
     console.error("Error in /advgetmonthlyrevenue:", error);
     res.status(500).json({ message: "Server error fetching monthly revenue", error: error.message });
+  }
+});
+
+// GET referrals with server-side pagination
+router.get("/advreferrals", verifyAnyAuth, async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
+
+    const query = { referFriend: { $exists: true, $ne: "" } };
+
+    const referrals = await AdvEnroll.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    const total = await AdvEnroll.countDocuments(query);
+
+    res.status(200).json({
+      data: referrals,
+      total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      success: true
+    });
+  } catch (error) {
+    console.error('[AdvEnroll] Get referrals error:', error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

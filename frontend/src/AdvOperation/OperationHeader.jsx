@@ -79,10 +79,10 @@ const OperationHeader = () => {
       
       {/* Premium Navbar */}
       <div className="navbar premium-navbar" style={{
-        background: 'rgba(15, 23, 42, 0.95)',
+        background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-        boxShadow: '0 4px 20px -10px rgba(0,0,0,0.5)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
         display: 'flex',
         alignItems: 'center',
         padding: '0 24px',
@@ -95,7 +95,7 @@ const OperationHeader = () => {
       }}>
         <div>
           <Link to="/">
-            <img src={logo} alt="Logo" style={{ height: '40px', objectFit: 'contain', filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.2))' }} />
+            <img src={logo} alt="Logo" style={{ height: '40px', objectFit: 'contain' }} />
           </Link>
         </div>
         <div ref={mobileMenuRef}>

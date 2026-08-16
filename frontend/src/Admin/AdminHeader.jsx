@@ -63,6 +63,7 @@ const AdminHeader = () => {
 //    { to: "/AdvLeadManagement", icon: Users, text: "Lead Mgmt" },
     { to: "/AdvFormLeads", icon: FileText, text: "Form Leads" },
     { to: "/AdvTeamDetail", icon: Users, text: "Team Details" },
+    { to: "/AdvReferrals", icon: Users, text: "Student Referrals" },
     { to: "/AdvUserManagement", icon: UserCog, text: "User Mgmt" },
 //    { to: "/AdminAnalytics", icon: LineChart, text: "Analytics" },
 //    { to: "/BulkImport", icon: UploadCloud, text: "Bulk Import Leads" },
@@ -79,20 +80,20 @@ const AdminHeader = () => {
   return (
     <>
       {/* Top Navbar */}
-      <div className="z-[1000] fixed top-0 left-0 w-full h-[70px] bg-[#0A0F1C]/90 backdrop-blur-xl border-b border-white/5 flex items-center px-6 justify-between shadow-sm">
+      <div className="z-[1000] fixed top-0 left-0 w-full h-[70px] bg-white/95 backdrop-blur-md border-b border-slate-200 flex items-center px-6 justify-between shadow-sm">
         <Toaster position="top-center" reverseOrder={false} toastOptions={{
           style: { background: '#1e1e2d', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }
         }} />
         
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Accenlearn Logo" className="h-9 object-contain drop-shadow-md" />
+            <img src={logo} alt="Accenlearn Logo" className="h-9 object-contain drop-shadow-sm" />
           </Link>
-          <div className="h-6 w-px bg-white/10 ml-2"></div>
-          <span className="text-indigo-400/80 text-xs font-black tracking-[0.2em] uppercase ml-2 bg-indigo-500/10 px-2.5 py-1 rounded-md border border-indigo-500/20">Admin Portal</span>
+          <div className="h-6 w-px bg-slate-200 ml-2"></div>
+          <span className="text-indigo-600 text-xs font-black tracking-[0.2em] uppercase ml-2 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 shadow-sm">Admin Portal</span>
         </div>
 
-        <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 bg-rose-500/10 hover:bg-rose-500 hover:text-white text-rose-400 border border-rose-500/20 rounded-xl transition-all font-bold text-sm shadow-sm group">
+        <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 bg-rose-50 hover:bg-rose-500 hover:text-white text-rose-600 border border-rose-100 rounded-xl transition-all font-bold text-sm shadow-sm group">
           <LogOut size={16} className="group-hover:animate-pulse" /> <span className="hidden sm:inline">Logout</span>
         </button>
       </div>

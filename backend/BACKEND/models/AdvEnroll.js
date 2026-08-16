@@ -34,6 +34,9 @@ const advEnrollSchema = new Schema(
     modeofpayment: {
       type: String,
     },
+    modeofclasses: {
+      type: String,
+    },
     counselor: {
       type: String,
     },

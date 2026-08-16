@@ -23,6 +23,9 @@ router.post("/applycertificate", async (req, res) => {
         const startdate = date.toISOString();
         const finalOutput = domain;
 
+        const crypto = require("crypto");
+        const verifyCode = crypto.randomBytes(4).toString("hex").toUpperCase();
+
         // Cloudinary URL generation matching frontend logic
         const cloudName = process.env.CLOUD_NAME || "lrclnysv";
         const isInternship = domain.toLowerCase().includes("intern");
@@ -32,7 +35,9 @@ router.post("/applycertificate", async (req, res) => {
         const domainX = isInternship ? "-580" : "70";
         const domainY = isInternship ? "168" : "165";
         const domainAlign = "left";
-        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-125/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/${templateId}`;
+        const verifyText = encodeURIComponent(`Verification Code - ${verifyCode}`);
+        const verifyUrlText = encodeURIComponent(`Verify at accenlearn.com`);
+        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-125/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/co_rgb:000000,l_text:Arial_22_bold:${verifyUrlText}/fl_layer_apply,g_south_west,x_350,y_250/co_rgb:000000,l_text:Arial_22_bold:${verifyText}/fl_layer_apply,g_south_west,x_350,y_220/${templateId}`;
 
         let s3Url;
         try {
@@ -49,7 +54,8 @@ router.post("/applycertificate", async (req, res) => {
             domain,
             delivered: true,
             startdate: startdate,
-            url: s3Url
+            url: s3Url,
+            verifyCode: verifyCode
         });
 
         await newCertificate.save();
@@ -144,6 +150,33 @@ router.get("/download-proxy", async (req, res) => {
     } catch (error) {
         console.error("Proxy Download Error:", error.message);
         res.status(500).json({ error: "Failed to download file" });
+    }
+});
+
+// Verify certificate by verify code
+router.post("/verify", async (req, res) => {
+    try {
+        const { verifyCode } = req.body;
+        if (!verifyCode) {
+            return res.status(400).json({ error: "Verify code is required" });
+        }
+
+        const certificate = await Certificate.findOne({ verifyCode: verifyCode }).lean();
+        
+        if (!certificate) {
+            return res.status(404).json({ error: "Invalid verify code. Certificate not found." });
+        }
+
+        res.json({
+            message: "Certificate verified successfully",
+            name: certificate.name,
+            domain: certificate.domain,
+            startdate: certificate.startdate,
+            url: certificate.url
+        });
+    } catch (error) {
+        console.error("Verification Error:", error);
+        res.status(500).json({ error: "Server error" });
     }
 });
 

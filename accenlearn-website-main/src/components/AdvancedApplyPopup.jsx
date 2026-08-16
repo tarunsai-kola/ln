@@ -105,54 +105,37 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
     };
 
     return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0a0a0b]/80 backdrop-blur-md p-4 md:p-6 overflow-y-auto animate-in fade-in duration-300">
-            <div className="w-full max-w-[950px] my-auto h-fit min-h-[500px] md:h-[650px] bg-white rounded-[24px] shadow-2xl relative overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-300 border border-white/10">
+        <div className="fixed inset-0 z-[9999] flex items-end md:items-center justify-center bg-[#0a0a0b]/80 backdrop-blur-md md:p-6 overflow-hidden animate-in fade-in duration-300">
+            <div className="w-full max-w-[950px] mt-auto md:my-auto h-[92vh] md:h-fit md:min-h-[500px] xl:h-[650px] bg-white rounded-t-[32px] md:rounded-[24px] shadow-2xl relative flex flex-col md:flex-row animate-in slide-in-from-bottom-full md:zoom-in-95 duration-300 border border-white/10 overflow-hidden">
                 
+                {/* Mobile Drag Handle (Visual) */}
+                <div className="w-full flex justify-center pt-4 pb-2 md:hidden absolute top-0 left-0 bg-white z-[150] rounded-t-[32px]">
+                    <div className="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+                </div>
+
                 {/* Close Button */}
                 <button 
                     onClick={onClose}
                     title="Close"
-                    style={{
-                        position: 'absolute',
-                        top: '24px',
-                        right: '24px',
-                        width: '40px',
-                        height: '40px',
-                        backgroundColor: '#ff4d4d', // Red for clear visibility
-                        color: 'white',
-                        borderRadius: '50%',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                        zIndex: 200,
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                        transition: 'all 0.2s ease'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    className="absolute top-5 right-5 md:top-6 md:right-6 w-8 h-8 md:w-10 md:h-10 bg-slate-100 hover:bg-rose-500 text-slate-500 hover:text-white rounded-full flex items-center justify-center text-sm md:text-lg font-bold z-[200] shadow-sm transition-all duration-200"
                 >
                     ✕
                 </button>
 
-                {/* Left Side: Professional Info Column */}
-                {/* Left Side: Premium Modern Info Column */}
-                <div className="hidden md:flex md:w-[42%] bg-gradient-to-br from-gray-900 via-slate-900 to-black p-10 flex-col justify-between relative overflow-hidden group shadow-inner">
-                    <div className="absolute top-[-20%] left-[-10%] w-72 h-72 bg-[#0F7B53]/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-[#0F7B53]/30 transition-all duration-700" />
-                    <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-indigo-500/10 rounded-full blur-[60px] pointer-events-none" />
+                {/* Left Side: Premium Modern Info Column (Light Theme) */}
+                <div className="hidden md:flex md:w-[42%] bg-gradient-to-br from-slate-50 via-white to-emerald-50/50 p-10 flex-col justify-between relative overflow-hidden group shadow-inner border-r border-slate-100">
+                    <div className="absolute top-[-20%] left-[-10%] w-72 h-72 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-emerald-500/10 transition-all duration-700" />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-blue-500/5 rounded-full blur-[60px] pointer-events-none" />
                     
                     <div className="relative z-10">
-                        <div className="mb-10 drop-shadow-2xl bg-white/5 p-4 rounded-2xl inline-block border border-white/10 backdrop-blur-sm">
-                            <img src={IMAGE_HELPER.LOGO} alt="Accenlearn" className="h-full object-contain" />
+                        <div className="mb-10 inline-block h-12">
+                            <img src={IMAGE_HELPER.LOGO} alt="Accenlearn" className="h-full object-contain drop-shadow-sm" />
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-white leading-[1.1] mb-5 tracking-tight">
+                        <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-[1.15] mb-5 tracking-tight">
                             Accelerate <br/>Your Tech <br/>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0F7B53] to-emerald-400">Career.</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Career.</span>
                         </h2>
-                        <p className="text-gray-300 text-sm leading-relaxed mb-10 font-medium border-l-2 border-[#0F7B53] pl-4">
+                        <p className="text-slate-600 text-sm leading-relaxed mb-10 font-medium border-l-2 border-emerald-500 pl-4">
                             Join the elite upskilling ecosystem designed exclusively for modern tech professionals.
                         </p>
 
@@ -162,41 +145,41 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
                                 { icon: <FaCheckCircle />, title: "AI-First Approach", desc: "Build with GenAI & Modern Stacks" },
                                 { icon: <FaCheckCircle />, title: "Elite Network", desc: "Direct referrals to 500+ partners" }
                             ].map((item, i) => (
-                                <div key={i} className="flex gap-4 p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors">
-                                    <div className="text-[#0F7B53] mt-0.5 text-lg">{item.icon}</div>
+                                <div key={i} className="flex gap-4 p-3.5 rounded-xl bg-white border border-slate-100 hover:border-emerald-200 hover:shadow-sm transition-all">
+                                    <div className="text-emerald-500 mt-0.5 text-lg">{item.icon}</div>
                                     <div>
-                                        <p className="text-gray-100 font-bold text-sm tracking-wide">{item.title}</p>
-                                        <p className="text-gray-400 text-[11px] leading-relaxed mt-1">{item.desc}</p>
+                                        <p className="text-slate-800 font-bold text-sm tracking-wide">{item.title}</p>
+                                        <p className="text-slate-500 text-[11px] leading-relaxed mt-0.5">{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="relative z-10 pt-8 mt-6 border-t border-white/10">
+                    <div className="relative z-10 pt-8 mt-6 border-t border-slate-200">
                         <div className="flex -space-x-3 mb-4">
                             {[SubhraImg, RudraImg, RohanImg, RajaImg, PrabhleenImg].map((img, i) => (
-                                <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 overflow-hidden shadow-lg transform hover:-translate-y-1 transition-transform">
+                                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 overflow-hidden shadow-sm transform hover:-translate-y-1 transition-transform">
                                     <img src={img} alt="alumni" className="w-full h-full object-cover object-top" />
                                 </div>
                             ))}
-                            <div className="w-10 h-10 rounded-full border-2 border-slate-900 bg-[#0F7B53] flex items-center justify-center text-[11px] font-bold text-white shadow-lg z-10">
+                            <div className="w-10 h-10 rounded-full border-2 border-white bg-emerald-600 flex items-center justify-center text-[11px] font-bold text-white shadow-sm z-10">
                                 +5k
                             </div>
                         </div>
-                        <p className="text-gray-400 text-[11px] font-medium leading-relaxed">Join 5000+ alumni working at top tech giants globally.</p>
+                        <p className="text-slate-500 text-[11px] font-medium leading-relaxed">Join 5000+ alumni working at top tech giants globally.</p>
                     </div>
                 </div>
 
                 {/* Right Side: Professional Form Column */}
-                <div className="w-full md:w-[62%] bg-white p-8 md:p-12 flex flex-col h-full overflow-hidden">
+                <div className="w-full md:w-[62%] bg-white pt-14 pb-6 px-6 md:p-12 flex flex-col h-full relative z-10 overflow-hidden">
                     {isSuccess ? (
                         <div className="flex flex-col items-center justify-center h-full text-center space-y-4 animate-in zoom-in duration-500">
-                            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-2">
-                                <FaCheckCircle className="text-emerald-500 text-5xl" />
+                            <div className="w-16 h-16 md:w-20 md:h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-2">
+                                <FaCheckCircle className="text-emerald-500 text-4xl md:text-5xl" />
                             </div>
-                            <h3 className="text-3xl font-black text-[#050d2f]">Successfully Sent!</h3>
-                            <p className="text-slate-500 max-w-sm mx-auto leading-relaxed text-sm">
+                            <h3 className="text-2xl md:text-3xl font-black text-[#050d2f]">Successfully Sent!</h3>
+                            <p className="text-slate-500 max-w-sm mx-auto leading-relaxed text-xs md:text-sm">
                                 Thank you for your application. Our team will review your details and connect with you shortly.
                             </p>
                             <button
@@ -207,19 +190,19 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
                             </button>
                         </div>
                     ) : (
-                        <>
-                            <div className="mb-0">
-                                <h3 className="text-2xl font-black text-[#050d2f]">
+                        <div className="flex flex-col h-full">
+                            <div className="mb-0 flex-shrink-0">
+                                <h3 className="text-xl md:text-2xl font-black text-[#050d2f]">
                                     {popupType === "brochure" ? "Download Curriculum" : "Program Application"}
                                 </h3>
-                                <p className="text-slate-400 text-sm mt-1">
+                                <p className="text-slate-400 text-xs md:text-sm mt-1">
                                     {popupType === "brochure" 
                                         ? "Complete the details to access the complete syllabus."
                                         : "Complete the steps below to secure your spot."}
                                 </p>
                             </div>
 
-                    <form id="advanced-apply-form" onSubmit={handleFormSubmit} className="mt-8 space-y-6 flex-1 overflow-y-auto px-1 custom-scrollbar pr-5 pb-20">
+                    <form id="advanced-apply-form" onSubmit={handleFormSubmit} className="mt-6 md:mt-8 space-y-5 flex-1 overflow-y-auto px-1 custom-scrollbar pr-3 md:pr-5 pb-6">
                         {/* Name & Phone Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="relative group">
@@ -234,7 +217,7 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         required
-                                        placeholder="John Carter"
+                                        placeholder="Rahul Sharma"
                                         className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/5 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
@@ -273,7 +256,7 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         required
-                                        placeholder="john.carter@example.com"
+                                        placeholder="rahul.sharma@example.com"
                                         className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/5 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
@@ -340,27 +323,12 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
 
                     </form>
                     
-                    {/* Submit Footer - Moved outside scrollable area */}
-                    <div className="pt-6 mt-auto flex gap-3 border-t border-slate-100 bg-white">
+                    {/* Submit Footer - Fixed at bottom */}
+                    <div className="pt-4 md:pt-6 mt-4 flex-shrink-0 flex gap-3 border-t border-slate-100 bg-white">
                         <button
                             type="button"
                             onClick={onClose}
-                            style={{
-                                flex: 1,
-                                padding: '16px',
-                                backgroundColor: '#f1f5f9',
-                                color: '#64748b',
-                                fontWeight: 'bold',
-                                borderRadius: '12px',
-                                border: 'none',
-                                cursor: 'pointer',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                fontSize: '11px',
-                                transition: 'background-color 0.2s ease'
-                            }}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e2e8f0'}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+                            className="hidden md:block flex-1 py-4 bg-slate-100 text-slate-500 hover:bg-slate-200 font-bold rounded-xl transition-all uppercase tracking-widest text-[11px]"
                         >
                             Cancel
                         </button>
@@ -368,13 +336,13 @@ const AdvancedApplyPopup = ({ onClose, initialDomain = "", onSuccess, popupType 
                             type="submit"
                             form="advanced-apply-form"
                             disabled={loading}
-                            className="flex-[2] py-4 bg-emerald-600 text-white font-black rounded-xl hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-600/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-2 group"
+                            className="flex-[2] py-4 bg-emerald-600 text-white font-black rounded-xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/30 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-2 group"
                         >
-                            {loading ? "Securely Submitting..." : (popupType === "brochure" ? "Get Brochure" : "Send Application")} 
+                            {loading ? "Submitting..." : (popupType === "brochure" ? "Get Brochure" : "Apply Now")} 
                             <span className="group-hover:translate-x-1 transition-transform">→</span>
                         </button>
                     </div>
-                        </>
+                        </div>
                     )}
                 </div>
             </div>

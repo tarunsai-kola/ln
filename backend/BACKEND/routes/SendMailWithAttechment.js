@@ -86,7 +86,7 @@ const nodemailer = require("nodemailer");
 const formidable = require("formidable"); 
 const path = require("path");
 const fs = require("fs");
-const { transporter } = require("../utils/emailService");
+const { transporter, operationsTransporter } = require("../utils/emailService");
 const { buildPremiumEmail, SVGS, COMPANY_NAME, COMPANY_SUPPORT_EMAIL } = require("../utils/emailTemplate");
 
 router.post("/sendedOfferLetterMail", (req, res) => {
@@ -136,7 +136,7 @@ router.post("/sendedOfferLetterMail", (req, res) => {
 
 
       const mailOptions = {
-        from: process.env.SMTP_NOREPLY_EMAIL,
+        from: process.env.SMTP_OPERATIONS_EMAIL,
        
         subject: `Offer Letter - ${domain} Intern`,
         html: emailMessage,
@@ -146,7 +146,7 @@ router.post("/sendedOfferLetterMail", (req, res) => {
       console.log("Sending email with attachment path:", file.path);
       // Send the email
       await new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, (error, info) => {
+        operationsTransporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             console.error("Error sending email:", error);
             reject(error);

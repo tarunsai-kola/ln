@@ -39,8 +39,16 @@ exports.markAttendance = async (req, res) => {
 
     const key = `attendance:${userId}:${today}`;
 
-    // Check if already marked today in Redis
-    const exists = await redis.get(key);
+    // Check if already marked today
+    let exists = false;
+    try {
+      exists = await redis.get(key);
+    } catch (redisErr) {
+      console.warn("Redis get failed (falling back to DB):", redisErr.message);
+      const dbExists = await Attendance.findOne({ userId, date: today });
+      if (dbExists) exists = true;
+    }
+
     if (exists) return res.status(400).json({ error: "Already marked today" });
 
     // Office location (configurable in .env)
@@ -80,7 +88,11 @@ exports.markAttendance = async (req, res) => {
     });
 
     // Cache in Redis for 24 hours
-    await redis.set(key, "1", { ex: 86400 });
+    try {
+      await redis.set(key, "1", { ex: 86400 });
+    } catch (redisErr) {
+      console.warn("Redis set failed (ignoring):", redisErr.message);
+    }
 
     res.json({ success: true, message: "Attendance marked successfully" });
   } catch (error) {

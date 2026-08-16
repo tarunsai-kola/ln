@@ -136,11 +136,25 @@ const AdvProjectPage = () => {
         setSelectedCourseId(project.courseId?._id || project.courseId);
         setTitle(project.title);
         setDescription(project.description);
-        setLevel(project.level);
-        const rawRoadmap = project.roadmap instanceof Map ? Object.fromEntries(project.roadmap) : project.roadmap;
+        setLevel(project.level || "Beginner");
+        
+        let parsedRoadmap = project.roadmap;
+        if (typeof parsedRoadmap === 'string') {
+            try { parsedRoadmap = JSON.parse(parsedRoadmap); } 
+            catch (e) { parsedRoadmap = {}; }
+        }
+        const rawRoadmap = (typeof parsedRoadmap === 'object' && parsedRoadmap !== null) ? parsedRoadmap : {};
+        
         const fullRoadmap = {};
         for (let i = 1; i <= 24; i++) {
-            fullRoadmap[i] = rawRoadmap[i] || { phase: "", tasks: ["", "", "", "", ""] };
+            const phaseData = rawRoadmap[i] || {};
+            const tasksArray = Array.isArray(phaseData.tasks) ? [...phaseData.tasks] : ["", "", "", "", ""];
+            while (tasksArray.length < 5) tasksArray.push("");
+            
+            fullRoadmap[i] = { 
+                phase: phaseData.phase || "", 
+                tasks: tasksArray.slice(0, 5) 
+            };
         }
         setRoadmap(fullRoadmap);
         setIsFormVisible(true);
@@ -169,7 +183,7 @@ const AdvProjectPage = () => {
             
             {/* Form Overlay Modal */}
             {isFormVisible && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="bg-white border border-slate-200 shadow-2xl rounded-3xl w-full max-w-5xl overflow-hidden flex flex-col max-h-[95vh] animate-in zoom-in-95 duration-300">
                         
                         {/* Modal Header */}

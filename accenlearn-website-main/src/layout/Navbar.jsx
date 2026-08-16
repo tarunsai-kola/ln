@@ -86,18 +86,17 @@ const Navbar = () => {
   };
 
   const isTechPage = location.pathname === "/programs/tech-it" || location.pathname === "/programs/management" || location.pathname === "/programs/medical";
-  const forceSolidBg = isScrolled || isTechPage;
-
-  const textColor = "text-slate-600 hover:text-slate-900";
-  const loginTextColor = "text-slate-700 hover:text-blue-600";
+  
+  const textColor = "text-slate-800 hover:text-blue-600";
+  const loginTextColor = "text-slate-800 hover:text-blue-600";
   const underlineBg = "bg-blue-600";
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-out select-none ${
-        forceSolidBg
-          ? "bg-white/95 backdrop-blur-xl border-b border-slate-200/50 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.03)]"
-          : "bg-transparent py-5"
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-out select-none bg-[rgba(255,255,255,0.92)] backdrop-blur-md ${
+        isScrolled
+          ? "py-3 shadow-md border-b border-gray-200"
+          : "py-5 shadow-sm border-b border-transparent"
       }`}
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">

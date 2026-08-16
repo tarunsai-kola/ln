@@ -38,6 +38,11 @@ const CertificateSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  verifyCode: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
 }, { timestamps: true });
 
 // ✅ FIX #2: Add Database Indexes for faster queries

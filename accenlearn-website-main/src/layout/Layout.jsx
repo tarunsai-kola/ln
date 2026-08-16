@@ -160,7 +160,7 @@ const Layout = () => {
 
       {/* Homepage hero */}
       {location.pathname === "/" && (
-        <div className="w-full">
+        <div className="w-full pt-[90px] md:pt-[100px]">
           <Hero />
         </div>
       )}
