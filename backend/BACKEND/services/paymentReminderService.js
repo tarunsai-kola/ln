@@ -64,7 +64,7 @@ const generateReminderEmail = (student) => {
     </div>
     
     <div class="cta-container">
-        <a href="https://smartpay.easebuzz.in/219610/Accenlearn" target="_blank" class="cta-button">
+        <a href="https://pages.razorpay.com/pl_TRiygaO4jzqd0n/view" target="_blank" class="cta-button">
             Proceed to Payment
         </a>
         <a href="https://wa.me/917829102936?text=Hi%2C%20I%20need%20help%20with%20payment%20for%20${encodeURIComponent(student.fullname)}" target="_blank" class="cta-button secondary">
@@ -129,7 +129,7 @@ const sendPaymentReminders = async () => {
           email: reminder.email,
           subject: `Payment Reminder - Pending Amount ₹${pendingAmount.toLocaleString('en-IN')} - ${COMPANY_NAME}`,
           message: emailHTML,
-          
+
         });
 
         // Update reminder record

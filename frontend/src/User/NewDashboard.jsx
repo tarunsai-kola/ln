@@ -515,7 +515,7 @@ const NewDashboard = () => {
                               )}
                               {!isFullyPaid && (
                                 <a
-                                  href="https://smartpay.easebuzz.in/219610/Accenlearn"
+                                  href="https://pages.razorpay.com/pl_TRiygaO4jzqd0n/view"
                                   target="_blank"
                                   className="flex-1 min-w-[140px] bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
                                 >
@@ -582,13 +582,13 @@ const NewDashboard = () => {
                             )}
                           </td>
                           <td className="p-4 text-right">
-                              <button
-                                onClick={() => { setShowTraining(false); setSelectedCertificate(certificate); }}
-                                className="text-primary hover:text-orange-700 font-medium inline-flex items-center gap-1"
-                              >
-                                View
-                                <span className="material-symbols-outlined text-[16px]">open_in_new</span>
-                              </button>
+                            <button
+                              onClick={() => { setShowTraining(false); setSelectedCertificate(certificate); }}
+                              className="text-primary hover:text-orange-700 font-medium inline-flex items-center gap-1"
+                            >
+                              View
+                              <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                            </button>
                           </td>
                         </tr>
                       ) : (

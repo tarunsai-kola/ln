@@ -15,6 +15,7 @@ const PricingFAQ = ({ onEnroll }) => {
       subtitle: "Learn at your own pace",
       price: "6,999",
       subtext: "Enroll now to enjoy extra early bird discounts!",
+      enrollLink: "https://pages.razorpay.com/Self-Guided-Slot-Booking",
       features: [
         { name: "Record Session", active: true },
         { name: "Hands On Project", active: true },
@@ -35,6 +36,7 @@ const PricingFAQ = ({ onEnroll }) => {
       subtitle: "Get real time assistance",
       price: "9,999",
       subtext: "Enroll now to enjoy extra early bird discounts!",
+      enrollLink: "https://pages.razorpay.com/Instructor-Slot-Booking",
       features: [
         { name: "All benefits of Self-Guided", active: true },
         { name: "Live Sessions", active: true },
@@ -53,6 +55,7 @@ const PricingFAQ = ({ onEnroll }) => {
       subtitle: "Get Job ready",
       price: "15,999",
       subtext: "Enroll now to enjoy extra early bird discounts!",
+      enrollLink: "https://pages.razorpay.com/career-advancement-slotbooking",
       features: [
         { name: "All benefits of Self-Guided + Instructor-Led", active: true },
         { name: "Placement Assistance", active: true },
@@ -138,13 +141,13 @@ const PricingFAQ = ({ onEnroll }) => {
               {/* Buttons */}
               <div className="space-y-3 mt-auto">
                 <button 
-                  onClick={onEnroll}
+                  onClick={() => window.open(tier.enrollLink, "_blank")}
                   className="w-full py-3.5 border-2 border-slate-900 text-slate-900 font-bold rounded-xl hover:bg-slate-900 hover:text-white transition-colors"
                 >
                   Enroll Now ↗
                 </button>
                 <button 
-                  onClick={onEnroll}
+                  onClick={() => window.open("https://pages.razorpay.com/pl_TRiygaO4jzqd0n/view", "_blank")}
                   className="w-full py-3.5 border-2 border-slate-900 text-slate-900 font-bold rounded-xl hover:bg-slate-900 hover:text-white transition-colors"
                 >
                   Full Registration ↗

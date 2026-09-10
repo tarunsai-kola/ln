@@ -363,7 +363,7 @@ router.post("/sendedOnboardingMail", async (req, res) => {
     <p>If you wish to clear your pending amount of <strong style="color: #0f172a;">${pendingAmount} INR</strong> in advance to expedite your participation in projects, please use the button below:</p>
     
     <div style="text-align: center; margin: 35px 0;">
-        <a href="https://smartpay.easebuzz.in/219610/Accenlearn" target="_blank" class="cta-button" style="background-color: #10b981; border: none; font-weight: 600; padding: 12px 24px;">Pay Pending Amount</a>
+        <a href="https://pages.razorpay.com/pl_TRiygaO4jzqd0n/view" target="_blank" class="cta-button" style="background-color: #10b981; border: none; font-weight: 600; padding: 12px 24px;">Pay Pending Amount</a>
     </div>
 
     <p style="margin-top: 25px;">Once again, welcome to ${COMPANY_NAME}'s ${domain}. We look forward to embarking on this learning journey with you! For any questions, contact us at <a href="mailto:${COMPANY_SUPPORT_EMAIL}">${COMPANY_SUPPORT_EMAIL}</a>.</p>
