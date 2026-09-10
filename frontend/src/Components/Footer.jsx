@@ -1,7 +1,7 @@
 import React from "react";
 import { FaInstagram, FaLinkedin, FaFacebook, FaPhone, FaEnvelope, FaQuestionCircle } from "react-icons/fa";
 
-const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.in";
+const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.com";
 
 const CONTACT_INFO = [
   { id: 1, icon: FaPhone, value: "+91 9344322482" },
@@ -110,7 +110,7 @@ const Footer = () => {
               onClick={() => window.location.href = `${MAIN_URL}/internship`}
               className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-7 py-3.5 rounded-xl shadow-[0_8px_30px_rgba(79,70,229,0.35)] hover:shadow-[0_12px_35px_rgba(79,70,229,0.5)] hover:-translate-y-0.5 transition-all duration-200 text-sm"
             >
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
               Enquire Now
             </button>
           </div>

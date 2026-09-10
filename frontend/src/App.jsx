@@ -488,7 +488,7 @@ const AppContent = () => {
 
       {/* Redirects to Main Website */}
       <Routes>
-        <Route path="/" element={<ExternalRedirect url={import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.in/"} />} />
+        <Route path="/" element={<ExternalRedirect url={import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.com"} />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/LoginWithOtp" element={<LoginWithOtp />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />

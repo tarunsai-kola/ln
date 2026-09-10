@@ -5,7 +5,7 @@ import { RiMenu3Fill, RiArrowDownSLine } from "react-icons/ri";
 import logo from "../assets/accenlearn-logo.png";
 import AdvancedApplyPopup from "./AdvancedApplyPopup";
 
-const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.in";
+const MAIN_URL = import.meta.env.VITE_MAIN_WEBSITE_URL || "https://accenlearn.com";
 
 const NAV_LINKS = [
   {

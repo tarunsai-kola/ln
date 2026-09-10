@@ -337,7 +337,7 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
                                     </div>
 
                                     <div class="cta-wrapper">
-                                        <a href="https://Accenlearn.in" class="button">Explore Success Stories</a>
+                                        <a href="https://accenlearn.com" class="button">Explore Success Stories</a>
                                     </div>
                                 </td>
                             </tr>
@@ -346,7 +346,7 @@ const sendEnrollmentFormWelcomeEmail = async (userEmail, userName, domainName) =
                             <p class="footer-text">
                                 &copy; 2024 Accenlearn. Professional Excellence.<br>
                                 You are receiving this because you applied for the Accenlearn Advanced Program.<br>
-                                <a href="https://Accenlearn.in" style="color: #6366f1; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #6366f1; text-decoration: none;">Privacy Policy</a>
+                                <a href="https://accenlearn.com" style="color: #6366f1; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #6366f1; text-decoration: none;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>
@@ -516,7 +516,7 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
                                     </div>
 
                                     <div class="cta-wrapper">
-                                        <a href="https://Accenlearn.in" class="button">Visit Our Platform</a>
+                                        <a href="https://accenlearn.com" class="button">Visit Our Platform</a>
                                         ${whatsappLink ? `
                                         <div style="margin-top: 20px;">
                                             <a href="${whatsappLink}" class="button" style="background-color: #25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">
@@ -532,7 +532,7 @@ const sendMasterclassWelcomeEmail = async (userEmail, userName, masterclassTitle
                             <p class="footer-text">
                                 &copy; 2024 Accenlearn. Professional Excellence.<br>
                                 You are receiving this because you registered for a Accenlearn Masterclass.<br>
-                                <a href="https://Accenlearn.in" style="color: #ff6b2d; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #ff6b2d; text-decoration: none;">Privacy Policy</a>
+                                <a href="https://accenlearn.com" style="color: #ff6b2d; text-decoration: none;">Visit Website</a> &bull; <a href="#" style="color: #ff6b2d; text-decoration: none;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>
@@ -595,7 +595,7 @@ const sendMasterclassDailyReminder = async (userEmail, userName, masterclassTitl
                                     </div>
 
                                     <div style="text-align: center; margin-top: 40px;">
-                                        <a href="https://Accenlearn.in" class="button">Visit Platform</a>
+                                        <a href="https://accenlearn.com" class="button">Visit Platform</a>
                                         ${whatsappLink ? `
                                         <div style="margin-top: 20px;">
                                             <a href="${whatsappLink}" class="button" style="background-color: #25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);">Join WhatsApp Community</a>
@@ -951,11 +951,11 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
     }
 };
 
-module.exports = { 
+module.exports = {
     transporter,
     operationsTransporter,
-    sendWelcomeEmail, 
-    sendCredentialsEmail, 
+    sendWelcomeEmail,
+    sendCredentialsEmail,
     sendCollegeCredentialsEmail,
     sendEnrollmentFormWelcomeEmail,
     sendMasterclassWelcomeEmail,
