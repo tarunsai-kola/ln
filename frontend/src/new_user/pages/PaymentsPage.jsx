@@ -40,7 +40,7 @@ const PaymentsPage = () => {
         const name = userData?.fullname || "Student";
         const email = userData?.email || "";
         const msg = `Hello, I need help with my payment.\nName: ${name}\nEmail: ${email}\nDomain: ${domainName}\nProgram: ${enrollment?.program || ""}\nPaid: ${fmt(paidAmount)} / ${fmt(programPrice)}\nRemaining: ${fmt(remainingAmount)}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+        window.open(`https://wa.me/919344322482?text=${encodeURIComponent(msg)}`, "_blank");
     };
 
     if (loading) {

@@ -244,7 +244,7 @@ router.post("/send-email", async (req, res) => {
       </div>
 
       <div style="text-align: center; margin: 30px 0;">
-          <a href="https://www.Accenlearn.com/login" target="_blank" class="cta-button">Access Your Dashboard</a>
+          <a href="https://user.accenlearn.com/login" target="_blank" class="cta-button">Access Your Dashboard</a>
       </div>
 
       <div class="highlight-box" style="background: #fefce8; border-left-color: #eab308; margin-top: 25px;">

@@ -9,7 +9,8 @@ const Ops = require("../models/CreateOperation");
 const HR = require("../models/CreateHR");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const redis = require("../config/redis");
+// const redis = require("../config/redis");
+const otpStore = new Map(); // Simple in-memory fallback for local dev
 const { sendEmail } = require("./emailController");
 
 const JWT_SECRET = process.env.JWT_SECRET || "ACCENLEARNCAMPUS24";
@@ -92,7 +93,11 @@ exports.sendOtp = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     // Store OTP in Redis for 5 minutes (300 seconds)
-    await redis.set(`otp:${email.toLowerCase()}`, otp, { ex: 300 });
+    // await redis.set(`otp:${email.toLowerCase()}`, otp, { ex: 300 });
+    otpStore.set(email.toLowerCase(), {
+      otp: otp.toString(),
+      expiresAt: Date.now() + 5 * 60 * 1000
+    });
 
     // Send Real Email
     const emailData = {
@@ -134,11 +139,15 @@ exports.verifyOtp = async (req, res) => {
     const { email, otp } = req.body;
     if (!email || !otp) return res.status(400).json({ error: "Email and OTP are required" });
 
-    const stored = await redis.get(`otp:${email.toLowerCase()}`);
+    // const stored = await redis.get(`otp:${email.toLowerCase()}`);
+    const record = otpStore.get(email.toLowerCase());
+    const stored = record && record.expiresAt > Date.now() ? record.otp : null;
 
     if (!stored || stored != otp) {
       return res.status(400).json({ error: "Invalid or expired OTP" });
     }
+    
+    otpStore.delete(email.toLowerCase()); // Clean up after successful use
 
     const user = await AtdUser.findOne({ email: email.toLowerCase() });
     if (!user) return res.status(404).json({ error: "User not found" });

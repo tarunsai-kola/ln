@@ -68,6 +68,29 @@ const CertificatePage = () => {
             return;
         }
 
+        // --- VALIDATION 1: Payment Check ---
+        const programPrice = enrollment.programPrice || 0;
+        const paidAmount = enrollment.paidAmount || 0;
+        const pendingAmount = programPrice - paidAmount;
+        const isFullPaid = pendingAmount <= 0 || enrollment.status === "fullPaid";
+        
+        if (!isFullPaid) {
+            toast.error(`You must complete your full payment before applying. Pending Amount: ₹${pendingAmount}`);
+            return;
+        }
+
+        // --- VALIDATION 2: 2 Months Duration Check ---
+        if (enrollment.createdAt) {
+            const enrollDate = new Date(enrollment.createdAt);
+            const twoMonthsLater = new Date(enrollDate);
+            twoMonthsLater.setMonth(enrollDate.getMonth() + 2);
+
+            if (new Date() < twoMonthsLater) {
+                toast.error(`You can only apply for your certificate 2 months after enrollment (${twoMonthsLater.toLocaleDateString()}).`);
+                return;
+            }
+        }
+
         if (!window.confirm("Are you sure your internship is complete? If not, please cancel. If it's complete, click 'OK' to proceed.")) {
             return;
         }

@@ -23,6 +23,11 @@ const TrainingPage = () => {
     const sessionsData = sessionsDataRes || {};
     const sessions = Object.entries(sessionsData);
 
+    const programPrice = enrollment?.programPrice ?? 0;
+    const paidAmount = enrollment?.paidAmount ?? 0;
+    const pendingAmount = programPrice - paidAmount;
+    const isFullPaid = pendingAmount <= 0 || enrollment?.status === "fullPaid";
+
     const totalSessions = enrollment?.progressStats?.totalSessionsCount || 0;
     const watchedSessions = enrollment?.progressStats?.watchedSessionsCount || 0;
 
@@ -60,8 +65,9 @@ const TrainingPage = () => {
             ) : (
                 <div className="nd-session-list">
                     {sessions.map(([key, session], idx) => {
-                        const isWatched = idx < watchedSessions;
-                        const isCurrent = idx === watchedSessions;
+                        const isLockedByPayment = !isFullPaid && idx >= 1;
+                        const isWatched = idx < watchedSessions && !isLockedByPayment;
+                        const isCurrent = idx === watchedSessions && !isLockedByPayment;
                         return (
                             <div key={key} className={`nd-session-card ${isWatched ? "nd-session-watched" : ""} ${isCurrent ? "nd-session-current" : ""}`}>
                                 <div className="nd-session-number">
@@ -98,6 +104,10 @@ const TrainingPage = () => {
                                             <span className="material-symbols-outlined">replay</span>
                                             Rewatch
                                         </button>
+                                    ) : isLockedByPayment ? (
+                                        <span className="nd-session-locked" onClick={() => toast.error(`You must complete your full payment to unlock Session ${idx + 1}. Pending Amount: ₹${pendingAmount}`)} style={{ cursor: "pointer" }}>
+                                            <span className="material-symbols-outlined">lock</span>
+                                        </span>
                                     ) : (
                                         <span className="nd-session-locked">
                                             <span className="material-symbols-outlined">lock</span>

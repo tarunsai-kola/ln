@@ -146,10 +146,14 @@ router.get("/daily-targets/:id", async (req, res) => {
 // ADV Team Leaderboard
 router.get("/adv-leaderboard", async (req, res) => {
     try {
-        const { date, month, year } = req.query;
+        const { date, month, year, period } = req.query;
         let startDate, endDate;
 
-        if (month && year) {
+        if (period === 'last3months') {
+            const now = new Date();
+            startDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+            endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        } else if (month && year) {
             startDate = new Date(year, parseInt(month) - 1, 1);
             endDate = new Date(year, parseInt(month), 1);
         } else {
@@ -196,10 +200,19 @@ router.get("/adv-leaderboard", async (req, res) => {
             {
                 $group: {
                     _id: "$counselor",
-                    revenue: { $sum: "$programPrice" }
+                    revenue: { $sum: "$programPrice" },
+                    paymentCount: { $sum: 1 }
                 }
             }
         ]);
+
+        const teamMembers = await AdvTeamMember.find().select("fullname team");
+        const teamMap = {};
+        teamMembers.forEach(tm => {
+            if (tm.fullname) {
+                teamMap[tm.fullname.trim()] = tm.team || "N/A";
+            }
+        });
 
         const mergedStats = {};
         
@@ -207,9 +220,11 @@ router.get("/adv-leaderboard", async (req, res) => {
             if (stat.name) {
                 mergedStats[stat.name] = {
                     name: stat.name,
+                    team: teamMap[stat.name.trim()] || "N/A",
                     callCount: stat.callCount,
                     talkTime: stat.talkTime,
-                    revenue: 0
+                    revenue: 0,
+                    paymentCount: 0
                 };
             }
         });
@@ -219,12 +234,15 @@ router.get("/adv-leaderboard", async (req, res) => {
                 if (!mergedStats[stat._id]) {
                     mergedStats[stat._id] = {
                         name: stat._id,
+                        team: teamMap[stat._id.trim()] || "N/A",
                         callCount: 0,
                         talkTime: 0,
-                        revenue: 0
+                        revenue: 0,
+                        paymentCount: 0
                     };
                 }
                 mergedStats[stat._id].revenue = stat.revenue;
+                mergedStats[stat._id].paymentCount = stat.paymentCount;
             }
         });
 

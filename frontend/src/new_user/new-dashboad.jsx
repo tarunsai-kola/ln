@@ -659,7 +659,7 @@ const PaymentsSection = ({ enrollment, userData }) => {
         const name = userData?.fullname || "Student";
         const email = userData?.email || "";
         const msg = `Hello, I need help with my payment.\nName: ${name}\nEmail: ${email}\nProgram: ${enrollment?.program || ""}\nPaid: ₹${paidAmount.toLocaleString()} / ₹${programPrice.toLocaleString()}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+        window.open(`https://wa.me/919344322482?text=${encodeURIComponent(msg)}`, "_blank");
     };
 
     return (

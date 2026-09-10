@@ -4,7 +4,7 @@ import API from "../API";
 
 const AdvLeaderBoard = () => {
   const [data, setData] = useState([]);
-  const [monthlyData, setMonthlyData] = useState([]);
+  const [last3MonthsData, setLast3MonthsData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
   const fetchDailyLeaderboard = async () => {
@@ -18,41 +18,43 @@ const AdvLeaderBoard = () => {
     }
   };
 
-  const fetchMonthlyLeaderboard = async () => {
+  const fetchLast3MonthsLeaderboard = async () => {
     try {
       const dateObj = new Date(selectedDate);
-      const month = dateObj.getMonth() + 1;
-      const year = dateObj.getFullYear();
+      const monthsToFetch = [];
+      for (let i = 0; i < 3; i++) {
+        const d = new Date(dateObj.getFullYear(), dateObj.getMonth() - i, 1);
+        monthsToFetch.push({
+          month: d.getMonth() + 1,
+          year: d.getFullYear(),
+          label: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+        });
+      }
+
+      const promises = monthsToFetch.map(m => 
+        axios.get(`${API}/api/adv-reports/adv-leaderboard`, { params: { month: m.month, year: m.year } })
+      );
       
-      const response = await axios.get(`${API}/api/adv-reports/adv-leaderboard`, {
-        params: { month, year }
+      const responses = await Promise.all(promises);
+      
+      const combined = monthsToFetch.map((m, index) => {
+        const monthData = responses[index].data;
+        const topRevenue = [...monthData].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
+        return { label: m.label, data: topRevenue };
       });
-      setMonthlyData(response.data);
+
+      setLast3MonthsData(combined);
     } catch (error) {
-      console.error("Error fetching monthly leaderboard:", error);
+      console.error("Error fetching last 3 months leaderboard:", error);
     }
   };
 
   useEffect(() => {
     fetchDailyLeaderboard();
-    fetchMonthlyLeaderboard();
+    fetchLast3MonthsLeaderboard();
   }, [selectedDate]);
 
-  const formatTalkTime = (seconds) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    return `${hrs}h ${mins}m`;
-  };
-
-  const topCallers = [...data].sort((a, b) => b.callCount - a.callCount).slice(0, 10);
-  const topSpeakers = [...data].sort((a, b) => b.talkTime - a.talkTime).slice(0, 10);
   const topRevenue = [...data].sort((a, b) => b.revenue - a.revenue).slice(0, 10);
-
-  const topMonthlyCallers = [...monthlyData].sort((a, b) => b.callCount - a.callCount).slice(0, 10);
-  const topMonthlySpeakers = [...monthlyData].sort((a, b) => b.talkTime - a.talkTime).slice(0, 10);
-  const topMonthlyRevenue = [...monthlyData].sort((a, b) => b.revenue - a.revenue).slice(0, 10);
-
-  const monthName = new Date(selectedDate).toLocaleString('default', { month: 'long', year: 'numeric' });
 
   const customStyles = `
     .ent-container {
@@ -225,31 +227,46 @@ const AdvLeaderBoard = () => {
     }
   `;
 
-  const renderPanel = (title, iconClass, dataList, dataKey, formatter = (val) => val) => {
-    const validData = dataList.filter(u => u[dataKey] > 0);
+  const renderTable = (dataList) => {
+    const validData = dataList.filter(u => u.revenue > 0);
+    const totalPayments = validData.reduce((sum, item) => sum + (item.paymentCount || 0), 0);
 
     return (
-      <div className="ent-panel">
-        <div className="ent-panel-header">
-          <i className={`fa ${iconClass} ent-panel-icon`}></i>
-          <h4>{title}</h4>
+      <div style={{ background: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', overflow: 'hidden', margin: '16px 0 40px 0', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px', background: '#fff' }}>
+          <span style={{ fontSize: '18px' }}>💰</span>
+          <span style={{ fontWeight: '600', color: '#0f172a', fontSize: '15px' }}>Total Payment Count: <span style={{ color: '#475569', fontWeight: '500' }}>{totalPayments}</span></span>
         </div>
-        
-        {validData.length === 0 ? (
-          <div className="ent-empty">No data to display</div>
-        ) : (
-          <div className="ent-list">
-            {validData.map((user, idx) => (
-              <div key={idx} className="ent-list-item">
-                <div className={`ent-rank ${idx < 3 ? `rank-${idx + 1}` : ''}`}>
-                  {idx + 1}
-                </div>
-                <div className="ent-name">{user.name}</div>
-                <div className="ent-value">{formatter(user[dataKey])}</div>
-              </div>
-            ))}
-          </div>
-        )}
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
+            <thead>
+              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#1e293b', fontSize: '13px' }}>
+                <th style={{ padding: '12px 16px', fontWeight: '600', borderRight: '1px solid #e2e8f0' }}>Rank</th>
+                <th style={{ padding: '12px 16px', fontWeight: '600', borderRight: '1px solid #e2e8f0' }}>Name</th>
+                <th style={{ padding: '12px 16px', fontWeight: '600', borderRight: '1px solid #e2e8f0' }}>Team</th>
+                <th style={{ padding: '12px 16px', fontWeight: '600', borderRight: '1px solid #e2e8f0' }}>Gross Revenue (Program Price)</th>
+                <th style={{ padding: '12px 16px', fontWeight: '600' }}>No. of Payments</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validData.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ padding: '32px', color: '#64748b' }}>No data to display</td>
+                </tr>
+              ) : (
+                validData.map((user, idx) => (
+                  <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background-color 0.15s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                    <td style={{ padding: '14px 16px', borderRight: '1px solid #e2e8f0', color: '#475569' }}>#{idx + 1}</td>
+                    <td style={{ padding: '14px 16px', borderRight: '1px solid #e2e8f0', textTransform: 'capitalize', color: '#0f172a', fontWeight: '500' }}>{user.name}</td>
+                    <td style={{ padding: '14px 16px', borderRight: '1px solid #e2e8f0', textTransform: 'uppercase', color: '#334155' }}>{user.team || 'N/A'}</td>
+                    <td style={{ padding: '14px 16px', borderRight: '1px solid #e2e8f0', color: '#0f172a', fontWeight: '500' }}>₹ {user.revenue.toLocaleString()}</td>
+                    <td style={{ padding: '14px 16px', color: '#0f172a' }}>{user.paymentCount || 0}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
@@ -276,28 +293,20 @@ const AdvLeaderBoard = () => {
         </div>
 
         {/* --- DAILY SECTION --- */}
-        <h2 className="ent-section-title">
-          Daily Overview 
-          <span className="ent-badge">{selectedDate}</span>
-        </h2>
-        
-        <div className="ent-grid">
-          {renderPanel("Revenue", "fa-line-chart", topRevenue, "revenue", (val) => `₹${val.toLocaleString()}`)}
-          {renderPanel("Call Volume", "fa-phone", topCallers, "callCount", (val) => val)}
-          {renderPanel("Talk Time", "fa-clock-o", topSpeakers, "talkTime", formatTalkTime)}
+        <div style={{ fontSize: '18px', color: '#1e293b', padding: '10px 0', borderBottom: '1px solid #e2e8f0', marginTop: '20px' }}>
+          Daily Overview ({selectedDate})
         </div>
+        {renderTable(topRevenue)}
 
-        {/* --- MONTHLY SECTION --- */}
-        <h2 className="ent-section-title">
-          Monthly Overview 
-          <span className="ent-badge">{monthName}</span>
-        </h2>
-        
-        <div className="ent-grid">
-          {renderPanel("Revenue", "fa-line-chart", topMonthlyRevenue, "revenue", (val) => `₹${val.toLocaleString()}`)}
-          {renderPanel("Call Volume", "fa-phone", topMonthlyCallers, "callCount", (val) => val)}
-          {renderPanel("Talk Time", "fa-clock-o", topMonthlySpeakers, "talkTime", formatTalkTime)}
-        </div>
+        {/* --- LAST 3 MONTHS SECTIONS --- */}
+        {last3MonthsData.map((monthData, index) => (
+          <React.Fragment key={index}>
+            <div style={{ fontSize: '18px', color: '#1e293b', padding: '10px 0', borderBottom: '1px solid #e2e8f0', marginTop: '20px' }}>
+              {monthData.label}
+            </div>
+            {renderTable(monthData.data)}
+          </React.Fragment>
+        ))}
 
       </div>
     </>

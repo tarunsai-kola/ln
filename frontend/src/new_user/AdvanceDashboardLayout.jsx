@@ -26,6 +26,11 @@ const sidebarItems = [
 const Sidebar = ({ collapsed, setCollapsed, onLogout, mobileOpen, setMobileOpen }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { enrollment } = useDashboard();
+
+    const programPrice = enrollment?.programPrice ?? 0;
+    const paidAmount = enrollment?.paidAmount ?? 0;
+    const isFullPaid = (programPrice > 0 && programPrice - paidAmount <= 0) || enrollment?.status === "fullPaid";
 
     const isActive = (item) => {
         if (item.id === "overview") {
@@ -87,6 +92,24 @@ const Sidebar = ({ collapsed, setCollapsed, onLogout, mobileOpen, setMobileOpen 
                                 </span>
                                 {(!collapsed || mobileOpen) && <span className="nd-sidebar-item-label">{item.label}</span>}
                             </a>
+                        );
+                    }
+
+                    const restrictedItems = ["internship", "exercise", "placement", "resume-builder", "meeting", "certificates", "profile"];
+                    if (restrictedItems.includes(item.id) && !isFullPaid) {
+                        return (
+                            <button
+                                key={item.id}
+                                className={`nd-sidebar-item`}
+                                onClick={() => toast.error(`You must complete your full payment to access ${item.label}.`)}
+                                title={collapsed && !mobileOpen ? item.label : ""}
+                                style={{ opacity: 0.5, cursor: "not-allowed" }}
+                            >
+                                <span className={`material-symbols-outlined nd-sidebar-item-icon`}>
+                                    {item.icon}
+                                </span>
+                                {(!collapsed || mobileOpen) && <span className="nd-sidebar-item-label">{item.label}</span>}
+                            </button>
                         );
                     }
 

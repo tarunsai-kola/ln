@@ -604,25 +604,7 @@ router.get("/advgetdailyrevenue", async (req, res) => {
       },
       {
         $addFields: {
-          isCredited: {
-            $or: [
-              { $eq: ["$status", "fullPaid"] },
-              {
-                $and: [
-                  { $isArray: "$remark" },
-                  { $gt: [{ $size: "$remark" }, 0] },
-                  { $eq: [{ $arrayElemAt: ["$remark", -1] }, "Half_Cleared"] }
-                ]
-              }
-            ]
-          }
-        }
-      },
-      {
-        $addFields: {
-          creditedAmount: {
-            $cond: { if: "$isCredited", then: "$paidAmount", else: 0 }
-          }
+          creditedAmount: "$paidAmount"
         }
       },
       {
@@ -686,26 +668,7 @@ router.get("/advgetmonthlyrevenue", verifyAnyAuth, async (req, res) => {
       },
       {
         $addFields: {
-          // Determine if credited based on status or remark (matching frontend logic)
-          isCredited: {
-            $or: [
-              { $eq: ["$status", "fullPaid"] },
-              {
-                $and: [
-                  { $isArray: "$remark" },
-                  { $gt: [{ $size: "$remark" }, 0] },
-                  { $eq: [{ $arrayElemAt: ["$remark", -1] }, "Half_Cleared"] }
-                ]
-              }
-            ]
-          }
-        }
-      },
-      {
-        $addFields: {
-          creditedAmount: {
-            $cond: { if: "$isCredited", then: "$paidAmount", else: 0 }
-          }
+          creditedAmount: "$paidAmount"
         }
       },
       {
@@ -803,8 +766,12 @@ router.get("/advreferrals", verifyAnyAuth, async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 50;
     const skip = (page - 1) * limit;
+    const counselor = req.query.counselor;
 
     const query = { referFriend: { $exists: true, $ne: "" } };
+    if (counselor) {
+      query.counselor = counselor;
+    }
 
     const referrals = await AdvEnroll.find(query)
       .sort({ createdAt: -1 })
