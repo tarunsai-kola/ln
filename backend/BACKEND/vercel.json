@@ -13,11 +13,13 @@
     }
   ],
   "crons": [
-   
     {
       "path": "/api/cron/auto-assign",
       "schedule": "30 17 * * *"
+    },
+    {
+      "path": "/api/cron/payment-reminders",
+      "schedule": "30 2 * * *" 
     }
-   
   ]
 }

@@ -430,6 +430,150 @@ export const WORKSHOP_CONTENT = {
       "Digital Marketing Visuals & UI Basics",
       "Portfolio Development & Creative Workflow"
     ]
+  },
+  "UI/UX Design": {
+    title: "UI/UX Design",
+    heroImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/ui-ux-design.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Master user-centric design principles. Learn to create intuitive interfaces and engaging user experiences using industry-leading tools like Figma and Adobe XD.",
+    tagline: "Designing Digital Experiences.",
+    headline: "Master UI/UX Design & Research.",
+    features: [
+      "User Research & Personas",
+      "Wireframing & Prototyping",
+      "Figma Mastery",
+      "Interaction Design & Usability Testing",
+      "Information Architecture",
+      "Design Systems & Handoff"
+    ]
+  },
+  "Embedded Systems": {
+    title: "Embedded Systems",
+    heroImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/embedded-systems.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Dive deep into the intersection of hardware and software. Master microcontrollers, real-time operating systems (RTOS), and hardware interfacing.",
+    tagline: "Powering the Smart Hardware Revolution.",
+    headline: "Master Embedded Systems Engineering.",
+    features: [
+      "Microcontroller Architecture (ARM/AVR)",
+      "Embedded C & C++ Programming",
+      "Hardware Interfacing & Protocols (I2C, SPI)",
+      "Real-Time Operating Systems (RTOS)",
+      "PCB Design Basics",
+      "Firmware Development & Debugging"
+    ]
+  },
+  "VLSI Design": {
+    title: "VLSI Design",
+    heroImage: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/vlsi-design.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Master Very Large Scale Integration. Learn custom IC design, ASIC/FPGA flow, Verilog/VHDL coding, and advanced physical design concepts.",
+    tagline: "Designing the Chips of the Future.",
+    headline: "Master VLSI & Semiconductor Design.",
+    features: [
+      "Digital Electronics & Logic Design",
+      "Verilog & VHDL Programming",
+      "ASIC & FPGA Design Flow",
+      "CMOS Technology & Layout",
+      "Static Timing Analysis (STA)",
+      "Verification & Physical Design"
+    ]
+  },
+  "Android App Development": {
+    title: "Android App Development",
+    heroImage: "https://images.unsplash.com/photo-1607252656733-fd74ee46696b?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/android-app-development.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Build robust native Android applications. Master Kotlin, Android SDK, Jetpack Compose, and publish high-performance apps to the Google Play Store.",
+    tagline: "Building Next-Gen Mobile Experiences.",
+    headline: "Master Android App Development.",
+    features: [
+      "Kotlin Programming Essentials",
+      "Android SDK & Architecture Components",
+      "Modern UI with Jetpack Compose",
+      "REST APIs & Retrofit Integration",
+      "Local Storage (Room Database)",
+      "App Publishing & Monetization"
+    ]
+  },
+  "IoT & Robotics": {
+    title: "IoT & Robotics",
+    heroImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/iot-robotics.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Combine hardware, software, and connectivity. Build smart automated systems, IoT ecosystems, and autonomous robots from scratch.",
+    tagline: "Connecting Devices, Automating the World.",
+    headline: "Master IoT & Robotics Engineering.",
+    features: [
+      "Sensors, Actuators & Microcontrollers",
+      "IoT Communication Protocols (MQTT, HTTP)",
+      "Cloud Integration (AWS IoT, ThingSpeak)",
+      "Robot Kinematics & Automation",
+      "Raspberry Pi & Arduino Development",
+      "Computer Vision for Robotics (OpenCV)"
+    ]
+  },
+  "AutoCAD": {
+    title: "AutoCAD",
+    heroImage: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop",
+    duration: "2–3 Months",
+    brochure: "/brochures/autocad.pdf",
+    highlights: [
+      "Designed for students, graduates and professionals",
+      "NSDC Accredited",
+      "Skill India Certified",
+      "Industry Expert Trainers",
+      "100+ Internship Partners"
+    ],
+    description: "Master professional 2D drafting and 3D modeling. Learn to design detailed architectural, mechanical, and civil plans using Autodesk AutoCAD.",
+    tagline: "Precision Drafting for the Built World.",
+    headline: "Master AutoCAD Drafting & Design.",
+    features: [
+      "2D Drafting & Annotation",
+      "3D Modeling & Rendering",
+      "Layers, Blocks & XREFs",
+      "Isometric Drawings",
+      "Architectural & Mechanical Plans",
+      "Plotting & Industrial Standards"
+    ]
   }
 };
 

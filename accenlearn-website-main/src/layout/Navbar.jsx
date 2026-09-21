@@ -20,6 +20,12 @@ const NAV_LINKS = [
       { name: "Data Analytics", path: "/programs/tech/data-analytics" },
       { name: "DevOps", path: "/programs/tech/devops" },
       { name: "SQL", path: "/programs/tech/sql" },
+      { name: "UI/UX Design", path: "/programs/tech/ui-ux-design" },
+      { name: "Embedded Systems", path: "/programs/tech/embedded-systems" },
+      { name: "VLSI Design", path: "/programs/tech/vlsi-design" },
+      { name: "Android App Development", path: "/programs/tech/android-app-development" },
+      { name: "IoT & Robotics", path: "/programs/tech/iot-robotics" },
+      { name: "AutoCAD", path: "/programs/tech/autocad" },
     ]
   },
   {
@@ -99,7 +105,7 @@ const Navbar = () => {
           : "py-5 shadow-sm border-b border-transparent"
       }`}
     >
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 xl:gap-8">
         
         {/* Logo */}
         <div className="shrink-0 flex items-center">
@@ -167,12 +173,12 @@ const Navbar = () => {
         </nav>
 
         {/* Right CTA */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-4">
           <a
             href={`${import.meta.env.VITE_PORTAL_URL || 'http://localhost:5174'}/login`}
-            className={`text-sm font-bold transition-colors duration-200 ${loginTextColor}`}
+            className="text-slate-700 border-2 border-slate-200 px-5 py-2.5 rounded-[12px] text-sm font-bold hover:bg-slate-50 hover:border-slate-300 transition-all whitespace-nowrap"
           >
-            Login
+            User Login
           </a>
           <button
             onClick={handleGetStartedClick}
@@ -245,7 +251,7 @@ const Navbar = () => {
               href={`${import.meta.env.VITE_PORTAL_URL || 'http://localhost:5174'}/login`}
               className="w-full text-center py-3 rounded-[12px] border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 hover:border-slate-300 transition-all"
             >
-              Login
+              User Login
             </a>
             <button
               onClick={() => {

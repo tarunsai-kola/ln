@@ -36,18 +36,18 @@ const FAQSection = () => {
           <p className="km-faq__sub">Everything you need to know about the mentorship program and your career journey.</p>
           <p className="km-faq__contact-prompt">
             Still have questions? <br />
-            <a href="https://api.whatsapp.com/send?phone=919380736449" className="km-faq__wa-link">Chat with our team on WhatsApp</a>
+            <a href="https://api.whatsapp.com/send?phone=916374431801" className="km-faq__wa-link">Chat with our team on WhatsApp</a>
           </p>
         </div>
 
         <div className="km-faq__right" data-aos="fade-left">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`km-faq__item ${openIndex === index ? 'km-faq__item--open' : ''}`}
             >
-              <button 
-                className="km-faq__question" 
+              <button
+                className="km-faq__question"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
                 {faq.q}

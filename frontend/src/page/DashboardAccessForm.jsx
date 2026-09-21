@@ -34,7 +34,7 @@ const Dialog = ({ isOpen, onClose, fullname, errorMessage, email, counselor, dom
             </p>
             <div className="mt-4 p-4 bg-[#1a1c23] border-l-4 border-blue-500 rounded text-sm text-gray-300">
               <p>
-                <strong>Note:</strong> Please contact your assigned operations executive <br />Bhumika HK <br /> bhumika@accenlearn.org
+                <strong>Note:</strong> Please contact your assigned operations executive <br />accenlearn opeartion HK <br /> accenlearn opeartion@accenlearn.org
               </p>
               <a
                 href={whatsappLink}
@@ -94,12 +94,12 @@ const DashboardAccessForm = () => {
   const [transactionId, setTransactionId] = useState("");
   const [languages, setLanguages] = useState("English");
   const [referFriend, setReferFriend] = useState("");
-  
+
   // Extra fields that were in backend
   const [program, setProgram] = useState(""); // Mode of Program
   const [course, setCourse] = useState([]);
   const [lead, setLead] = useState("");
-  
+
   const [monthsToShow, setMonthsToShow] = useState([]);
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -228,12 +228,12 @@ const DashboardAccessForm = () => {
     <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center p-4 py-10 font-sans">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full max-w-5xl bg-[#13151A] rounded-2xl shadow-xl border border-gray-800 p-8 md:p-10 text-gray-300">
-        
+
         <h2 className="text-2xl font-bold mb-8 text-center tracking-wide text-white">Dashboard Access Form</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
+
             {/* Row 1 */}
             <div className="flex flex-col space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Full Name</label>
@@ -353,7 +353,7 @@ const DashboardAccessForm = () => {
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Transaction ID</label>
               <input value={transactionId} onChange={(e) => setTransactionId(e.target.value)} required className="w-full bg-[#0B0C10] border border-gray-700 rounded-md p-3 text-sm focus:outline-none focus:border-blue-500 transition-colors" type="text" />
             </div>
-            
+
             {/* Row 7 */}
             <div className="flex flex-col space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Languages Known</label>
@@ -375,7 +375,7 @@ const DashboardAccessForm = () => {
             <textarea
               value={referFriend}
               onChange={(e) => setReferFriend(e.target.value)}
-              placeholder="E.g., John Doe - 9876543210"
+              placeholder="E.g., John Doe - 6374431801"
               rows={3}
               required
               className="w-full bg-[#0B0C10] border border-gray-700 rounded-md p-4 text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"

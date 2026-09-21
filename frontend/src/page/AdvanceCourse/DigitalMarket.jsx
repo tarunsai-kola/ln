@@ -1,19 +1,19 @@
 import PaymentPlanWidget from "../../Components/PaymentPlanWidget";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  CheckCircle2, 
-  ChevronDown, 
-  Download, 
-  TrendingUp, 
-  Award, 
-  Briefcase, 
+import {
+  CheckCircle2,
+  ChevronDown,
+  Download,
+  TrendingUp,
+  Award,
+  Briefcase,
   ArrowRight,
   ShieldCheck,
-  Zap, 
-  BarChart3, 
-  PieChart, 
-  Repeat, 
+  Zap,
+  BarChart3,
+  PieChart,
+  Repeat,
   Layout,
   PhoneCall,
   UserCheck,
@@ -228,19 +228,19 @@ const DigitalMarket = () => {
         <ImageSlider />
       </CourseHeroBanner>
 
-      
+
 
       <TopOnePercent />
 
       {/* 2. AUDIENCE */}
-      
+
 
       {/* PRICING */}
-      <section id="pricing" style={{padding: '100px 0', background: '#fff'}}>
-        <div style={{maxWidth: '1200px', margin: '0 auto', padding: '0 24px'}}>
-           <h2 style={{fontSize: '32px', fontWeight: 800, marginBottom: '16px'}}>Fees & Payment Options</h2>
-           <p style={{fontSize: '17px', color: '#6B7280', marginBottom: '48px'}}>Transparent program cost with structured installment plans and financial assistance.</p>
-           <PaymentPlanWidget basePrice={51999} durationMonths={3} courseName="DigitalMarket" />
+      <section id="pricing" style={{ padding: '100px 0', background: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '16px' }}>Fees & Payment Options</h2>
+          <p style={{ fontSize: '17px', color: '#6B7280', marginBottom: '48px' }}>Transparent program cost with structured installment plans and financial assistance.</p>
+          <PaymentPlanWidget basePrice={51999} durationMonths={3} courseName="DigitalMarket" />
         </div>
       </section>
 
@@ -249,67 +249,67 @@ const DigitalMarket = () => {
       {/* 13. FAQ */}
       <section className="dm-sec-white">
         <div className="shell">
-           <h2 className="sec-title">Common Questions</h2>
-           <p className="sec-sub">Everything you need to know about the enrollment, learning, and job transition process.</p>
-           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'60px', alignItems:'start'}}>
-              <div style={{display:'grid', gap:'8px'}}>
-                 {Object.keys(faqCategories).map(cat => (
-                    <button key={cat} onClick={() => { setActiveFaqCat(cat); setOpenFaqIdx(null); }} style={{textAlign:'left', padding:'16px 24px', borderRadius:'10px', fontWeight:700, fontSize:'14px', transition:'0.2s', background: activeFaqCat === cat ? 'var(--dm-primary)' : 'transparent', color: activeFaqCat === cat ? '#fff' : 'var(--dm-text)'}} className={activeFaqCat !== cat ? 'hover:bg-gray-100' : ''}>{cat}</button>
-                 ))}
-              </div>
-              <div style={{display:'grid', gap:'8px'}}>
-                 {faqCategories[activeFaqCat].map((faq, i) => (
-                    <div key={i} className="faq-item" onClick={() => setOpenFaqIdx(openFaqIdx === i ? null : i)}>
-                       <div className="faq-quest">{faq.q} <ChevronDown size={14} style={{transform: openFaqIdx === i ? 'rotate(180deg)' : 'none', transition:'0.3s'}} /></div>
-                       <AnimatePresence>{openFaqIdx === i && <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="faq-ans"><div style={{paddingTop:'20px', borderTop:'1px solid var(--dm-border)'}}>{faq.a}</div></motion.div>}</AnimatePresence>
-                    </div>
-                 ))}
-              </div>
-           </div>
+          <h2 className="sec-title">Common Questions</h2>
+          <p className="sec-sub">Everything you need to know about the enrollment, learning, and job transition process.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '60px', alignItems: 'start' }}>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              {Object.keys(faqCategories).map(cat => (
+                <button key={cat} onClick={() => { setActiveFaqCat(cat); setOpenFaqIdx(null); }} style={{ textAlign: 'left', padding: '16px 24px', borderRadius: '10px', fontWeight: 700, fontSize: '14px', transition: '0.2s', background: activeFaqCat === cat ? 'var(--dm-primary)' : 'transparent', color: activeFaqCat === cat ? '#fff' : 'var(--dm-text)' }} className={activeFaqCat !== cat ? 'hover:bg-gray-100' : ''}>{cat}</button>
+              ))}
+            </div>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              {faqCategories[activeFaqCat].map((faq, i) => (
+                <div key={i} className="faq-item" onClick={() => setOpenFaqIdx(openFaqIdx === i ? null : i)}>
+                  <div className="faq-quest">{faq.q} <ChevronDown size={14} style={{ transform: openFaqIdx === i ? 'rotate(180deg)' : 'none', transition: '0.3s' }} /></div>
+                  <AnimatePresence>{openFaqIdx === i && <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="faq-ans"><div style={{ paddingTop: '20px', borderTop: '1px solid var(--dm-border)' }}>{faq.a}</div></motion.div>}</AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* 14. FORM */}
       <section className="dm-section">
         <div className="shell">
-           <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:'80px', alignItems:'start'}}>
-              <div>
-                 <h2 className="sec-title">Request a Consultation</h2>
-                 <p className="sec-sub">Request a Callback to review your career roadmap and cohort eligibility.</p>
-                 <div style={{display:'grid', gap:'16px'}}>
-                    {['24-hour advisor response', 'One-on-one session planning', 'Program suitability audit'].map(t => (
-                       <div key={t} style={{display:'flex', alignItems:'center', gap:'12px', fontSize:'14px', fontWeight:700}}><CheckCircle2 size={18} className="text-indigo-600" /> {t}</div>
-                    ))}
-                 </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '80px', alignItems: 'start' }}>
+            <div>
+              <h2 className="sec-title">Request a Consultation</h2>
+              <p className="sec-sub">Request a Callback to review your career roadmap and cohort eligibility.</p>
+              <div style={{ display: 'grid', gap: '16px' }}>
+                {['24-hour advisor response', 'One-on-one session planning', 'Program suitability audit'].map(t => (
+                  <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px', fontWeight: 700 }}><CheckCircle2 size={18} className="text-indigo-600" /> {t}</div>
+                ))}
               </div>
-              <div className="p-card" style={{padding:'32px', maxWidth:'520px'}}>
-                 <div style={{marginBottom:'24px'}}><h3 style={{fontSize:'20px', fontWeight:800, marginBottom:'4px'}}>Request a Callback</h3><p style={{fontSize:'13px', color:'var(--dm-text-dim)'}}>Connect with the ACCENLEARN team today.</p></div>
-                 <ApplyForm courseValue="Digital Marketing" isPremium={true} />
-              </div>
-           </div>
+            </div>
+            <div className="p-card" style={{ padding: '32px', maxWidth: '520px' }}>
+              <div style={{ marginBottom: '24px' }}><h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '4px' }}>Request a Callback</h3><p style={{ fontSize: '13px', color: 'var(--dm-text-dim)' }}>Connect with the ACCENLEARN team today.</p></div>
+              <ApplyForm courseValue="Digital Marketing" isPremium={true} />
+            </div>
+          </div>
         </div>
       </section>
 
       <div className={`sticky-bar ${scrolled ? 'visible' : ''}`}>
         <div className="shell flex justify-between items-center w-full">
-           <div className="flex items-center gap-2 md:gap-6">
-              <div className="flex items-center gap-2 text-sm md:text-lg font-bold">
-                 <span className="animate-pulse">🚨</span>
-                 <span>30% Scholarship closing in just 2 days.</span>
-              </div>
-              <div className="hidden lg:flex items-center gap-3 text-sm font-bold opacity-90">
-                 <span>Batch closing in</span>
-                 <CountdownTimer />
-              </div>
-           </div>
-           <div className="flex gap-6 items-center">
-              <button onClick={() => window.location.href='tel:9380736449'} className="text-xs font-black uppercase hidden xl:flex items-center gap-2 hover:opacity-80 transition-all text-white"><PhoneCall size={14} /> Request a Callback</button>
-              <ApplyNowButton 
-                 courseValue="Digital Marketing" 
-                 label="Connect Now" 
-                 className="!bg-white !from-white !to-white !text-indigo-700 !px-10 !py-3 !rounded-lg !shadow-none hover:!scale-105"
-              />
-           </div>
+          <div className="flex items-center gap-2 md:gap-6">
+            <div className="flex items-center gap-2 text-sm md:text-lg font-bold">
+              <span className="animate-pulse">🚨</span>
+              <span>30% Scholarship closing in just 2 days.</span>
+            </div>
+            <div className="hidden lg:flex items-center gap-3 text-sm font-bold opacity-90">
+              <span>Batch closing in</span>
+              <CountdownTimer />
+            </div>
+          </div>
+          <div className="flex gap-6 items-center">
+            <button onClick={() => window.location.href = 'tel:6374431801'} className="text-xs font-black uppercase hidden xl:flex items-center gap-2 hover:opacity-80 transition-all text-white"><PhoneCall size={14} /> Request a Callback</button>
+            <ApplyNowButton
+              courseValue="Digital Marketing"
+              label="Connect Now"
+              className="!bg-white !from-white !to-white !text-indigo-700 !px-10 !py-3 !rounded-lg !shadow-none hover:!scale-105"
+            />
+          </div>
         </div>
       </div>
     </div>

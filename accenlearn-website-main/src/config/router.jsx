@@ -105,6 +105,24 @@ export const router = createBrowserRouter([
         path: "/programs/tech/sql",
         element: <Workshop2 title="SQL" />
       }, {
+        path: "/programs/tech/ui-ux-design",
+        element: <Workshop2 title="UI/UX Design" />
+      }, {
+        path: "/programs/tech/embedded-systems",
+        element: <Workshop2 title="Embedded Systems" />
+      }, {
+        path: "/programs/tech/vlsi-design",
+        element: <Workshop2 title="VLSI Design" />
+      }, {
+        path: "/programs/tech/android-app-development",
+        element: <Workshop2 title="Android App Development" />
+      }, {
+        path: "/programs/tech/iot-robotics",
+        element: <Workshop2 title="IoT & Robotics" />
+      }, {
+        path: "/programs/tech/autocad",
+        element: <Workshop2 title="AutoCAD" />
+      }, {
         path: "/programs/management/digital-marketing",
         element: <Workshop2 title="Digital Marketing" />
       }, {

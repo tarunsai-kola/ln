@@ -191,6 +191,36 @@ export const NAV_ITEMS = [
               id: 11,
               name: "SQL",
               link: "/programs/tech/sql",
+            },
+            {
+              id: 12,
+              name: "UI/UX Design",
+              link: "/programs/tech/ui-ux-design",
+            },
+            {
+              id: 13,
+              name: "Embedded Systems",
+              link: "/programs/tech/embedded-systems",
+            },
+            {
+              id: 14,
+              name: "VLSI Design",
+              link: "/programs/tech/vlsi-design",
+            },
+            {
+              id: 15,
+              name: "Android App Development",
+              link: "/programs/tech/android-app-development",
+            },
+            {
+              id: 16,
+              name: "IoT & Robotics",
+              link: "/programs/tech/iot-robotics",
+            },
+            {
+              id: 17,
+              name: "AutoCAD",
+              link: "/programs/tech/autocad",
             }
           ]
         },

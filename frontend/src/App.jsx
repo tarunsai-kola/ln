@@ -94,6 +94,21 @@ import AlumniData from "./Admin/AlumniData";
 import InactiveBda from "./Admin/InactiveBda";
 import CreateMarketingTeam from "./Admin/CreateMarketingTeam";
 import AdminAttendance from "./Admin/AdminAttendance";
+
+const ExternalRedirect = ({ url }) => {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-slate-50">
+      <div className="flex flex-col items-center">
+        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+        <p className="text-lg font-semibold text-slate-600 animate-pulse">Redirecting to main website...</p>
+      </div>
+    </div>
+  );
+};
+
 import AdvUserManagement from "./Admin/AdvUserManagement";
 
 import AdvFormLeads from "./Admin/AdvFormLeads";
@@ -459,7 +474,7 @@ const AppContent = () => {
   const noFooterPaths = ["/operationdashboard", "/bookedpayment", "/fullpayment", "/defaultpayment", "/operationrevenuesheet", "/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advteam/home", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
   const placementcoodinatorHeaderPaths = ["/pcdashboard", "/jobpost"];
   const userheaderPaths = ["/profile", "/resume-builder"];
-  const headerPaths = ["/", "/login", "/loginwithotp", "/forgotpassword", "/contactus", "/aboutus", "/career", "/collabration", "/advancecourses", "/terms", "/privacy", "/refundpolicy", "/feestructure", "/advance", "/advance-apply", "/mentorship", "/datascience", "/vlsi", "/dataanalytics", "/digitalmarket", "/mernstack", "/investmentbanking", "/productmanagement", "/automationtesting", "/promptengineering", "/generativeai", "/operationlogin", "/operationlogin", "/teamlogin", "/adminlogin", "/managerlogin", "/loginadmin", "/pclogin", "/employlogin", "/dashboardaccessform", "/registrationform", "/verify", "/marketing/login", "/interviewer-login", "/interviewerlogin", "/hrlogin", "/advanceform", "/agenticandgenai", "/softwaredeveloper", "/blog", "/aiml", "/cybersecurity", "/cloudcomputing", "/iotrobotics", "/devops", "/embeddedsystems", "/autocad", "/graphicdesign", "/fullstackweb"];
+  const headerPaths = ["/", "/login", "/loginwithotp", "/forgotpassword", "/contactus", "/aboutus", "/career", "/collabration", "/advancecourses", "/terms", "/privacy", "/refundpolicy", "/feestructure", "/advance", "/advance-apply", "/mentorship", "/datascience", "/vlsi", "/dataanalytics", "/digitalmarket", "/mernstack", "/investmentbanking", "/productmanagement", "/automationtesting", "/promptengineering", "/generativeai", "/operationlogin", "/operationlogin", "/teamlogin", "/adminlogin", "/managerlogin", "/loginadmin", "/pclogin", "/employlogin", "/dashboardaccessform", "/DashboardAccessForm", "/verify", "/marketing/login", "/interviewer-login", "/interviewerlogin", "/hrlogin", "/advanceform", "/agenticandgenai", "/softwaredeveloper", "/blog", "/aiml", "/cybersecurity", "/cloudcomputing", "/iotrobotics", "/devops", "/embeddedsystems", "/autocad", "/graphicdesign", "/fullstackweb"];
 
   return (
     <div>
@@ -535,8 +550,8 @@ const AppContent = () => {
         <Route path="/AutomationTesting" element={<Navigate to="/Advance" replace />} />
         <Route path="/PromptEngineering" element={<Navigate to="/Advance" replace />} />
         <Route path="/GenerativeAI" element={<Navigate to="/Advance" replace />} />
-        <Route path="/DashboardAccessForm" element={<DashboardAccessForm />} />
-        <Route path="/RegistrationForm" element={<AdvanceDashboardAccess />} />
+        {/* <Route path="/DashboardAccessForm" element={<DashboardAccessForm />} /> */}
+        <Route path="/DashboardAccessForm" element={<AdvanceDashboardAccess />} />
 
 
         <Route path="/attendance" element={<Attendance />} />

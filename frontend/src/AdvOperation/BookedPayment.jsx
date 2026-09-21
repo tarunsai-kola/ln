@@ -915,14 +915,20 @@ const BookedAmount = () => {
         }
 
         /* ── Row remark tints ── */
+        #OperationEnroll tbody tr.Cleared,
+        #OperationEnroll tbody tr.Default,
+        #OperationEnroll tbody tr.Half_Cleared {
+          background: transparent !important;
+        }
         #OperationEnroll tbody tr.Cleared td {
-          background: rgba(16,185,129,0.05) !important;
+          background: rgba(16,185,129,0.15) !important;
         }
         #OperationEnroll tbody tr.Default td {
-          background: rgba(239,68,68,0.05) !important;
+          background: rgba(239,68,68,0.15) !important;
         }
         #OperationEnroll tbody tr.Half_Cleared td {
-          background: rgba(245,158,11,0.05) !important;
+          background: rgba(245,158,11,0.3) !important;
+          color: #fff !important;
         }
 
         /* ── Table buttons ── */

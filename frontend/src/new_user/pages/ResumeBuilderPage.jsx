@@ -114,7 +114,7 @@ const PersonalForm = ({ data, onChange, showAvatar }) => (
             <Field label="Email" value={data.email} onChange={v => onChange("email", v)} placeholder="john@example.com" type="email" required />
         </div>
         <div className="rb-form-row">
-            <Field label="Phone" value={data.phone} onChange={v => onChange("phone", v)} placeholder="+91 9876543210" />
+            <Field label="Phone" value={data.phone} onChange={v => onChange("phone", v)} placeholder="+91 6374431801" />
             <Field label="Location" value={data.location} onChange={v => onChange("location", v)} placeholder="e.g. Bangalore, India" />
         </div>
         <div className="rb-form-row">

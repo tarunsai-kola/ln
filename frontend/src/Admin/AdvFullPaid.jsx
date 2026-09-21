@@ -11,6 +11,12 @@ const AdvFullPaid = () => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const [dialogData, setDialogData] = useState(null);
 
+  const [editingStudentId, setEditingStudentId] = useState(null);
+  const [isPaymentFormVisible, setIsPaymentFormVisible] = useState(false);
+  const [programPrice, setProgramPrice] = useState("");
+  const [paidAmount, setPaidAmount] = useState("");
+  const [clearPaymentMonth, setClearPaymentMonth] = useState("");
+
   const fetchFullPaidEnrollments = async () => {
     try {
       setLoading(true);
@@ -34,6 +40,47 @@ const AdvFullPaid = () => {
   useEffect(() => {
     fetchFullPaidEnrollments();
   }, []);
+
+  const handleEditPayment = (studentId) => {
+    const editStudent = fullPaidEnrollments.find((item) => item._id === studentId);
+    if (!editStudent) return;
+
+    setEditingStudentId(studentId);
+    setProgramPrice(editStudent.programPrice || "");
+    setPaidAmount(editStudent.paidAmount || "");
+    setClearPaymentMonth(editStudent.clearPaymentMonth || "");
+    setIsPaymentFormVisible(true);
+  };
+
+  const resetPaymentForm = () => {
+    setIsPaymentFormVisible(false);
+    setEditingStudentId(null);
+    setProgramPrice("");
+    setPaidAmount("");
+    setClearPaymentMonth("");
+  };
+
+  const handlePaymentSubmit = async (event) => {
+    event.preventDefault();
+    const formData = {
+      programPrice,
+      paidAmount,
+      remainingAmount: programPrice - paidAmount,
+      clearPaymentMonth,
+    };
+
+    try {
+      const response = await axios.put(`${API}/editadvstudentdetails/${editingStudentId}`, formData);
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Payment details updated successfully");
+        fetchFullPaidEnrollments();
+        resetPaymentForm();
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      toast.error(error.response?.data?.message || "An error occurred during update");
+    }
+  };
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -91,6 +138,51 @@ const AdvFullPaid = () => {
       <Toaster position="top-center" toastOptions={{
         style: { background: '#1e293b', color: '#fff', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }
       }} />
+
+      {/* Edit Payment Modal */}
+      {isPaymentFormVisible && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+              <div>
+                <h2 className="text-lg font-bold text-slate-800">Edit Payment</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Update payment details for this enrollment</p>
+              </div>
+              <button onClick={resetPaymentForm} className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shadow-sm">
+                <i className="fa fa-times"></i>
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto bg-white">
+              <form id="paymentForm" onSubmit={handlePaymentSubmit} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600">Program Price (₹)</label>
+                  <input value={programPrice} onChange={(e) => setProgramPrice(e.target.value)} type="number" className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm font-semibold" required />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600">Paid Amount (₹)</label>
+                  <input value={paidAmount} onChange={(e) => setPaidAmount(e.target.value)} type="number" className="w-full px-4 py-2.5 bg-emerald-50 border border-emerald-200 rounded-xl focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-sm font-semibold text-emerald-700" required />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600">Remaining Amount (₹)</label>
+                  <div className="w-full px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm font-semibold text-slate-500">
+                    {programPrice - paidAmount}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600">Clear Payment Due Date</label>
+                  <input value={clearPaymentMonth} onChange={(e) => setClearPaymentMonth(e.target.value)} type="date" className="w-full px-4 py-2.5 bg-rose-50 border border-rose-200 rounded-xl focus:bg-white focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 outline-none transition-all text-sm font-semibold text-rose-700" />
+                </div>
+              </form>
+            </div>
+            
+            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+              <button type="button" onClick={resetPaymentForm} className="px-5 py-2 rounded-xl font-medium text-slate-600 hover:bg-slate-200 transition-colors">Cancel</button>
+              <button type="submit" form="paymentForm" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-medium transition-all shadow-lg shadow-blue-600/20 active:scale-95">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
@@ -229,9 +321,16 @@ const AdvFullPaid = () => {
                           {/* Actions */}
                           <td className="px-6 py-4 text-right">
                             <div className="flex items-center justify-end gap-3 text-sm">
-                              <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                              <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-2 py-1 rounded border border-slate-100 mr-1">
                                 {convertToIST(item.createdAt)}
                               </span>
+                              <button
+                                onClick={() => handleEditPayment(item._id)}
+                                className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white border border-amber-100 transition-all group-hover:shadow-sm"
+                                title="Edit Payment Details"
+                              >
+                                <i className="fa fa-edit text-sm"></i>
+                              </button>
                               <button
                                 onClick={() => handleDialogOpen(item)}
                                 className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-500 hover:text-white border border-blue-100 transition-all group-hover:shadow-sm"

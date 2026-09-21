@@ -1,11 +1,11 @@
 import PaymentPlanWidget from "../../Components/PaymentPlanWidget";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  CheckCircle2, 
-  ChevronDown, 
+import {
+  CheckCircle2,
+  ChevronDown,
   ArrowRight,
-  Zap, 
+  Zap,
   Video,
   UserCheck,
   MessagesSquare,
@@ -200,10 +200,10 @@ const GenerativeAI = () => {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll);
-    
+
     // Set body background for dark theme
     document.body.style.backgroundColor = "#06040e";
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       document.body.style.backgroundColor = ""; // Reset on unmount
@@ -552,14 +552,14 @@ const GenerativeAI = () => {
           </p>
           <div className="logo-marquee">
             <div className="logo-track">
-              {["OpenAI","Anthropic","LangChain","Pinecone","NVIDIA","Meta AI","Google DeepMind","Microsoft Azure AI","Mistral","CrewAI","HuggingFace","AutoGen"].map((name, i) => (
+              {["OpenAI", "Anthropic", "LangChain", "Pinecone", "NVIDIA", "Meta AI", "Google DeepMind", "Microsoft Azure AI", "Mistral", "CrewAI", "HuggingFace", "AutoGen"].map((name, i) => (
                 <span key={i} className="font-semibold whitespace-nowrap select-none font-outfit flex items-center gap-3"
                   style={{ fontSize: '18px', color: 'rgba(255,255,255,0.65)' }}>
                   {name} <span style={{ color: 'rgba(168,85,247,0.6)', fontSize: '20px', lineHeight: 1 }}>•</span>
                 </span>
               ))}
-              {["OpenAI","Anthropic","LangChain","Pinecone","NVIDIA","Meta AI","Google DeepMind","Microsoft Azure AI","Mistral","CrewAI","HuggingFace","AutoGen"].map((name, i) => (
-                <span key={i+"_dup"} className="font-semibold whitespace-nowrap select-none font-outfit flex items-center gap-3"
+              {["OpenAI", "Anthropic", "LangChain", "Pinecone", "NVIDIA", "Meta AI", "Google DeepMind", "Microsoft Azure AI", "Mistral", "CrewAI", "HuggingFace", "AutoGen"].map((name, i) => (
+                <span key={i + "_dup"} className="font-semibold whitespace-nowrap select-none font-outfit flex items-center gap-3"
                   style={{ fontSize: '18px', color: 'rgba(255,255,255,0.65)' }}>
                   {name} <span style={{ color: 'rgba(168,85,247,0.6)', fontSize: '20px', lineHeight: 1 }}>•</span>
                 </span>
@@ -590,11 +590,11 @@ const GenerativeAI = () => {
       </section>
 
       <div style={{ background: '#06040e' }}>
-         <TopOnePercent 
-           accentColor="#8B5CF6" 
-           badge="Advanced Program"
-           subtitle="Master the transition from traditional engineering to AI-first architectures. Gain the technical depth required to build production-grade agentic systems."
-         />
+        <TopOnePercent
+          accentColor="#8B5CF6"
+          badge="Advanced Program"
+          subtitle="Master the transition from traditional engineering to AI-first architectures. Gain the technical depth required to build production-grade agentic systems."
+        />
       </div>
 
       {/* Who Should Enroll */}
@@ -651,7 +651,7 @@ const GenerativeAI = () => {
             <h2 className="text-4xl md:text-6xl font-black font-outfit mb-6 premium-heading">Program Roadmap</h2>
             <p className="text-gray-400 text-lg">A rigorous 16-week journey from LLM fundamentals to production AI systems.</p>
           </div>
-          
+
           <div className="relative">
             <div className="phase-connector" />
             <div className="space-y-12">
@@ -704,7 +704,7 @@ const GenerativeAI = () => {
               <p className="text-gray-400 text-lg">Build a portfolio of AI systems that solve real enterprise problems. No toy projects, only production-grade code.</p>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {capstoneProjects.map((project, i) => (
               <motion.div
@@ -741,7 +741,7 @@ const GenerativeAI = () => {
       <section className="pt-0 pb-12 px-6 relative overflow-hidden bg-[#0b0b0f]">
         <div className="max-w-7xl mx-auto relative z-10">
           <Certification isDark={true} />
-           <ProgramCohorts courseValue="Generative AI" date="Upcoming" />
+          <ProgramCohorts courseValue="Generative AI" date="Upcoming" />
         </div>
       </section>
 
@@ -801,7 +801,7 @@ const GenerativeAI = () => {
             <h2 className="text-4xl md:text-6xl font-black font-outfit mb-6 premium-heading">Common queries</h2>
             <p className="text-gray-400 text-lg">Everything you need to know about the program.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-12">
             <div className="space-y-2">
               {Object.keys(faqCategories).map(cat => (
@@ -814,7 +814,7 @@ const GenerativeAI = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="space-y-4">
               {faqCategories[activeFaqCat].map((faq, i) => (
                 <div
@@ -849,39 +849,39 @@ const GenerativeAI = () => {
 
       {/* Footer CTA */}
       <section className="py-32 px-6 text-center relative overflow-hidden">
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-purple-600/5 blur-[120px] rounded-full pointer-events-none" />
-         <div className="max-w-3xl mx-auto relative z-10">
-            <h2 className="text-5xl md:text-7xl font-black font-outfit mb-8 tracking-tighter">Ready to architect the future?</h2>
-            <p className="text-xl text-gray-400 mb-12">Join the next cohort of AI leaders and start building agentic systems that matter.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-               <ApplyNowButton courseValue="Generative AI" />
-               <button onClick={() => window.location.href='tel:9380736449'} className="px-8 py-3 rounded-full border border-white/10 hover:bg-white/5 transition-all flex items-center gap-2 font-bold">
-                  <PhoneCall size={18} /> Request a Callback
-               </button>
-            </div>
-         </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-purple-600/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="max-w-3xl mx-auto relative z-10">
+          <h2 className="text-5xl md:text-7xl font-black font-outfit mb-8 tracking-tighter">Ready to architect the future?</h2>
+          <p className="text-xl text-gray-400 mb-12">Join the next cohort of AI leaders and start building agentic systems that matter.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <ApplyNowButton courseValue="Generative AI" />
+            <button onClick={() => window.location.href = 'tel:6374431801'} className="px-8 py-3 rounded-full border border-white/10 hover:bg-white/5 transition-all flex items-center gap-2 font-bold">
+              <PhoneCall size={18} /> Request a Callback
+            </button>
+          </div>
+        </div>
       </section>
 
       <div className={`sticky-bar ${scrolled ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center w-full">
-           <div className="flex items-center gap-2 md:gap-6">
-              <div className="flex items-center gap-2 text-sm md:text-lg font-bold">
-                 <span className="animate-pulse">🚨</span>
-                 <span>30% Scholarship closing in just 2 days.</span>
-              </div>
-              <div className="hidden lg:flex items-center gap-3 text-sm font-bold opacity-90">
-                 <span>Batch closing in</span>
-                 <CountdownTimer />
-              </div>
-           </div>
-           <div className="flex gap-6 items-center">
-              <button onClick={() => window.location.href='tel:9380736449'} className="text-xs font-black uppercase hidden xl:flex items-center gap-2 hover:opacity-80 transition-all text-white"><PhoneCall size={14} /> Request a Callback</button>
-              <ApplyNowButton 
-                 courseValue="Generative AI" 
-                 label="Connect Now" 
-                 className="!bg-white !from-white !to-white !text-purple-600 !px-10 !py-3 !rounded-lg !shadow-none hover:!scale-105"
-              />
-           </div>
+          <div className="flex items-center gap-2 md:gap-6">
+            <div className="flex items-center gap-2 text-sm md:text-lg font-bold">
+              <span className="animate-pulse">🚨</span>
+              <span>30% Scholarship closing in just 2 days.</span>
+            </div>
+            <div className="hidden lg:flex items-center gap-3 text-sm font-bold opacity-90">
+              <span>Batch closing in</span>
+              <CountdownTimer />
+            </div>
+          </div>
+          <div className="flex gap-6 items-center">
+            <button onClick={() => window.location.href = 'tel:6374431801'} className="text-xs font-black uppercase hidden xl:flex items-center gap-2 hover:opacity-80 transition-all text-white"><PhoneCall size={14} /> Request a Callback</button>
+            <ApplyNowButton
+              courseValue="Generative AI"
+              label="Connect Now"
+              className="!bg-white !from-white !to-white !text-purple-600 !px-10 !py-3 !rounded-lg !shadow-none hover:!scale-105"
+            />
+          </div>
         </div>
       </div>
     </div>

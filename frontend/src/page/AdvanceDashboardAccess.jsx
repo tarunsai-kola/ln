@@ -87,10 +87,10 @@ const AdvanceDashboardAccess = () => {
   const [internshipendsmonth, setInternshipEndsMonth] = useState("");
   const [referFriend, setReferFriend] = useState("");
   const [languages, setLanguages] = useState("English");
-  
+
   const [course, setCourse] = useState([]);
   const [lead, setLead] = useState("");
-  
+
   const [monthsToShow, setMonthsToShow] = useState([]);
   const [endMonthsToShow, setEndMonthsToShow] = useState([]);
   const [startMonthsToShow, setStartMonthsToShow] = useState([]);
@@ -99,11 +99,11 @@ const AdvanceDashboardAccess = () => {
   const getMinMaxDates = () => {
     const today = new Date();
     const minDate = today.toISOString().split("T")[0];
-    
+
     const maxDateObj = new Date(today);
     maxDateObj.setDate(today.getDate() + 5);
     const maxDate = maxDateObj.toISOString().split("T")[0];
-    
+
     return { minDate, maxDate };
   };
   const { minDate, maxDate } = getMinMaxDates();
@@ -192,7 +192,7 @@ const AdvanceDashboardAccess = () => {
     setInternshipStartsMonth(""); setInternshipEndsMonth("");
     setReferFriend(""); setLanguages("English");
     setIsEmailVerified(false);
-    navigate("/registrationform");
+    navigate("/DashboardAccessForm");
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -279,13 +279,13 @@ const AdvanceDashboardAccess = () => {
       {/* Background Decorators */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-500/20 blur-[120px] pointer-events-none"></div>
-      
+
       <Toaster position="top-center" reverseOrder={false} />
-      
+
       <div className="relative w-full max-w-5xl bg-white/80 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white p-8 md:p-12 z-10">
-        
+
         <form onSubmit={handleSubmit} className="space-y-8">
-          
+
           {/* Section 1: Personal Details */}
           <div className="bg-slate-50/50 rounded-2xl p-6 md:p-8 border border-slate-100">
             <h2 className="text-sm font-bold text-indigo-600 uppercase tracking-widest mb-6 flex items-center gap-2">
@@ -371,7 +371,7 @@ const AdvanceDashboardAccess = () => {
                 <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ml-1">Remaining Amount (₹)</label>
                 <input value={remainingAmount} onChange={(e) => setRemainingAmount(e.target.value)} required className="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all shadow-sm" type="number" placeholder="Balance Due" />
               </div>
-              
+
               <div className="flex flex-col space-y-2">
                 <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ml-1">Mode of Payment</label>
                 <select value={modeofpayment} onChange={(e) => setModeOfPayment(e.target.value)} required className="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all shadow-sm appearance-none">
@@ -459,13 +459,13 @@ const AdvanceDashboardAccess = () => {
               <textarea
                 value={referFriend}
                 onChange={(e) => setReferFriend(e.target.value)}
-                placeholder="E.g., Jane Doe - 9876543210"
+                placeholder="E.g., Jane Doe - 6374431801"
                 rows={3}
                 required
                 className="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-4 text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all shadow-sm resize-none"
               ></textarea>
             </div>
-            
+
             <div className="bg-slate-50/50 rounded-2xl p-6 border border-slate-100 h-full flex flex-col justify-center">
               <label className="text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-3">Primary Language Known</label>
               <div className="relative">
@@ -479,7 +479,7 @@ const AdvanceDashboardAccess = () => {
                   <option value="Bengali">Bengali</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
                 </div>
               </div>
             </div>

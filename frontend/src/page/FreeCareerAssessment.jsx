@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { 
-  CheckCircle2, ArrowRight, Briefcase, Target, 
+import {
+  CheckCircle2, ArrowRight, Briefcase, Target,
   TrendingUp, Sparkles, Send, ShieldCheck, Calendar, Clock,
   BarChart3, Rocket, Award, Search, Gift
 } from 'lucide-react';
@@ -625,7 +625,7 @@ const FreeCareerAssessment = () => {
                   </div>
                   <div>
                     <label className="form-label">Mobile Number *</label>
-                    <input required type="tel" name="mobileNumber" value={formData.mobileNumber} onChange={handleInputChange} className="form-input" placeholder="+91 9876543210" />
+                    <input required type="tel" name="mobileNumber" value={formData.mobileNumber} onChange={handleInputChange} className="form-input" placeholder="+91 6374431801" />
                   </div>
                   <div>
                     <label className="form-label">Email Address *</label>

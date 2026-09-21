@@ -36,7 +36,7 @@ const Dialog = ({ isOpen, onClose, fullname, errorMessage, email, counselor, dom
             </p>
             <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded">
               <p className="text-sm text-gray-700">
-                <strong>Note:</strong> Please contact your assigned operations executive <br />Bhumika HK <br /> bhumika@Accenlearn.org
+                <strong>Note:</strong> Please contact your assigned operations executive <br />accenlearn opeartion HK <br /> accenlearn opeartion@Accenlearn.org
               </p>
               <a
                 href={whatsappLink}
@@ -145,11 +145,9 @@ const DashboardAccessForm = () => {
 
     months = [
       `${monthNames[startMonthIndex]} ${nextYear}`,
-      `${monthNames[(startMonthIndex + 1) % 12]} ${
-        startMonthIndex + 1 > 11 ? nextYear + 1 : nextYear
+      `${monthNames[(startMonthIndex + 1) % 12]} ${startMonthIndex + 1 > 11 ? nextYear + 1 : nextYear
       }`,
-      `${monthNames[(startMonthIndex + 2) % 12]} ${
-        startMonthIndex + 2 > 11 ? nextYear + 1 : nextYear
+      `${monthNames[(startMonthIndex + 2) % 12]} ${startMonthIndex + 2 > 11 ? nextYear + 1 : nextYear
       }`,
     ];
 
@@ -326,35 +324,35 @@ const DashboardAccessForm = () => {
   // };
 
   const handleEmailChange = async (e) => {
-  const enteredEmail = e.target.value.trim();
-  setEmail(enteredEmail);
+    const enteredEmail = e.target.value.trim();
+    setEmail(enteredEmail);
 
-  // Only verify when a valid-looking email is entered (e.g., contains @ and .)
-  if (enteredEmail.includes("@") && enteredEmail.includes(".")) {
-    try {
-      const response = await axios.post(`${API}/verify-transaction-email`, { email: enteredEmail });
-      if (response.data.found) {
-        setCounselor(response.data.counselor || "");
-        setLead(response.data.lead || "");
-        // Store in a local mock state object to keep compatible with existing handleSubmit logic
-        setGetTransactionId({
-          transaction: [enteredEmail],
-          counselor: [response.data.counselor],
-          lead: [response.data.lead]
-        });
+    // Only verify when a valid-looking email is entered (e.g., contains @ and .)
+    if (enteredEmail.includes("@") && enteredEmail.includes(".")) {
+      try {
+        const response = await axios.post(`${API}/verify-transaction-email`, { email: enteredEmail });
+        if (response.data.found) {
+          setCounselor(response.data.counselor || "");
+          setLead(response.data.lead || "");
+          // Store in a local mock state object to keep compatible with existing handleSubmit logic
+          setGetTransactionId({
+            transaction: [enteredEmail],
+            counselor: [response.data.counselor],
+            lead: [response.data.lead]
+          });
+        }
+      } catch (error) {
+        // Reset counselor/lead if not found or error
+        setCounselor("");
+        setLead("");
+        setGetTransactionId({ transaction: [], counselor: [], lead: [] });
       }
-    } catch (error) {
-      // Reset counselor/lead if not found or error
+    } else {
       setCounselor("");
       setLead("");
       setGetTransactionId({ transaction: [], counselor: [], lead: [] });
     }
-  } else {
-    setCounselor("");
-    setLead("");
-    setGetTransactionId({ transaction: [], counselor: [], lead: [] });
-  }
-};
+  };
 
 
 
@@ -401,19 +399,19 @@ const DashboardAccessForm = () => {
     setMaxDate(maxDate);
   }, [monthOpted, monthsToShow]);
 
-  return ( 
+  return (
     <div id="onboardingform">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="container m-auto">
         <div className="marquee-container">
-      <div className="marquee-text">
-        <strong>Kind Reminder:</strong> Please ensure that you complete the <strong>Dashboard Access
-        Form on the same day your payment is made.</strong> Submissions will not be
-        accepted on the following day or any later date, and access will not
-        be granted if the form is not submitted on time (We appreciate your
-        understanding and adherence to this policy).
-      </div>
-    </div>
+          <div className="marquee-text">
+            <strong>Kind Reminder:</strong> Please ensure that you complete the <strong>Dashboard Access
+              Form on the same day your payment is made.</strong> Submissions will not be
+            accepted on the following day or any later date, and access will not
+            be granted if the form is not submitted on time (We appreciate your
+            understanding and adherence to this policy).
+          </div>
+        </div>
 
         <h2 className="mt-2">DashBoard Access Form</h2>
         <form onSubmit={handleSubmit}>
@@ -488,9 +486,9 @@ const DashboardAccessForm = () => {
                 {" "}
                 Mode of Program
               </option>
-            <option value="Self-Guided [2 Months – Training & Internship]">Self-Guided [2 Months – Training & Internship]</option>
-           <option value="Instructor-Led [2 Months – Training & Internship]">Instructor-Led [2 Months – Training & Internship]</option>
-         <option value="Career Advancement [3 Months – Training, Internship & Placement Assistance]">Career Advancement [3 Months – Training, Internship & Placement Assistance]</option>
+              <option value="Self-Guided [2 Months – Training & Internship]">Self-Guided [2 Months – Training & Internship]</option>
+              <option value="Instructor-Led [2 Months – Training & Internship]">Instructor-Led [2 Months – Training & Internship]</option>
+              <option value="Career Advancement [3 Months – Training, Internship & Placement Assistance]">Career Advancement [3 Months – Training, Internship & Placement Assistance]</option>
 
             </select>
 
@@ -668,7 +666,7 @@ const DashboardAccessForm = () => {
               ))}
             </select>
 
-            
+
 
           </div>
 

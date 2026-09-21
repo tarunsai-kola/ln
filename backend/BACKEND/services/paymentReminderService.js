@@ -67,7 +67,7 @@ const generateReminderEmail = (student) => {
         <a href="https://pages.razorpay.com/pl_TRiygaO4jzqd0n/view" target="_blank" class="cta-button">
             Proceed to Payment
         </a>
-        <a href="https://wa.me/917829102936?text=Hi%2C%20I%20need%20help%20with%20payment%20for%20${encodeURIComponent(student.fullname)}" target="_blank" class="cta-button secondary">
+        <a href="https://wa.me/916374431801?text=Hi%2C%20I%20need%20help%20with%20payment%20for%20${encodeURIComponent(student.fullname)}" target="_blank" class="cta-button secondary">
             Contact Support
         </a>
     </div>
@@ -75,7 +75,7 @@ const generateReminderEmail = (student) => {
     <div class="highlight-box" style="background: #f8fafc; border-left-color: #94a3b8; font-size: 14px;">
         <strong style="display: block; margin-bottom: 10px; color: #334155;">Payment Instructions</strong>
         <p style="margin: 0 0 8px 0; color: #475569; display: flex; align-items: flex-start;">${SVGS.pin} <span>Click the "Proceed to Payment" button above to make your payment securely.</span></p>
-        <p style="margin: 0 0 8px 0; color: #475569; display: flex; align-items: flex-start;">${SVGS.check} <span>Share the successful transaction receipt via WhatsApp to <strong>+91 7829102936</strong>.</span></p>
+        <p style="margin: 0 0 8px 0; color: #475569; display: flex; align-items: flex-start;">${SVGS.check} <span>Share the successful transaction receipt via WhatsApp to <strong>+91 6374431801</strong>.</span></p>
         <p style="margin: 0; color: #475569; display: flex; align-items: flex-start;">${SVGS.info} <span>If you have already completed the payment, please share the receipt and kindly ignore this message.</span></p>
     </div>
   `;
@@ -105,9 +105,9 @@ const sendPaymentReminders = async () => {
     fourMonthsAgo.setDate(fourMonthsAgo.getDate() - 120);
 
     // Get all pending payment reminders from NewEnroll collection
-    // Students who enrolled within the last 4 months and haven't fully paid
+    // Students who enrolled within the last 4 months and have booked status
     const pendingReminders = await NewEnroll.find({
-      status: { $ne: "fullPaid" }, // Exclude students who have fully paid
+      status: "booked", // Changed to target only 'booked' status
       createdAt: { $gte: fourMonthsAgo }, // Enrolled within the last 4 months
     });
 
@@ -133,14 +133,11 @@ const sendPaymentReminders = async () => {
         });
 
         // Update reminder record
-        reminder.lastReminderSent = new Date();
-        reminder.reminderCount += 1;
-        reminder.status = "reminded";
-        reminder.remarks.push({
-          message: `Reminder email sent - Count: ${reminder.reminderCount}`,
-          sentAt: new Date(),
-          sentBy: "System",
-        });
+        if (Array.isArray(reminder.remark)) {
+          reminder.remark.push(`Payment reminder email sent on ${new Date().toLocaleString()}`);
+        } else {
+          reminder.remark = [`Payment reminder email sent on ${new Date().toLocaleString()}`];
+        }
 
         await reminder.save();
         sentCount++;

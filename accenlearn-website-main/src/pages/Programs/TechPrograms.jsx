@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaReact, FaNodeJs, FaPython, FaAws, FaDocker, FaChevronDown, FaWhatsapp, FaStar, FaBriefcase, FaGraduationCap } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaPython, FaAws, FaDocker, FaChevronDown, FaWhatsapp, FaStar, FaBriefcase, FaGraduationCap, FaMobileAlt, FaCogs, FaNetworkWired, FaJava } from "react-icons/fa";
 import { DiMongodb, DiPostgresql } from "react-icons/di";
-import { SiGooglecloud, SiTensorflow, SiKubernetes } from "react-icons/si";
+import { SiGooglecloud, SiTensorflow, SiKubernetes, SiFigma } from "react-icons/si";
 import { IMAGE_HELPER } from "../../shared/ImageHelper";
 import IbmCertificationPath from "../../components/IbmCertificationPath";
 
@@ -164,8 +164,104 @@ const TECH_COURSES = [
     accent: "from-indigo-500/20 to-transparent",
     border: "group-hover:border-indigo-500/50",
     glow: "group-hover:shadow-[0_0_40px_rgba(99,102,241,0.15)]",
-    span: "md:col-span-3 lg:col-span-3",
+    span: "md:col-span-1",
     image: "/program-bg/ds-genai.png"
+  },
+  {
+    title: "UI/UX Design",
+    path: "/programs/tech/ui-ux-design",
+    description: "Master user-centric design principles, wireframing, and prototyping.",
+    rating: "4.9",
+    duration: "3 Months",
+    bullets: ["User Research", "Figma Mastery", "Interaction Design"],
+    roles: "UI/UX Designer",
+    icons: [<SiFigma key="1" />, <FaMobileAlt key="2" />],
+    color: "pink",
+    accent: "from-pink-500/20 to-transparent",
+    border: "group-hover:border-pink-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.15)]",
+    span: "md:col-span-1",
+    image: "/program-bg/da-ai.png"
+  },
+  {
+    title: "Embedded Systems",
+    path: "/programs/tech/embedded-systems",
+    description: "Dive deep into hardware and software interfacing, microcontrollers, and RTOS.",
+    rating: "4.8",
+    duration: "4 Months",
+    bullets: ["Microcontrollers", "Embedded C/C++", "RTOS"],
+    roles: "Embedded Engineer",
+    icons: [<FaCogs key="1" />, <FaNetworkWired key="2" />],
+    color: "green",
+    accent: "from-green-500/20 to-transparent",
+    border: "group-hover:border-green-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(34,197,94,0.15)]",
+    span: "md:col-span-1",
+    image: "/program-bg/cyber.png"
+  },
+  {
+    title: "VLSI Design",
+    path: "/programs/tech/vlsi-design",
+    description: "Master Very Large Scale Integration, ASIC/FPGA flow, and Verilog coding.",
+    rating: "4.9",
+    duration: "4 Months",
+    bullets: ["Verilog/VHDL", "ASIC Design Flow", "CMOS Layout"],
+    roles: "VLSI Engineer",
+    icons: [<FaCogs key="1" />, <FaPython key="2" />],
+    color: "cyan",
+    accent: "from-cyan-500/20 to-transparent",
+    border: "group-hover:border-cyan-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]",
+    span: "md:col-span-2",
+    image: "/program-bg/cloud.png"
+  },
+  {
+    title: "Android App Development",
+    path: "/programs/tech/android-app-development",
+    description: "Build robust native Android applications using Kotlin and modern architecture.",
+    rating: "4.8",
+    duration: "3 Months",
+    bullets: ["Kotlin & Java", "Jetpack Compose", "REST APIs"],
+    roles: "Android Developer",
+    icons: [<FaMobileAlt key="1" />, <FaJava key="2" />],
+    color: "emerald",
+    accent: "from-emerald-500/20 to-transparent",
+    border: "group-hover:border-emerald-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]",
+    span: "md:col-span-1",
+    image: "/program-bg/ds-genai.png"
+  },
+  {
+    title: "IoT & Robotics",
+    path: "/programs/tech/iot-robotics",
+    description: "Combine hardware, software, and connectivity to build smart automated systems.",
+    rating: "4.8",
+    duration: "4 Months",
+    bullets: ["Sensors & Actuators", "IoT Protocols", "Raspberry Pi"],
+    roles: "IoT Engineer",
+    icons: [<FaNetworkWired key="1" />, <FaCogs key="2" />],
+    color: "yellow",
+    accent: "from-yellow-500/20 to-transparent",
+    border: "group-hover:border-yellow-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(234,179,8,0.15)]",
+    span: "md:col-span-1",
+    image: "/program-bg/ai-ml.png"
+  },
+  {
+    title: "AutoCAD",
+    path: "/programs/tech/autocad",
+    description: "Master professional 2D drafting and 3D modeling for architectural and mechanical designs.",
+    rating: "4.7",
+    duration: "2 Months",
+    bullets: ["2D Drafting", "3D Modeling", "Isometric Drawings"],
+    roles: "CAD Designer",
+    icons: [<FaCogs key="1" />],
+    color: "blue",
+    accent: "from-blue-500/20 to-transparent",
+    border: "group-hover:border-blue-500/50",
+    glow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]",
+    span: "md:col-span-1 lg:col-span-1",
+    image: "/program-bg/da-ai.png"
   }
 ];
 

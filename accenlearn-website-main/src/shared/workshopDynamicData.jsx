@@ -45,6 +45,36 @@ const TECH_STACKS = {
     { icon: <FaDatabase className="w-8 h-8 text-indigo-400" />, name: "Databases" },
     { icon: <FaCogs className="w-8 h-8 text-orange-500" />, name: "Engineering" },
     { icon: <FaNetworkWired className="w-8 h-8 text-teal-500" />, name: "Architecture" },
+  ],
+  "UI/UX Design": [
+    { icon: <SiFigma className="w-8 h-8 text-pink-500" />, name: "Figma" },
+    { icon: <FaMobileAlt className="w-8 h-8 text-slate-800" />, name: "Prototyping" },
+    { icon: <FaChartBar className="w-8 h-8 text-blue-500" />, name: "User Research" },
+  ],
+  "Embedded Systems": [
+    { icon: <FaCogs className="w-8 h-8 text-slate-700" />, name: "Microcontrollers" },
+    { icon: <FaCode className="w-8 h-8 text-blue-500" />, name: "Embedded C/C++" },
+    { icon: <FaNetworkWired className="w-8 h-8 text-green-500" />, name: "RTOS" },
+  ],
+  "VLSI Design": [
+    { icon: <FaCogs className="w-8 h-8 text-blue-600" />, name: "ASIC/FPGA" },
+    { icon: <FaCode className="w-8 h-8 text-slate-700" />, name: "Verilog/VHDL" },
+    { icon: <FaDatabase className="w-8 h-8 text-green-600" />, name: "CMOS Design" },
+  ],
+  "Android App Development": [
+    { icon: <FaMobileAlt className="w-8 h-8 text-green-500" />, name: "Android SDK" },
+    { icon: <FaJava className="w-8 h-8 text-orange-500" />, name: "Kotlin/Java" },
+    { icon: <FaDatabase className="w-8 h-8 text-blue-500" />, name: "Room DB" },
+  ],
+  "IoT & Robotics": [
+    { icon: <FaNetworkWired className="w-8 h-8 text-blue-500" />, name: "IoT Protocols" },
+    { icon: <FaCogs className="w-8 h-8 text-slate-700" />, name: "Robotics" },
+    { icon: <FaCode className="w-8 h-8 text-green-500" />, name: "C++/Python" },
+  ],
+  "AutoCAD": [
+    { icon: <FaCogs className="w-8 h-8 text-blue-500" />, name: "2D Drafting" },
+    { icon: <FaCode className="w-8 h-8 text-slate-600" />, name: "3D Modeling" },
+    { icon: <FaNetworkWired className="w-8 h-8 text-orange-500" />, name: "Design Standards" },
   ]
 };
 
@@ -64,6 +94,36 @@ const SALARY_DATA = {
     entry: { min: "4 LPA", avg: "7 LPA", max: "10 LPA", roles: "Associate, Analyst, Trainee", companies: ["Top Tier IT", "MNCs", "Startups"] },
     mid: { min: "10 LPA", avg: "15 LPA", max: "22 LPA", roles: "Specialist, Senior Associate, Consultant", companies: ["Fortune 500", "Product Companies"] },
     senior: { min: "20 LPA", avg: "30 LPA", max: "45+ LPA", roles: "Lead, Manager, Principal", companies: ["Global Tech Giants", "Industry Leaders"] }
+  },
+  "UI/UX Design": {
+    entry: { min: "4 LPA", avg: "6 LPA", max: "10 LPA", roles: "Junior UI/UX Designer, Visual Designer", companies: ["TCS", "Cognizant", "Zomato", "Swiggy"] },
+    mid: { min: "10 LPA", avg: "15 LPA", max: "22 LPA", roles: "Senior Product Designer, UX Researcher", companies: ["Amazon", "Flipkart", "Paytm", "Cred"] },
+    senior: { min: "22 LPA", avg: "35 LPA", max: "50+ LPA", roles: "Lead Product Designer, Head of Design", companies: ["Google", "Meta", "Airbnb", "Uber"] }
+  },
+  "Embedded Systems": {
+    entry: { min: "4 LPA", avg: "7 LPA", max: "10 LPA", roles: "Embedded Software Engineer, Firmware Trainee", companies: ["Bosch", "TCS", "HCL", "Wipro"] },
+    mid: { min: "10 LPA", avg: "16 LPA", max: "25 LPA", roles: "Senior Firmware Engineer, Systems Designer", companies: ["Qualcomm", "Intel", "Texas Instruments", "NXP"] },
+    senior: { min: "25 LPA", avg: "38 LPA", max: "60+ LPA", roles: "Lead Embedded Architect, Systems Architect", companies: ["Apple", "Tesla", "NVIDIA", "Samsung"] }
+  },
+  "VLSI Design": {
+    entry: { min: "6 LPA", avg: "10 LPA", max: "15 LPA", roles: "ASIC Verification Engineer, Layout Design Trainee", companies: ["Intel", "AMD", "Wipro", "TCS"] },
+    mid: { min: "15 LPA", avg: "24 LPA", max: "35 LPA", roles: "Physical Design Engineer, Senior Verification Engineer", companies: ["Qualcomm", "Broadcom", "NVIDIA", "MediaTek"] },
+    senior: { min: "35 LPA", avg: "50 LPA", max: "80+ LPA", roles: "Principal VLSI Architect, Silicon Lead", companies: ["Intel", "Apple", "AMD", "NVIDIA"] }
+  },
+  "Android App Development": {
+    entry: { min: "4 LPA", avg: "6 LPA", max: "10 LPA", roles: "Junior Android Developer, Mobile App Trainee", companies: ["TCS", "Infosys", "Startups"] },
+    mid: { min: "10 LPA", avg: "16 LPA", max: "25 LPA", roles: "Senior Android Developer, Mobile Tech Lead", companies: ["Zomato", "Swiggy", "PhonePe", "Dream11"] },
+    senior: { min: "25 LPA", avg: "35 LPA", max: "50+ LPA", roles: "Lead Mobile Architect, Engineering Manager", companies: ["Google", "Uber", "Spotify", "Netflix"] }
+  },
+  "IoT & Robotics": {
+    entry: { min: "5 LPA", avg: "8 LPA", max: "12 LPA", roles: "IoT Developer, Robotics Trainee", companies: ["Bosch", "TCS", "L&T", "Siemens"] },
+    mid: { min: "12 LPA", avg: "18 LPA", max: "28 LPA", roles: "Senior IoT Architect, Robotics Engineer", companies: ["ABB", "Honeywell", "GE", "Amazon Robotics"] },
+    senior: { min: "28 LPA", avg: "40 LPA", max: "65+ LPA", roles: "Principal Robotics Scientist, Head of IoT", companies: ["Tesla", "Boston Dynamics", "Amazon", "NVIDIA"] }
+  },
+  "AutoCAD": {
+    entry: { min: "3 LPA", avg: "5 LPA", max: "8 LPA", roles: "Draftsman, CAD Trainee, Junior Designer", companies: ["L&T", "Tata Projects", "Godrej", "Design Firms"] },
+    mid: { min: "8 LPA", avg: "12 LPA", max: "18 LPA", roles: "Senior CAD Designer, Project Lead", companies: ["Atkins", "Fluor", "Jacobs", "AECOM"] },
+    senior: { min: "18 LPA", avg: "25 LPA", max: "35+ LPA", roles: "Design Manager, Lead Architect", companies: ["Foster + Partners", "L&T Construction", "Global EPCs"] }
   }
 };
 
