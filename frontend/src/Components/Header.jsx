@@ -22,6 +22,12 @@ const NAV_LINKS = [
       { name: "Data Analytics", path: `${MAIN_URL}/programs/tech/data-analytics` },
       { name: "DevOps", path: `${MAIN_URL}/programs/tech/devops` },
       { name: "SQL", path: `${MAIN_URL}/programs/tech/sql` },
+      { name: "UI/UX Design", path: `${MAIN_URL}/programs/tech/ui-ux-design` },
+      { name: "Embedded Systems", path: `${MAIN_URL}/programs/tech/embedded-systems` },
+      { name: "VLSI Design", path: `${MAIN_URL}/programs/tech/vlsi-design` },
+      { name: "Android App Development", path: `${MAIN_URL}/programs/tech/android-app-development` },
+      { name: "IoT & Robotics", path: `${MAIN_URL}/programs/tech/iot-robotics` },
+      { name: "AutoCAD", path: `${MAIN_URL}/programs/tech/autocad` },
     ]
   },
   {
@@ -151,8 +157,8 @@ const Header = () => {
                 )}
                 
                 {/* Dropdown Menu */}
-                <div className="absolute top-10 left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <div className="bg-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 py-2 overflow-hidden">
+                <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <div className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-slate-100 py-2 overflow-hidden ${item.subItems.length > 8 ? 'w-[36rem] grid grid-cols-2' : 'w-72'}`}>
                     {item.subItems.map((subItem) => {
                       const isActive = location.pathname === subItem.path;
                       return (
