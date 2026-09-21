@@ -28,7 +28,7 @@ const ProgramHero = ({ content, onEnroll, onDownload }) => {
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-            <span className="text-blue-300 text-xs font-bold tracking-[0.2em] uppercase">
+            <span className="text-slate-900 text-xs font-bold tracking-[0.2em] uppercase">
               16-WEEK PROFESSIONAL PROGRAM
             </span>
           </div>
