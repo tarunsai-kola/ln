@@ -77,41 +77,41 @@ const Leadership = () => {
             shortResponsibility: "Spearheads strategic business initiatives and market analysis to identify new growth opportunities.",
             responsibility: "Spearheads strategic business initiatives and market analysis to identify new growth opportunities for the organization. Enhances the global footprint through innovative partnership models and sustainable business strategies. Leverages expertise in market penetration and relationship management to deliver value to partners. Builds strong foundations that support the long-term vision of educational accessibility. Identifies and cultivates strategic alliances to expand the reach of educational programs."
         },
-        {
-            image: MarketingHeadImage,
-            name: "DIPANSHU SACHAN",
-            role: "Head of Marketing",
-            shortResponsibility: "Directs creative marketing strategies and brand positioning to engage a global audience.",
-            responsibility: "Directs creative marketing strategies and brand positioning to engage a global audience of aspiring professionals. Fosters a vibrant community of passionate learners and industry experts through data-driven campaigns. Elevates brand presence through creative storytelling and connects students with life-changing opportunities. Ensures brand consistency and quality across all digital and traditional marketing channels. Analyzes market trends to optimize outreach and maximize impact on the target audience."
-        },
-        {
-            image: null,
-            name: "RUDHRA",
-            role: "Head of Operations",
-            shortResponsibility: "Directs daily business operations with a focus on optimizing workflows and resource allocation.",
-            responsibility: "Directs daily business operations with a focus on optimizing internal workflows and resource allocation. Ensures all organizational processes run with peak efficiency to support the mission of educational excellence. Streamlines logistics and administrative tasks to maximize productivity and stakeholder satisfaction. Maintains high standards of service and operational integrity across all departments. Implements process improvements to enhance the overall effectiveness of business delivery."
-        },
-        {
-            image: null,
-            name: "JAHNAVI GORLA",
-            role: "Human Resource Manager",
-            shortResponsibility: "Manages talent acquisition, employee relations, and organizational culture to build a high-performing workforce.",
-            responsibility: "Manages end-to-end human resource functions, including talent acquisition, employee relations, and organizational culture development. Focuses on building a high-performing workforce by implementing strategic HR policies and fostering a supportive work environment. Leads recruitment initiatives to attract top talent and ensures smooth onboarding processes. Handles employee engagement and performance management to drive organizational success. Dedicated to maintaining a positive and inclusive workplace that inspires professional growth and excellence."
-        },
-        {
-            image: KrupakaranImage,
-            name: "Krupakaran.G",
-            role: "Graphic Designer & Video Editor",
-            shortResponsibility: "Creates visually compelling branding, marketing collaterals, and high-impact video content.",
-            responsibility: "Creates visually compelling branding, marketing collaterals, and high-impact video content for all training modules and social channels. Focuses on maintaining a premium visual aesthetic across digital platforms. Collaborates with the marketing and technical teams to craft engaging multimedia experiences for students."
-        },
-        {
-            image: SumanImage,
-            name: "Suman Raj X",
-            role: "Digital Marketing Executive",
-            shortResponsibility: "Drives brand awareness, digital outreach campaigns, and online community engagement.",
-            responsibility: "Drives brand awareness, digital outreach campaigns, and online community engagement to reach aspiring professionals. Implements SEO, social media marketing, and data-driven ad campaigns to optimize website traffic and conversion rates."
-        }
+        // {
+        //     image: MarketingHeadImage,
+        //     name: "DIPANSHU SACHAN",
+        //     role: "Head of Marketing",
+        //     shortResponsibility: "Directs creative marketing strategies and brand positioning to engage a global audience.",
+        //     responsibility: "Directs creative marketing strategies and brand positioning to engage a global audience of aspiring professionals. Fosters a vibrant community of passionate learners and industry experts through data-driven campaigns. Elevates brand presence through creative storytelling and connects students with life-changing opportunities. Ensures brand consistency and quality across all digital and traditional marketing channels. Analyzes market trends to optimize outreach and maximize impact on the target audience."
+        // },
+        // {
+        //     image: null,
+        //     name: "RUDHRA",
+        //     role: "Head of Operations",
+        //     shortResponsibility: "Directs daily business operations with a focus on optimizing workflows and resource allocation.",
+        //     responsibility: "Directs daily business operations with a focus on optimizing internal workflows and resource allocation. Ensures all organizational processes run with peak efficiency to support the mission of educational excellence. Streamlines logistics and administrative tasks to maximize productivity and stakeholder satisfaction. Maintains high standards of service and operational integrity across all departments. Implements process improvements to enhance the overall effectiveness of business delivery."
+        // },
+        // {
+        //     image: null,
+        //     name: "JAHNAVI GORLA",
+        //     role: "Human Resource Manager",
+        //     shortResponsibility: "Manages talent acquisition, employee relations, and organizational culture to build a high-performing workforce.",
+        //     responsibility: "Manages end-to-end human resource functions, including talent acquisition, employee relations, and organizational culture development. Focuses on building a high-performing workforce by implementing strategic HR policies and fostering a supportive work environment. Leads recruitment initiatives to attract top talent and ensures smooth onboarding processes. Handles employee engagement and performance management to drive organizational success. Dedicated to maintaining a positive and inclusive workplace that inspires professional growth and excellence."
+        // },
+        // {
+        //     image: KrupakaranImage,
+        //     name: "Krupakaran.G",
+        //     role: "Graphic Designer & Video Editor",
+        //     shortResponsibility: "Creates visually compelling branding, marketing collaterals, and high-impact video content.",
+        //     responsibility: "Creates visually compelling branding, marketing collaterals, and high-impact video content for all training modules and social channels. Focuses on maintaining a premium visual aesthetic across digital platforms. Collaborates with the marketing and technical teams to craft engaging multimedia experiences for students."
+        // },
+        // {
+        //     image: SumanImage,
+        //     name: "Suman Raj X",
+        //     role: "Digital Marketing Executive",
+        //     shortResponsibility: "Drives brand awareness, digital outreach campaigns, and online community engagement.",
+        //     responsibility: "Drives brand awareness, digital outreach campaigns, and online community engagement to reach aspiring professionals. Implements SEO, social media marketing, and data-driven ad campaigns to optimize website traffic and conversion rates."
+        // }
     ];
 
     const openBio = (member) => {

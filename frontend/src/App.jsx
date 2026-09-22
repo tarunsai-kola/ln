@@ -508,48 +508,48 @@ const AppContent = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/LoginWithOtp" element={<LoginWithOtp />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/ContactUs" element={<ContactUs />} />
-        <Route path="/AboutUs" element={<AboutUs />} />
+        {/* <Route path="/ContactUs" element={<ContactUs />} /> */}
+        {/* <Route path="/AboutUs" element={<AboutUs />} /> */}
         {/* <Route path="/masterclass" element={<Masterclass />} /> Removed as per request */}
 
 
         {/* Removed Terms, Privacy, RefundPolicy */}
-        <Route path="/Career" element={<Career />} />
-        <Route path="/Collabration" element={<Collabration />} />
-        <Route path="/AdvanceCourses" element={<Advance />} />
-        <Route path="/FeeStructure" element={<FeeStructure />} />
-        <Route path="/events" element={<TalentHunt />} />
-        <Route path="/EventRegister" element={<EventRegister />} />
+        {/* <Route path="/Career" element={<Career />} /> */}
+        {/* <Route path="/Collabration" element={<Collabration />} /> */}
+        {/* <Route path="/AdvanceCourses" element={<Advance />} /> */}
+        {/* <Route path="/FeeStructure" element={<FeeStructure />} /> */}
+        {/* <Route path="/events" element={<TalentHunt />} /> */}
+        {/* <Route path="/EventRegister" element={<EventRegister />} /> */}
         {/* Removed blog, Advance */}
 
-        <Route path="/SoftwareDeveloper" element={<SoftwareDeveloper />} />
-        <Route path="/AIFullStack" element={<AIFullStack />} />
-        <Route path="/advance-apply" element={<AdvanceApplyPage />} />
-        <Route path="/advanceform" element={<AdvanceForm />} />
-        <Route path="/Mentorship" element={<Navigate to="/Advance" replace />} />
+        {/* <Route path="/SoftwareDeveloper" element={<SoftwareDeveloper />} /> */}
+        {/* <Route path="/AIFullStack" element={<AIFullStack />} /> */}
+        {/* <Route path="/advance-apply" element={<AdvanceApplyPage />} /> */}
+        {/* <Route path="/advanceform" element={<AdvanceForm />} /> */}
+        {/* <Route path="/Mentorship" element={<Navigate to="/Advance" replace />} /> */}
         <Route path="/mentorship/:courseSlug" element={<Navigate to="/Advance" replace />} />
-        <Route path="/DataScience" element={<DataScience />} />
-        <Route path="/VLSI" element={<VLSI />} />
-        <Route path="/DataAnalytics" element={<DataAnalytics />} />
-        <Route path="/CyberSecurity" element={<CyberSecurity />} />
-        <Route path="/DigitalMarketing" element={<DigitalMarketing />} />
-        <Route path="/AIML" element={<AIML />} />
-        <Route path="/CloudComputing" element={<CloudComputing />} />
-        <Route path="/IoTRobotics" element={<IoTRobotics />} />
-        <Route path="/DevOps" element={<DevOps />} />
-        <Route path="/EmbeddedSystems" element={<EmbeddedSystems />} />
-        <Route path="/AutoCAD" element={<AutoCAD />} />
-        <Route path="/GraphicDesign" element={<GraphicDesign />} />
-        <Route path="/FullStackWeb" element={<FullStackWeb />} />
-        <Route path="/MernStack" element={<Navigate to="/Advance" replace />} />
-        <Route path="/UIUX" element={<Navigate to="/Advance" replace />} />
+        {/* <Route path="/DataScience" element={<DataScience />} /> */}
+        {/* <Route path="/VLSI" element={<VLSI />} /> */}
+        {/* <Route path="/DataAnalytics" element={<DataAnalytics />} /> */}
+        {/* <Route path="/CyberSecurity" element={<CyberSecurity />} /> */}
+        {/* <Route path="/DigitalMarketing" element={<DigitalMarketing />} /> */}
+        {/* <Route path="/AIML" element={<AIML />} /> */}
+        {/* <Route path="/CloudComputing" element={<CloudComputing />} /> */}
+        {/* <Route path="/IoTRobotics" element={<IoTRobotics />} /> */}
+        {/* <Route path="/DevOps" element={<DevOps />} /> */}
+        {/* <Route path="/EmbeddedSystems" element={<EmbeddedSystems />} /> */}
+        {/* <Route path="/AutoCAD" element={<AutoCAD />} /> */}
+        {/* <Route path="/GraphicDesign" element={<GraphicDesign />} /> */}
+        {/* <Route path="/FullStackWeb" element={<FullStackWeb />} /> */}
+        {/* <Route path="/MernStack" element={<Navigate to="/Advance" replace />} /> */}
+        {/* <Route path="/UIUX" element={<Navigate to="/Advance" replace />} /> */}
         <Route path="/UIUXDesign" element={<Navigate to="/Advance" replace />} />
         <Route path="/ui-ux" element={<Navigate to="/Advance" replace />} />
 
-        <Route path="/ProductManagement" element={<Navigate to="/Advance" replace />} />
-        <Route path="/AutomationTesting" element={<Navigate to="/Advance" replace />} />
-        <Route path="/PromptEngineering" element={<Navigate to="/Advance" replace />} />
-        <Route path="/GenerativeAI" element={<Navigate to="/Advance" replace />} />
+        {/* <Route path="/ProductManagement" element={<Navigate to="/Advance" replace />} /> */}
+        {/* <Route path="/AutomationTesting" element={<Navigate to="/Advance" replace />} /> */}
+        {/* <Route path="/PromptEngineering" element={<Navigate to="/Advance" replace />} /> */}
+        {/* <Route path="/GenerativeAI" element={<Navigate to="/Advance" replace />} /> */}
         {/* <Route path="/DashboardAccessForm" element={<DashboardAccessForm />} /> */}
         <Route path="/DashboardAccessForm" element={<AdvanceDashboardAccess />} />
 
@@ -717,9 +717,9 @@ const AppContent = () => {
         {/* User Panel End */}
 
         {/* placement coodinator panel starts */}
-        <Route path="/PClogin" element={<PClogin />} />
-        <Route path="/PCDashboard" element={isAuthenticatedPC() ? <PCDashboard /> : <Navigate to="/PClogin" />} />
-        <Route path="/JobPost" element={isAuthenticatedPC() ? <JobPost /> : <Navigate to="/PClogin" />} />
+        {/* <Route path="/PClogin" element={<PClogin />} /> */}
+        {/* <Route path="/PCDashboard" element={isAuthenticatedPC() ? <PCDashboard /> : <Navigate to="/PClogin" />} /> */}
+        {/* <Route path="/JobPost" element={isAuthenticatedPC() ? <JobPost /> : <Navigate to="/PClogin" />} /> */}
         {/* placement coodinator panel ends */}
 
         {/* Mentor Panel */}
@@ -727,9 +727,9 @@ const AppContent = () => {
         <Route path="/MentorDashboard" element={<InterviewerDashboard />} />
 
         {/* event */}
-        <Route path="/EventLogin" element={<EventLogin />} />
-        <Route path="/EventDashboard" element={isAuthenticatedEventUser() ? <EventDashBoard /> : <Navigate to="/events" />} />
-        <Route path="/register/:slug" element={<EventDetails />} />
+        {/* <Route path="/EventLogin" element={<EventLogin />} /> */}
+        {/* <Route path="/EventDashboard" element={isAuthenticatedEventUser() ? <EventDashBoard /> : <Navigate to="/events" />} /> */}
+        {/* <Route path="/register/:slug" element={<EventDetails />} /> */}
         <Route path="/advancedashboard" element={<AdvanceDashboardLayout />}>
           <Route index element={<OverviewPage />} />
           <Route path="setting" element={<Setting />} />

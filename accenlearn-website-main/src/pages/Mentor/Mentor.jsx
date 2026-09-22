@@ -55,14 +55,14 @@ const Mentor = () => {
             experience: "2+ years",
             externalProfile: "https://www.behance.net/kailashcreatio"
         },
-        {
-            image: IMAGE_HELPER.MENTOR_SAKSHI,
-            name: "Sakshi",
-            role: "Frontend Engineer",
-            domainSpecialist: "Frontend Engineer",
-            worksAt: "Tekzow",
-            experience: "1+ years"
-        },
+        // {
+        //     image: IMAGE_HELPER.MENTOR_SAKSHI,
+        //     name: "Sakshi",
+        //     role: "Frontend Engineer",
+        //     domainSpecialist: "Frontend Engineer",
+        //     worksAt: "Tekzow",
+        //     experience: "1+ years"
+        // },
         {
             image: IMAGE_HELPER.MENTOR_ANJALI,
             name: "Anjali",
@@ -72,13 +72,21 @@ const Mentor = () => {
             experience: "4+ years"
         },
         {
-            image: IMAGE_HELPER.MENTOR_ARJUN,
-            name: "Arjun",
-            role: "MERN Stack + App Development",
-            domainSpecialist: "MERN Stack + App Development",
-            worksAt: "Whitedart",
+            image: IMAGE_HELPER.MENTOR_SHAMEER,
+            name: "Shameer PIYARELAL and Team.",
+            role: "Data Analytics & Machine Learning",
+            domainSpecialist: "Data Analytics, Machine Learning and AI",
+            // phone: "9965039335"
             experience: "4+ years"
-        }
+        },
+        // {
+        //     image: IMAGE_HELPER.MENTOR_ARJUN,
+        //     name: "Arjun",
+        //     role: "MERN Stack + App Development",
+        //     domainSpecialist: "MERN Stack + App Development",
+        //     worksAt: "Whitedart",
+        //     experience: "4+ years"
+        // }
     ];
 
     const openBio = (mentor) => {
@@ -137,9 +145,16 @@ const Mentor = () => {
                                                     Working at: <span className="text-secondary">{mentor.worksAt}</span>
                                                 </p>
                                             )}
-                                            <p className="text-primary font-bold text-[10px] md:text-xs italic">
-                                                Experience: <span className="text-secondary">{mentor.experience}</span>
-                                            </p>
+                                            {mentor.experience && (
+                                                <p className="text-primary font-bold text-[10px] md:text-xs italic">
+                                                    Experience: <span className="text-secondary">{mentor.experience}</span>
+                                                </p>
+                                            )}
+                                            {mentor.phone && (
+                                                <p className="text-primary font-bold text-[10px] md:text-xs italic">
+                                                    Contact: <span className="text-secondary">{mentor.phone}</span>
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
 
@@ -189,7 +204,12 @@ const Mentor = () => {
                                     {selectedMentor.worksAt && (
                                         <p className="text-primary font-bold text-xs">Working at: <span className="text-secondary">{selectedMentor.worksAt}</span></p>
                                     )}
-                                    <p className="text-primary font-bold text-xs italic">Experience: <span className="text-secondary">{selectedMentor.experience}</span></p>
+                                    {selectedMentor.experience && (
+                                        <p className="text-primary font-bold text-xs italic">Experience: <span className="text-secondary">{selectedMentor.experience}</span></p>
+                                    )}
+                                    {selectedMentor.phone && (
+                                        <p className="text-primary font-bold text-xs italic">Contact: <span className="text-secondary">{selectedMentor.phone}</span></p>
+                                    )}
                                 </div>
                             </div>
                             <div className="flex flex-col gap-3 mt-4">

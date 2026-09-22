@@ -88,6 +88,7 @@ import mentorUsharani from "../assets/Mentor/Technical advisor.png";
 import mentorSakshi from "../assets/Mentor/sakshi.png";
 import mentorAnjali from "../assets/Mentor/anjali.png";
 import mentorArjun from "../assets/Mentor/arjun.png";
+import mentorShameer from "../assets/image.png";
 
 // Leadership Images for Mentors
 import techCoo from "../assets/LeaderShip/technical-advisor-coo.png";
@@ -146,6 +147,7 @@ export const IMAGE_HELPER = {
      MENTOR_SAKSHI: mentorSakshi,
      MENTOR_ANJALI: mentorAnjali,
      MENTOR_ARJUN: mentorArjun,
+     MENTOR_SHAMEER: mentorShameer,
      MENTOR_CV_KUMAR: mentorCvKumar,
      MENTOR_CV_RANJITH: mentorCvRanjith,
      MENTOR_CV_MONISHA: mentorCvMonisha,
