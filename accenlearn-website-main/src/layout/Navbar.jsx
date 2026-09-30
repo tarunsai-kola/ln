@@ -64,6 +64,7 @@ const NAV_LINKS = [
       { name: "Resume Templates", path: "/resources/resume-templates" }
     ]
   },
+  { name: "Alumni", path: "/alumni" },
   { name: "Contact", path: "/contact" },
 ];
 

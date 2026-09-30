@@ -27,6 +27,7 @@ import CourseDetailsPage from "../pages/Courses/CourseDetailsPage.jsx";
 import TechPrograms from "../pages/Programs/TechPrograms.jsx";
 import ManagementPrograms from "../pages/Programs/ManagementPrograms.jsx";
 import MedicalPrograms from "../pages/Programs/MedicalPrograms.jsx";
+import Alumni from "../pages/Alumni/Alumni.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -186,6 +187,10 @@ export const router = createBrowserRouter([
 {
   path: "/courses/:slug",
   element: <CourseDetailsPage />,
+},
+{
+  path: "/alumni",
+  element: <Alumni />,
 }
      ],
   },
