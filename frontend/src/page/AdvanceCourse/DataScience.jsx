@@ -117,7 +117,7 @@ const learningFormat = [
 
 const alumniOutcomes = [
    { name: "Aditi Sharma", role: "Junior Architect", target: "Senior Data Scientist", company: "Google", desc: "The transition from legacy systems to predictive AI was made seamless by the curriculum roadmap." },
-   { name: "Rahul Verma", role: "Marketing Analyst", target: "Business Analyst", company: "Amazon", desc: "I pivoted from a non-tech background into a core analytical role in under 6 months." },
+   { name: "Rahul Verma", role: "Marketing Analyst", target: "Business Analyst", company: "Amazon", desc: "I pivoted from a non-tech background into a core analytical role in under 2/3 MONTHS." },
    { name: "Priya Singh", role: "Software Engineer", target: "MLOps Engineer", company: "Microsoft", desc: "The production-level focus on model deployment was the key to landing an engineering role in AI." }
 ];
 

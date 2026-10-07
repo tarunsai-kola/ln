@@ -9,7 +9,7 @@ import "./course-detail.css";
 import MentorshipForm from "../MentorshipForm";
 
 import sachin from "../../assets/mentors/sachin.jpg";
-import certificate1 from "../../assets/certificates/c/internship.jpg"; 
+import certificate1 from "../../assets/certificates/c/internship.jpg";
 import certificate3 from "../../assets/certificates/c/training.jpg";
 
 const FullStackDetail = () => {
@@ -41,7 +41,7 @@ const FullStackDetail = () => {
               <p className="mb-10 text-xl max-w-xl text-[var(--muted)]">
                 {data.subHeadline}
               </p>
-              
+
               <div className="flex gap-4 cd-hero-ctas">
                 <button className="cd-btn cd-btn--primary" onClick={() => setShowForm(true)}>
                   Apply for Next Cohort
@@ -51,7 +51,7 @@ const FullStackDetail = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="cd-hero-right" data-aos="fade-up">
               <div className="cd-hero-stats-card">
                 <div className="cd-hero-stat-item">
@@ -79,10 +79,10 @@ const FullStackDetail = () => {
             <span className="cd-eyebrow">The Mentorship Difference</span>
             <h2 className="cd-section-title">Escape Tutorial Hell.</h2>
             <p>
-              Watching tutorials won't make you job-ready. Companies hire developers who can build, deploy, and scale real applications from day one. 
+              Watching tutorials won't make you job-ready. Companies hire developers who can build, deploy, and scale real applications from day one.
             </p>
           </div>
-          
+
           <div className="cd-diff-grid" data-aos="fade-up">
             <div className="cd-diff-card">
               <div className="cd-diff-icon">🎯</div>
@@ -111,13 +111,13 @@ const FullStackDetail = () => {
               <span className="cd-eyebrow">Curriculum Roadmap</span>
               <h2 className="cd-section-title">Your 12-Week Journey.</h2>
               <p className="mb-6">Intensive, project-based learning. Requires 30-40 hours per week of dedicated effort to master the modern web.</p>
-              
+
               <div className="p-6 bg-[#F8FAFC] rounded-xl border border-[var(--border)]">
                 <h4 className="font-bold mb-2">Working Professional?</h4>
                 <p className="text-[15px] m-0">We offer an 18-week extended track option designed specifically for those with full-time jobs.</p>
               </div>
             </div>
-            
+
             <div className="cd-module-list" data-aos="fade-up">
               {data.curriculum.map((mod, i) => (
                 <div key={i} className="cd-module-card">
@@ -150,7 +150,7 @@ const FullStackDetail = () => {
             <span className="cd-eyebrow">Tech Stack</span>
             <h2 className="cd-section-title">The Modern MERN Ecosystem.</h2>
           </div>
-          
+
           <div className="cd-tech-grid" data-aos="fade-up">
             {data.ecosystems.map((eco, i) => (
               <div key={i} className="cd-tech-card">
@@ -170,7 +170,7 @@ const FullStackDetail = () => {
             <span className="cd-eyebrow">Portfolio</span>
             <h2 className="cd-section-title">Build to get hired.</h2>
           </div>
-          
+
           <div className="cd-projects-grid" data-aos="fade-up">
             {data.projects.slice(0, 2).map((proj, i) => (
               <div key={i} className="cd-project-card">
@@ -204,11 +204,11 @@ const FullStackDetail = () => {
             <h2 className="cd-section-title">Learn from real engineers.</h2>
             <p>Our mentors have built systems at scale and know exactly what top-tier tech companies look for in candidates.</p>
           </div>
-            
+
           <div className="cd-mentors-grid" data-aos="fade-up">
             {data.mentors.map((mentor, i) => (
               <div key={i} className="cd-mentor-card">
-                <img src={sachin} alt={mentor.name} className="cd-mentor-img"/>
+                <img src={sachin} alt={mentor.name} className="cd-mentor-img" />
                 <div className="cd-mentor-info">
                   <h3>{mentor.name}</h3>
                   <div className="cd-mentor-role">{mentor.role}</div>
@@ -229,10 +229,10 @@ const FullStackDetail = () => {
               <span className="cd-eyebrow">Outcomes</span>
               <h2 className="cd-section-title">Placement Support & Guarantees.</h2>
               <p className="mb-6">We don't sell fake "100% job guarantees". We provide rigorous placement support, mock interviews, and direct introductions to 100+ hiring partners.</p>
-              
+
               <div className="p-6 bg-[#F8FAFC] rounded-xl border border-[var(--border)] mb-8">
                 <h4 className="font-bold mb-2">50% Tuition Refund Policy</h4>
-                <p className="text-[15px] m-0">If you successfully complete the program and don't receive a job offer within 3 months, we refund 50% of your tuition.</p>
+                <p className="text-[15px] m-0">If you successfully complete the program and don't receive a job offer within 2/3 MONTHS, we refund 50% of your tuition.</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-[15px] font-medium text-[var(--text)]">
@@ -257,13 +257,13 @@ const FullStackDetail = () => {
             <span className="cd-eyebrow">Alumni</span>
             <h2 className="cd-section-title">Transformation stories.</h2>
           </div>
-          
+
           <div className="cd-test-grid" data-aos="fade-up">
             {data.testimonials.map((test, i) => (
               <div key={i} className="cd-test-card">
                 <p>"{test.quote}"</p>
                 <div className="cd-test-author">
-                  <img src={test.image} alt={test.author}/>
+                  <img src={test.image} alt={test.author} />
                   <div>
                     <h4>{test.author}</h4>
                     <span>{test.role}</span>
@@ -280,7 +280,7 @@ const FullStackDetail = () => {
         <div className="cd-container" data-aos="zoom-in">
           <h2>Ready to launch your engineering career?</h2>
           <p>Join the next cohort starting soon. Limited seats available to ensure personalized mentorship.</p>
-          
+
           <div className="flex justify-center gap-4">
             <button className="cd-btn cd-btn--primary" onClick={() => setShowForm(true)}>
               Enroll in Next Cohort

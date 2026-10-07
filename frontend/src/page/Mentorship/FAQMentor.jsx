@@ -15,7 +15,7 @@ const FAQMentor = ({ hideHeading = false }) => {
     {
       question: "What is the duration of this course?",
       answer:
-        "The course duration is 2–3 months, with each session including 1 hour of teaching and a 30-minute doubt-clearing session mostly classes are conveniently scheduled to start after 6 PM.",
+        "The course duration is 2–2/3 MONTHS, with each session including 1 hour of teaching and a 30-minute doubt-clearing session mostly classes are conveniently scheduled to start after 6 PM.",
     },
     {
       question: "How do I attend live classes?",

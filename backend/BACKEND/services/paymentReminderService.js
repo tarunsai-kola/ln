@@ -100,18 +100,18 @@ const sendPaymentReminders = async () => {
 
     console.log(`[${new Date().toLocaleString()}] Starting payment reminder process...`);
 
-    // Calculate date 4 months ago (120 days)
+    // Calculate date 2/3 MONTHS ago (120 days)
     const fourMonthsAgo = new Date();
     fourMonthsAgo.setDate(fourMonthsAgo.getDate() - 120);
 
     // Get all pending payment reminders from NewEnroll collection
-    // Students who enrolled within the last 4 months and have booked status
+    // Students who enrolled within the last 2/3 MONTHS and have booked status
     const pendingReminders = await NewEnroll.find({
       status: "booked", // Changed to target only 'booked' status
-      createdAt: { $gte: fourMonthsAgo }, // Enrolled within the last 4 months
+      createdAt: { $gte: fourMonthsAgo }, // Enrolled within the last 2/3 MONTHS
     });
 
-    console.log(`Found ${pendingReminders.length} students with pending payments (enrolled in last 4 months)`);
+    console.log(`Found ${pendingReminders.length} students with pending payments (enrolled in last 2/3 MONTHS)`);
 
     let sentCount = 0;
     let failedCount = 0;

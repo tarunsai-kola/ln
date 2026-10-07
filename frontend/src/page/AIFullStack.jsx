@@ -155,7 +155,7 @@ const capstoneProjects = [
 ];
 
 const faqData = [
-  { q: "What is the duration of the program?", a: "The program runs for 16 weeks (4 months), 100% online with live interactive sessions." },
+  { q: "What is the duration of the program?", a: "The program runs for 16 weeks (2/3 MONTHS), 100% online with live interactive sessions." },
   { q: "Do I need prior coding experience?", a: "No, Phase 1 starts from absolute web foundations (HTML/CSS) before scaling up to React and AI APIs." },
   { q: "What stacks are covered?", a: "You will master the MERN stack (MongoDB, Express, React, Node.js) along with Next.js, PostgreSQL, Tailwind, and AI APIs." },
   { q: "Do you provide placement support?", a: "Yes! Weeks 13-16 are completely dedicated to Resume building, DSA (100+ Leetcode), Mock Interviews, and direct Placement Outreach." },
@@ -188,7 +188,7 @@ const AIFullStack = () => {
           1. HERO
           ============================================================ */}
       <section id="overview" className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-24 px-6 overflow-hidden bg-black">
-        
+
         {/* 1. Full-Bleed Minimalist Dark Background */}
         <div className="absolute inset-0 z-0 bg-[#050505]">
           {/* High-tech Grid Pattern */}
@@ -196,13 +196,13 @@ const AIFullStack = () => {
 
           {/* Vignette Mask */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.95)_100%)] pointer-events-none" />
-          
+
           {/* Bright Glowing Silver Orbs for Depth */}
-          <div 
-            className="absolute top-[5%] left-[20%] w-[500px] h-[500px] bg-slate-300/15 blur-[120px] rounded-full pointer-events-none mix-blend-screen" 
+          <div
+            className="absolute top-[5%] left-[20%] w-[500px] h-[500px] bg-slate-300/15 blur-[120px] rounded-full pointer-events-none mix-blend-screen"
           />
-          <div 
-            className="absolute bottom-[10%] right-[15%] w-[600px] h-[600px] bg-white/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen" 
+          <div
+            className="absolute bottom-[10%] right-[15%] w-[600px] h-[600px] bg-white/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen"
             style={{ animationDelay: '1s' }}
           />
         </div>
@@ -245,7 +245,7 @@ const AIFullStack = () => {
           {/* Hyper-Premium Interactive Elements */}
           <div className="flex flex-col items-center gap-12 px-4">
             <div className="flex flex-wrap justify-center gap-6">
-              
+
               {/* Spinning Conic Gradient Button */}
               <div className="relative group rounded-full p-[2px] overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] transition-shadow duration-500">
                 <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_240deg,rgba(255,255,255,0.8)_360deg)] animate-[spin_3s_linear_infinite] opacity-100" />
@@ -267,52 +267,52 @@ const AIFullStack = () => {
                 View Curriculum
               </button>
             </div>
-            
+
             {/* Ice White Placement Banner */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6 }}
               className="mt-10 mx-auto w-fit bg-[#111] rounded-[16px] py-3 px-8 md:px-14 flex flex-col md:flex-row items-center gap-8 md:gap-20 shadow-2xl border border-slate-800"
             >
-               {/* Placements */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
-                     <Briefcase className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-slate-400 text-[10px] font-bold mb-0.5">Placements</p>
-                     <p className="text-white text-[20px] font-bold leading-none">1100+</p>
-                  </div>
-               </div>
+              {/* Placements */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
+                  <Briefcase className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-slate-400 text-[10px] font-bold mb-0.5">Placements</p>
+                  <p className="text-white text-[20px] font-bold leading-none">1100+</p>
+                </div>
+              </div>
 
-               {/* Separator */}
-               <div className="hidden md:block w-px h-10 bg-slate-800"></div>
+              {/* Separator */}
+              <div className="hidden md:block w-px h-10 bg-slate-800"></div>
 
-               {/* Salary Hike */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
-                     <TrendingUp className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-slate-400 text-[10px] font-bold mb-0.5">Salary Hike</p>
-                     <p className="text-white text-[18px] font-bold leading-[1.1]">Upto <br/> 350%</p>
-                  </div>
-               </div>
+              {/* Salary Hike */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
+                  <TrendingUp className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-slate-400 text-[10px] font-bold mb-0.5">Salary Hike</p>
+                  <p className="text-white text-[18px] font-bold leading-[1.1]">Upto <br /> 350%</p>
+                </div>
+              </div>
 
-               {/* Separator */}
-               <div className="hidden md:block w-px h-10 bg-slate-800"></div>
+              {/* Separator */}
+              <div className="hidden md:block w-px h-10 bg-slate-800"></div>
 
-               {/* ROI */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
-                     <Landmark className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-slate-400 text-[10px] font-bold mb-0.5">ROI on Course</p>
-                     <p className="text-white text-[20px] font-bold leading-none">10x to 20X</p>
-                  </div>
-               </div>
+              {/* ROI */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center shadow-inner shrink-0 border border-slate-700">
+                  <Landmark className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-slate-400 text-[10px] font-bold mb-0.5">ROI on Course</p>
+                  <p className="text-white text-[20px] font-bold leading-none">10x to 20X</p>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -320,7 +320,7 @@ const AIFullStack = () => {
 
       {/* STATS BAR */}
       <ProgramStatsBar stats={trustStats} labelColor="text-white" />
-      
+
       {/* COLLABORATION COMPANY MARQUEE */}
       <AuthorityMarquee theme="dark" />
 
@@ -354,7 +354,7 @@ const AIFullStack = () => {
             />
           </div>
 
-          <div 
+          <div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             onMouseEnter={() => setIsCareerPathHovered(true)}
             onMouseLeave={() => setIsCareerPathHovered(false)}
@@ -366,9 +366,8 @@ const AIFullStack = () => {
                 return (
                   <div
                     key={idx}
-                    className={`border rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
-                      isActive ? "border-slate-600 bg-slate-900/50" : "border-slate-800 bg-[#111] hover:border-slate-700"
-                    }`}
+                    className={`border rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${isActive ? "border-slate-600 bg-slate-900/50" : "border-slate-800 bg-[#111] hover:border-slate-700"
+                      }`}
                     onClick={() => setActiveCareerPath(idx)}
                   >
                     <div className="p-6">
@@ -383,7 +382,7 @@ const AIFullStack = () => {
                       </div>
                       <h3 className="text-lg font-bold text-white">{path.title}</h3>
 
-                      <div 
+                      <div
                         className={`transition-all duration-500 ease-in-out overflow-hidden`}
                         style={{ maxHeight: isActive ? '500px' : '0px', opacity: isActive ? 1 : 0 }}
                       >
@@ -431,10 +430,10 @@ const AIFullStack = () => {
       </section>
 
       {/* CURRICULUM */}
-      <PremiumCurriculum 
-        phases={sdPhases} 
-        title="16-Week Engineering Roadmap" 
-        accentColor="text-white" 
+      <PremiumCurriculum
+        phases={sdPhases}
+        title="16-Week Engineering Roadmap"
+        accentColor="text-white"
         bgColor="bg-black"
         cardBgColor="bg-[#0f0f0f]"
       />
@@ -460,46 +459,46 @@ const AIFullStack = () => {
                 className="glass-panel rounded-[28px] p-8 relative overflow-hidden group cursor-pointer border border-slate-800 hover:border-slate-500 transition-all duration-500 min-h-[380px] flex flex-col bg-[#111]"
                 onClick={() => setShowPopup(true)}
               >
-                 {/* Gradient overlay */}
-                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0 pointer-events-none"></div>
-                 
-                 <div className="relative z-10 flex flex-col h-full">
-                    <div className="flex justify-between items-start mb-8">
-                       <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-black border border-slate-700 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500">
-                          {React.createElement(project.icon, {
-                            size: 24,
-                            className: "text-slate-400 group-hover:text-white transition-colors duration-500",
-                            strokeWidth: 1.5,
-                          })}
-                       </div>
-                       <span className="text-[11px] font-bold text-white bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 backdrop-blur-md">Software Project</span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-slate-300 transition-colors">
-                       {project.title}
-                    </h3>
-                    
-                    <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                       {project.desc}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-8 mt-auto">
-                       {project.tools.slice(0,3).map(t => (
-                          <span key={t} className="text-[10px] font-semibold bg-black border border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg">
-                             {t}
-                          </span>
-                       ))}
-                       {project.tools.length > 3 && (
-                          <span className="text-[10px] font-semibold bg-black border border-slate-700 text-slate-400 px-3 py-1.5 rounded-lg">
-                             +{project.tools.length - 3}
-                          </span>
-                       )}
-                    </div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0 pointer-events-none"></div>
 
-                    <div className="flex items-center text-sm font-bold text-white group-hover:translate-x-2 transition-transform duration-300 pt-4 border-t border-slate-800">
-                       View Project Details <ArrowRight size={16} className="ml-2 text-slate-400 group-hover:text-white transition-colors" />
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-black border border-slate-700 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500">
+                      {React.createElement(project.icon, {
+                        size: 24,
+                        className: "text-slate-400 group-hover:text-white transition-colors duration-500",
+                        strokeWidth: 1.5,
+                      })}
                     </div>
-                 </div>
+                    <span className="text-[11px] font-bold text-white bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 backdrop-blur-md">Software Project</span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-slate-300 transition-colors">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
+                    {project.desc}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                    {project.tools.slice(0, 3).map(t => (
+                      <span key={t} className="text-[10px] font-semibold bg-black border border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg">
+                        {t}
+                      </span>
+                    ))}
+                    {project.tools.length > 3 && (
+                      <span className="text-[10px] font-semibold bg-black border border-slate-700 text-slate-400 px-3 py-1.5 rounded-lg">
+                        +{project.tools.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center text-sm font-bold text-white group-hover:translate-x-2 transition-transform duration-300 pt-4 border-t border-slate-800">
+                    View Project Details <ArrowRight size={16} className="ml-2 text-slate-400 group-hover:text-white transition-colors" />
+                  </div>
+                </div>
               </div>
             ))}
 
@@ -509,7 +508,7 @@ const AIFullStack = () => {
                 <Layers size={28} className="text-white" />
               </div>
               <h3 className="text-3xl font-black text-white mb-4 leading-tight ag-font-outfit">
-                Enterprise<br/>Architecture
+                Enterprise<br />Architecture
               </h3>
               <p className="text-slate-400 text-[15px] mb-8 max-w-[240px] leading-relaxed">
                 Build 8 comprehensive portfolios incorporating Next.js, Node, and AI capabilities.
@@ -532,7 +531,7 @@ const AIFullStack = () => {
         </div>
       </section>
 
-      
+
       {/* TOOLS & TECHNOLOGIES */}
       <section id="tools" className="py-12 md:py-24 px-6 bg-[#0a0a0a] border-t border-slate-900">
         <div className="max-w-6xl mx-auto">

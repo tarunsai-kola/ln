@@ -241,20 +241,20 @@ const CreateAdvOperation = () => {
 
   const handleloginteam = async (userId) => {
     try {
-      const response = await axios.post(`${API}/api/admin/impersonate`, 
+      const response = await axios.post(`${API}/api/admin/impersonate`,
         { userId, role: "ADV_OPERATION" },
         { withCredentials: true }
       );
       if (response.status === 200) {
         toast.success("Impersonation successful!");
         const { token, operationName, fullname, _id, userId: resUserId } = response.data;
-        
+
         // Pass credentials via URL so the new tab can save them to its own sessionStorage
         const targetId = _id || resUserId || userId;
         const targetName = operationName || fullname || "";
 
         const impersonateUrl = `/AdvOperationDashboard?impToken=${encodeURIComponent(token)}&impId=${targetId}&impName=${encodeURIComponent(targetName)}&impType=advOperationToken`;
-        
+
         setTimeout(() => {
           window.open(impersonateUrl, "_blank");
         }, 500);
@@ -437,7 +437,7 @@ const CreateAdvOperation = () => {
                       {/* Account Details */}
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
-                          <button 
+                          <button
                             onClick={() => fetchRevenueDetails(operation.fullname)}
                             className="text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline text-left"
                             title="View Revenue"
@@ -481,11 +481,10 @@ const CreateAdvOperation = () => {
                         <div className="flex flex-col items-center gap-2">
                           <button
                             onClick={() => handleToggleStatus(operation._id)}
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border transition-colors ${
-                              operation.isOnline
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border transition-colors ${operation.isOnline
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
                                 : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"
-                            }`}
+                              }`}
                           >
                             <span className={`h-1.5 w-1.5 rounded-full mr-2 ${operation.isOnline ? "bg-emerald-500" : "bg-slate-400"}`}></span>
                             {operation.isOnline ? "Online" : "Offline"}
@@ -580,7 +579,7 @@ const CreateAdvOperation = () => {
         {isDialogVisible && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-              
+
               <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center shrink-0">
                 <div>
                   <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Revenue Details</h2>
@@ -648,7 +647,7 @@ const CreateAdvOperation = () => {
                       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
                         <div className="px-6 py-4 border-b border-slate-100 bg-slate-50">
                           <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                            <i className="fa fa-calendar-alt text-emerald-500"></i> Last 3 Months
+                            <i className="fa fa-calendar-alt text-emerald-500"></i> Last 2/3 MONTHS
                           </h3>
                         </div>
                         <div className="overflow-x-auto flex-1 p-4">
@@ -673,7 +672,7 @@ const CreateAdvOperation = () => {
                                 ))
                               ) : (
                                 <tr>
-                                  <td colSpan="4" className="py-8 text-center text-slate-500">No revenue data for the last 3 months</td>
+                                  <td colSpan="4" className="py-8 text-center text-slate-500">No revenue data for the last 2/3 MONTHS</td>
                                 </tr>
                               )}
                             </tbody>

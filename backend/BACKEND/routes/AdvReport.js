@@ -9,9 +9,9 @@ const AdvTeamMember = require("../models/CreateAdvTeam");
 const mongoose = require("mongoose");
 
 const META_BLACKLIST = [
-    "id", "created_time", "ad_id", "ad_name", "adset_id", "adset_name", 
-    "campaign_id", "campaign_name", "form_id", "form_name", "is_organic", 
-    "platform", "lead_status", "meta_lead_id", "facebook_ad_name", 
+    "id", "created_time", "ad_id", "ad_name", "adset_id", "adset_name",
+    "campaign_id", "campaign_name", "form_id", "form_name", "is_organic",
+    "platform", "lead_status", "meta_lead_id", "facebook_ad_name",
     "facebook_campaign_name", "facebook_form_id", "facebook_created_time",
     "extra_fields" // Report routes usually don't need extra_fields, safe to hide entirely
 ];
@@ -62,7 +62,7 @@ router.get("/daily-targets/:id", async (req, res) => {
     try {
         const filterDate = date ? new Date(date) : new Date();
         filterDate.setHours(0, 0, 0, 0);
-        
+
         const nextDate = new Date(filterDate);
         nextDate.setDate(nextDate.getDate() + 1);
 
@@ -73,7 +73,7 @@ router.get("/daily-targets/:id", async (req, res) => {
         }
 
         const designation = (user.designation || "").toLowerCase();
-        
+
         // Define Targets
         let targets = {
             callTarget: 0,
@@ -215,7 +215,7 @@ router.get("/adv-leaderboard", async (req, res) => {
         });
 
         const mergedStats = {};
-        
+
         teamStats.forEach(stat => {
             if (stat.name) {
                 mergedStats[stat.name] = {
@@ -323,9 +323,9 @@ router.get("/domain-monthly-stats", async (req, res) => {
             });
         });
 
-        res.status(200).json({ 
-            data: pivotData, 
-            domains: Array.from(uniqueDomains) 
+        res.status(200).json({
+            data: pivotData,
+            domains: Array.from(uniqueDomains)
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -575,13 +575,13 @@ router.get("/comprehensive-stats", async (req, res) => {
         const getSummary = async (start, end) => {
             const [total, converted, junk] = await Promise.all([
                 AdvLead.countDocuments({ created_at: { $gte: start, $lte: end } }),
-                AdvLead.countDocuments({ 
-                    created_at: { $gte: start, $lte: end }, 
-                    $or: [{ last_outcome: "converted" }, { stage: "converted" }] 
+                AdvLead.countDocuments({
+                    created_at: { $gte: start, $lte: end },
+                    $or: [{ last_outcome: "converted" }, { stage: "converted" }]
                 }),
-                AdvLead.countDocuments({ 
-                    created_at: { $gte: start, $lte: end }, 
-                    last_outcome: { $in: ["junk", "not_interested"] } 
+                AdvLead.countDocuments({
+                    created_at: { $gte: start, $lte: end },
+                    last_outcome: { $in: ["junk", "not_interested"] }
                 })
             ]);
             return { total, converted, junk };
@@ -607,12 +607,14 @@ router.get("/comprehensive-stats", async (req, res) => {
         // Domain Breakdown
         const domainBreakdown = await AdvLead.aggregate([
             { $match: { created_at: { $gte: startDate, $lte: endDate } } },
-            { $group: {
-                _id: "$opted_domain",
-                total: { $sum: 1 },
-                converted: { $sum: { $cond: [{ $or: [{ $eq: ["$last_outcome", "converted"] }, { $eq: ["$stage", "converted"] }] }, 1, 0] } },
-                junk: { $sum: { $cond: [{ $in: ["$last_outcome", ["junk", "not_interested"]] }, 1, 0] } }
-            }},
+            {
+                $group: {
+                    _id: "$opted_domain",
+                    total: { $sum: 1 },
+                    converted: { $sum: { $cond: [{ $or: [{ $eq: ["$last_outcome", "converted"] }, { $eq: ["$stage", "converted"] }] }, 1, 0] } },
+                    junk: { $sum: { $cond: [{ $in: ["$last_outcome", ["junk", "not_interested"]] }, 1, 0] } }
+                }
+            },
             { $project: { domain: "$_id", total: 1, converted: 1, junk: 1, _id: 0 } },
             { $sort: { total: -1 } }
         ]);
@@ -620,12 +622,14 @@ router.get("/comprehensive-stats", async (req, res) => {
         // Source Breakdown
         const sourceBreakdown = await AdvLead.aggregate([
             { $match: { created_at: { $gte: startDate, $lte: endDate } } },
-            { $group: {
-                _id: "$source",
-                total: { $sum: 1 },
-                converted: { $sum: { $cond: [{ $or: [{ $eq: ["$last_outcome", "converted"] }, { $eq: ["$stage", "converted"] }] }, 1, 0] } },
-                junk: { $sum: { $cond: [{ $in: ["$last_outcome", ["junk", "not_interested"]] }, 1, 0] } }
-            }},
+            {
+                $group: {
+                    _id: "$source",
+                    total: { $sum: 1 },
+                    converted: { $sum: { $cond: [{ $or: [{ $eq: ["$last_outcome", "converted"] }, { $eq: ["$stage", "converted"] }] }, 1, 0] } },
+                    junk: { $sum: { $cond: [{ $in: ["$last_outcome", ["junk", "not_interested"]] }, 1, 0] } }
+                }
+            },
             { $project: { source: "$_id", total: 1, converted: 1, junk: 1, _id: 0 } },
             { $sort: { total: -1 } }
         ]);
@@ -648,17 +652,17 @@ router.get("/team-analysis", async (req, res) => {
     try {
         const { month, year } = req.query;
         const targetMonth = month ? parseInt(month) - 1 : new Date().getMonth();
-        const targetYear  = year  ? parseInt(year)  : new Date().getFullYear();
+        const targetYear = year ? parseInt(year) : new Date().getFullYear();
 
         const startDate = new Date(targetYear, targetMonth, 1);
-        const endDate   = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
+        const endDate = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
 
         // 1. Get all team members (all roles)
         const allMembers = await AdvTeamMember.find({ Access: true, status: "Active" }, {
             fullname: 1, designation: 1, team: 1, teams: 1, _id: 1
         }).lean();
 
-        if (!allMembers.length) return res.json({ managers: [], leaders: [], specialists: [] });  
+        if (!allMembers.length) return res.json({ managers: [], leaders: [], specialists: [] });
 
         const memberIds = allMembers.map(m => String(m._id));
 
@@ -691,16 +695,16 @@ router.get("/team-analysis", async (req, res) => {
             {
                 $group: {
                     _id: "$counselor",
-                    totalRevenue:   { $sum: "$programPrice" },
-                    totalPaid:      { $sum: "$paidAmount" },
-                    enrollCount:    { $sum: 1 }
+                    totalRevenue: { $sum: "$programPrice" },
+                    totalPaid: { $sum: "$paidAmount" },
+                    enrollCount: { $sum: 1 }
                 }
             }
         ]);
 
         // 4. Build lookup maps for fast access
         const outcomesMap = {}; // memberId -> { outcome: count }
-        const OUTCOMES = ["fresh","interested","follow_up","callback_requested","no_answer","not_interested","junk","converted","unused"];
+        const OUTCOMES = ["fresh", "interested", "follow_up", "callback_requested", "no_answer", "not_interested", "junk", "converted", "unused"];
 
         for (const row of leadAgg) {
             const { owner, outcome } = row._id;
@@ -716,18 +720,18 @@ router.get("/team-analysis", async (req, res) => {
         const revenueMap = {};
         for (const row of revenueAgg) {
             revenueMap[row._id] = {
-                totalRevenue:   row.totalRevenue || 0,
+                totalRevenue: row.totalRevenue || 0,
                 pendingRevenue: Math.max(0, (row.totalRevenue || 0) - (row.totalPaid || 0)),
-                enrollCount:    row.enrollCount || 0
+                enrollCount: row.enrollCount || 0
             };
         }
 
         // 5. Combine into member objects
         const buildMember = (m) => {
-            const id   = String(m._id);
+            const id = String(m._id);
             const name = m.fullname;
-            const outcomes = outcomesMap[id]   || { totalLeads: 0 };
-            const revenue  = revenueMap[name]  || { totalRevenue: 0, pendingRevenue: 0, enrollCount: 0 };
+            const outcomes = outcomesMap[id] || { totalLeads: 0 };
+            const revenue = revenueMap[name] || { totalRevenue: 0, pendingRevenue: 0, enrollCount: 0 };
             OUTCOMES.forEach(o => { if (outcomes[o] === undefined) outcomes[o] = 0; });
             return {
                 _id: id,
@@ -740,8 +744,8 @@ router.get("/team-analysis", async (req, res) => {
         };
 
         const designationMap = {
-            managers:    ["advteam manager", "manager", "adv manager"],
-            leaders:     ["adv team leader", "team leader", "leader", "sr team leader"],
+            managers: ["advteam manager", "manager", "adv manager"],
+            leaders: ["adv team leader", "team leader", "leader", "sr team leader"],
             specialists: ["sr inside sales specialist", "inside sales specialist", "sales specialist", "specialist"]
         };
 
@@ -783,8 +787,8 @@ router.get("/member-monthly", async (req, res) => {
         const memberName = memberDoc?.fullname || null;
 
         const targetYear = year ? parseInt(year) : new Date().getFullYear();
-        const startDate  = new Date(targetYear, 0, 1);
-        const endDate    = new Date(targetYear, 11, 31, 23, 59, 59, 999);
+        const startDate = new Date(targetYear, 0, 1);
+        const endDate = new Date(targetYear, 11, 31, 23, 59, 59, 999);
 
 
         const leadsByMonth = await AdvLead.aggregate([
@@ -812,13 +816,13 @@ router.get("/member-monthly", async (req, res) => {
             {
                 $group: {
                     _id: { $month: "$createdAt" },
-                    revenue:  { $sum: "$programPrice" },
-                    paid:     { $sum: "$paidAmount" }
+                    revenue: { $sum: "$programPrice" },
+                    paid: { $sum: "$paidAmount" }
                 }
             }
         ]);
 
-        const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const monthly = MONTHS.map((name, i) => ({
             month: name,
             totalLeads: 0, converted: 0, interested: 0, junk: 0, not_interested: 0,
@@ -834,8 +838,8 @@ router.get("/member-monthly", async (req, res) => {
 
         for (const row of revenueByMonth) {
             const idx = row._id - 1;
-            monthly[idx].revenue  = row.revenue || 0;
-            monthly[idx].pending  = Math.max(0, (row.revenue || 0) - (row.paid || 0));
+            monthly[idx].revenue = row.revenue || 0;
+            monthly[idx].pending = Math.max(0, (row.revenue || 0) - (row.paid || 0));
         }
 
         res.status(200).json(monthly);
@@ -856,9 +860,9 @@ router.get("/member-outcome-logs", async (req, res) => {
         }
 
         const targetMonth = month ? parseInt(month) - 1 : new Date().getMonth();
-        const targetYear  = year  ? parseInt(year)  : new Date().getFullYear();
-        const startDate   = new Date(targetYear, targetMonth, 1);
-        const endDate     = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
+        const targetYear = year ? parseInt(year) : new Date().getFullYear();
+        const startDate = new Date(targetYear, targetMonth, 1);
+        const endDate = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999);
 
         const query = {
             owner_id: memberId,
@@ -897,9 +901,9 @@ router.get("/member-outcome-logs", async (req, res) => {
             {
                 $group: {
                     _id: "$leadId",
-                    summary:   { $first: "$summary" },
-                    remark:    { $first: "$remark" },
-                    calledAt:  { $first: "$createdAt" },
+                    summary: { $first: "$summary" },
+                    remark: { $first: "$remark" },
+                    calledAt: { $first: "$createdAt" },
                     agentName: { $first: "$specialistName" }
                 }
             }
@@ -911,25 +915,25 @@ router.get("/member-outcome-logs", async (req, res) => {
         }
 
         const result = leads.map(lead => ({
-            _id:        lead._id,
-            name:       lead.full_name,
-            phone:      lead.phone_number,
-            source:     lead.source?.replace(/_/g, ' '),
-            sourceRaw:  lead.source,
-            domain:     lead.opted_domain || '—',
-            date:       lead.assigned_at || lead.created_at,
-            outcome:    lead.last_outcome,
-            status:     lead.status,
-            summary:    callMap[String(lead._id)]?.summary || '—',
-            remark:     callMap[String(lead._id)]?.remark  || '',
-            calledAt:   callMap[String(lead._id)]?.calledAt || null,
+            _id: lead._id,
+            name: lead.full_name,
+            phone: lead.phone_number,
+            source: lead.source?.replace(/_/g, ' '),
+            sourceRaw: lead.source,
+            domain: lead.opted_domain || '—',
+            date: lead.assigned_at || lead.created_at,
+            outcome: lead.last_outcome,
+            status: lead.status,
+            summary: callMap[String(lead._id)]?.summary || '—',
+            remark: callMap[String(lead._id)]?.remark || '',
+            calledAt: callMap[String(lead._id)]?.calledAt || null,
         }));
 
-        res.status(200).json({ 
-            logs: result, 
-            total, 
-            page, 
-            pages: Math.ceil(total / limit) 
+        res.status(200).json({
+            logs: result,
+            total,
+            page,
+            pages: Math.ceil(total / limit)
         });
     } catch (err) {
         console.error("member-outcome-logs error:", err);
@@ -988,7 +992,7 @@ router.get("/dashboard-analytics", async (req, res) => {
                 }
             },
             { $sort: { "_id.year": 1, "_id.month": 1 } },
-            { $limit: 12 } // Last 12 months
+            { $limit: 12 } // Last 12/3 MONTHS
         ]);
 
         // Format month names for the chart
@@ -1015,7 +1019,7 @@ router.get("/dashboard-analytics", async (req, res) => {
             { $limit: 20 },
             {
                 $lookup: {
-                    from: "advusers", 
+                    from: "advusers",
                     localField: "_id",
                     foreignField: "_id",
                     as: "specialist"

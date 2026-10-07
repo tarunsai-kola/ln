@@ -105,7 +105,7 @@ content = content.replace(
 content = content.replace(
   /const faqData = \[([\s\S]*?)\];/g,
   `const faqData = [
-  { q: "What is the duration of the program?", a: "The program runs for 20 weeks (5 months), 100% online with live weekend sessions." },
+  { q: "What is the duration of the program?", a: "The program runs for 20 weeks (2/3 MONTHS), 100% online with live weekend sessions." },
   { q: "Who is this program for?", a: "ECE, EE students, and electronics engineers looking to master VLSI Design, Verilog, and Hardware modeling." },
   { q: "Will I get certified?", a: "Yes. You earn Professional Certifications in VLSI Design, SystemVerilog Verification, and Physical Design." },
   { q: "Do you provide placement support?", a: "Yes, Phase 4 is entirely dedicated to Resume Mastery, Interview Prep, Case Studies, and Core Company Placement Support." },

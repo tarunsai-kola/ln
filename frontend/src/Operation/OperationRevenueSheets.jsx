@@ -11,7 +11,7 @@ const BDARevenueSheet = () => {
   const fetchNewStudent = async () => {
     const operationName = localStorage.getItem("operationName");
     try {
-      // Operations need all records for revenue calculation across 4 months
+      // Operations need all records for revenue calculation across 2/3 MONTHS
       const response = await axios.get(`${API}/getnewstudentenroll?all=true`);
       const filteredData = response.data.filter(
         (item) => item.operationName && item.operationName === operationName
@@ -110,7 +110,7 @@ const BDARevenueSheet = () => {
 
     return result;
   }
-  const monthsToShow = getLastNMonths(4); // current + last 3 months
+  const monthsToShow = getLastNMonths(4); // current + last 2/3 MONTHS
   const months = monthsToShow.filter((m) => revenueByMonth[m]);
 
   // const months = Object.keys(revenueByMonth).sort((a, b) => new Date(b) - new Date(a));

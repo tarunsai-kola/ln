@@ -115,7 +115,7 @@ const AllTeamDetail = () => {
       const status = item.status;
       // console.log("item remark", item.remark)
 
-      // Filter only the last 3 months
+      // Filter only the last 2/3 MONTHS
       if ([currentMonth, prevMonth1, prevMonth2, prevMonth3].includes(month)) {
         if (!result[month]) {
           result[month] = { count: 0, total: 0, credited: 0 };

@@ -2,7 +2,7 @@ export const WORKSHOP_CONTENT = {
   "Artificial Intelligence": {
     title: "Artificial Intelligence",
     heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/artificial-intelligence.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -26,7 +26,7 @@ export const WORKSHOP_CONTENT = {
   "DevOps": {
     title: "DevOps",
     heroImage: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/devops.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -50,7 +50,7 @@ export const WORKSHOP_CONTENT = {
   "Medical Coding": {
     title: "Medical Coding",
     heroImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/medical-coding.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -74,7 +74,7 @@ export const WORKSHOP_CONTENT = {
   "Psychology": {
     title: "Psychology",
     heroImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/psychology.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -98,7 +98,7 @@ export const WORKSHOP_CONTENT = {
   "Data Science": {
     title: "Data Science",
     heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/data-science.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -122,7 +122,7 @@ export const WORKSHOP_CONTENT = {
   "Full Stack Software Development": {
     title: "Full Stack Software Development",
     heroImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/full-stack-software-development.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -146,7 +146,7 @@ export const WORKSHOP_CONTENT = {
   "Digital Marketing": {
     title: "Digital Marketing",
     heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/digital-marketing.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -170,7 +170,7 @@ export const WORKSHOP_CONTENT = {
   "Machine Learning": {
     title: "Machine Learning",
     heroImage: "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/machine-learning.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -194,7 +194,7 @@ export const WORKSHOP_CONTENT = {
   "Data Analytics": {
     title: "Data Analytics",
     heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/data-analytics.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -218,7 +218,7 @@ export const WORKSHOP_CONTENT = {
   "Cloud Computing": {
     title: "Cloud Computing",
     heroImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/cloud-computing.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -242,7 +242,7 @@ export const WORKSHOP_CONTENT = {
   "Cyber Security": {
     title: "Cyber Security",
     heroImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/cyber-security.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -266,7 +266,7 @@ export const WORKSHOP_CONTENT = {
   "Data Structures and Algorithms": {
     title: "Data Structures and Algorithms",
     heroImage: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/data-structures-and-algorithms.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -290,7 +290,7 @@ export const WORKSHOP_CONTENT = {
   "SQL": {
     title: "SQL",
     heroImage: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/sql.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -314,7 +314,7 @@ export const WORKSHOP_CONTENT = {
   "Human Resource": {
     title: "Human Resource",
     heroImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/human-resource.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -338,7 +338,7 @@ export const WORKSHOP_CONTENT = {
   "Finance": {
     title: "Finance",
     heroImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/finance.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -362,7 +362,7 @@ export const WORKSHOP_CONTENT = {
   "Stock Market": {
     title: "Stock Market",
     heroImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/stock-market.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -386,7 +386,7 @@ export const WORKSHOP_CONTENT = {
   "Business Analytics": {
     title: "Business Analytics",
     heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/business-analytics.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -410,7 +410,7 @@ export const WORKSHOP_CONTENT = {
   "Graphics Designing": {
     title: "Graphics Designing",
     heroImage: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/graphics-designing.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -434,7 +434,7 @@ export const WORKSHOP_CONTENT = {
   "UI/UX Design": {
     title: "UI/UX Design",
     heroImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/ui-ux-design.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -458,7 +458,7 @@ export const WORKSHOP_CONTENT = {
   "Embedded Systems": {
     title: "Embedded Systems",
     heroImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/embedded-systems.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -482,7 +482,7 @@ export const WORKSHOP_CONTENT = {
   "VLSI Design": {
     title: "VLSI Design",
     heroImage: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/vlsi-design.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -506,7 +506,7 @@ export const WORKSHOP_CONTENT = {
   "Android App Development": {
     title: "Android App Development",
     heroImage: "https://images.unsplash.com/photo-1607252656733-fd74ee46696b?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/android-app-development.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -530,7 +530,7 @@ export const WORKSHOP_CONTENT = {
   "IoT & Robotics": {
     title: "IoT & Robotics",
     heroImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/iot-robotics.pdf",
     highlights: [
       "Designed for students, graduates and professionals",
@@ -554,7 +554,7 @@ export const WORKSHOP_CONTENT = {
   "AutoCAD": {
     title: "AutoCAD",
     heroImage: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/autocad.pdf",
     highlights: [
       "Designed for students, graduates and professionals",

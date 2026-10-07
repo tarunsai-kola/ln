@@ -153,7 +153,7 @@ const DashboardAccessForm = () => {
 
     setMonthsToShow(months);
   }, []);
-  // Dynamically calculate next 6 months based on selected start month
+  // Dynamically calculate next 2/3 MONTHS based on selected start month
   useEffect(() => {
     if (!internshipstartsmonth) return;
 
@@ -171,7 +171,7 @@ const DashboardAccessForm = () => {
     setInternshipEndsMonth(""); // Reset end month when start month changes
   }, [internshipstartsmonth]);
 
-  // Dynamically calculate next 3 months for internship start based on selected opted month
+  // Dynamically calculate next 2/3 MONTHS for internship start based on selected opted month
   useEffect(() => {
     if (!monthOpted) {
       setStartMonthsToShow([]);
@@ -486,9 +486,9 @@ const DashboardAccessForm = () => {
                 {" "}
                 Mode of Program
               </option>
-              <option value="Self-Guided [2 Months – Training & Internship]">Self-Guided [2 Months – Training & Internship]</option>
-              <option value="Instructor-Led [2 Months – Training & Internship]">Instructor-Led [2 Months – Training & Internship]</option>
-              <option value="Career Advancement [3 Months – Training, Internship & Placement Assistance]">Career Advancement [3 Months – Training, Internship & Placement Assistance]</option>
+              <option value="Self-Guided [2/3 MONTHS – Training & Internship]">Self-Guided [2/3 MONTHS – Training & Internship]</option>
+              <option value="Instructor-Led [2/3 MONTHS – Training & Internship]">Instructor-Led [2/3 MONTHS – Training & Internship]</option>
+              <option value="Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]">Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]</option>
 
             </select>
 

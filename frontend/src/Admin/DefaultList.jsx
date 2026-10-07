@@ -9,7 +9,7 @@ const DefaultList = () => {
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(""); // Store selected month (format: "Month-Year")
 
-  // Generate months dynamically from current month going back 24 months
+  // Generate months dynamically from current month going back 22/3 MONTHS
   const generateMonths = () => {
     const monthNames = [
       "January", "February", "March", "April", "May", "June",

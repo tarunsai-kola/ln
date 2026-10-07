@@ -12,32 +12,32 @@ export const fullStackData = {
   subHeadline: "Stop watching YouTube tutorials. Start building real projects with a working engineer reviewing your code every week.",
   stat: "87% of our graduates land tech jobs within 6 weeks of completing the program",
   description: "We don't just teach code; we engineer careers. This intensive 12-week program forces you out of passive learning and into active building. You'll master modern React and Node.js architectures, survive rigorous code reviews, and deploy production-grade applications that make hiring managers pay attention.",
-  
+
   highlights: [
     { title: "12 Weeks of Intensive, Hands-On Learning", desc: "Structured progression from basics to advanced full-stack deployment." },
     { title: "Weekly 1:1 Code Reviews + Group Mentorship", desc: "Real engineers tear down and rebuild your code to industry standards." },
-    { title: "No Prerequisites Required", desc: "From zero coding experience to your first paid project in 3 months." },
-    { title: "Guaranteed Internship or Placement Support", desc: "If you don't get a job offer within 3 months, 50% refund." }
+    { title: "No Prerequisites Required", desc: "From zero coding experience to your first paid project in 2/3 MONTHS." },
+    { title: "Guaranteed Internship or Placement Support", desc: "If you don't get a job offer within 2/3 MONTHS, 50% refund." }
   ],
 
   outcomes: [
-    { 
-      title: "Frontend Architecture", 
+    {
+      title: "Frontend Architecture",
       desc: "Build high-performance React applications with SEO optimization, lazy loading, and state management. This is what companies like Amazon and Flipkart test in interviews.",
       salary: "React developers in India earn 8-15 LPA after 1 year"
     },
-    { 
-      title: "Backend & API Systems", 
+    {
+      title: "Backend & API Systems",
       desc: "Develop secure REST APIs using Node.js and Express. Understand middleware, caching, and secure architectures used by top startups.",
       salary: "Backend engineers command 10-18 LPA roles"
     },
-    { 
-      title: "Database Design & Scaling", 
+    {
+      title: "Database Design & Scaling",
       desc: "Design scalable MongoDB schemas, handle complex aggregations, and sync data in real-time. Stop relying on simple local JSON files.",
       salary: "Database optimization is a key mid-level developer skill"
     },
-    { 
-      title: "Authentication & Security", 
+    {
+      title: "Authentication & Security",
       desc: "Implement enterprise-grade JWT auth, OAuth, and role-based access control. Protect your apps against common OWASP vulnerabilities.",
       salary: "Security knowledge fast-tracks you past junior roles"
     }
@@ -222,11 +222,11 @@ export const fullStackData = {
   pricing: {
     standard: "₹99,999",
     roi_salary: "₹8.5 LPA (₹70,833/month)",
-    recovery: "~1.4 months of salary",
+    recovery: "~1.2/3 MONTHS of salary",
     plans: [
       { name: "Full Upfront", price: "₹99,999", desc: "Best value. Save ₹5,000." },
-      { name: "Monthly EMIs", price: "₹35,000 × 3", desc: "Pay as you learn across 3 months." },
-      { name: "Income Share (ISA)", price: "₹0 Upfront", desc: "Pay 10% of salary for 18 months only after you land a job (min ₹5K/mo)." }
+      { name: "Monthly EMIs", price: "₹35,000 × 3", desc: "Pay as you learn across 2/3 MONTHS." },
+      { name: "Income Share (ISA)", price: "₹0 Upfront", desc: "Pay 10% of salary for 12/3 MONTHS only after you land a job (min ₹5K/mo)." }
     ],
     scholarships: [
       "Women in Tech: 20% off",
@@ -246,11 +246,11 @@ export const fullStackData = {
     },
     {
       q: "How much does it cost?",
-      a: "₹99,999 for the full 12-week program (paid upfront) or ₹35,000 × 3 months. We offer scholarships for women and students from tier-2/3 cities (20% off). If you don't land a job within 3 months, 50% refund."
+      a: "₹99,999 for the full 12-week program (paid upfront) or ₹35,000 × 2/3 MONTHS. We offer scholarships for women and students from tier-2/3 cities (20% off). If you don't land a job within 2/3 MONTHS, 50% refund."
     },
     {
       q: "Will I get a job guarantee?",
-      a: "We don't guarantee jobs. We guarantee job readiness. By the end, you'll have 15+ production projects, mock interview practice, and direct introductions to 100+ companies. 87% of graduates land jobs within 6 weeks. If you don't get an offer within 3 months, we refund 50% of your tuition."
+      a: "We don't guarantee jobs. We guarantee job readiness. By the end, you'll have 15+ production projects, mock interview practice, and direct introductions to 100+ companies. 87% of graduates land jobs within 6 weeks. If you don't get an offer within 2/3 MONTHS, we refund 50% of your tuition."
     },
     {
       q: "What if I have a job and limited time?",

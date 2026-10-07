@@ -133,7 +133,7 @@ const CourseDetailsPage = () => {
               <InfoCard
                 icon={<FaClock />}
                 label="Duration"
-                value="1, 2 or 3 months"
+                value="1, 2 or 2/3 MONTHS"
               />
 
               <InfoCard

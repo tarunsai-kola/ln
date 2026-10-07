@@ -118,8 +118,8 @@ const OperationDashboard = () => {
   const sortedMonths = Object.keys(revenueByMonth).sort(
     (a, b) => new Date(`1 ${a}`) - new Date(`1 ${b}`)
   );
-  
-  // Show more months for a better looking chart (last 6 months)
+
+  // Show more months for a better looking chart (last 2/3 MONTHS)
   const lastMonths = sortedMonths.slice(-6);
   const revenueData = lastMonths.map((month) => ({
     month,
@@ -186,13 +186,13 @@ const OperationDashboard = () => {
 
   return (
     <div className="bg-[#f8fafc] min-h-screen font-sans ml-[280px] mt-[70px] p-8 md:p-10">
-      
+
       {/* Header Banner */}
       <div className="bg-indigo-600 rounded-3xl p-8 mb-8 shadow-lg shadow-indigo-200/50 text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-center">
         <div className="absolute top-0 right-0 -mr-8 -mt-8 opacity-10">
           <LineChart size={250} />
         </div>
-        
+
         <div className="relative z-10">
           <h1 className="text-3xl font-black tracking-tight mb-2 flex items-center gap-3">
             Operations Dashboard
@@ -207,36 +207,36 @@ const OperationDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 animate-[fadeIn_0.2s_ease-out]">
         {/* Booked Card */}
         <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300 hover:shadow-md">
-            <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center shadow-inner">
-                <BookOpen size={28} />
-            </div>
-            <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total Booked</p>
-                <h3 className="text-3xl font-black text-slate-800 leading-none">{bookedCount}</h3>
-            </div>
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center shadow-inner">
+            <BookOpen size={28} />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total Booked</p>
+            <h3 className="text-3xl font-black text-slate-800 leading-none">{bookedCount}</h3>
+          </div>
         </div>
 
         {/* Full Paid Card */}
         <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300 hover:shadow-md">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center shadow-inner">
-                <BadgeCheck size={30} />
-            </div>
-            <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Full Paid</p>
-                <h3 className="text-3xl font-black text-slate-800 leading-none">{fullPaidCount}</h3>
-            </div>
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center shadow-inner">
+            <BadgeCheck size={30} />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Full Paid</p>
+            <h3 className="text-3xl font-black text-slate-800 leading-none">{fullPaidCount}</h3>
+          </div>
         </div>
 
         {/* Default Card */}
         <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center gap-5 hover:-translate-y-1 transition-transform duration-300 hover:shadow-md relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-rose-50 rounded-bl-full -z-0"></div>
-            <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shadow-inner relative z-10">
-                <AlertOctagon size={28} />
-            </div>
-            <div className="relative z-10">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Defaulted</p>
-                <h3 className="text-3xl font-black text-slate-800 leading-none">{defaultCount}</h3>
-            </div>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-50 rounded-bl-full -z-0"></div>
+          <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shadow-inner relative z-10">
+            <AlertOctagon size={28} />
+          </div>
+          <div className="relative z-10">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Defaulted</p>
+            <h3 className="text-3xl font-black text-slate-800 leading-none">{defaultCount}</h3>
+          </div>
         </div>
       </div>
 
@@ -245,7 +245,7 @@ const OperationDashboard = () => {
 
         {/* Left Column (Revenue & Target) */}
         <div className="lg:col-span-1 space-y-8 animate-[fadeIn_0.3s_ease-out]">
-          
+
           {/* Revenue Details */}
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-6 relative z-10">
@@ -253,31 +253,31 @@ const OperationDashboard = () => {
                 <IndianRupee size={20} />
               </div>
               <div>
-                  <h2 className="text-lg font-black text-slate-800 leading-tight">Revenue Details</h2>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">This Month</span>
+                <h2 className="text-lg font-black text-slate-800 leading-tight">Revenue Details</h2>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">This Month</span>
               </div>
             </div>
 
             <div className="space-y-4 relative z-10">
-                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                    <span className="text-sm font-semibold text-slate-500">Total Revenue</span>
-                    <span className="text-base font-black text-slate-800">₹{totalRevenue.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                    <span className="text-sm font-semibold text-slate-500">Credited Revenue</span>
-                    <span className="text-base font-black text-emerald-600">₹{creditedRevenue.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                    <span className="text-sm font-semibold text-slate-500">Pending Revenue</span>
-                    <span className="text-base font-black text-amber-500">₹{pendingRevenue.toLocaleString()}</span>
-                </div>
+              <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                <span className="text-sm font-semibold text-slate-500">Total Revenue</span>
+                <span className="text-base font-black text-slate-800">₹{totalRevenue.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center pb-4 border-b border-slate-100">
+                <span className="text-sm font-semibold text-slate-500">Credited Revenue</span>
+                <span className="text-base font-black text-emerald-600">₹{creditedRevenue.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-semibold text-slate-500">Pending Revenue</span>
+                <span className="text-base font-black text-amber-500">₹{pendingRevenue.toLocaleString()}</span>
+              </div>
             </div>
           </div>
 
           {/* Target Card */}
           <div className="bg-indigo-900 rounded-3xl border border-indigo-800 shadow-md p-6 text-white relative overflow-hidden">
             <div className="absolute -right-4 -bottom-4 opacity-10">
-                <Target size={120} />
+              <Target size={120} />
             </div>
             <div className="flex items-center gap-3 mb-6 relative z-10">
               <div className="w-10 h-10 rounded-xl bg-indigo-800/50 text-indigo-300 flex items-center justify-center">
@@ -294,7 +294,7 @@ const OperationDashboard = () => {
                     return (
                       <div key={index} className="flex items-center gap-4">
                         <div className="text-indigo-400">
-                            <TrendingUp size={28} />
+                          <TrendingUp size={28} />
                         </div>
                         <div>
                           <p className="text-xs font-bold text-indigo-300 uppercase tracking-widest mb-1">Current Goal</p>
@@ -320,25 +320,25 @@ const OperationDashboard = () => {
         <div className="lg:col-span-2 animate-[fadeIn_0.4s_ease-out] flex flex-col">
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 flex items-center justify-center">
-                        <LineChart size={20} />
-                    </div>
-                    <h2 className="text-lg font-black text-slate-800">Revenue Growth Timeline</h2>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 flex items-center justify-center">
+                  <LineChart size={20} />
                 </div>
-                <div className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-bold">
-                    Last 6 Months
-                </div>
+                <h2 className="text-lg font-black text-slate-800">Revenue Growth Timeline</h2>
+              </div>
+              <div className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-bold">
+                Last 2/3 MONTHS
+              </div>
             </div>
-            
+
             <div className="flex-1 min-h-[300px] w-full relative">
-                {revenueData.length > 0 ? (
-                    <Line data={lineChartData} options={chartOptions} />
-                ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-medium text-sm">
-                        Not enough data to plot revenue growth.
-                    </div>
-                )}
+              {revenueData.length > 0 ? (
+                <Line data={lineChartData} options={chartOptions} />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-medium text-sm">
+                  Not enough data to plot revenue growth.
+                </div>
+              )}
             </div>
           </div>
         </div>

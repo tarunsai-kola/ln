@@ -6,11 +6,11 @@ import AdvancedApplyPopup from "../../../Components/AdvancedApplyPopup";
  * CourseInfoStrip
  * A premium information and CTA strip that sits below the Hero banner.
  */
-const CourseInfoStrip = ({ 
-  accent = "#00d2ff", 
+const CourseInfoStrip = ({
+  accent = "#00d2ff",
   courseValue = "",
   learningFormat = "Online Program",
-  duration = "8 Months",
+  duration = "2/3 MONTHS",
   emi = "4000/month*",
   brochureLink = "#"
 }) => {
@@ -146,7 +146,7 @@ const CourseInfoStrip = ({
       <div className="cis-wrap">
         <div className="cis-cta-row">
           <ApplyNowButton courseValue={courseValue} />
-          <button 
+          <button
             type="button"
             onClick={() => setShowPopup(true)}
             className="cis-btn-outline"
@@ -166,11 +166,11 @@ const CourseInfoStrip = ({
           </div>
           <div className="cis-item">
             <span className="cis-label">100%</span>
-            <span className="cis-value">Job Opportunities<br/>Guaranteed*</span>
+            <span className="cis-value">Job Opportunities<br />Guaranteed*</span>
           </div>
           <div className="cis-item">
             <span className="cis-label">Program</span>
-            <span className="cis-value">Multiple<br/>Certifications</span>
+            <span className="cis-value">Multiple<br />Certifications</span>
           </div>
           <div className="cis-item">
             <span className="cis-label">Assured</span>

@@ -11,7 +11,7 @@ fileContent = fileContent.replace(regex, (match, key) => {
   const slug = key.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and');
   return `  "${key}": {
     title: "${key}",
-    duration: "2–3 Months",
+    duration: "2–2/3 MONTHS",
     brochure: "/brochures/${slug}.pdf",
     highlights: [
       "Designed for students, graduates and professionals",

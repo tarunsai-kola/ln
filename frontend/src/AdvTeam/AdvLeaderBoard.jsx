@@ -31,12 +31,12 @@ const AdvLeaderBoard = () => {
         });
       }
 
-      const promises = monthsToFetch.map(m => 
+      const promises = monthsToFetch.map(m =>
         axios.get(`${API}/api/adv-reports/adv-leaderboard`, { params: { month: m.month, year: m.year } })
       );
-      
+
       const responses = await Promise.all(promises);
-      
+
       const combined = monthsToFetch.map((m, index) => {
         const monthData = responses[index].data;
         const topRevenue = [...monthData].sort((a, b) => b.revenue - a.revenue).slice(0, 5);
@@ -45,7 +45,7 @@ const AdvLeaderBoard = () => {
 
       setLast3MonthsData(combined);
     } catch (error) {
-      console.error("Error fetching last 3 months leaderboard:", error);
+      console.error("Error fetching last 2/3 MONTHS leaderboard:", error);
     }
   };
 
@@ -275,7 +275,7 @@ const AdvLeaderBoard = () => {
     <>
       <style>{customStyles}</style>
       <div className="ent-container">
-        
+
         <div className="ent-header">
           <div>
             <h1 className="ent-title">Team Leaderboard</h1>
@@ -283,8 +283,8 @@ const AdvLeaderBoard = () => {
           </div>
           <div className="ent-filter">
             <label>Date</label>
-            <input 
-              type="date" 
+            <input
+              type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               max={new Date().toISOString().split('T')[0]}
@@ -298,7 +298,7 @@ const AdvLeaderBoard = () => {
         </div>
         {renderTable(topRevenue)}
 
-        {/* --- LAST 3 MONTHS SECTIONS --- */}
+        {/* --- LAST 2/3 MONTHS SECTIONS --- */}
         {last3MonthsData.map((monthData, index) => (
           <React.Fragment key={index}>
             <div style={{ fontSize: '18px', color: '#1e293b', padding: '10px 0', borderBottom: '1px solid #e2e8f0', marginTop: '20px' }}>

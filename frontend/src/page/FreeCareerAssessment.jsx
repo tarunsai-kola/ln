@@ -721,10 +721,10 @@ const FreeCareerAssessment = () => {
                     <label className="form-label">When do you want to achieve this goal? *</label>
                     <select required name="goalTimeline" value={formData.goalTimeline} onChange={handleInputChange} className="form-input form-select">
                       <option value="" disabled>Select Timeline</option>
-                      <option value="Within 3 Months">Within 3 Months</option>
-                      <option value="Within 6 Months">Within 6 Months</option>
-                      <option value="Within 12 Months">Within 12 Months</option>
-                      <option value="Within 24 Months">Within 24 Months</option>
+                      <option value="Within 2/3 MONTHS">Within 2/3 MONTHS</option>
+                      <option value="Within 2/3 MONTHS">Within 2/3 MONTHS</option>
+                      <option value="Within 12/3 MONTHS">Within 12/3 MONTHS</option>
+                      <option value="Within 22/3 MONTHS">Within 22/3 MONTHS</option>
                     </select>
                   </div>
                   <div>
@@ -836,7 +836,7 @@ const FreeCareerAssessment = () => {
                   </div>
                   <div className="space-y-6">
                     <div>
-                      <label className="form-label text-indigo-300">Most Important Question: If you could solve ONE career challenge in the next 12 months, what would it be? *</label>
+                      <label className="form-label text-indigo-300">Most Important Question: If you could solve ONE career challenge in the next 12/3 MONTHS, what would it be? *</label>
                       <textarea required name="topCareerChallenge12Months" value={formData.topCareerChallenge12Months} onChange={handleInputChange} rows="3" className="form-input resize-none border-indigo-500/30" placeholder="Type your answer here..."></textarea>
                     </div>
                   </div>

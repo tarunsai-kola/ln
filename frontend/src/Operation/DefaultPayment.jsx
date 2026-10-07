@@ -7,7 +7,7 @@ const DefaultPayment = () => {
   const fetchNewStudent = async () => {
     const operationName = localStorage.getItem("operationName");
     try {
-      // Operations need all records to filter by month across 4 months
+      // Operations need all records to filter by month across 2/3 MONTHS
       const response = await axios.get(`${API}/getnewstudentenroll?all=true`);
       const bookedStudents = response.data.filter(
         (item) => item.status === "default" && item.operationName === operationName

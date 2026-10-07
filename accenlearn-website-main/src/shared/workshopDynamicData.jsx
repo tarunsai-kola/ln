@@ -129,7 +129,7 @@ const SALARY_DATA = {
 
 export const getDynamicWorkshopData = (title) => {
   const safeTitle = title || "Technical Domains";
-  
+
   // Try to find exact matches, otherwise fallback to generic generated content
   const techStack = TECH_STACKS[title] || TECH_STACKS["Default"];
   const salaryData = SALARY_DATA[title] || SALARY_DATA["Default"];
@@ -238,7 +238,7 @@ export const getDynamicWorkshopData = (title) => {
         "Direct referrals to hiring partners",
         "Confidence to crack technical rounds"
       ],
-      quote: `The practical ${safeTitle} projects helped me clear my technical round with ease. I secured a role within 2 months of graduating.`,
+      quote: `The practical ${safeTitle} projects helped me clear my technical round with ease. I secured a role within 2/3 MONTHS of graduating.`,
       author: "Priya S.",
       authorRole: "Software Engineer"
     },

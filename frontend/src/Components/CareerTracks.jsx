@@ -9,7 +9,7 @@ const tracks = [
     title: "Data Science & Generative AI",
     icon: <FaRobot />,
     desc: "Master predictive modeling, deep learning, and architect LLM-powered applications. Become a dual-threat in traditional data science and modern GenAI.",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     role: "AI / Data Scientist",
     outcomes: [
       "Predictive modeling & machine learning",
@@ -24,7 +24,7 @@ const tracks = [
     title: "Data Analytics & AI",
     icon: <FaDatabase />,
     desc: "Combine traditional business intelligence with AI-driven analytics. Extract actionable insights and automate reporting using modern data tools.",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     role: "Data Analyst / BI Developer",
     outcomes: [
       "Advanced SQL & Python",
@@ -39,7 +39,7 @@ const tracks = [
     title: "AI-Powered Full Stack Development",
     icon: <FaLaptopCode />,
     desc: "Build secure, scalable MERN stack applications augmented with AI integrations. Learn to code faster with AI assistants and build intelligent features.",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     role: "Full Stack Engineer",
     outcomes: [
       "React, Node.js, MongoDB",
@@ -54,7 +54,7 @@ const tracks = [
     title: "Cybersecurity",
     icon: <FaShieldAlt />,
     desc: "Defend against modern digital threats. Learn ethical hacking, network security, and secure architecture for enterprise systems.",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     role: "Security Analyst",
     outcomes: [
       "Vulnerability assessment & Pen-testing",
@@ -69,7 +69,7 @@ const tracks = [
     title: "Digital Marketing & AI",
     icon: <FaChartLine />,
     desc: "Execute high-ROI campaigns using AI-generated content and predictive analytics. Master SEO, performance marketing, and conversion optimization.",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     role: "Growth Marketer",
     outcomes: [
       "Meta Ads & Google Ads mastery",
@@ -87,7 +87,7 @@ const CareerTracks = () => {
   return (
     <section className="cine-programs-chapter">
       <div className="cine-container">
-        <motion.span 
+        <motion.span
           className="cine-eyebrow"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,8 +95,8 @@ const CareerTracks = () => {
         >
           Career Tracks
         </motion.span>
-        
-        <motion.h2 
+
+        <motion.h2
           className="cine-h2"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +109,7 @@ const CareerTracks = () => {
         <div className="cine-programs-layout">
           <div className="cine-program-tabs">
             {tracks.map((track) => (
-              <button 
+              <button
                 key={track.id}
                 className={`cine-program-tab ${activeTrack.id === track.id ? 'active' : ''}`}
                 onClick={() => setActiveTrack(track)}
@@ -121,7 +121,7 @@ const CareerTracks = () => {
 
           <div style={{ position: "relative" }}>
             <AnimatePresence mode="wait">
-              <motion.div 
+              <motion.div
                 key={activeTrack.id}
                 className="cine-program-content-card"
                 initial={{ opacity: 0, x: 20 }}

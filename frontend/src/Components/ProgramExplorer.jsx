@@ -78,14 +78,14 @@ const ProgramExplorer = ({ columnsData }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 auto-rows-fr">
               {allPrograms.length > 0 ? (
                 allPrograms.map((program) => (
-                  <div 
+                  <div
                     key={program.id}
                     className="bg-[#151B2B] rounded-[24px] border border-slate-800 shadow-[0_8px_30px_rgba(0,0,0,0.2)] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(16,185,129,0.1)] hover:-translate-y-2 group flex flex-col h-full md:max-w-[360px] lg:max-w-[400px] xl:max-w-none mx-auto w-full md:min-h-[420px]"
                   >
                     {/* 16:9 Image Container */}
                     <div className="relative aspect-video overflow-hidden flex-shrink-0">
-                      <img 
-                        src={program.image} 
+                      <img
+                        src={program.image}
                         alt={program.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                       />
@@ -110,11 +110,11 @@ const ProgramExplorer = ({ columnsData }) => {
                           {program.title}
                         </h3>
                       </div>
-                      
+
                       <div className="pt-5 border-t border-slate-800 space-y-3 mt-auto">
                         <div className="flex items-center justify-between">
                           <span className="text-slate-400 text-[12px] font-medium uppercase tracking-wider">Duration</span>
-                          <span className="text-white font-bold text-[13px]">{program.duration || "2/3 Months"}</span>
+                          <span className="text-white font-bold text-[13px]">{program.duration || "2/3 MONTHS"}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-400 text-[12px] font-medium uppercase tracking-wider">Starting</span>
@@ -123,12 +123,12 @@ const ProgramExplorer = ({ columnsData }) => {
                       </div>
 
                       <div className="pt-6">
-                        <button 
+                        <button
                           onClick={() => navigate(program.link)}
                           className={`
                             w-full py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.15em] text-center transition-all duration-300
-                            ${program.highlight 
-                              ? 'bg-[#10B981] text-[#0B1120] shadow-lg shadow-[#10B981]/20 hover:bg-[#059669]' 
+                            ${program.highlight
+                              ? 'bg-[#10B981] text-[#0B1120] shadow-lg shadow-[#10B981]/20 hover:bg-[#059669]'
                               : 'bg-[#1E293B] text-slate-300 hover:bg-[#10B981] hover:text-[#0B1120] border border-slate-700'
                             }
                           `}

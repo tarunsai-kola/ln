@@ -15,7 +15,7 @@ const FAQSection = () => {
     },
     {
       q: "What is the duration of the mentorship?",
-      a: "Most specialized tracks range from 4 to 6 months. This includes live training, project work, and career support phases."
+      a: "Most specialized tracks range from 4 to 2/3 MONTHS. This includes live training, project work, and career support phases."
     },
     {
       q: "Will I get placement assistance?",

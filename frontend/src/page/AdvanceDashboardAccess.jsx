@@ -127,7 +127,7 @@ const AdvanceDashboardAccess = () => {
     setMonthsToShow(generateMonths(0, 4));
   }, []);
 
-  // When start month changes, compute end months for the next 3 months
+  // When start month changes, compute end months for the next 2/3 MONTHS
   useEffect(() => {
     if (!internshipstartsmonth) {
       setEndMonthsToShow([]);
@@ -147,7 +147,7 @@ const AdvanceDashboardAccess = () => {
     setInternshipEndsMonth("");
   }, [internshipstartsmonth]);
 
-  // When opted month changes, compute start months for the next 3 months
+  // When opted month changes, compute start months for the next 2/3 MONTHS
   useEffect(() => {
     if (!monthOpted) {
       setStartMonthsToShow([]);
@@ -406,9 +406,9 @@ const AdvanceDashboardAccess = () => {
                 <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ml-1">Mode of Program</label>
                 <select value={program} onChange={(e) => setProgram(e.target.value)} required className="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all shadow-sm appearance-none">
                   <option value="" disabled>Select Mode of Program</option>
-                  <option value="Self-Guided [2 Months – Training & Internship]">Self-Guided [2 Months – Training & Internship]</option>
-                  <option value="Instructor-Led [2 Months – Training & Internship]">Instructor-Led [2 Months – Training & Internship]</option>
-                  <option value="Career Advancement [3 Months – Training, Internship & Placement Assistance]">Career Advancement [3 Months – Training, Internship & Placement Assistance]</option>
+                  <option value="Self-Guided [2/3 MONTHS – Training & Internship]">Self-Guided [2/3 MONTHS – Training & Internship]</option>
+                  <option value="Instructor-Led [2/3 MONTHS – Training & Internship]">Instructor-Led [2/3 MONTHS – Training & Internship]</option>
+                  <option value="Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]">Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]</option>
                 </select>
               </div>
               <div className="flex flex-col space-y-2">

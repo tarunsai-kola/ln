@@ -300,7 +300,7 @@ const courses = [
         { icon: "Network", title: "Asynchronous FIFO CDC", desc: "Design an asynchronous FIFO memory controller addressing advanced Clock Domain Crossing (CDC) issues utilizing Gray Code counters.", tools: ["SystemVerilog", "CDC", "Linting"] }
       ],
       faqData: [
-        { q: "What is the duration of the program?", a: "The program runs for 24 weeks (6 months), 100% online with live weekend sessions." },
+        { q: "What is the duration of the program?", a: "The program runs for 24 weeks (2/3 MONTHS), 100% online with live weekend sessions." },
         { q: "Who is this program for?", a: "ECE, EE students, and electronics engineers looking to master VLSI Design, Verilog, and Hardware verification." },
         { q: "What tools will we use?", a: "You will get hands-on experience with industry-standard EDA tools like ModelSim, Xilinx Vivado, and concepts applicable to Synopsys/Cadence." },
         { q: "Do you provide placement support?", a: "Yes, Phase 6 is entirely dedicated to Resume Mastery, Interview Prep, Technical tests, and Core Company Placement Support." },
@@ -400,7 +400,7 @@ const courses = [
         { icon: "Target", title: "Secure AWS IoT Sensor Node", desc: "Program an ESP32 to read environmental data, package it as JSON, and securely publish it to AWS IoT Core over MQTT via TLS.", tools: ["ESP32", "MQTT", "AWS IoT"] }
       ],
       faqData: [
-        { q: "What is the duration of the program?", a: "The program runs for 24 weeks (6 months), 100% online." },
+        { q: "What is the duration of the program?", a: "The program runs for 24 weeks (2/3 MONTHS), 100% online." },
         { q: "Do I need to buy hardware?", a: "While we highly recommend purchasing an inexpensive STM32 or ESP32 development board (~$15), we also utilize powerful hardware simulators like Wokwi for learning." },
         { q: "Is prior programming knowledge required?", a: "A basic understanding of C or C++ is highly recommended, as we dive deep into pointers and memory management very quickly." },
         { q: "What is the difference between Embedded Systems and IoT?", a: "Embedded Systems focuses on the localized hardware and firmware (microcontrollers). IoT extends this by connecting these embedded systems to the internet (Cloud/MQTT)." },
@@ -417,11 +417,11 @@ courses.forEach(course => {
     console.log(`Skipping ${course.componentName} - file not found`);
     return;
   }
-  
+
   let content = fs.readFileSync(componentPath, 'utf8');
   const regex = /const courseData = \{[\s\S]*?(?=courseData\.heroImages =)/;
   const newDataString = `const courseData = ${JSON.stringify(course.data, null, 2)};\n\n  `;
-  
+
   content = content.replace(regex, newDataString);
   fs.writeFileSync(componentPath, content, 'utf8');
   console.log(`Enriched ${course.componentName}.jsx`);

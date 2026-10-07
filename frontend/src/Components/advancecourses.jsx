@@ -27,7 +27,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#1d5fae] text-white",
       support: "Live Project Mentoring",
       credential: "Certification",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       batch: "31st May",
       brochure: dataScienceBrochure,
     },
@@ -40,7 +40,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#086f70] text-white",
       support: "Industrial Project Case Studies",
       credential: "Professional Certificate",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       batch: "31st May",
       brochure: dataAnalyticsBrochure,
     },
@@ -53,7 +53,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#0b6b8a] text-white",
       support: "Placement & Portfolio Support",
       credential: "Advanced Certificate",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       batch: "31st May",
       brochure: digitalMarketingBrochure,
     },
@@ -67,7 +67,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#7c3aed] text-white",
       support: "Mentor Feedback",
       credential: "Executive Program",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       brochure: productManagementBrochure,
     },
     {
@@ -79,7 +79,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#dc2626] text-white",
       support: "AI Career Guidance",
       credential: "Certification",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       brochure: promptEngineeringBrochure,
     },
     {
@@ -91,7 +91,7 @@ const AdvanceCounses = () => {
       badgeClass: "bg-[#6b0f44] text-white",
       support: "360 Degree Career Support",
       credential: "Executive Diploma",
-      duration: "6 Months",
+      duration: "2/3 MONTHS",
       brochure: mernBrochure,
     },
   ];
@@ -250,7 +250,7 @@ const AdvanceCounses = () => {
             Elevate your career with our industry-leading curriculum and comprehensive support network.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Difference.map((feature, index) => (
             <div

@@ -21,7 +21,7 @@ export const allMentorshipData = {
     id: 'artificial-intelligence',
     title: 'Artificial Intelligence',
     thumbnail: '/course_thumbnails/Artificial Intelligence.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -158,7 +158,7 @@ export const allMentorshipData = {
     id: 'machine-learning',
     title: 'Machine Learning',
     thumbnail: '/course_thumbnails/Machine Learning.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -311,7 +311,7 @@ export const allMentorshipData = {
     id: 'cyber-security',
     title: 'Cyber Security',
     thumbnail: '/course_thumbnails/Cyber Security.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -465,7 +465,7 @@ export const allMentorshipData = {
     id: 'data-science',
     title: 'Data Science',
     thumbnail: '/course_thumbnails/Data Science.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -621,7 +621,7 @@ export const allMentorshipData = {
     id: 'data-analytics',
     title: 'Data Analytics',
     thumbnail: '/course_thumbnails/Data Analytics.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -771,7 +771,7 @@ export const allMentorshipData = {
     id: 'ui-ux-design',
     title: 'UI/UX Design',
     thumbnail: '/course_thumbnails/ui-ux-design.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -927,7 +927,7 @@ export const allMentorshipData = {
     id: 'devops',
     title: 'DevOps',
     thumbnail: '/course_thumbnails/DevOps.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '15,000+ Mentees Trained',
@@ -1081,7 +1081,7 @@ export const allMentorshipData = {
     id: 'business-analytics',
     title: 'Business Analytics',
     thumbnail: '/course_thumbnails/Business Analytics.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1099,7 +1099,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1153,7 +1153,7 @@ export const allMentorshipData = {
     id: 'finance',
     title: 'Finance',
     thumbnail: '/course_thumbnails/FinTech.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1171,7 +1171,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1219,7 +1219,7 @@ export const allMentorshipData = {
     id: 'human-resource',
     title: 'Human Resource',
     thumbnail: '/course_thumbnails/Human Resource.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1237,7 +1237,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1285,7 +1285,7 @@ export const allMentorshipData = {
     id: 'digital-marketing',
     title: 'Digital Marketing',
     thumbnail: '/course_thumbnails/Digital Marketing.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1303,7 +1303,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1351,7 +1351,7 @@ export const allMentorshipData = {
     id: 'stock-marketing',
     title: 'Stock Marketing',
     thumbnail: '/course_thumbnails/Stock Marketing.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1369,7 +1369,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1417,7 +1417,7 @@ export const allMentorshipData = {
     id: 'graphics-design',
     title: 'Graphics Design',
     thumbnail: '/course_thumbnails/Graphic Designing.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1435,7 +1435,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1483,7 +1483,7 @@ export const allMentorshipData = {
     id: 'embedded-system',
     title: 'Embedded System',
     thumbnail: '/course_thumbnails/Embedded System.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1502,7 +1502,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1550,7 +1550,7 @@ export const allMentorshipData = {
     id: 'cloud-computing',
     title: 'Cloud Computing',
     thumbnail: '/course_thumbnails/Cloud Computing.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1568,7 +1568,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1616,7 +1616,7 @@ export const allMentorshipData = {
     id: 'iot-robotics',
     title: 'IOT & Robotics',
     thumbnail: '/course_thumbnails/iot-robotics.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1634,7 +1634,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1682,7 +1682,7 @@ export const allMentorshipData = {
     id: 'vlsi-design',
     title: 'VLSI Design',
     thumbnail: '/course_thumbnails/Embedded System.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1700,7 +1700,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [
@@ -1748,7 +1748,7 @@ export const allMentorshipData = {
     id: 'auto-cad',
     title: 'Auto Cad',
     thumbnail: '/course_thumbnails/Auto Cad.jpg',
-    duration: '2/3 Months',
+    duration: '2/3 MONTHS',
     format: 'Live Mentor-led',
     level: 'Beginner to Pro',
     enrolled: '12,500+ Mentees',
@@ -1766,7 +1766,7 @@ export const allMentorshipData = {
       { title: 'Job Readiness', desc: 'Prepare for top roles with interview prep and portfolio building.', icon: FaUserGraduate },
     ],
     tools: [
-      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' }, 
+      { name: 'Industry Standard Tools' }, { name: 'Modern Frameworks' }, { name: 'Analytics' },
       { name: 'Cloud Platforms' }, { name: 'Version Control' }, { name: 'Agile/Scrum' }
     ],
     curriculum: [

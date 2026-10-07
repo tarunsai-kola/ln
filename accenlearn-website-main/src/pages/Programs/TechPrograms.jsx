@@ -12,7 +12,7 @@ const TECH_COURSES = [
     path: "/programs/tech/artificial-intelligence",
     description: "Dive deep into AI, neural networks, and the future of intelligent systems.",
     rating: "4.9",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Deep Learning & Neural Nets", "NLP & Computer Vision", "Deploying AI Models"],
     roles: "AI Engineer, ML Researcher",
     icons: [<FaPython key="1" />, <SiTensorflow key="2" />],
@@ -28,7 +28,7 @@ const TECH_COURSES = [
     path: "/programs/tech/data-structures-and-algorithms",
     description: "Master the foundational building blocks of efficient software engineering.",
     rating: "4.8",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Arrays & Linked Lists", "Graphs & Trees", "Dynamic Programming"],
     roles: "SDE I, Software Engineer",
     icons: [<FaPython key="1" />, <FaNodeJs key="2" />],
@@ -44,7 +44,7 @@ const TECH_COURSES = [
     path: "/programs/tech/full-stack-software-development",
     description: "Learn to build robust web applications from frontend to backend.",
     rating: "4.8",
-    duration: "8 Months",
+    duration: "2/3 MONTHS",
     bullets: ["MERN Stack Mastery", "System Design", "Production Deployment"],
     roles: "Full Stack Developer",
     icons: [<FaReact key="1" />, <FaNodeJs key="2" />, <DiMongodb key="3" />],
@@ -60,7 +60,7 @@ const TECH_COURSES = [
     path: "/programs/tech/machine-learning",
     description: "Build models that learn from data and make accurate predictions.",
     rating: "4.9",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Supervised Learning", "Scikit-Learn & XGBoost", "Model Optimization"],
     roles: "ML Engineer",
     icons: [<FaPython key="1" />, <SiTensorflow key="2" />],
@@ -76,7 +76,7 @@ const TECH_COURSES = [
     path: "/programs/tech/data-science",
     description: "Extract actionable insights from complex and large datasets.",
     rating: "4.8",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Statistical Modeling", "Data Visualization", "Predictive Analytics"],
     roles: "Data Scientist",
     icons: [<FaPython key="1" />, <DiPostgresql key="2" />],
@@ -92,7 +92,7 @@ const TECH_COURSES = [
     path: "/programs/tech/cloud-computing",
     description: "Design and manage scalable cloud architectures and infrastructure.",
     rating: "4.7",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     bullets: ["AWS & Azure", "Cloud Security", "Serverless"],
     roles: "Cloud Architect",
     icons: [<FaAws key="1" />, <SiGooglecloud key="2" />],
@@ -108,7 +108,7 @@ const TECH_COURSES = [
     path: "/programs/tech/cyber-security",
     description: "Protect systems, networks, and programs from digital attacks.",
     rating: "4.9",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Ethical Hacking", "Network Defense", "Cryptography"],
     roles: "Security Analyst",
     icons: [<FaDocker key="1" />],
@@ -124,7 +124,7 @@ const TECH_COURSES = [
     path: "/programs/tech/data-analytics",
     description: "Analyze raw data to find trends and answer critical business questions.",
     rating: "4.7",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Advanced Excel", "Power BI & Tableau", "Business Insights"],
     roles: "Data Analyst",
     icons: [<DiPostgresql key="1" />],
@@ -140,7 +140,7 @@ const TECH_COURSES = [
     path: "/programs/tech/devops",
     description: "Bridge the gap between development and operations for faster delivery.",
     rating: "4.8",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     bullets: ["CI/CD Pipelines", "Infrastructure as Code", "Orchestration"],
     roles: "DevOps Engineer",
     icons: [<FaDocker key="1" />, <SiKubernetes key="2" />, <FaAws key="3" />],
@@ -156,7 +156,7 @@ const TECH_COURSES = [
     path: "/programs/tech/sql",
     description: "Master database management and querying relational databases.",
     rating: "4.8",
-    duration: "2 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Complex Queries", "Database Design", "Performance Tuning"],
     roles: "Database Admin",
     icons: [<DiPostgresql key="1" />],
@@ -172,7 +172,7 @@ const TECH_COURSES = [
     path: "/programs/tech/ui-ux-design",
     description: "Master user-centric design principles, wireframing, and prototyping.",
     rating: "4.9",
-    duration: "3 Months",
+    duration: "2/3 MONTHS",
     bullets: ["User Research", "Figma Mastery", "Interaction Design"],
     roles: "UI/UX Designer",
     icons: [<SiFigma key="1" />, <FaMobileAlt key="2" />],
@@ -188,7 +188,7 @@ const TECH_COURSES = [
     path: "/programs/tech/embedded-systems",
     description: "Dive deep into hardware and software interfacing, microcontrollers, and RTOS.",
     rating: "4.8",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Microcontrollers", "Embedded C/C++", "RTOS"],
     roles: "Embedded Engineer",
     icons: [<FaCogs key="1" />, <FaNetworkWired key="2" />],
@@ -204,7 +204,7 @@ const TECH_COURSES = [
     path: "/programs/tech/vlsi-design",
     description: "Master Very Large Scale Integration, ASIC/FPGA flow, and Verilog coding.",
     rating: "4.9",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Verilog/VHDL", "ASIC Design Flow", "CMOS Layout"],
     roles: "VLSI Engineer",
     icons: [<FaCogs key="1" />, <FaPython key="2" />],
@@ -220,7 +220,7 @@ const TECH_COURSES = [
     path: "/programs/tech/android-app-development",
     description: "Build robust native Android applications using Kotlin and modern architecture.",
     rating: "4.8",
-    duration: "3 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Kotlin & Java", "Jetpack Compose", "REST APIs"],
     roles: "Android Developer",
     icons: [<FaMobileAlt key="1" />, <FaJava key="2" />],
@@ -236,7 +236,7 @@ const TECH_COURSES = [
     path: "/programs/tech/iot-robotics",
     description: "Combine hardware, software, and connectivity to build smart automated systems.",
     rating: "4.8",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     bullets: ["Sensors & Actuators", "IoT Protocols", "Raspberry Pi"],
     roles: "IoT Engineer",
     icons: [<FaNetworkWired key="1" />, <FaCogs key="2" />],
@@ -252,7 +252,7 @@ const TECH_COURSES = [
     path: "/programs/tech/autocad",
     description: "Master professional 2D drafting and 3D modeling for architectural and mechanical designs.",
     rating: "4.7",
-    duration: "2 Months",
+    duration: "2/3 MONTHS",
     bullets: ["2D Drafting", "3D Modeling", "Isometric Drawings"],
     roles: "CAD Designer",
     icons: [<FaCogs key="1" />],
@@ -278,7 +278,7 @@ const MENTORS = [
 
 const FAQS = [
   { q: "Do I need prior coding experience?", a: "No, our programs are designed to take you from fundamentals to advanced concepts. Beginners are welcome." },
-  { q: "What is the duration of the programs?", a: "Programs range from 5 to 8 months depending on the domain and depth of the curriculum." },
+  { q: "What is the duration of the programs?", a: "Programs range from 5 to 2/3 MONTHS depending on the domain and depth of the curriculum." },
   { q: "Do you provide placement assistance?", a: "Yes, we have a dedicated placement cell, partner with 500+ hiring brands, and provide comprehensive interview prep." },
   { q: "Are the sessions recorded?", a: "Absolutely. All live sessions are recorded and available in your dashboard for lifetime access." },
   { q: "How is this different from a standard bootcamp?", a: "We focus heavily on 1:1 mentorship from industry veterans who actually work at top tech companies, ensuring you learn production-ready skills." },
@@ -304,21 +304,21 @@ const TechPrograms = () => {
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans pb-24 selection:bg-blue-500/30">
-      
+
       {/* 1. Split Hero Section (Editorial Style) */}
       <div className="relative pt-36 pb-24 lg:pt-48 lg:pb-32 overflow-hidden bg-[#0f172a]" style={{ backgroundImage: "url('/hero_mesh_bg.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="absolute inset-0 bg-[#0f172a]/85 mix-blend-multiply"></div>
-        
+
         <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
-            
+
             {/* Left Content - Editorial Typographic Focus */}
             <div className="flex-1 text-center lg:text-left">
               <div className="inline-block border border-white/30 text-white/80 text-xs font-semibold tracking-[0.2em] uppercase px-4 py-1.5 mb-8 rounded-none">
                 Admissions Open 2026
               </div>
               <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-serif font-medium text-white mb-8 leading-[1.05] tracking-tight">
-                Master Tech with <br className="hidden lg:block"/>
+                Master Tech with <br className="hidden lg:block" />
                 <span className="italic text-slate-300 font-light">Top 1% Mentors.</span>
               </h1>
               <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 mb-12 leading-relaxed font-light">
@@ -347,7 +347,7 @@ const TechPrograms = () => {
                     Limited Seats
                   </span>
                 </div>
-                
+
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
@@ -377,7 +377,7 @@ const TechPrograms = () => {
                 </form>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -391,8 +391,8 @@ const TechPrograms = () => {
             { v: "92%", l: "Placement Rate" },
             { v: "100%", l: "Outcome Focused" }
           ].map((stat, i) => (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className="relative rounded-xl p-6 text-center shadow-xl hover:-translate-y-1 transition-transform overflow-hidden border border-slate-700 bg-cover bg-center"
               style={{ backgroundImage: "url('/stats_card_bg.png')" }}
             >
@@ -409,7 +409,7 @@ const TechPrograms = () => {
       {/* 3. Course Cards - Premium Bento Grid */}
       <div className="bg-[#0a0a0f] relative overflow-hidden py-24">
         {/* Abstract Art Background for Section */}
-        <div 
+        <div
           className="absolute inset-0 opacity-40 pointer-events-none mix-blend-screen"
           style={{
             backgroundImage: "url('/subtle_mesh_bg.png')",
@@ -430,26 +430,26 @@ const TechPrograms = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-min">
             {TECH_COURSES.map((course, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className={`bg-[#0f0f19]/60 backdrop-blur-[20px] rounded-[24px] p-6 sm:p-8 border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_0_0_1px_rgba(255,255,255,0.05)] transition-all duration-500 ease-out flex flex-col group relative overflow-hidden ${course.span} hover:-translate-y-2 ${course.glow} ${course.border}`}
               >
                 {/* Category Accent Gradient & Glow */}
                 <div className={`absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b ${course.accent} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
                 <div className={`absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br ${course.accent} blur-[80px] rounded-full opacity-20 group-hover:opacity-50 transition-opacity duration-700`}></div>
-                
+
                 {/* Distinct Background Image per Course */}
-                <div 
-                   className="absolute inset-0 opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 pointer-events-none mix-blend-normal"
-                   style={{ 
-                     backgroundImage: `url('${course.image}')`, 
-                     backgroundSize: 'cover', 
-                     backgroundPosition: 'center',
-                   }}
+                <div
+                  className="absolute inset-0 opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 pointer-events-none mix-blend-normal"
+                  style={{
+                    backgroundImage: `url('${course.image}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f19] via-[#0f0f19]/70 to-transparent pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0f0f19]/50 to-transparent pointer-events-none"></div>
-                
+
                 {/* Top Bar */}
                 <div className="flex justify-between items-center mb-6 relative z-10">
                   <div className="flex items-center gap-1.5">
@@ -464,7 +464,7 @@ const TechPrograms = () => {
                 <div className="relative z-10 flex-grow">
                   <h3 className="text-[22px] font-bold text-[#f8fafc] mb-1 group-hover:text-white transition-colors tracking-tight">{course.title}</h3>
                   <p className="text-slate-400 text-[13px] leading-relaxed mb-6">{course.description}</p>
-                  
+
                   {/* What You'll Master */}
                   <div className="mb-6 bg-white/[0.02] p-4 rounded-xl border border-white/[0.03]">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -509,7 +509,7 @@ const TechPrograms = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Certify your Success</h2>
           </div>
-          
+
           <div className="flex flex-col md:flex-row justify-center gap-8 lg:gap-16 items-center">
             <div className="relative group">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
@@ -522,7 +522,7 @@ const TechPrograms = () => {
           </div>
         </div>
       </div>
-      
+
       {/* IBM Certification Section */}
       <IbmCertificationPath />
 
@@ -535,64 +535,64 @@ const TechPrograms = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {MENTORS.map((m, i) => (
-            <div key={i} className="bg-black border border-white/10 rounded-sm overflow-hidden flex flex-col justify-end group h-[280px] sm:h-[320px] relative">
-              {/* Background Image - Right aligned */}
-              <div className="absolute inset-0 left-1/4 sm:left-1/3">
-                <img src={m.img} alt={m.name} className="w-full h-full object-cover object-top opacity-60 mix-blend-luminosity grayscale group-hover:grayscale-0 transition-all duration-700" />
-              </div>
-              
-              {/* Heavy Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent sm:hidden"></div>
-
-              {/* Content */}
-              <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full w-full sm:w-3/4">
-                <h3 className="text-xl sm:text-[22px] font-bold text-white mb-2 leading-tight tracking-tight">{m.domain}</h3>
-                <p className="text-slate-300 text-sm font-medium mb-1">Taught by {m.name}</p>
-                <p className="text-slate-400 text-sm mb-6">{m.role} @ <span className="font-bold text-white uppercase tracking-wider text-[11px] ml-1">{m.company}</span></p>
-
-                <div className="mt-auto border-t border-white/20 pt-4 mb-6">
-                   <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed">
-                     {m.bio}
-                   </p>
+            {MENTORS.map((m, i) => (
+              <div key={i} className="bg-black border border-white/10 rounded-sm overflow-hidden flex flex-col justify-end group h-[280px] sm:h-[320px] relative">
+                {/* Background Image - Right aligned */}
+                <div className="absolute inset-0 left-1/4 sm:left-1/3">
+                  <img src={m.img} alt={m.name} className="w-full h-full object-cover object-top opacity-60 mix-blend-luminosity grayscale group-hover:grayscale-0 transition-all duration-700" />
                 </div>
-                
-                <div className="flex items-center">
-                  <div className="bg-white/5 border border-white/10 rounded-sm px-3 py-1.5 flex items-center gap-3 w-fit">
-                    <span className="text-[10px] font-bold text-slate-300 tracking-[0.1em] uppercase">{m.yoe} YEARS OF EXPERIENCE</span>
-                    <div className="w-[1px] h-3 bg-white/30"></div>
-                    <span className="text-[11px] font-bold text-yellow-500 flex items-center gap-1">{m.rating} <FaStar className="w-3 h-3 text-yellow-600"/></span>
+
+                {/* Heavy Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent sm:hidden"></div>
+
+                {/* Content */}
+                <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full w-full sm:w-3/4">
+                  <h3 className="text-xl sm:text-[22px] font-bold text-white mb-2 leading-tight tracking-tight">{m.domain}</h3>
+                  <p className="text-slate-300 text-sm font-medium mb-1">Taught by {m.name}</p>
+                  <p className="text-slate-400 text-sm mb-6">{m.role} @ <span className="font-bold text-white uppercase tracking-wider text-[11px] ml-1">{m.company}</span></p>
+
+                  <div className="mt-auto border-t border-white/20 pt-4 mb-6">
+                    <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed">
+                      {m.bio}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center">
+                    <div className="bg-white/5 border border-white/10 rounded-sm px-3 py-1.5 flex items-center gap-3 w-fit">
+                      <span className="text-[10px] font-bold text-slate-300 tracking-[0.1em] uppercase">{m.yoe} YEARS OF EXPERIENCE</span>
+                      <div className="w-[1px] h-3 bg-white/30"></div>
+                      <span className="text-[11px] font-bold text-yellow-500 flex items-center gap-1">{m.rating} <FaStar className="w-3 h-3 text-yellow-600" /></span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom wave transition to FAQ */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0 pointer-events-none">
+          <svg className="relative block w-full h-[120px] md:h-[200px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,130.83,123.63,200.27,110.33Z" className="fill-[#0f172a]"></path>
+          </svg>
         </div>
       </div>
 
-      {/* Bottom wave transition to FAQ */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0 pointer-events-none">
-        <svg className="relative block w-full h-[120px] md:h-[200px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,130.83,123.63,200.27,110.33Z" className="fill-[#0f172a]"></path>
-        </svg>
-      </div>
-    </div>
-
-    {/* 6. FAQ Section */}
+      {/* 6. FAQ Section */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {FAQS.map((faq, index) => (
             <div key={index} className="bg-[#1e293b] border border-white/5 rounded-xl overflow-hidden">
-              <button 
+              <button
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
                 className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
               >
                 <span className="font-semibold text-white text-lg pr-8">{faq.q}</span>
                 <FaChevronDown className={`text-slate-400 shrink-0 transition-transform duration-300 ${openFaq === index ? "rotate-180" : ""}`} />
               </button>
-              <div 
+              <div
                 className={`overflow-hidden transition-all duration-300 ${openFaq === index ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
               >
                 <div className="p-6 pt-0 text-slate-400 leading-relaxed">

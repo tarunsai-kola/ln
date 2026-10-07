@@ -194,7 +194,7 @@ const capstoneProjects = [
 ];
 
 const faqData = [
-  { q: "What is the duration of the program?", a: "The program runs for 24 weeks (6 months) consisting of 16 weeks of core technical training, 4 weeks of enterprise capstone projects, and 4 weeks of career branding & interview prep." },
+  { q: "What is the duration of the program?", a: "The program runs for 24 weeks (2/3 MONTHS) consisting of 16 weeks of core technical training, 4 weeks of enterprise capstone projects, and 4 weeks of career branding & interview prep." },
   { q: "Who is this program designed for?", a: "Recent engineering or computer science graduates and working professionals (0–5 years of experience) looking to fast-track their development skills and break into elite SDE or AI roles." },
   { q: "What is the format of the classes?", a: "The program is 100% online with live mentor-led weekend masterclasses, weekly progress tracking, asynchronous lab assignments, and active Discord community support." },
   { q: "Will I get certified upon completion?", a: "Yes, you earn a professional-grade verifiable Software Engineering and AI Application Developer certification recognized by 500+ corporate hiring partners." },
@@ -241,7 +241,7 @@ const SoftwareDeveloper = () => {
           1. HERO
           ============================================================ */}
       <section id="overview" className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-24 px-6 overflow-hidden bg-[#020408]">
-        
+
         {/* 1. Full-Bleed Immersive Background */}
         <div className="absolute inset-0 z-0">
           {heroImages.map((img, idx) => (
@@ -252,16 +252,16 @@ const SoftwareDeveloper = () => {
               className={`absolute inset-0 w-full h-full object-cover mix-blend-screen transition-opacity duration-[2000ms] ease-in-out ${heroImageIdx === idx ? "opacity-50" : "opacity-0"}`}
             />
           ))}
-          
+
           {/* Deep Vignette Mask */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,4,8,0.3)_0%,rgba(2,4,8,0.95)_100%)] pointer-events-none" />
-          
+
           {/* Intense Floating Orbs for 3D Depth */}
-          <div 
-            className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-[#6366f1]/20 blur-[130px] rounded-full pointer-events-none mix-blend-screen animate-pulse" 
+          <div
+            className="absolute top-[10%] left-[20%] w-[500px] h-[500px] bg-[#6366f1]/20 blur-[130px] rounded-full pointer-events-none mix-blend-screen animate-pulse"
           />
-          <div 
-            className="absolute bottom-[10%] right-[15%] w-[600px] h-[600px] bg-indigo-500/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen animate-pulse" 
+          <div
+            className="absolute bottom-[10%] right-[15%] w-[600px] h-[600px] bg-indigo-500/10 blur-[150px] rounded-full pointer-events-none mix-blend-screen animate-pulse"
             style={{ animationDelay: '1s' }}
           />
         </div>
@@ -305,7 +305,7 @@ const SoftwareDeveloper = () => {
           {/* Hyper-Premium Interactive Elements */}
           <div className="flex flex-col items-center gap-12 px-4">
             <div className="flex flex-wrap justify-center gap-6">
-              
+
               {/* Spinning Conic Gradient Button */}
               <div className="relative group rounded-full p-[2px] overflow-hidden shadow-[0_0_40px_rgba(99,102,241,0.4)] hover:shadow-[0_0_60px_rgba(99,102,241,0.7)] transition-shadow duration-500">
                 <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0_240deg,rgba(99,102,241,1)_360deg)] animate-[spin_3s_linear_infinite] opacity-100" />
@@ -327,52 +327,52 @@ const SoftwareDeveloper = () => {
                 View Curriculum
               </button>
             </div>
-            
+
             {/* Ultra-Compact Green Placement Banner */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6 }}
               className="mt-6 mx-auto w-fit bg-[#091C11] rounded-[16px] py-3 px-8 md:px-14 flex flex-col md:flex-row items-center gap-8 md:gap-20 shadow-2xl border border-[#144A2D]"
             >
-               {/* Placements */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
-                     <Briefcase className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">Placements</p>
-                     <p className="text-white text-[20px] font-bold leading-none">1100+</p>
-                  </div>
-               </div>
+              {/* Placements */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
+                  <Briefcase className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">Placements</p>
+                  <p className="text-white text-[20px] font-bold leading-none">1100+</p>
+                </div>
+              </div>
 
-               {/* Separator */}
-               <div className="hidden md:block w-px h-10 bg-white/10"></div>
+              {/* Separator */}
+              <div className="hidden md:block w-px h-10 bg-white/10"></div>
 
-               {/* Salary Hike */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
-                     <TrendingUp className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">Salary Hike</p>
-                     <p className="text-white text-[18px] font-bold leading-[1.1]">Upto <br/> 350%</p>
-                  </div>
-               </div>
+              {/* Salary Hike */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
+                  <TrendingUp className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">Salary Hike</p>
+                  <p className="text-white text-[18px] font-bold leading-[1.1]">Upto <br /> 350%</p>
+                </div>
+              </div>
 
-               {/* Separator */}
-               <div className="hidden md:block w-px h-10 bg-white/10"></div>
+              {/* Separator */}
+              <div className="hidden md:block w-px h-10 bg-white/10"></div>
 
-               {/* ROI */}
-               <div className="flex items-center gap-3 text-left">
-                  <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
-                     <Landmark className="text-white" size={18} strokeWidth={2.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                     <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">ROI on Course</p>
-                     <p className="text-white text-[20px] font-bold leading-none">10x to 20X</p>
-                  </div>
-               </div>
+              {/* ROI */}
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-lg bg-[#12764F] flex items-center justify-center shadow-inner shrink-0">
+                  <Landmark className="text-white" size={18} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-emerald-50/70 text-[10px] font-bold mb-0.5">ROI on Course</p>
+                  <p className="text-white text-[20px] font-bold leading-none">10x to 20X</p>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -380,7 +380,7 @@ const SoftwareDeveloper = () => {
 
       {/* STATS BAR */}
       <ProgramStatsBar stats={trustStats} labelColor="text-[#d4af37]" />
-      
+
       {/* COLLABORATION COMPANY MARQUEE */}
       <AuthorityMarquee theme="dark" />
 
@@ -406,7 +406,7 @@ const SoftwareDeveloper = () => {
             />
           </div>
 
-          <div 
+          <div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             onMouseEnter={() => setIsCareerPathHovered(true)}
             onMouseLeave={() => setIsCareerPathHovered(false)}
@@ -418,9 +418,8 @@ const SoftwareDeveloper = () => {
                 return (
                   <div
                     key={idx}
-                    className={`border rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
-                      isActive ? "border-white/20 bg-white/[0.04]" : "border-white/5 bg-[#0A0A0A] hover:border-white/10"
-                    }`}
+                    className={`border rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${isActive ? "border-white/20 bg-white/[0.04]" : "border-white/5 bg-[#0A0A0A] hover:border-white/10"
+                      }`}
                     onClick={() => setActiveCareerPath(idx)}
                   >
                     <div className="p-6">
@@ -435,7 +434,7 @@ const SoftwareDeveloper = () => {
                       </div>
                       <h3 className="text-lg font-bold text-white">{path.title}</h3>
 
-                      <div 
+                      <div
                         className={`transition-all duration-500 ease-in-out overflow-hidden`}
                         style={{ maxHeight: isActive ? '500px' : '0px', opacity: isActive ? 1 : 0 }}
                       >
@@ -521,10 +520,10 @@ const SoftwareDeveloper = () => {
       </section>
 
       {/* CURRICULUM */}
-      <PremiumCurriculum 
-        phases={softwarePhases} 
-        title="24-Week Engineering Roadmap" 
-        accentColor="text-[#6366f1]" 
+      <PremiumCurriculum
+        phases={softwarePhases}
+        title="24-Week Engineering Roadmap"
+        accentColor="text-[#6366f1]"
         bgColor="bg-[#0B0F13]"
         cardBgColor="bg-[#12161A]"
       />
@@ -549,51 +548,51 @@ const SoftwareDeveloper = () => {
                 className="glass-panel rounded-[28px] p-8 relative overflow-hidden group cursor-pointer border border-white/5 hover:border-white/20 transition-all duration-500 min-h-[380px] flex flex-col bg-[#0a0a0a]"
                 onClick={() => setShowPopup(true)}
               >
-                 {/* Faded Background Image */}
-                 <div 
-                    className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${heroImages[i % heroImages.length]})` }}
-                 ></div>
-                 {/* Gradient overlay */}
-                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-transparent z-0 pointer-events-none"></div>
-                 
-                 <div className="relative z-10 flex flex-col h-full">
-                    <div className="flex justify-between items-start mb-8">
-                       <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-zinc-900 border border-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500">
-                          {React.createElement(project.icon, {
-                            size: 24,
-                            className: "text-gray-400 group-hover:text-[#818cf8] transition-colors duration-500",
-                            strokeWidth: 1.5,
-                          })}
-                       </div>
-                       <span className="text-[11px] font-bold text-zinc-300 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md">Enterprise Project</span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#818cf8] transition-colors">
-                       {project.title}
-                    </h3>
-                    
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">
-                       {project.desc}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-8 mt-auto">
-                       {project.tools.slice(0,3).map(t => (
-                          <span key={t} className="text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-300 px-3 py-1.5 rounded-lg">
-                             {t}
-                          </span>
-                       ))}
-                       {project.tools.length > 3 && (
-                          <span className="text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-400 px-3 py-1.5 rounded-lg">
-                             +{project.tools.length - 3}
-                          </span>
-                       )}
-                    </div>
+                {/* Faded Background Image */}
+                <div
+                  className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${heroImages[i % heroImages.length]})` }}
+                ></div>
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-transparent z-0 pointer-events-none"></div>
 
-                    <div className="flex items-center text-sm font-bold text-white group-hover:translate-x-2 transition-transform duration-300 pt-4 border-t border-white/5">
-                       View Project Details <ArrowRight size={16} className="ml-2 text-zinc-400 group-hover:text-white transition-colors" />
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-zinc-900 border border-white/10 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500">
+                      {React.createElement(project.icon, {
+                        size: 24,
+                        className: "text-gray-400 group-hover:text-[#818cf8] transition-colors duration-500",
+                        strokeWidth: 1.5,
+                      })}
                     </div>
-                 </div>
+                    <span className="text-[11px] font-bold text-zinc-300 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md">Enterprise Project</span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[#818cf8] transition-colors">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">
+                    {project.desc}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                    {project.tools.slice(0, 3).map(t => (
+                      <span key={t} className="text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-300 px-3 py-1.5 rounded-lg">
+                        {t}
+                      </span>
+                    ))}
+                    {project.tools.length > 3 && (
+                      <span className="text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-400 px-3 py-1.5 rounded-lg">
+                        +{project.tools.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center text-sm font-bold text-white group-hover:translate-x-2 transition-transform duration-300 pt-4 border-t border-white/5">
+                    View Project Details <ArrowRight size={16} className="ml-2 text-zinc-400 group-hover:text-white transition-colors" />
+                  </div>
+                </div>
               </div>
             ))}
 
@@ -603,7 +602,7 @@ const SoftwareDeveloper = () => {
                 <Layers size={28} className="text-[#818cf8]" />
               </div>
               <h3 className="text-3xl font-black text-white mb-4 leading-tight sd-font-outfit">
-                More projects<br/>waiting for you
+                More projects<br />waiting for you
               </h3>
               <p className="text-gray-400 text-[15px] mb-8 max-w-[240px] leading-relaxed">
                 Build a portfolio that proves your expertise and gets you hired.
@@ -619,7 +618,7 @@ const SoftwareDeveloper = () => {
         </div>
       </section>
 
-      
+
 
       {/* SALARY GROWTH */}
       <SalaryGrowth domain="SoftwareDeveloper" />

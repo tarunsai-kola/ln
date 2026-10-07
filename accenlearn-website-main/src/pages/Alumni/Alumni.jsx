@@ -264,7 +264,7 @@ const Alumni = () => {
                 }}>{f}</button>
               ))}
             </div>
-            <div style={{ marginLeft: "auto", fontSize: "0.8rem", color: "#64748b", fontWeight: 500 }}>
+            {/* <div style={{ marginLeft: "auto", fontSize: "0.8rem", color: "#64748b", fontWeight: 500 }}>
               <strong style={{ color: "#0f172a" }}>{filtered.length}</strong> of 100 alumni
               {(search || selectedPkg !== "All" || selectedYear !== "All") && (
                 <button onClick={() => { setSearch(""); setSelectedPkg("All"); setSelectedYear("All"); }}
@@ -272,7 +272,7 @@ const Alumni = () => {
                   Clear
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
 

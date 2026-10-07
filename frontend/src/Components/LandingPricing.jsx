@@ -10,17 +10,17 @@ const LandingPricing = () => {
     "Unlimited Technical Mock Interviews",
     "Exclusive Internal Corporate Referrals",
     "Resume, GitHub & LinkedIn Overhaul",
-    "Career Support for 12 Months Post-Graduation"
+    "Career Support for 12/3 MONTHS Post-Graduation"
   ];
 
   return (
     <section className="py-32 bg-white border-t border-gray-100 relative overflow-hidden">
       {/* Ambient center glow to highlight the pricing card against the white background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-tr from-[#00FFA3]/10 via-blue-500/5 to-purple-500/5 blur-[100px] pointer-events-none rounded-full" />
-      
+
       {/* Light Cyber Grid Background */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-        style={{ backgroundImage: 'linear-gradient(black 1px, transparent 1px), linear-gradient(90deg, black 1px, transparent 1px)', backgroundSize: '40px 40px' }} 
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+        style={{ backgroundImage: 'linear-gradient(black 1px, transparent 1px), linear-gradient(90deg, black 1px, transparent 1px)', backgroundSize: '40px 40px' }}
       />
 
       <div className="max-w-[1200px] mx-auto px-6 relative z-10">
@@ -48,10 +48,10 @@ const LandingPricing = () => {
         >
           {/* Card Outer Glow Border Effect */}
           <div className="absolute -inset-1 bg-gradient-to-r from-[#00FFA3] via-blue-500 to-[#00FFA3] rounded-[2.5rem] opacity-30 group-hover:opacity-60 blur-xl transition-all duration-700" />
-          
+
           {/* Main Card Container */}
           <div className="relative bg-[#050505]/90 backdrop-blur-3xl border border-[#E2E8F0] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row z-10">
-            
+
             {/* Left accent glowing bar */}
             <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-[#00FFA3] to-blue-500 hidden md:block shadow-[0_0_15px_rgba(0,255,163,0.5)] z-20" />
 

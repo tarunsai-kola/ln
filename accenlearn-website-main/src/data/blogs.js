@@ -79,7 +79,7 @@ If you are interviewing for mid-level or full-stack engineering roles, understan
 ### 5. Ask High-Impact Questions at the End
 When asked, *"Do you have any questions for us?"* never say no. Ask questions that demonstrate deep interest in their engineering culture:
 * "What does the CI/CD pipeline and deployment frequency look like for your team?"
-* "What are the biggest scalability challenges this engineering team plans to tackle over the next 6 months?"
+* "What are the biggest scalability challenges this engineering team plans to tackle over the next 2/3 MONTHS?"
     `.trim(),
   },
   {

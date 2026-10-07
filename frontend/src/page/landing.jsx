@@ -29,10 +29,10 @@ const use3DTilt = (config = {}) => {
     const height = rect.height;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    
+
     const xPct = mouseX / width - 0.5;
     const yPct = mouseY / height - 0.5;
-    
+
     x.set(xPct);
     y.set(yPct);
   };
@@ -97,7 +97,7 @@ const tracks = [
     title: "Data Science & Generative AI",
     icon: <BrainCircuit size={22} />,
     desc: "Master predictive modeling, deep learning, and architect LLM-powered applications. Become a dual-threat in traditional data science and modern GenAI.",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     role: "AI / Data Scientist",
     outcomes: ["Predictive modeling & machine learning", "Build custom GPTs & RAG pipelines", "Deploy AI models to production", "Advanced Python & PyTorch"],
     link: "/Advance",
@@ -108,7 +108,7 @@ const tracks = [
     title: "Data Analytics & AI",
     icon: <Database size={22} />,
     desc: "Combine traditional business intelligence with AI-driven analytics. Extract actionable insights and automate reporting using modern data tools.",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     role: "Data Analyst / BI Developer",
     outcomes: ["Advanced SQL & Python", "Tableau & PowerBI Dashboards", "AI-assisted data analysis", "Real-world business capstones"],
     link: "/Advance",
@@ -119,7 +119,7 @@ const tracks = [
     title: "AI-Powered Full Stack Development",
     icon: <Code2 size={22} />,
     desc: "Build secure, scalable MERN stack applications augmented with AI integrations. Learn to code faster with AI assistants and build intelligent features.",
-    duration: "6 Months",
+    duration: "2/3 MONTHS",
     role: "Full Stack Engineer",
     outcomes: ["React, Node.js, MongoDB", "Integrate OpenAI & LLM APIs", "System Design & Cloud Deployment", "Production-grade web apps"],
     link: "/SoftwareDeveloper",
@@ -130,7 +130,7 @@ const tracks = [
     title: "Cybersecurity",
     icon: <ShieldCheck size={22} />,
     desc: "Defend against modern digital threats. Learn ethical hacking, network security, and secure architecture for enterprise systems.",
-    duration: "5 Months",
+    duration: "2/3 MONTHS",
     role: "Security Analyst",
     outcomes: ["Vulnerability assessment & Pen-testing", "Network & Cloud Security", "Incident response protocols", "Security compliance & frameworks"],
     link: "/Advance",
@@ -141,7 +141,7 @@ const tracks = [
     title: "Digital Marketing & AI",
     icon: <Megaphone size={22} />,
     desc: "Execute high-ROI campaigns using AI-generated content and predictive analytics. Master SEO, performance marketing, and conversion optimization.",
-    duration: "4 Months",
+    duration: "2/3 MONTHS",
     role: "Growth Marketer",
     outcomes: ["Meta Ads & Google Ads mastery", "AI-driven content generation", "Advanced SEO & Analytics", "Conversion Rate Optimization"],
     link: "/Advance",
@@ -310,7 +310,7 @@ const renderCompanyLogo = (companyName) => {
     return (
       <div className="flex items-center gap-1.5 select-none">
         <svg className="w-3.5 h-3.5 text-[#0064e0]" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 3a9 9 0 0 0-6.36 15.36L8.46 15.5A5.5 5.5 0 0 1 12 6.5a5.5 5.5 0 0 1 3.54 9l2.82 2.86A9 9 0 0 0 12 3zm0 18a9 9 0 0 0 6.36-15.36l-2.82 2.86a5.5 5.5 0 0 1-3.54 9 5.5 5.5 0 0 1-3.54-9l-2.82-2.86A9 9 0 0 0 12 21z" fill="currentColor"/>
+          <path d="M12 3a9 9 0 0 0-6.36 15.36L8.46 15.5A5.5 5.5 0 0 1 12 6.5a5.5 5.5 0 0 1 3.54 9l2.82 2.86A9 9 0 0 0 12 3zm0 18a9 9 0 0 0 6.36-15.36l-2.82 2.86a5.5 5.5 0 0 1-3.54 9 5.5 5.5 0 0 1-3.54-9l-2.82-2.86A9 9 0 0 0 12 21z" fill="currentColor" />
         </svg>
         <span className="text-[11px] font-bold text-zinc-100">Meta</span>
       </div>
@@ -369,7 +369,7 @@ const HomePage = () => {
   const { scrollY } = useScroll();
   const heroTextY = useTransform(scrollY, [0, 800], [0, -150]);
   const heroCardY = useTransform(scrollY, [0, 800], [0, -80]);
-  
+
   const heroTilt = use3DTilt({ maxTilt: 15, scale: 1.04 });
   const bentoTilt1 = use3DTilt({ maxTilt: 10, scale: 1.02 });
   const bentoTilt2 = use3DTilt({ maxTilt: 12, scale: 1.03 });
@@ -445,8 +445,8 @@ const HomePage = () => {
 
               {/* Epic Subtle Metallic Title */}
               <h1 className="lp-font-outfit text-[#0F172A] font-extrabold leading-[1.05] tracking-tight mb-8 text-glow" style={{ fontSize: "clamp(46px, 5.8vw, 80px)", transform: "translateZ(50px)" }}>
-                Where ambitious <br className="hidden md:block"/>
-                students become <br className="hidden md:block"/>
+                Where ambitious <br className="hidden md:block" />
+                students become <br className="hidden md:block" />
                 <span className="subtle-gradient-text">
                   hireable tech leaders.
                 </span>
@@ -489,81 +489,81 @@ const HomePage = () => {
               <div className="relative w-full max-w-[410px] preserve-3d">
 
 
-                <motion.div 
+                <motion.div
                   className="w-full glass-panel-3d rounded-[32px] p-8 relative group dashboard-card-3d bg-white"
                   onMouseMove={heroTilt.handleMouseMove}
                   onMouseLeave={heroTilt.handleMouseLeave}
-                  style={{ 
-                    rotateX: heroTilt.rotateX, 
+                  style={{
+                    rotateX: heroTilt.rotateX,
                     rotateY: heroTilt.rotateY,
                     scale: heroTilt.scale,
                     transformPerspective: 1200
                   }}
                 >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#DBEAFE]/30 to-transparent z-0 pointer-events-none rounded-[32px]" />
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#DBEAFE] rounded-full blur-2xl pointer-events-none" style={{ transform: "translateZ(-20px)" }} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#DBEAFE]/30 to-transparent z-0 pointer-events-none rounded-[32px]" />
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#DBEAFE] rounded-full blur-2xl pointer-events-none" style={{ transform: "translateZ(-20px)" }} />
 
-                <h3 className="text-[#0F172A] font-extrabold text-lg mb-6 flex items-center gap-2" style={{ transform: "translateZ(30px)" }}>
-                  <Sparkles className="text-[#2563EB]" size={16} /> Engineering Excellence
-                </h3>
+                  <h3 className="text-[#0F172A] font-extrabold text-lg mb-6 flex items-center gap-2" style={{ transform: "translateZ(30px)" }}>
+                    <Sparkles className="text-[#2563EB]" size={16} /> Engineering Excellence
+                  </h3>
 
-                <div className="flex flex-col gap-4 preserve-3d" style={{ transform: "translateZ(40px)" }}>
-                  {/* Hands-on Projects */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.6 }}
-                    whileHover={{ y: -4, scale: 1.01, z: 10 }}
-                    className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0F7B53]/10 to-[#0F7B53]/5 flex items-center justify-center border border-[#0F7B53]/20 text-[#2563EB] premium-stat-icon-box">
-                      <Code2 size={18} />
-                    </div>
-                    <div>
-                      <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Hands-on Projects</p>
-                      <p className="text-[#0F172A] text-xl font-black leading-none">50+ Built</p>
-                    </div>
-                  </motion.div>
+                  <div className="flex flex-col gap-4 preserve-3d" style={{ transform: "translateZ(40px)" }}>
+                    {/* Hands-on Projects */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5, duration: 0.6 }}
+                      whileHover={{ y: -4, scale: 1.01, z: 10 }}
+                      className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0F7B53]/10 to-[#0F7B53]/5 flex items-center justify-center border border-[#0F7B53]/20 text-[#2563EB] premium-stat-icon-box">
+                        <Code2 size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Hands-on Projects</p>
+                        <p className="text-[#0F172A] text-xl font-black leading-none">50+ Built</p>
+                      </div>
+                    </motion.div>
 
-                  {/* Mentorship */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.65, duration: 0.6 }}
-                    whileHover={{ y: -4, scale: 1.01, z: 10 }}
-                    className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0A5A3D]/10 to-[#0A5A3D]/5 flex items-center justify-center border border-[#0A5A3D]/20 text-[#0A5A3D] premium-stat-icon-box">
-                      <Users size={18} />
-                    </div>
-                    <div>
-                      <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Expert Mentors</p>
-                      <p className="text-[#0F172A] text-xl font-black leading-none">1:1 Guidance</p>
-                    </div>
-                  </motion.div>
+                    {/* Mentorship */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.65, duration: 0.6 }}
+                      whileHover={{ y: -4, scale: 1.01, z: 10 }}
+                      className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0A5A3D]/10 to-[#0A5A3D]/5 flex items-center justify-center border border-[#0A5A3D]/20 text-[#0A5A3D] premium-stat-icon-box">
+                        <Users size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Expert Mentors</p>
+                        <p className="text-[#0F172A] text-xl font-black leading-none">1:1 Guidance</p>
+                      </div>
+                    </motion.div>
 
-                  {/* Tech Stack */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8, duration: 0.6 }}
-                    whileHover={{ y: -4, scale: 1.01, z: 10 }}
-                    className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
-                  >
-                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#209F70]/10 to-[#209F70]/5 flex items-center justify-center border border-[#209F70]/20 text-[#209F70] premium-stat-icon-box">
-                      <BrainCircuit size={18} />
-                    </div>
-                    <div>
-                      <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Latest Tech Stack</p>
-                      <p className="text-[#0F172A] text-xl font-black leading-none">GenAI & Cloud</p>
-                    </div>
-                  </motion.div>
-                </div>
+                    {/* Tech Stack */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8, duration: 0.6 }}
+                      whileHover={{ y: -4, scale: 1.01, z: 10 }}
+                      className="premium-stat-card flex items-center gap-4 rounded-2xl p-4 transition-all"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#209F70]/10 to-[#209F70]/5 flex items-center justify-center border border-[#209F70]/20 text-[#209F70] premium-stat-icon-box">
+                        <BrainCircuit size={18} />
+                      </div>
+                      <div>
+                        <p className="text-[#64748B] text-[9px] font-bold uppercase tracking-[0.15em] mb-1">Latest Tech Stack</p>
+                        <p className="text-[#0F172A] text-xl font-black leading-none">GenAI & Cloud</p>
+                      </div>
+                    </motion.div>
+                  </div>
 
-                <div className="mt-5 pt-4.5 border-t border-gray-100 text-center text-[#64748B] text-xs flex justify-center items-center gap-1.5 relative z-10" style={{ transform: "translateZ(20px)" }}>
-                  <Award size={13} className="text-[#2563EB]" /> Master the skills top tech giants demand
-                </div>
-              </motion.div>
+                  <div className="mt-5 pt-4.5 border-t border-gray-100 text-center text-[#64748B] text-xs flex justify-center items-center gap-1.5 relative z-10" style={{ transform: "translateZ(20px)" }}>
+                    <Award size={13} className="text-[#2563EB]" /> Master the skills top tech giants demand
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -575,30 +575,30 @@ const HomePage = () => {
       <section className="relative py-8 overflow-hidden bg-[#F8FAFC] border-y border-[#E2E8F0]">
         {/* Background Gradients & Glows */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[300px] bg-gradient-to-r from-[#00FFA3]/10 via-blue-500/10 to-purple-500/10 rounded-full blur-[100px] pointer-events-none mix-blend-screen" />
-        
+
         {/* Cyber Grid Background */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-          style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} 
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '40px 40px' }}
         />
 
         {/* Marquee Container */}
         <div className="relative w-full max-w-[1500px] mx-auto z-10 flex flex-col gap-4">
-            
+
           {/* Massive Fade edges for dark mode */}
           <div className="absolute inset-y-0 left-0 w-32 md:w-64 bg-gradient-to-r from-[#020202] via-[#020202]/90 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-32 md:w-64 bg-gradient-to-l from-[#020202] via-[#020202]/90 to-transparent z-10 pointer-events-none" />
-          
+
           {/* Reel 1 (Scrolls Left) */}
           <div className="flex overflow-hidden group">
             <div className="lp-marquee flex gap-4 md:gap-6 items-center w-max pr-4 md:pr-6">
               {[...companies, ...companies, ...companies].map((c, i) => (
-                <div 
-                  key={`reel1-${i}`} 
+                <div
+                  key={`reel1-${i}`}
                   className="group/logo flex-shrink-0 flex items-center justify-center w-[140px] h-[55px] bg-white rounded-xl shadow-lg border border-[#E2E8F0] cursor-pointer hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,163,0.3)] transition-all duration-300"
                 >
-                  <img 
-                    src={c.logo} 
-                    alt={c.name} 
+                  <img
+                    src={c.logo}
+                    alt={c.name}
                     className="max-w-[100px] max-h-[30px] object-contain drop-shadow-sm"
                     onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
                   />
@@ -612,13 +612,13 @@ const HomePage = () => {
           <div className="flex overflow-hidden group">
             <div className="lp-marquee flex gap-4 md:gap-6 items-center w-max pr-4 md:pr-6" style={{ animationDirection: 'reverse' }}>
               {[...companies, ...companies, ...companies].reverse().map((c, i) => (
-                <div 
-                  key={`reel2-${i}`} 
+                <div
+                  key={`reel2-${i}`}
                   className="group/logo flex-shrink-0 flex items-center justify-center w-[140px] h-[55px] bg-white rounded-xl shadow-lg border border-[#E2E8F0] cursor-pointer hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,163,0.3)] transition-all duration-300"
                 >
-                  <img 
-                    src={c.logo} 
-                    alt={c.name} 
+                  <img
+                    src={c.logo}
+                    alt={c.name}
                     className="max-w-[100px] max-h-[30px] object-contain drop-shadow-sm"
                     onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
                   />
@@ -653,50 +653,50 @@ const HomePage = () => {
 
           <div className="bento-grid preserve-3d scene-3d">
             {/* Large Bento Card */}
-            <motion.div 
+            <motion.div
               className="bento-large glass-panel-3d rounded-[32px] p-10 flex flex-col justify-end relative group dashboard-card-3d bento-card-gradient bento-dark-gradient"
               onMouseMove={bentoTilt1.handleMouseMove}
               onMouseLeave={bentoTilt1.handleMouseLeave}
-              style={{ 
-                rotateX: bentoTilt1.rotateX, 
+              style={{
+                rotateX: bentoTilt1.rotateX,
                 rotateY: bentoTilt1.rotateY,
                 scale: bentoTilt1.scale,
                 transformPerspective: 1200
               }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#0F7B53]/[0.15] to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[32px]" />
-              
+
               {/* Architecture Diagram Graphic */}
               <div className="absolute top-12 left-0 right-0 pointer-events-none hidden md:flex items-start justify-center opacity-90 z-0">
-                 <div className="flex flex-col items-center gap-4 w-full transform scale-[0.85] origin-top">
-                    {/* API Gateway */}
-                    <div className="flex justify-center relative">
-                       <div className="flex flex-col items-center gap-2">
-                          <div className="w-14 h-14 rounded-2xl bg-white border border-[#E2E8F0] flex items-center justify-center backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-                             <Server size={22} className="text-[#0F172A]/60" />
-                          </div>
-                          <span className="text-[8px] text-[#0F172A]/40 font-mono tracking-widest uppercase">Load Balancer</span>
-                       </div>
+                <div className="flex flex-col items-center gap-4 w-full transform scale-[0.85] origin-top">
+                  {/* API Gateway */}
+                  <div className="flex justify-center relative">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-14 h-14 rounded-2xl bg-white border border-[#E2E8F0] flex items-center justify-center backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+                        <Server size={22} className="text-[#0F172A]/60" />
+                      </div>
+                      <span className="text-[8px] text-[#0F172A]/40 font-mono tracking-widest uppercase">Load Balancer</span>
                     </div>
-                    
-                    {/* Connecting lines */}
-                    <div className="w-px h-6 bg-gradient-to-b from-white/20 to-transparent relative">
-                       <div className="absolute top-full left-1/2 -translate-x-1/2 w-[220px] h-px bg-[#F8FAFC]" />
-                    </div>
+                  </div>
 
-                    <div className="flex gap-[70px] w-full justify-center">
-                       {/* Microservices */}
-                       {[1, 2, 3].map((i) => (
-                         <div key={i} className="flex flex-col items-center gap-2 relative">
-                            <div className="absolute -top-6 left-1/2 w-px h-6 bg-gradient-to-t from-white/10 to-transparent" />
-                            <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] border border-indigo-500/20 flex items-center justify-center backdrop-blur-md shadow-sm">
-                               <Cpu size={18} className="text-[#2563EB]" />
-                            </div>
-                            <span className="text-[7px] text-indigo-300/60 font-mono tracking-wider uppercase">Worker {i}</span>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
+                  {/* Connecting lines */}
+                  <div className="w-px h-6 bg-gradient-to-b from-white/20 to-transparent relative">
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[220px] h-px bg-[#F8FAFC]" />
+                  </div>
+
+                  <div className="flex gap-[70px] w-full justify-center">
+                    {/* Microservices */}
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="flex flex-col items-center gap-2 relative">
+                        <div className="absolute -top-6 left-1/2 w-px h-6 bg-gradient-to-t from-white/10 to-transparent" />
+                        <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] border border-indigo-500/20 flex items-center justify-center backdrop-blur-md shadow-sm">
+                          <Cpu size={18} className="text-[#2563EB]" />
+                        </div>
+                        <span className="text-[7px] text-indigo-300/60 font-mono tracking-wider uppercase">Worker {i}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div className="absolute top-10 right-10 p-4.5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] shadow-sm text-[#0F172A] transform transition-transform duration-700 group-hover:translate-z-20 group-hover:-translate-y-2">
@@ -720,12 +720,12 @@ const HomePage = () => {
             </motion.div>
 
             {/* Side Bento Card 1 */}
-            <motion.div 
+            <motion.div
               className="glass-panel-3d rounded-[32px] p-8 flex flex-col justify-between relative group dashboard-card-3d bento-card-gradient bento-dark-gradient"
               onMouseMove={bentoTilt2.handleMouseMove}
               onMouseLeave={bentoTilt2.handleMouseLeave}
-              style={{ 
-                rotateX: bentoTilt2.rotateX, 
+              style={{
+                rotateX: bentoTilt2.rotateX,
                 rotateY: bentoTilt2.rotateY,
                 scale: bentoTilt2.scale,
                 transformPerspective: 1200
@@ -744,12 +744,12 @@ const HomePage = () => {
             </motion.div>
 
             {/* Side Bento Card 2 */}
-            <motion.div 
+            <motion.div
               className="glass-panel-3d rounded-[32px] p-8 flex flex-col justify-between relative group dashboard-card-3d bento-card-gradient bento-dark-gradient"
               onMouseMove={bentoTilt3.handleMouseMove}
               onMouseLeave={bentoTilt3.handleMouseLeave}
-              style={{ 
-                rotateX: bentoTilt3.rotateX, 
+              style={{
+                rotateX: bentoTilt3.rotateX,
                 rotateY: bentoTilt3.rotateY,
                 scale: bentoTilt3.scale,
                 transformPerspective: 1200
@@ -779,14 +779,14 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
 
         <div className="max-w-[1250px] mx-auto px-6 text-center mb-16 relative z-10">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 bg-white border border-[#E2E8F0] shadow-[0_0_15px_rgba(16,185,129,0.15)] text-[#2563EB] font-black text-[11px] uppercase tracking-[3px] px-5 py-2 rounded-full mb-6 backdrop-blur-md"
           >
             Flagship Specializations
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -794,7 +794,7 @@ const HomePage = () => {
           >
             Specialized <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10b981] to-[#3b82f6]">Career Paths</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -808,7 +808,7 @@ const HomePage = () => {
         <div className="overflow-hidden w-full relative z-10">
           <div className="program-slider-canvas select-none scene-3d">
             <div className="py-8 overflow-visible">
-              <div 
+              <div
                 className="program-slider-track items-center preserve-3d"
                 style={{
                   transform: `translateX(calc(50vw - (var(--slide-width) / 2) - (${currentProgramIndex} * (var(--slide-width) + var(--slide-gap)))))`,
@@ -816,126 +816,124 @@ const HomePage = () => {
                   transition: "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)"
                 }}
               >
-              {programSlides.map((slide, idx) => {
-                const isActive = idx === currentProgramIndex;
-                const isPrev = idx < currentProgramIndex;
-                
-                let transformStyle = "rotateY(0deg) translateZ(0px) scale(1)";
-                if (!isActive) {
-                  transformStyle = isPrev ? "rotateY(15deg) translateZ(-120px) scale(0.85)" : "rotateY(-15deg) translateZ(-120px) scale(0.85)";
-                }
+                {programSlides.map((slide, idx) => {
+                  const isActive = idx === currentProgramIndex;
+                  const isPrev = idx < currentProgramIndex;
 
-                return (
-                  <div
-                    key={slide.id}
-                    className={`program-slide-card rounded-[40px] p-8 md:p-14 overflow-hidden border ${
-                      isActive ? "bg-white border-[#E2E8F0] opacity-100 shadow-[0_20px_40px_rgba(37,99,235,0.08)] z-10 backdrop-blur-2xl" : "bg-[#F8FAFC]/60 border-[#E2E8F0] opacity-40 pointer-events-none z-0 backdrop-blur-md"
-                    }`}
-                    style={{ transform: transformStyle, transition: "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)" }}
-                  >
-                    {/* Glowing Accent Ring */}
-                    {isActive && <div className={`absolute inset-0 bg-gradient-to-r from-[#DBEAFE] to-[#EFF6FF] opacity-40 blur-3xl pointer-events-none`}></div>}
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-16 items-center preserve-3d relative z-10">
-                      {/* Left Side Program Details */}
-                      <div>
-                        <div className="inline-block bg-white border border-[#E2E8F0] text-[#2563EB] text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl mb-6 shadow-lg">
-                          {slide.eyebrow}
+                  let transformStyle = "rotateY(0deg) translateZ(0px) scale(1)";
+                  if (!isActive) {
+                    transformStyle = isPrev ? "rotateY(15deg) translateZ(-120px) scale(0.85)" : "rotateY(-15deg) translateZ(-120px) scale(0.85)";
+                  }
+
+                  return (
+                    <div
+                      key={slide.id}
+                      className={`program-slide-card rounded-[40px] p-8 md:p-14 overflow-hidden border ${isActive ? "bg-white border-[#E2E8F0] opacity-100 shadow-[0_20px_40px_rgba(37,99,235,0.08)] z-10 backdrop-blur-2xl" : "bg-[#F8FAFC]/60 border-[#E2E8F0] opacity-40 pointer-events-none z-0 backdrop-blur-md"
+                        }`}
+                      style={{ transform: transformStyle, transition: "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)" }}
+                    >
+                      {/* Glowing Accent Ring */}
+                      {isActive && <div className={`absolute inset-0 bg-gradient-to-r from-[#DBEAFE] to-[#EFF6FF] opacity-40 blur-3xl pointer-events-none`}></div>}
+
+                      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-16 items-center preserve-3d relative z-10">
+                        {/* Left Side Program Details */}
+                        <div>
+                          <div className="inline-block bg-white border border-[#E2E8F0] text-[#2563EB] text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-xl mb-6 shadow-lg">
+                            {slide.eyebrow}
+                          </div>
+                          <h3 className="lp-font-outfit text-[#0F172A] font-black leading-tight tracking-tight mb-6" style={{ fontSize: "clamp(28px, 3.5vw, 42px)" }}>
+                            {slide.title}
+                          </h3>
+                          <p className="text-[#64748B] text-base md:text-lg leading-relaxed mb-10 font-light max-w-xl">
+                            {slide.desc}
+                          </p>
+
+                          <button
+                            onClick={() => navigate(slide.link)}
+                            className="px-8 h-[54px] bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 text-sm shadow-md hover:shadow-lg"
+                          >
+                            {slide.buttonText} <ChevronRight size={16} strokeWidth={3} />
+                          </button>
                         </div>
-                        <h3 className="lp-font-outfit text-[#0F172A] font-black leading-tight tracking-tight mb-6" style={{ fontSize: "clamp(28px, 3.5vw, 42px)" }}>
-                          {slide.title}
-                        </h3>
-                        <p className="text-[#64748B] text-base md:text-lg leading-relaxed mb-10 font-light max-w-xl">
-                          {slide.desc}
-                        </p>
-                        
-                        <button
-                          onClick={() => navigate(slide.link)}
-                          className="px-8 h-[54px] bg-[#2563EB] text-white font-black rounded-2xl hover:bg-[#1D4ED8] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 text-sm shadow-md hover:shadow-lg"
-                        >
-                          {slide.buttonText} <ChevronRight size={16} strokeWidth={3} />
-                        </button>
-                      </div>
 
-                      {/* Right Side Visual Cards Stack */}
-                      <div className="relative h-[260px] flex items-center justify-center w-full">
-                        <div className="relative w-full max-w-[340px] h-[200px]">
-                          {/* Card 1: Bottom (Blurred offset) */}
-                          <div className="absolute top-[0px] left-1/2 transform -translate-x-1/2 w-[84%] bg-[#F8FAFC]/60 border border-[#E2E8F0] rounded-[24px] p-4 shadow-2xl opacity-40 blur-[1px] z-0 select-none backdrop-blur-md">
-                            <div className="flex justify-between items-center">
-                              {renderCompanyLogo(slide.visualCards[2].logo)}
-                              <div className="flex items-center gap-1.5 select-none bg-white px-2 py-1 rounded-md">
-                                <Clock size={10} className="text-[#64748B]" />
-                                <span className="text-[10px] text-[#64748B] font-bold uppercase tracking-wide">{slide.visualCards[2].detail}</span>
+                        {/* Right Side Visual Cards Stack */}
+                        <div className="relative h-[260px] flex items-center justify-center w-full">
+                          <div className="relative w-full max-w-[340px] h-[200px]">
+                            {/* Card 1: Bottom (Blurred offset) */}
+                            <div className="absolute top-[0px] left-1/2 transform -translate-x-1/2 w-[84%] bg-[#F8FAFC]/60 border border-[#E2E8F0] rounded-[24px] p-4 shadow-2xl opacity-40 blur-[1px] z-0 select-none backdrop-blur-md">
+                              <div className="flex justify-between items-center">
+                                {renderCompanyLogo(slide.visualCards[2].logo)}
+                                <div className="flex items-center gap-1.5 select-none bg-white px-2 py-1 rounded-md">
+                                  <Clock size={10} className="text-[#64748B]" />
+                                  <span className="text-[10px] text-[#64748B] font-bold uppercase tracking-wide">{slide.visualCards[2].detail}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          {/* Card 2: Middle (Semi-opaque offset) */}
-                          <div className="absolute top-[32px] left-1/2 transform -translate-x-1/2 w-[92%] bg-white/90 border border-[#E2E8F0] rounded-[24px] p-4 shadow-[0_15px_30px_rgba(37,99,235,0.05)] opacity-90 blur-[0.3px] z-10 select-none backdrop-blur-xl">
-                            <div className="flex justify-between items-center">
-                              {renderCompanyLogo(slide.visualCards[1].logo)}
-                              <div className="flex items-center gap-1.5 select-none bg-white px-2 py-1 rounded-md">
-                                <Clock size={10} className="text-[#64748B]" />
-                                <span className="text-[10px] text-[#64748B] font-bold uppercase tracking-wide">{slide.visualCards[1].detail}</span>
+                            {/* Card 2: Middle (Semi-opaque offset) */}
+                            <div className="absolute top-[32px] left-1/2 transform -translate-x-1/2 w-[92%] bg-white/90 border border-[#E2E8F0] rounded-[24px] p-4 shadow-[0_15px_30px_rgba(37,99,235,0.05)] opacity-90 blur-[0.3px] z-10 select-none backdrop-blur-xl">
+                              <div className="flex justify-between items-center">
+                                {renderCompanyLogo(slide.visualCards[1].logo)}
+                                <div className="flex items-center gap-1.5 select-none bg-white px-2 py-1 rounded-md">
+                                  <Clock size={10} className="text-[#64748B]" />
+                                  <span className="text-[10px] text-[#64748B] font-bold uppercase tracking-wide">{slide.visualCards[1].detail}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          {/* Card 3: Top (Fully sharp card in front) */}
-                          <div className="absolute top-[64px] left-1/2 transform -translate-x-1/2 w-[100%] bg-white border border-[#E2E8F0] rounded-[24px] p-6 shadow-[0_20px_40px_rgba(37,99,235,0.08)] z-20 backdrop-blur-2xl">
-                            <div className="flex justify-between items-center border-b border-[#E2E8F0] pb-3 mb-4">
-                              {renderCompanyLogo(slide.visualCards[0].logo)}
-                              <div className="flex items-center gap-1.5 select-none bg-[#F8FAFC] px-2.5 py-1 rounded-md border border-[#E2E8F0]">
-                                <Clock size={11} className="text-[#2563EB]" />
-                                <span className="text-[10px] text-[#2563EB] font-black uppercase tracking-widest">{slide.visualCards[0].detail}</span>
+                            {/* Card 3: Top (Fully sharp card in front) */}
+                            <div className="absolute top-[64px] left-1/2 transform -translate-x-1/2 w-[100%] bg-white border border-[#E2E8F0] rounded-[24px] p-6 shadow-[0_20px_40px_rgba(37,99,235,0.08)] z-20 backdrop-blur-2xl">
+                              <div className="flex justify-between items-center border-b border-[#E2E8F0] pb-3 mb-4">
+                                {renderCompanyLogo(slide.visualCards[0].logo)}
+                                <div className="flex items-center gap-1.5 select-none bg-[#F8FAFC] px-2.5 py-1 rounded-md border border-[#E2E8F0]">
+                                  <Clock size={11} className="text-[#2563EB]" />
+                                  <span className="text-[10px] text-[#2563EB] font-black uppercase tracking-widest">{slide.visualCards[0].detail}</span>
+                                </div>
                               </div>
+
+                              <p className="text-[#0F172A] text-sm font-black tracking-wide mb-5 leading-tight">{slide.visualCards[0].role}</p>
+
+                              <button
+                                onClick={() => navigate(slide.link)}
+                                className="w-full py-3 bg-white hover:bg-[#EFF6FF] border border-[#2563EB] hover:border-[#1D4ED8] text-[#2563EB] hover:text-[#1D4ED8] font-black text-xs rounded-xl tracking-[0.2em] uppercase transition-all duration-300 shadow-sm select-none flex items-center justify-center gap-2"
+                              >
+                                {slide.visualCards[0].action} <ArrowRight size={14} />
+                              </button>
                             </div>
-                            
-                            <p className="text-[#0F172A] text-sm font-black tracking-wide mb-5 leading-tight">{slide.visualCards[0].role}</p>
-                            
-                            <button
-                              onClick={() => navigate(slide.link)}
-                              className="w-full py-3 bg-white hover:bg-[#EFF6FF] border border-[#2563EB] hover:border-[#1D4ED8] text-[#2563EB] hover:text-[#1D4ED8] font-black text-xs rounded-xl tracking-[0.2em] uppercase transition-all duration-300 shadow-sm select-none flex items-center justify-center gap-2"
-                            >
-                              {slide.visualCards[0].action} <ArrowRight size={14} />
-                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
               </div>
             </div>
           </div>
 
           {/* Unified Navigation Arrow & Pagination Row */}
           <div className="flex items-center justify-center gap-6 mt-12 select-none relative z-20">
-            <button 
-              onClick={handlePrevProgram} 
-              className="w-12 h-12 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#2563EB] hover:scale-110 transition-all shadow-lg backdrop-blur-md" 
+            <button
+              onClick={handlePrevProgram}
+              className="w-12 h-12 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#2563EB] hover:scale-110 transition-all shadow-lg backdrop-blur-md"
               aria-label="Previous Program"
             >
               <ChevronLeft size={20} strokeWidth={2.5} />
             </button>
-            
+
             <div className="flex gap-3 items-center bg-[#F8FAFC]/40 px-4 py-3 rounded-full border border-[#E2E8F0] backdrop-blur-xl">
               {programSlides.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentProgramIndex(i)}
-                  className={`h-2.5 rounded-full transition-all duration-500 border-none cursor-pointer ${
-                    i === currentProgramIndex ? "w-8 bg-[#10b981] shadow-[0_0_15px_rgba(16,185,129,0.5)]" : "w-2.5 bg-white/20 hover:bg-white/40"
-                  }`}
+                  className={`h-2.5 rounded-full transition-all duration-500 border-none cursor-pointer ${i === currentProgramIndex ? "w-8 bg-[#10b981] shadow-[0_0_15px_rgba(16,185,129,0.5)]" : "w-2.5 bg-white/20 hover:bg-white/40"
+                    }`}
                 />
               ))}
             </div>
 
-            <button 
-              onClick={handleNextProgram} 
-              className="w-12 h-12 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#2563EB] hover:scale-110 transition-all shadow-lg backdrop-blur-md" 
+            <button
+              onClick={handleNextProgram}
+              className="w-12 h-12 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#2563EB] hover:scale-110 transition-all shadow-lg backdrop-blur-md"
               aria-label="Next Program"
             >
               <ChevronRight size={20} strokeWidth={2.5} />
@@ -959,7 +957,7 @@ const HomePage = () => {
       {/* ─── NEW SECTION: Outcome Powerhouse (Your Recipe for a Rockstar Career) ─── */}
       <section style={{ padding: "110px 0", background: "#FFFFFF", borderTop: "1px solid rgba(0,0,0,0.05)" }} id="rockstar-recipe">
         <div style={{ width: "min(92%, 1250px)", margin: "0 auto" }}>
-          
+
           <div style={{ textAlign: "center", marginBottom: "70px" }}>
             <span style={{ display: "inline-block", fontSize: "11px", fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "#0F7B53", background: "rgba(15,123,83,0.08)", padding: "6px 16px", borderRadius: "99px", marginBottom: "16px" }}>
               Welcome to the Outcome Powerhouse
@@ -973,7 +971,7 @@ const HomePage = () => {
             {/* Card 1: Get Referrals */}
             <div className="outcome-dark-gradient rounded-[28px] p-8 md:p-10 shadow-lg flex flex-col md:flex-row justify-between gap-8 group overflow-hidden relative min-h-[380px] transition-all duration-500 hover:shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-[#0F7B53]/[0.05] to-transparent pointer-events-none" />
-              
+
               <div className="flex flex-col justify-between relative z-10 w-full md:w-[45%]">
                 <div>
                   <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "#f59e0b", background: "rgba(245,158,11,0.15)", padding: "5px 12px", borderRadius: "99px", marginBottom: "18px" }} className="uppercase">
@@ -1027,7 +1025,7 @@ const HomePage = () => {
             {/* Card 2: Company-Specific Prep */}
             <div className="outcome-dark-gradient rounded-[28px] p-8 md:p-10 shadow-lg flex flex-col md:flex-row justify-between gap-8 group overflow-hidden relative min-h-[380px] transition-all duration-500 hover:shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-[#0ea5e9]/[0.05] to-transparent pointer-events-none" />
-              
+
               <div className="flex flex-col justify-between relative z-10 w-full md:w-[45%]">
                 <div>
                   <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "#38bdf8", background: "rgba(56,189,248,0.15)", padding: "5px 12px", borderRadius: "99px", marginBottom: "18px" }} className="uppercase">
@@ -1086,7 +1084,7 @@ const HomePage = () => {
             {/* Card 3: Live Coding Practice */}
             <div className="outcome-dark-gradient rounded-[28px] p-8 md:p-10 shadow-lg flex flex-col md:flex-row justify-between gap-8 group overflow-hidden relative min-h-[380px] transition-all duration-500 hover:shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-[#10b981]/[0.05] to-transparent pointer-events-none" />
-              
+
               <div className="flex flex-col justify-between relative z-10 w-full md:w-[45%]">
                 <div>
                   <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "#34d399", background: "rgba(52,211,153,0.15)", padding: "5px 12px", borderRadius: "99px", marginBottom: "18px" }} className="uppercase">
@@ -1123,7 +1121,7 @@ const HomePage = () => {
                   </div>
                   <div className="flex-grow select-none flex flex-col gap-1 leading-normal font-medium overflow-hidden">
                     <div className="text-gray-800">1  <span className="text-purple-600 font-bold">def</span> twoSum(nums, target):</div>
-                    <div className="text-[#64748B]">2      seen = {}</div>
+                    <div className="text-[#64748B]">2      seen = { }</div>
                     <div className="text-[#64748B]">3      <span className="text-purple-600 font-bold">for</span> i, n <span className="text-indigo-600 font-bold">in</span> enumerate(nums):</div>
                     <div className="text-[#64748B]">4          diff = target - n</div>
                     <div className="text-gray-700">5          <span className="text-purple-600 font-bold">if</span> diff <span className="text-indigo-600 font-bold">in</span> seen:</div>
@@ -1139,7 +1137,7 @@ const HomePage = () => {
             {/* Card 4: Career Support */}
             <div className="outcome-dark-gradient rounded-[28px] p-8 md:p-10 shadow-lg flex flex-col md:flex-row justify-between gap-8 group overflow-hidden relative min-h-[380px] transition-all duration-500 hover:shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-[#fb7185]/[0.05] to-transparent pointer-events-none" />
-              
+
               <div className="flex flex-col justify-between relative z-10 w-full md:w-[45%]">
                 <div>
                   <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "#fb7185", background: "rgba(251,113,133,0.15)", padding: "5px 12px", borderRadius: "99px", marginBottom: "18px" }} className="uppercase">

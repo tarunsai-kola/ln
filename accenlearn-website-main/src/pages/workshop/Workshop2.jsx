@@ -25,7 +25,7 @@ const Workshop2 = ({ title = "Technical Domains" }) => {
   const resolvedProgram = {
     ...content,
     title: content.title || title,
-    duration: content.duration || "2–3 Months",
+    duration: content.duration || "2–2/3 MONTHS",
     brochure: content.brochure || "/brochures/default.pdf",
     highlights: content.highlights || [
       "Designed for students, graduates and professionals",
@@ -53,26 +53,26 @@ const Workshop2 = ({ title = "Technical Domains" }) => {
   return (
     <div className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans selection:bg-blue-500/30">
 
-      <ProgramHero 
-        content={content} 
-        onEnroll={handleOpenApplyModal} 
-        onDownload={handleScrollToCurriculum} 
+      <ProgramHero
+        content={content}
+        onEnroll={handleOpenApplyModal}
+        onDownload={handleScrollToCurriculum}
       />
-      
+
       <ProgramHighlights features={content.features} />
-      
+
       <CareerTracks title={title} tracks={dynamicData.careerTracks} />
-      
+
       <CurriculumRoadmap features={content.features} phases={dynamicData.curriculum} />
-      
+
       <ProjectsShowcase title={title} projects={dynamicData.projects} />
-      
+
       <SalaryGrowth title={title} salaryData={dynamicData.salaryData} techStack={dynamicData.techStack} />
-      
+
       <CareerOutcomes title={title} />
-      
+
       <TestimonialsInstructors />
-      
+
       <IbmCertificationPath />
       <PricingFAQ onEnroll={handleOpenApplyModal} />
 

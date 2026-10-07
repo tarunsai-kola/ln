@@ -28,6 +28,7 @@ import TechPrograms from "../pages/Programs/TechPrograms.jsx";
 import ManagementPrograms from "../pages/Programs/ManagementPrograms.jsx";
 import MedicalPrograms from "../pages/Programs/MedicalPrograms.jsx";
 import Alumni from "../pages/Alumni/Alumni.jsx";
+import IotipPage from "../marketingiotip/IotipPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -192,6 +193,10 @@ export const router = createBrowserRouter([
   path: "/alumni",
   element: <Alumni />,
 }
-     ],
+    ],
   },
+  {
+    path: "/iotip",
+    element: <IotipPage />,
+  }
 ]);

@@ -11,7 +11,7 @@ const ProgramCTA = ({ duration, brochureUrl, onEnroll, onDownload }) => {
         </div>
         <div className="flex flex-col">
           <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest leading-none mb-1">Duration</span>
-          <span className="text-sm font-extrabold text-primary leading-none">{duration || "2–3 Months"}</span>
+          <span className="text-sm font-extrabold text-primary leading-none">{duration || "2–2/3 MONTHS"}</span>
         </div>
       </div>
 

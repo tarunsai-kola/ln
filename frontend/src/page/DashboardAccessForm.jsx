@@ -279,9 +279,9 @@ const DashboardAccessForm = () => {
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Mode of Program</label>
               <select value={program} onChange={(e) => setProgram(e.target.value)} required className="w-full bg-[#0B0C10] border border-gray-700 rounded-md p-3 text-sm focus:outline-none focus:border-blue-500 transition-colors appearance-none">
                 <option value="" disabled>Select Mode of Program</option>
-                <option value="Self-Guided [2 Months – Training & Internship]">Self-Guided [2 Months – Training & Internship]</option>
-                <option value="Instructor-Led [2 Months – Training & Internship]">Instructor-Led [2 Months – Training & Internship]</option>
-                <option value="Career Advancement [3 Months – Training, Internship & Placement Assistance]">Career Advancement [3 Months – Training, Internship & Placement Assistance]</option>
+                <option value="Self-Guided [2/3 MONTHS – Training & Internship]">Self-Guided [2/3 MONTHS – Training & Internship]</option>
+                <option value="Instructor-Led [2/3 MONTHS – Training & Internship]">Instructor-Led [2/3 MONTHS – Training & Internship]</option>
+                <option value="Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]">Career Advancement [2/3 MONTHS – Training, Internship & Placement Assistance]</option>
               </select>
             </div>
 

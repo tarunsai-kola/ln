@@ -225,7 +225,7 @@ const BookedAmount = () => {
   const fetchNewStudent = async () => {
     const operationName = localStorage.getItem("advOperationName");
     try {
-      // Operations need all records to filter by month across 4 months
+      // Operations need all records to filter by month across 2/3 MONTHS
       const response = await axios.get(`${API}/getadvenrolls?all=true`);
       const bookedStudents = response.data.filter(
         (item) =>
@@ -760,7 +760,7 @@ const BookedAmount = () => {
 
   return (
     <div id="OperationEnroll">
-      <Toaster position="top-center" toastOptions={{ style:{background:'#1E293B',color:'#F8FAFC',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'12px'} }} />
+      <Toaster position="top-center" toastOptions={{ style: { background: '#1E293B', color: '#F8FAFC', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' } }} />
       {/* ── Premium Dark Theme Override ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -1291,7 +1291,7 @@ const BookedAmount = () => {
                   className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
                 >
                   <option value="" disabled>Mode of Payment</option>
-                   <option value="Online">Online</option>
+                  <option value="Online">Online</option>
                   <option value="Cash">Cash</option>
                   <option value="Transfer">Transfer</option>
                   <option value="RazorPay">RazorPay</option>

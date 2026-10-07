@@ -27,7 +27,7 @@ const PHASES = [
 const FAQS = [
   { q: 'Who is this program designed for?', a: 'This cohort is strictly for ambitious working professionals (1-5 years exp), recent graduates, and individuals aggressively seeking a career switch into high-growth tech roles.' },
   { q: 'How does the 100% Placement Assistance work?', a: 'We do not stop at "assistance." We provide dedicated referrals, schedule your interviews, and prepare you until you sign an offer letter. It is a contractual commitment.' },
-  { q: 'What is the time commitment required?', a: 'Expect to dedicate 12-15 hours per week. This program is intensive by design, to ensure you achieve years of growth in just 6 months.' }
+  { q: 'What is the time commitment required?', a: 'Expect to dedicate 12-15 hours per week. This program is intensive by design, to ensure you achieve years of growth in just 2/3 MONTHS.' }
 ];
 
 /* --- Components --- */
@@ -72,20 +72,20 @@ const HeroSection = ({ onShowModal }) => {
       <div className="adv-hero-bg-glow"></div>
       <div className="adv-hero-bg-grid"></div>
       <div className="adv-hero-container">
-        
+
         <div className="adv-hero-grid">
           <div className="adv-hero-left">
             <div className="adv-badge">
               <span className="adv-pulse-dot"></span> Next Cohort: Super 30 Professionals
             </div>
             <h1 className="adv-h1">
-              Break the Salary Barrier.<br/>
+              Break the Salary Barrier.<br />
               <span className="adv-h1-accent">Command Your Worth.</span>
             </h1>
             <p className="adv-hero-p">
               The elite 6-Month Placement Acceleration Program. We bridge the gap between your current stagnation and high-paying tech roles through 1:1 mentorship, corporate internships, and an uncompromising placement guarantee.
             </p>
-            
+
             <div className="adv-hero-cta-group">
               <button className="adv-btn-primary" onClick={scrollToForm}>
                 Apply for the 2026 Cohort <span className="adv-arrow">→</span>
@@ -112,7 +112,7 @@ const HeroSection = ({ onShowModal }) => {
               </div>
             </div>
           </div>
-          
+
           <div className="adv-hero-right">
             <div className="adv-glass-card">
               <div className="adv-glass-header">
@@ -124,7 +124,7 @@ const HeroSection = ({ onShowModal }) => {
               </div>
               <div className={`adv-glass-body ${fade ? 'adv-fade-out' : 'adv-fade-in'}`}>
                 <div className="adv-profile-row">
-                  <div className="adv-profile-pic adv-profile-text" style={{background: p.color}}>{p.initials}</div>
+                  <div className="adv-profile-pic adv-profile-text" style={{ background: p.color }}>{p.initials}</div>
                   <div className="adv-profile-info">
                     <div className="adv-profile-name">
                       {p.name} <span className="adv-profile-batch">Cohort: {p.batch}</span>
@@ -139,14 +139,14 @@ const HeroSection = ({ onShowModal }) => {
                   </div>
                   <div className="adv-salary-arrow">➔</div>
                   <div className="adv-salary-col adv-salary-after">
-                    <span>After 6 Months</span>
+                    <span>After 2/3 MONTHS</span>
                     <strong>{p.after}</strong>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <div className="adv-glass-card adv-glass-card-small" onClick={onShowModal} style={{cursor: 'pointer'}}>
+
+            <div className="adv-glass-card adv-glass-card-small" onClick={onShowModal} style={{ cursor: 'pointer' }}>
               <div className="adv-guarantee-check">✓</div>
               <div className="adv-guarantee-text">
                 <strong>100% Placement Assistance</strong>
@@ -216,7 +216,7 @@ const RoadmapSection = () => (
       <div className="adv-roadmap-grid">
         {PHASES.map((phase, i) => (
           <div key={i} className="adv-phase-card">
-            <div className="adv-phase-num">0{i+1}</div>
+            <div className="adv-phase-num">0{i + 1}</div>
             <div className="adv-phase-month">{phase.month}</div>
             <h3 className="adv-phase-title">{phase.title}</h3>
             <p className="adv-phase-desc">{phase.desc}</p>
@@ -250,7 +250,7 @@ const PlacementModal = ({ onClose }) => (
       <button className="adv-modal-close" onClick={onClose}>&times;</button>
       <h3 className="adv-modal-h3">Our Placement Architecture</h3>
       <p className="adv-modal-p-lead">We don't leave your career to chance. Here is the rigorous system we use to secure your future.</p>
-      
+
       <div className="adv-modal-grid">
         <div className="adv-modal-item">
           <div className="adv-modal-num">01</div>
@@ -273,7 +273,7 @@ const PlacementModal = ({ onClose }) => (
           <p>We take complete ownership of your professional profile. Our experts rebuild your resume to bypass ATS filters and command attention in less than 6 seconds.</p>
         </div>
       </div>
-      
+
       <div className="adv-modal-footer">
         <div className="adv-modal-badge">✓ Contractually Guaranteed Success</div>
       </div>
@@ -283,7 +283,7 @@ const PlacementModal = ({ onClose }) => (
 
 const FAQSection = () => {
   const [open, setOpen] = useState(0);
-  
+
   const scrollToForm = (e) => {
     e.preventDefault();
     document.getElementById('enrollment-form')?.scrollIntoView({ behavior: 'smooth' });
@@ -373,8 +373,8 @@ const CustomSelect = ({ label, name, value, options, onChange, placeholder }) =>
         {isOpen && (
           <div className="adv-select-options">
             {options.map((opt) => (
-              <div 
-                key={opt} 
+              <div
+                key={opt}
                 className={`adv-select-option ${value === opt ? 'selected' : ''}`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -399,7 +399,7 @@ const EnrollmentForm = () => {
 
   const [formData, setFormData] = useState({
     fullName: '', email: '', contactNumber: '', whatsappNumber: '',
-    currentSituation: '', preferredLanguages: [], 
+    currentSituation: '', preferredLanguages: [],
     primaryGoal: '', currentChallenge: '', interestReason: '',
     domain: '', commitmentLevel: '', readyToInvest: '',
     startTime: '', importanceReason: '', connectTime: '',
@@ -424,12 +424,12 @@ const EnrollmentForm = () => {
   const languageOptions = ['English', 'Hindi', 'Telugu', 'Tamil', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali'];
 
   const handleInputChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  
+
   const handleLanguageToggle = (lang) => {
     setFormData(prev => ({
       ...prev,
-      preferredLanguages: prev.preferredLanguages.includes(lang) 
-        ? prev.preferredLanguages.filter(l => l !== lang) 
+      preferredLanguages: prev.preferredLanguages.includes(lang)
+        ? prev.preferredLanguages.filter(l => l !== lang)
         : [...prev.preferredLanguages, lang]
     }));
   };
@@ -456,7 +456,7 @@ const EnrollmentForm = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const params = new URLSearchParams();
       params.append('fullName', formData.fullName);
@@ -491,12 +491,12 @@ const EnrollmentForm = () => {
         console.error("Database sync error:", dbErr);
       }
 
-      setIsSubmitting(false); 
+      setIsSubmitting(false);
       setSubmitted(true);
     } catch (err) {
       console.error("Form submission error:", err);
-      setIsSubmitting(false); 
-      setSubmitted(true); 
+      setIsSubmitting(false);
+      setSubmitted(true);
     }
   };
 
@@ -528,7 +528,7 @@ const EnrollmentForm = () => {
 
 
           </div>
-          
+
           <div className="adv-form-content">
             <div className="adv-stepper">
               <div className={`adv-step ${step >= 1 ? 'active' : ''}`}>1. Profile</div>
@@ -539,13 +539,13 @@ const EnrollmentForm = () => {
             <form onSubmit={step === 1 ? nextStep : handleSubmit}>
               {/* Security Honeypot: Hidden from humans, tempting for bots */}
               <div style={{ display: 'none' }} aria-hidden="true">
-                <input 
-                  type="text" 
-                  name="website" 
-                  tabIndex="-1" 
-                  autoComplete="off" 
-                  value={formData.website} 
-                  onChange={handleInputChange} 
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex="-1"
+                  autoComplete="off"
+                  value={formData.website}
+                  onChange={handleInputChange}
                 />
               </div>
 
@@ -569,11 +569,11 @@ const EnrollmentForm = () => {
                       <input type="tel" name="whatsappNumber" value={formData.whatsappNumber} onChange={handleInputChange} required />
                     </div>
                   </div>
-                  <CustomSelect 
-                    label="Current Professional Status" 
-                    name="currentSituation" 
-                    value={formData.currentSituation} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="Current Professional Status"
+                    name="currentSituation"
+                    value={formData.currentSituation}
+                    onChange={handleInputChange}
                     placeholder="Select status"
                     options={[
                       'Recent Graduate (0–1 year)',
@@ -589,12 +589,12 @@ const EnrollmentForm = () => {
               {step === 2 && (
                 <div className="adv-form-step">
                   <h4 className="adv-step-title">CAREER GOALS & READINESS</h4>
-                  
-                  <CustomSelect 
-                    label="PRIMARY CAREER GOAL *" 
-                    name="primaryGoal" 
-                    value={formData.primaryGoal} 
-                    onChange={handleInputChange} 
+
+                  <CustomSelect
+                    label="PRIMARY CAREER GOAL *"
+                    name="primaryGoal"
+                    value={formData.primaryGoal}
+                    onChange={handleInputChange}
                     placeholder="Select your goal"
                     options={[
                       'Get my first job',
@@ -604,11 +604,11 @@ const EnrollmentForm = () => {
                     ]}
                   />
 
-                  <CustomSelect 
-                    label="CURRENT CHALLENGE *" 
-                    name="currentChallenge" 
-                    value={formData.currentChallenge} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="CURRENT CHALLENGE *"
+                    name="currentChallenge"
+                    value={formData.currentChallenge}
+                    onChange={handleInputChange}
                     placeholder="Select your challenge"
                     options={[
                       'Not getting interview calls',
@@ -618,11 +618,11 @@ const EnrollmentForm = () => {
                     ]}
                   />
 
-                  <CustomSelect 
-                    label="WHY ARE YOU INTERESTED IN THIS PROGRAM? *" 
-                    name="interestReason" 
-                    value={formData.interestReason} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="WHY ARE YOU INTERESTED IN THIS PROGRAM? *"
+                    name="interestReason"
+                    value={formData.interestReason}
+                    onChange={handleInputChange}
                     placeholder="Select the best reason"
                     options={[
                       'I want guaranteed placement support to land my first job',
@@ -634,11 +634,11 @@ const EnrollmentForm = () => {
                     ]}
                   />
 
-                  <CustomSelect 
-                    label="DOMAIN OF INTEREST *" 
-                    name="domain" 
-                    value={formData.domain} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="DOMAIN OF INTEREST *"
+                    name="domain"
+                    value={formData.domain}
+                    onChange={handleInputChange}
                     placeholder="Select a domain"
                     options={[
                       'Data Science',
@@ -651,7 +651,7 @@ const EnrollmentForm = () => {
                     <label>CAREER COMMITMENT LEVEL *</label>
                     <div className="adv-choice-grid">
                       {['100% Committed', 'Very Serious', 'Considering', 'Just Exploring'].map(lvl => (
-                        <div key={lvl} className={`adv-choice-item ${formData.commitmentLevel === lvl ? 'selected' : ''}`} onClick={() => setFormData(p => ({...p, commitmentLevel: lvl}))}>
+                        <div key={lvl} className={`adv-choice-item ${formData.commitmentLevel === lvl ? 'selected' : ''}`} onClick={() => setFormData(p => ({ ...p, commitmentLevel: lvl }))}>
                           <div className="adv-choice-circle"></div>
                           {lvl}
                         </div>
@@ -663,7 +663,7 @@ const EnrollmentForm = () => {
                     <label>READY TO INVEST IN YOUR GROWTH? *</label>
                     <div className="adv-choice-grid">
                       {['Yes, I\'m ready', 'Need more details'].map(ans => (
-                        <div key={ans} className={`adv-choice-item ${formData.readyToInvest === ans ? 'selected' : ''}`} onClick={() => setFormData(p => ({...p, readyToInvest: ans}))}>
+                        <div key={ans} className={`adv-choice-item ${formData.readyToInvest === ans ? 'selected' : ''}`} onClick={() => setFormData(p => ({ ...p, readyToInvest: ans }))}>
                           <div className="adv-choice-circle"></div>
                           {ans}
                         </div>
@@ -671,11 +671,11 @@ const EnrollmentForm = () => {
                     </div>
                   </div>
 
-                  <CustomSelect 
-                    label="WHEN ARE YOU PLANNING TO START? *" 
-                    name="startTime" 
-                    value={formData.startTime} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="WHEN ARE YOU PLANNING TO START? *"
+                    name="startTime"
+                    value={formData.startTime}
+                    onChange={handleInputChange}
                     placeholder="Select timeline"
                     options={[
                       'Immediately',
@@ -684,11 +684,11 @@ const EnrollmentForm = () => {
                     ]}
                   />
 
-                  <CustomSelect 
-                    label="WHY IS THIS PROGRAM IMPORTANT FOR YOU? *" 
-                    name="importanceReason" 
-                    value={formData.importanceReason} 
-                    onChange={handleInputChange} 
+                  <CustomSelect
+                    label="WHY IS THIS PROGRAM IMPORTANT FOR YOU? *"
+                    name="importanceReason"
+                    value={formData.importanceReason}
+                    onChange={handleInputChange}
                     placeholder="Select an option"
                     options={[
                       'To secure my future with a stable job',
@@ -706,7 +706,7 @@ const EnrollmentForm = () => {
                         { val: 'Afternoon', time: '3pm–5:30pm' },
                         { val: 'Evening', time: '6pm–8pm' }
                       ].map(item => (
-                        <div key={item.val} className={`adv-choice-item ${formData.connectTime === item.val ? 'selected' : ''}`} onClick={() => setFormData(p => ({...p, connectTime: item.val}))}>
+                        <div key={item.val} className={`adv-choice-item ${formData.connectTime === item.val ? 'selected' : ''}`} onClick={() => setFormData(p => ({ ...p, connectTime: item.val }))}>
                           <div className="adv-choice-circle"></div>
                           <div className="adv-choice-text">
                             <strong>{item.val}</strong>
@@ -730,19 +730,19 @@ const EnrollmentForm = () => {
 
                   <div className="adv-input-group adv-captcha-group">
                     <label>SECURITY CHECK: WHAT IS {captcha.a} + {captcha.b}? *</label>
-                    <input 
-                      type="number" 
-                      name="captchaAnswer" 
-                      placeholder="Enter the sum" 
-                      value={formData.captchaAnswer} 
-                      onChange={handleInputChange} 
-                      required 
+                    <input
+                      type="number"
+                      name="captchaAnswer"
+                      placeholder="Enter the sum"
+                      value={formData.captchaAnswer}
+                      onChange={handleInputChange}
+                      required
                       className="adv-captcha-input"
                     />
                   </div>
 
                   <div className="adv-input-group adv-checkbox-group highlight">
-                    <input type="checkbox" id="paidAgreement" name="paidAgreement" checked={formData.paidAgreement} onChange={(e) => setFormData(p => ({...p, paidAgreement: e.target.checked}))} required />
+                    <input type="checkbox" id="paidAgreement" name="paidAgreement" checked={formData.paidAgreement} onChange={(e) => setFormData(p => ({ ...p, paidAgreement: e.target.checked }))} required />
                     <label htmlFor="paidAgreement">I understand this is a paid program and I'm ready to invest in my career growth.</label>
                   </div>
 

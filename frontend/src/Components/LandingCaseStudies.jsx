@@ -13,7 +13,7 @@ const LandingCaseStudies = () => {
       newCompany: "Amazon",
       newSalary: "22 LPA",
       hike: "388%",
-      timeline: "5 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_1.png",
       quote: "I was handling support tickets for 2 years. Accenlearn taught me to think in distributed systems. The mock interviews were harder than the actual Amazon loop."
     },
@@ -26,7 +26,7 @@ const LandingCaseStudies = () => {
       newCompany: "Microsoft",
       newSalary: "28 LPA",
       hike: "366%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_2.png",
       quote: "Transitioning from React to core backend architecture felt impossible until Accenlearn. The 1:1 mentorship from a Microsoft engineer made everything click."
     },
@@ -39,7 +39,7 @@ const LandingCaseStudies = () => {
       newCompany: "Swiggy",
       newSalary: "18 LPA",
       hike: "414%",
-      timeline: "4 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_3.png",
       quote: "I was stuck in manual QA. The rigorous DSA and system design modules at Accenlearn helped me crack Swiggy's backend round with ease."
     },
@@ -52,7 +52,7 @@ const LandingCaseStudies = () => {
       newCompany: "Walmart Global Tech",
       newSalary: "24 LPA",
       hike: "500%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_4.png",
       quote: "Moving from an analyst to a core data engineering role at Walmart was a dream. Accenlearn's hands-on projects were the key differentiator in my interviews."
     },
@@ -78,7 +78,7 @@ const LandingCaseStudies = () => {
       newCompany: "Flipkart",
       newSalary: "20 LPA",
       hike: "300%",
-      timeline: "4 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_6.png",
       quote: "I knew React, but Accenlearn taught me web performance and large-scale architecture. That's exactly what Flipkart tested me on."
     },
@@ -91,7 +91,7 @@ const LandingCaseStudies = () => {
       newCompany: "Atlassian",
       newSalary: "35 LPA",
       hike: "438%",
-      timeline: "8 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_7.png",
       quote: "Atlassian's interview loop is notoriously tough. The intensive system design curriculum at Accenlearn helped me clear all 5 rounds effortlessly."
     },
@@ -104,7 +104,7 @@ const LandingCaseStudies = () => {
       newCompany: "Zomato",
       newSalary: "22 LPA",
       hike: "358%",
-      timeline: "5 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_8.png",
       quote: "I was terrified of competitive programming. Accenlearn broke it down into patterns rather than rote learning. Zomato's coding round felt like a breeze."
     },
@@ -143,7 +143,7 @@ const LandingCaseStudies = () => {
       newCompany: "AWS",
       newSalary: "25 LPA",
       hike: "525%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_11.png",
       quote: "I wanted to move from networking to cloud engineering. Accenlearn's AWS and DevOps curriculum was precisely what I needed to clear the loop."
     },
@@ -156,7 +156,7 @@ const LandingCaseStudies = () => {
       newCompany: "Uber",
       newSalary: "28 LPA",
       hike: "677%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_12.png",
       quote: "The sheer depth of Accenlearn's backend engineering module is unmatched. It gave me the competitive edge I needed for Uber."
     },
@@ -182,7 +182,7 @@ const LandingCaseStudies = () => {
       newCompany: "Razorpay",
       newSalary: "21 LPA",
       hike: "320%",
-      timeline: "4 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_14.png",
       quote: "I knew the basics, but Accenlearn pushed me to master advanced JS concepts and React internals. Razorpay's machine coding round was exactly what we practiced."
     },
@@ -208,7 +208,7 @@ const LandingCaseStudies = () => {
       newCompany: "Myntra",
       newSalary: "16 LPA",
       hike: "433%",
-      timeline: "8 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_16.png",
       quote: "Switching from content to coding was hard, but Accenlearn's structured frontend roadmap and portfolio reviews got me into Myntra."
     },
@@ -221,7 +221,7 @@ const LandingCaseStudies = () => {
       newCompany: "ShareChat",
       newSalary: "24 LPA",
       hike: "300%",
-      timeline: "5 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_17.png",
       quote: "I felt trapped in legacy tech. Accenlearn updated my stack to Go and microservices, which is exactly what top startups are looking for."
     },
@@ -234,7 +234,7 @@ const LandingCaseStudies = () => {
       newCompany: "LinkedIn",
       newSalary: "27 LPA",
       hike: "500%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_18.png",
       quote: "The emphasis Accenlearn places on writing clean, production-ready code is what impressed my interviewers at LinkedIn the most."
     },
@@ -260,7 +260,7 @@ const LandingCaseStudies = () => {
       newCompany: "Ola",
       newSalary: "25 LPA",
       hike: "284%",
-      timeline: "5 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_20.png",
       quote: "Moving from basic analytics to core ML required heavy math and deployment skills. Accenlearn filled that gap perfectly."
     },
@@ -273,7 +273,7 @@ const LandingCaseStudies = () => {
       newCompany: "Dream11",
       newSalary: "23 LPA",
       hike: "447%",
-      timeline: "6 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_21.png",
       quote: "I thought my tier-3 college background would hold me back. Accenlearn proved that skills trump degrees every single time."
     },
@@ -286,7 +286,7 @@ const LandingCaseStudies = () => {
       newCompany: "ClearTax",
       newSalary: "19 LPA",
       hike: "375%",
-      timeline: "4 months",
+      timeline: "2/3 MONTHS",
       image: "/newimages/piece_22.png",
       quote: "I lacked the discipline to upskill alone. The cohort-based learning and strict deadlines at Accenlearn completely transformed my career trajectory."
     }
@@ -301,10 +301,10 @@ const LandingCaseStudies = () => {
       <div className="absolute -inset-0.5 bg-gradient-to-br from-[#00FFA3]/60 to-blue-500/60 rounded-[24px] opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700" />
 
       <div className="relative h-full bg-[#0a0a0a] border border-white/10 group-hover:border-[#00FFA3]/50 shadow-2xl rounded-[24px] p-5 md:p-6 transition-all duration-500 flex flex-col transform group-hover:-translate-y-1 z-10 overflow-hidden">
-        
+
         {/* Cyber Grid Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none" 
-          style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '16px 16px' }} 
+        <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none"
+          style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '16px 16px' }}
         />
 
         {/* Profile row */}
@@ -363,7 +363,8 @@ const LandingCaseStudies = () => {
 
   return (
     <section className="py-28 bg-white border-t border-gray-100 overflow-hidden">
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes scroll-left {
           0% { transform: translateX(0); }
           100% { transform: translateX(calc(-50% - 12px)); }
@@ -402,7 +403,7 @@ const LandingCaseStudies = () => {
               Student Outcomes
             </span>
             <h2 className="lp-font-outfit text-[#111111] font-extrabold text-4xl md:text-5xl tracking-tight">
-              Don't trust the promise. <br/>Trust the data.
+              Don't trust the promise. <br />Trust the data.
             </h2>
           </div>
           <p className="text-gray-400 font-light text-base max-w-xs border-l border-gray-200 pl-6">

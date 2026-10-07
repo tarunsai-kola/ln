@@ -80,7 +80,7 @@ const CreateOperation = () => {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(today.getDate() - 7);
 
-      // Get the current month and 3 months ago
+      // Get the current month and 2/3 MONTHS ago
       const currentMonth = today.getMonth();
       const currentYear = today.getFullYear();
       const threeMonthsAgo = new Date(today);
@@ -109,7 +109,7 @@ const CreateOperation = () => {
           }
         }
 
-        // Filter out data that is outside of the last 3 months
+        // Filter out data that is outside of the last 2/3 MONTHS
         if (createdAt >= threeMonthsAgo) {
           if (!revenueByMonth[month]) {
             revenueByMonth[month] = { total: 0, credited: 0, pending: 0 };
@@ -223,20 +223,20 @@ const CreateOperation = () => {
 
   const handleloginteam = async (userId) => {
     try {
-      const response = await axios.post(`${API}/api/admin/impersonate`, 
+      const response = await axios.post(`${API}/api/admin/impersonate`,
         { userId, role: "OPERATION" },
         { withCredentials: true }
       );
       if (response.status === 200) {
         toast.success("Impersonation successful!");
         const { token, operationName, fullname, _id, userId: resUserId } = response.data;
-        
+
         // Pass credentials via URL so the new tab can save them to its own sessionStorage
         const targetId = _id || resUserId || userId;
         const targetName = operationName || fullname || "";
 
         const impersonateUrl = `/OperationDashboard?impToken=${encodeURIComponent(token)}&impId=${targetId}&impName=${encodeURIComponent(targetName)}&impType=operationToken`;
-        
+
         setTimeout(() => {
           window.open(impersonateUrl, "_blank");
         }, 500);

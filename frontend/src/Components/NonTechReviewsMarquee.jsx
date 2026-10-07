@@ -25,7 +25,7 @@ const allReviews = [
   { name: "Amit Bhatia", prev: "Freelance Writer", role: "SDE", quote: "Writing code isn't too different from writing logic. The transition was smooth thanks to the brilliant mentors." },
   { name: "Sunita Rao", prev: "Bank Teller", role: "Backend Eng", quote: "Banking to coding was a massive leap. The live classes and real-world projects made the knowledge gap disappear entirely." },
   { name: "Yash Agarwal", prev: "Data Entry", role: "Full Stack SDE", quote: "I wanted a better future. I struggled initially, but the recorded sessions and TA support got me through the tough parts." },
-  { name: "Meera Pillai", prev: "Retail Manager", role: "Frontend Eng", quote: "The UI/UX and React modules were fantastic. I built a portfolio that got me hired in just 5 months without a tech degree." },
+  { name: "Meera Pillai", prev: "Retail Manager", role: "Frontend Eng", quote: "The UI/UX and React modules were fantastic. I built a portfolio that got me hired in just 2/3 MONTHS without a tech degree." },
 ];
 
 const ReviewCard = ({ review }) => (
@@ -43,14 +43,14 @@ const ReviewCard = ({ review }) => (
         "{review.quote}"
       </p>
     </div>
-    
+
     <div className="pt-4 border-t border-white/10 mt-4 flex items-center justify-between z-10">
       <div>
         <h4 className="text-white font-bold text-base">{review.name}</h4>
         <div className="flex items-center gap-2 mt-1">
           <span className="text-xs text-gray-400 line-through decoration-red-500/50">{review.prev}</span>
           <span className="text-primary text-sm font-bold flex items-center gap-1">
-             <Code size={12}/> {review.role}
+            <Code size={12} /> {review.role}
           </span>
         </div>
       </div>
@@ -88,7 +88,7 @@ const NonTechReviewsMarquee = () => {
 
   const settingsRow1 = {
     ...baseSettings,
-    speed: 30000, 
+    speed: 30000,
     slidesToShow: 3.5,
     responsive: [
       { breakpoint: 1200, settings: { slidesToShow: 3 } },
@@ -110,7 +110,7 @@ const NonTechReviewsMarquee = () => {
   return (
     <section className="py-24 bg-[#07090b] relative overflow-hidden border-t border-white/5 min-h-[600px]">
       <div className="max-w-7xl mx-auto px-6 text-center mb-16 relative z-10">
-        <motion.span 
+        <motion.span
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -118,7 +118,7 @@ const NonTechReviewsMarquee = () => {
         >
           Career Transformations
         </motion.span>
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -127,7 +127,7 @@ const NonTechReviewsMarquee = () => {
         >
           From Non-Tech to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-400">Software Engineer</span>
         </motion.h2>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -153,7 +153,7 @@ const NonTechReviewsMarquee = () => {
             ))}
           </Slider>
         </div>
-        
+
         {/* Gradient Fades for Smooth Edges */}
         <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-[#07090b] to-transparent pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-[#07090b] to-transparent pointer-events-none" />

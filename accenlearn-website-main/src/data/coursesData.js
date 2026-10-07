@@ -6,13 +6,13 @@ export const onlinePricing = [
     preRegistration: 1000,
   },
   {
-    duration: "2 Months",
+    duration: "2/3 MONTHS",
     mrp: 9999,
     offerPrice: 6500,
     preRegistration: 1000,
   },
   {
-    duration: "3 Months",
+    duration: "2/3 MONTHS",
     mrp: 17999,
     offerPrice: 8500,
     preRegistration: 2000,
@@ -27,13 +27,13 @@ export const offlinePricing = [
     preRegistration: 2000,
   },
   {
-    duration: "2 Months",
+    duration: "2/3 MONTHS",
     mrp: 48999,
     offerPrice: 24999,
     preRegistration: 3000,
   },
   {
-    duration: "3 Months",
+    duration: "2/3 MONTHS",
     mrp: 74999,
     offerPrice: 34999,
     preRegistration: 5000,

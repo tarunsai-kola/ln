@@ -73,20 +73,20 @@ const CertificatePage = () => {
         const paidAmount = enrollment.paidAmount || 0;
         const pendingAmount = programPrice - paidAmount;
         const isFullPaid = pendingAmount <= 0 || enrollment.status === "fullPaid";
-        
+
         if (!isFullPaid) {
             toast.error(`You must complete your full payment before applying. Pending Amount: ₹${pendingAmount}`);
             return;
         }
 
-        // --- VALIDATION 2: 2 Months Duration Check ---
+        // --- VALIDATION 2: 2/3 MONTHS Duration Check ---
         if (enrollment.createdAt) {
             const enrollDate = new Date(enrollment.createdAt);
             const twoMonthsLater = new Date(enrollDate);
             twoMonthsLater.setMonth(enrollDate.getMonth() + 2);
 
             if (new Date() < twoMonthsLater) {
-                toast.error(`You can only apply for your certificate 2 months after enrollment (${twoMonthsLater.toLocaleDateString()}).`);
+                toast.error(`You can only apply for your certificate 2/3 MONTHS after enrollment (${twoMonthsLater.toLocaleDateString()}).`);
                 return;
             }
         }
@@ -221,20 +221,20 @@ const CertificatePage = () => {
                                     className="w-full object-contain rounded border border-white/5"
                                 />
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm rounded-xl">
-                                   <button 
-                                      className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.5)]"
-                                      onClick={() => {
-                                          if (showTraining) {
-                                              const trainingUrl = getTrainingCertUrl();
-                                              const proxyUrl = `${API}/download-proxy?url=${encodeURIComponent(trainingUrl)}`;
-                                              window.open(proxyUrl, '_self');
-                                          } else {
-                                              downloadInternshipCertificate();
-                                          }
-                                      }}
-                                   >
-                                      <span className="material-symbols-outlined">download</span> Download High-Res
-                                   </button>
+                                    <button
+                                        className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                                        onClick={() => {
+                                            if (showTraining) {
+                                                const trainingUrl = getTrainingCertUrl();
+                                                const proxyUrl = `${API}/download-proxy?url=${encodeURIComponent(trainingUrl)}`;
+                                                window.open(proxyUrl, '_self');
+                                            } else {
+                                                downloadInternshipCertificate();
+                                            }
+                                        }}
+                                    >
+                                        <span className="material-symbols-outlined">download</span> Download High-Res
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -345,15 +345,15 @@ const CertificatePage = () => {
                                             )}
                                         </td>
                                         <td className="p-4 pr-6 text-right">
-                                                <button
-                                                    onClick={() => {
-                                                        setShowTraining(false);
-                                                        setSelectedCertificate(cert);
-                                                    }}
-                                                    className="inline-flex items-center justify-end gap-1.5 text-[#8b5cf6] font-bold hover:text-orange-700 transition-colors bg-transparent border-none cursor-pointer"
-                                                >
-                                                    View <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                                                </button>
+                                            <button
+                                                onClick={() => {
+                                                    setShowTraining(false);
+                                                    setSelectedCertificate(cert);
+                                                }}
+                                                className="inline-flex items-center justify-end gap-1.5 text-[#8b5cf6] font-bold hover:text-orange-700 transition-colors bg-transparent border-none cursor-pointer"
+                                            >
+                                                View <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))

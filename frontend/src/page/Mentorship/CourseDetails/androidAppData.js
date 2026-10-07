@@ -1,4 +1,4 @@
-import { 
+import {
   FaCode, FaDatabase, FaServer, FaShieldAlt, FaMobileAlt, FaRocket,
   FaCheckCircle, FaStar, FaUserGraduate, FaProjectDiagram, FaBriefcase, FaArrowRight
 } from "react-icons/fa";
@@ -6,7 +6,7 @@ import {
 export const androidAppData = {
   id: "android-app-development",
   title: "Android App Development",
-  duration: "2/3 Months",
+  duration: "2/3 MONTHS",
   format: "Live Mentor-led",
   level: "Beginner to Pro",
   enrolled: "15,000+ Mentees Trained",

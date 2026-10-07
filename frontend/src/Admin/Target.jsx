@@ -65,10 +65,10 @@ const Target = () => {
     return `${months[monthIndex]} ${year}`;
   };
 
-  // Get the previous months including the current month (year-aware, last 12 months for Admin Target to be safe, or just 4. Let's do 4 like others to match)
+  // Get the previous months including the current month (year-aware, last 12/3 MONTHS for Admin Target to be safe, or just 4. Let's do 4 like others to match)
   // Actually, for targets, maybe they want to see the whole year? The previous code was `i >= 0`, so it showed Jan to Current Month. 
   // If we are in Jan, it showed only Jan.
-  // Let's show the last 6 months to be safe and useful.
+  // Let's show the last 2/3 MONTHS to be safe and useful.
   const getPastMonths = () => {
     const months = [
       "January", "February", "March", "April", "May", "June",
@@ -78,7 +78,7 @@ const Target = () => {
     const currentYear = new Date().getFullYear();
     let pastMonths = [];
 
-    // Show last 6 months
+    // Show last 2/3 MONTHS
     for (let i = 0; i < 6; i++) {
       const targetDate = new Date(currentYear, currentMonthIndex - i, 1);
       const monthName = months[targetDate.getMonth()];

@@ -149,7 +149,7 @@ const VLSI = () => {
       { icon: "Code", title: "UART Communication IP", desc: "Develop a reusable UART IP core for serial communication in modern SoC architectures.", tools: ["IP Design", "FPGA", "Simulation"] }
     ],
     faqData: [
-      { q: "What is the duration of the program?", a: "The program runs for 20 weeks (5 months), 100% online with live weekend sessions." },
+      { q: "What is the duration of the program?", a: "The program runs for 20 weeks (2/3 MONTHS), 100% online with live weekend sessions." },
       { q: "Who is this program for?", a: "ECE, EE students, and electronics engineers looking to master VLSI Design, Verilog, and Hardware modeling." },
       { q: "Will I get certified?", a: "Yes. You earn Professional Certifications in VLSI Design, SystemVerilog Verification, and Physical Design." },
       { q: "Do you provide placement support?", a: "Yes, Phase 4 is entirely dedicated to Resume Mastery, Interview Prep, Case Studies, and Core Company Placement Support." },
@@ -274,7 +274,7 @@ const DataScience = () => {
       { icon: "CheckCircle2", title: "Predictive Maintenance App", desc: "Develop an ML model that predicts equipment failure.", tools: ["TensorFlow", "AWS", "Docker"] }
     ],
     faqData: [
-      { q: "What is the duration of the program?", a: "16 weeks (4 months), 100% online." },
+      { q: "What is the duration of the program?", a: "16 weeks (2/3 MONTHS), 100% online." },
       { q: "Who is this program for?", a: "Professionals looking to transition into Data Science and AI." },
       { q: "Will I get certified?", a: "Yes. You earn Professional Certifications in Data Science and GenAI." },
       { q: "Do you provide placement support?", a: "Yes, Phase 4 is entirely dedicated to Resume Mastery, Interview Prep, and Core Company Placement Support." }
