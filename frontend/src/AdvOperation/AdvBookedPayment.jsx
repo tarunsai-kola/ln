@@ -12,6 +12,9 @@ const AdvBookedPayment = () => {
   const [iscourseFormVisible, setiscourseFormVisible] = useState(false);
   const [course, setCourse] = useState([]);
   const [offerData, setOfferData] = useState(null);
+  const [offerFullname, setOfferFullname] = useState("");
+  const [offerDomain, setOfferDomain] = useState("");
+  const [offerEmail, setOfferEmail] = useState("");
   const [offerDate, setOfferDate] = useState("");
   const [offerDuration, setOfferDuration] = useState("");
   const [offerStart, setOfferStart] = useState("");
@@ -53,8 +56,34 @@ const AdvBookedPayment = () => {
     setProgramPrice(""); setPaidAmount(""); setMonthOpted(""); setClearPaymentMonth(""); setEditingStudentId(null);
   };
   
+  const handleOpenOfferLetter = (student) => {
+    setOfferData(student);
+    setOfferFullname(student.fullname || "");
+    setOfferDomain(student.domain || "");
+    setOfferEmail(student.email || "");
+
+    const todayFormatted = new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    setOfferDate(student.offerDate || todayFormatted);
+    setOfferDuration(student.offerDuration || student.program || "3 Months");
+    setOfferStart(student.offerStart || student.internshipstartsmonth || "");
+    setOfferEnd(student.offerEnd || student.internshipendsmonth || "");
+    setOfferLocation(student.offerLocation || "Online");
+  };
+
   const resetOfferLeter = () => { 
-    setOfferData(null); setOfferDate(""); setOfferDuration(""); setOfferStart(""); setOfferEnd(""); setOfferLocation("Online"); 
+    setOfferData(null); 
+    setOfferFullname("");
+    setOfferDomain("");
+    setOfferEmail("");
+    setOfferDate(""); 
+    setOfferDuration(""); 
+    setOfferStart(""); 
+    setOfferEnd(""); 
+    setOfferLocation("Online"); 
   };
   
   const formatDate = (date) => new Date(date).toLocaleDateString("en-GB");
@@ -209,11 +238,44 @@ const AdvBookedPayment = () => {
     setFilteredStudents(advEnrolls.filter(s=>getMonthFromDate(s.createdAt)===m));
   };
 
+  const formatCleanDate = (val) => {
+    if (!val) return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, m, d] = val.split("-");
+      const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+      return dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    }
+    return val;
+  };
+
   const sendOfferleter = async (e) => {
     e.preventDefault(); setIsOfferLetterSending(true);
-    const offerLetterDetails = { id:offerData._id, fullname:offerData.fullname.split(" ").map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(" "), domain:offerData.domain, email:offerData.email, date:new Date(offerDate).toLocaleDateString("en-GB",{year:"numeric",month:"long",day:"numeric"}), duration:offerDuration, start:new Date(offerStart).toLocaleDateString("en-GB",{year:"numeric",month:"long",day:"numeric"}), end:new Date(offerEnd).toLocaleDateString("en-GB",{year:"numeric",month:"long",day:"numeric"}), location:offerLocation, smtpConfig:'SMTP_MAIL2' };
-    try { await axios.post(`${API}/sendofferletter`,offerLetterDetails); toast.success("Offer letter sent!"); fetchAdvEnrolls(); resetOfferLeter(); }
-    catch(e){ console.error(e); }
+    const cleanDate = formatCleanDate(offerDate);
+    const cleanStart = formatCleanDate(offerStart);
+    const cleanEnd = formatCleanDate(offerEnd);
+
+    const offerLetterDetails = { 
+      id: offerData._id, 
+      fullname: (offerFullname || offerData.fullname || "").split(" ").map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(" "), 
+      domain: offerDomain || offerData.domain || "", 
+      email: (offerEmail || offerData.email || "").trim(), 
+      date: cleanDate, 
+      duration: offerDuration, 
+      start: cleanStart, 
+      end: cleanEnd, 
+      location: offerLocation || "Online", 
+      smtpConfig: 'SMTP_MAIL2' 
+    };
+    try { 
+      await axios.post(`${API}/sendofferletter`, offerLetterDetails); 
+      toast.success("Offer letter sent successfully!"); 
+      fetchAdvEnrolls(); 
+      resetOfferLeter(); 
+    }
+    catch(e){ 
+      console.error(e); 
+      toast.error(e.response?.data?.error || "Error sending offer letter");
+    }
     finally { setIsOfferLetterSending(false); }
   };
 
@@ -240,52 +302,102 @@ const AdvBookedPayment = () => {
       {offerData && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
           <div onClick={resetOfferLeter} className="absolute inset-0" />
-          <div className="bg-white relative z-[1001] w-full max-w-md rounded-3xl shadow-2xl p-8 animate-[fadeIn_0.2s_ease-out]">
-            <div className="flex justify-between items-center mb-6">
+          <div className="bg-white relative z-[1001] w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 max-h-[90vh] overflow-y-auto animate-[fadeIn_0.2s_ease-out]">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-black text-slate-800 flex items-center gap-2">
                   <Send className="text-indigo-600" /> Send Offer Letter
               </h2>
               <button onClick={resetOfferLeter} className="text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-colors"><X size={20}/></button>
             </div>
+
+            <p className="text-xs text-slate-500 mb-4">
+              Edit any details below. Whatever you type here will appear exactly on the student's Offer Letter and email.
+            </p>
             
-            <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6">
-              <p className="text-sm text-slate-600 mb-1">Name: <strong className="text-indigo-900">{offerData?.fullname}</strong></p>
-              <p className="text-sm text-slate-600 mb-1">Domain: <strong className="text-indigo-900">{offerData?.domain}</strong></p>
-              <p className="text-sm text-slate-600">Email: <strong className="text-indigo-900">{offerData?.email}</strong></p>
-            </div>
-            
-            <form onSubmit={sendOfferleter} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Offer Letter Date</label>
-                <input type="date" value={offerDate} onChange={e=>setOfferDate(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+            <form onSubmit={sendOfferleter} className="space-y-3.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Candidate Name</label>
+                  <input type="text" value={offerFullname} onChange={e=>setOfferFullname(e.target.value)} required placeholder="e.g. Tarun" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Domain / Role</label>
+                  <input type="text" value={offerDomain} onChange={e=>setOfferDomain(e.target.value)} required placeholder="e.g. Corporate Law" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                </div>
               </div>
+
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Internship Duration</label>
-                <select value={offerDuration} onChange={e=>setOfferDuration(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer">
-                  <option value="">Select Duration</option>
-                  {["One","Two","Three","Four","Five","Six"].map(v=><option key={v} value={v}>{v} Months</option>)}
-                </select>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Candidate Email</label>
+                <input type="email" value={offerEmail} onChange={e=>setOfferEmail(e.target.value)} required placeholder="candidate@example.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Start Date</label>
-                    <input type="date" value={offerStart} onChange={e=>setOfferStart(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+
+              <div>
+                <div className="flex justify-between items-center mb-1 ml-1">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Offer Letter Date</label>
+                  <span className="text-[11px] font-bold text-indigo-600 cursor-pointer hover:underline" onClick={()=>setOfferDate(new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}))}>Set Today</span>
+                </div>
+                <div className="flex gap-2">
+                  <input type="text" value={offerDate} onChange={e=>setOfferDate(e.target.value)} required placeholder="e.g. 8 October 2026 or 08-10-2026" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                  <input type="date" onChange={e=>{ if(e.target.value){ const [y,m,d]=e.target.value.split('-'); const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d)); setOfferDate(dt.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})); }}} className="w-11 bg-slate-50 border border-slate-200 rounded-xl px-2 py-2 cursor-pointer opacity-70 hover:opacity-100" title="Pick from calendar"/>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Internship Duration</label>
+                <input type="text" value={offerDuration} onChange={e=>setOfferDuration(e.target.value)} required placeholder="e.g. 3 Months or 6 Months" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                <div className="flex gap-2 mt-1.5 flex-wrap">
+                  {["1 Month","2 Months","3 Months","6 Months"].map(d=>(
+                    <button key={d} type="button" onClick={()=>setOfferDuration(d)} className={`text-xs px-2.5 py-1 rounded-lg border transition-colors font-semibold ${offerDuration===d ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}`}>{d}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Start Date</label>
+                  <div className="flex gap-1.5">
+                    <input type="text" value={offerStart} onChange={e=>setOfferStart(e.target.value)} required placeholder="e.g. 15 Oct 2026" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                    <input type="date" onChange={e=>{ if(e.target.value){ const [y,m,d]=e.target.value.split('-'); const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d)); setOfferStart(dt.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})); }}} className="w-10 bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-2 cursor-pointer opacity-70 hover:opacity-100" title="Pick from calendar"/>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">End Date</label>
-                    <input type="date" value={offerEnd} onChange={e=>setOfferEnd(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">End Date</label>
+                  <div className="flex gap-1.5">
+                    <input type="text" value={offerEnd} onChange={e=>setOfferEnd(e.target.value)} required placeholder="e.g. 15 Jan 2027" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                    <input type="date" onChange={e=>{ if(e.target.value){ const [y,m,d]=e.target.value.split('-'); const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d)); setOfferEnd(dt.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})); }}} className="w-10 bg-slate-50 border border-slate-200 rounded-xl px-1.5 py-2 cursor-pointer opacity-70 hover:opacity-100" title="Pick from calendar"/>
                   </div>
+                </div>
               </div>
+
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Reporting Location</label>
-                <select value={offerLocation} onChange={e=>setOfferLocation(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer">
-                  <option value="Online">Online</option><option value="Offline">Offline</option>
-                </select>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1 ml-1">Reporting Location</label>
+                <input type="text" value={offerLocation} onChange={e=>setOfferLocation(e.target.value)} required placeholder="e.g. Online or Offline / Bangalore" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"/>
+                <div className="flex gap-2 mt-1.5 flex-wrap">
+                  {["Online","Offline","Hybrid","Remote"].map(loc=>(
+                    <button key={loc} type="button" onClick={()=>setOfferLocation(loc)} className={`text-xs px-2.5 py-1 rounded-lg border transition-colors font-semibold ${offerLocation===loc ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}`}>{loc}</button>
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-3 pt-4 border-t border-slate-100">
+
+              {/* Live Preview Box */}
+              <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 text-xs text-slate-700">
+                <div className="text-[10px] font-black uppercase tracking-wider text-indigo-700 mb-1 flex items-center gap-1.5">
+                  <span>👁 Live Offer Letter Preview</span>
+                </div>
+                <div className="space-y-0.5">
+                  <div>Date: <strong className="text-slate-900">{offerDate || "—"}</strong></div>
+                  <div>Candidate: <strong className="text-slate-900">{offerFullname || "—"}</strong> ({offerEmail || "—"})</div>
+                  <div>Designation: <strong className="text-slate-900">{offerDomain || "—"} Intern</strong></div>
+                  <div>Period: <strong className="text-slate-900">{offerDuration || "—"}</strong></div>
+                  <div>Dates: <strong className="text-slate-900">{offerStart || "—"}</strong> to <strong className="text-slate-900">{offerEnd || "—"}</strong></div>
+                  <div>Location: <strong className="text-slate-900">{offerLocation || "—"}</strong></div>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-3 border-t border-slate-100">
                 <button type="button" onClick={resetOfferLeter} className="flex-1 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl py-3 font-bold transition-all shadow-sm">Cancel</button>
                 <button type="submit" disabled={isOfferLetterSending} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 font-bold transition-all shadow-sm flex justify-center items-center gap-2">
-                    {isOfferLetterSending ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> Send Letter</>}
+                    {isOfferLetterSending ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> Send Offer Letter</>}
                 </button>
               </div>
             </form>
@@ -505,7 +617,7 @@ const AdvBookedPayment = () => {
                                 </button>
 
                                 {/* Offer Letter */}
-                                <button onClick={()=>setOfferData(item)} className={`flex items-center gap-1 px-2 py-1.5 rounded-lg border text-xs font-bold ${item.offerlettersended ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-purple-50 border-purple-200 text-purple-600 hover:bg-purple-100 transition-colors'}`} title="Offer Letter">
+                                <button onClick={()=>handleOpenOfferLetter(item)} className={`flex items-center gap-1 px-2 py-1.5 rounded-lg border text-xs font-bold ${item.offerlettersended ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-purple-50 border-purple-200 text-purple-600 hover:bg-purple-100 transition-colors'}`} title="Offer Letter">
                                     <Send size={14}/> {item.offerlettersended ? 'Sent' : 'Send'}
                                 </button>
                             </div>

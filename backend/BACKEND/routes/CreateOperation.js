@@ -395,10 +395,19 @@ router.post("/sendofferletter", async (req, res) => {
 
     await sendOfferLetter({ email, fullname: formattedName, date, start, end, domain, duration, location });
 
-    let updatedStudent = await NewEnrollStudent.findByIdAndUpdate(id, { offerlettersended: true }, { new: true });
+    const updateData = {
+      offerlettersended: true,
+      offerDate: date || "",
+      offerDuration: duration || "",
+      offerStart: start || "",
+      offerEnd: end || "",
+      offerLocation: location || "Online",
+    };
+
+    let updatedStudent = await NewEnrollStudent.findByIdAndUpdate(id, updateData, { new: true });
 
     if (!updatedStudent) {
-      updatedStudent = await AdvEnroll.findByIdAndUpdate(id, { offerlettersended: true }, { new: true });
+      updatedStudent = await AdvEnroll.findByIdAndUpdate(id, updateData, { new: true });
     }
 
     if (!updatedStudent) { return res.status(404).json({ error: "Student not found" }); }

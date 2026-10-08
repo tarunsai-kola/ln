@@ -67,6 +67,11 @@ const newStudentEnrollSchema = new Schema(
     onboardingSended: { type: Boolean, default: false },
     userCreated: { type: Boolean, default: false },
     offerlettersended: { type: Boolean, default: false },
+    offerDate: { type: String },
+    offerDuration: { type: String },
+    offerStart: { type: String },
+    offerEnd: { type: String },
+    offerLocation: { type: String },
 
     whatsAppNumber: { type: String },
     remainingAmount: { type: Number },

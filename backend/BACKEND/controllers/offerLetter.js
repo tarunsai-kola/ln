@@ -88,6 +88,11 @@ const sendOfferLetter = async ({ email, fullname, date, start, end, domain, dura
     <p>Best Regards,</p>
     `;
 
+    const cleanDuration = (duration || "").trim();
+    const formattedDuration = cleanDuration.toLowerCase().includes("month") || cleanDuration.toLowerCase().includes("week") || cleanDuration.toLowerCase().includes("year") || cleanDuration.toLowerCase().includes("day")
+      ? cleanDuration
+      : (cleanDuration ? `${cleanDuration} Months` : '3 Months');
+
     const pdfword1 = `
 ${date}
    
@@ -97,7 +102,7 @@ With reference to your application regarding, we are pleased to offer you intern
     
 We take this opportunity in wishing you the very best in you training as well as advising you that our offer letter is on the following terms and conditions:
     
-1. Period of Service: ${duration} Months of your training will be probationary.
+1. Period of Service: ${formattedDuration} of your training will be probationary.
 You shall, for the purpose of your internship with us, sign this offer letter for submission and approval of the management.
     
     

@@ -29,6 +29,9 @@ const BookedAmount = () => {
   const [course, setCourse] = useState([]);
 
   const [offerData, setOfferData] = useState(null);
+  const [offerFullname, setOfferFullname] = useState("");
+  const [offerDomain, setOfferDomain] = useState("");
+  const [offerEmail, setOfferEmail] = useState("");
   const [offerDate, setOfferDate] = useState("");
   const [offerDuration, setOfferDuration] = useState("");
   const [offerStart, setOfferStart] = useState("");
@@ -36,8 +39,29 @@ const BookedAmount = () => {
   const [offerLocation, setOfferLocation] = useState("Online");
   const [isOfferLetterSending, setIsOfferLetterSending] = useState(false);
 
+  const handleOpenOfferLetter = (student) => {
+    setOfferData(student);
+    setOfferFullname(student.fullname || "");
+    setOfferDomain(student.domain || "");
+    setOfferEmail(student.email || "");
+
+    const todayFormatted = new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    setOfferDate(student.offerDate || todayFormatted);
+    setOfferDuration(student.offerDuration || student.program || "3 Months");
+    setOfferStart(student.offerStart || student.internshipstartsmonth || "");
+    setOfferEnd(student.offerEnd || student.internshipendsmonth || "");
+    setOfferLocation(student.offerLocation || "Online");
+  };
+
   const resetOfferLeter = () => {
     setOfferData(null);
+    setOfferFullname("");
+    setOfferDomain("");
+    setOfferEmail("");
     setOfferDate("");
     setOfferDuration("");
     setOfferStart("");
@@ -45,50 +69,53 @@ const BookedAmount = () => {
     setOfferLocation("Online");
   };
 
+  const formatCleanDate = (val) => {
+    if (!val) return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, m, d] = val.split("-");
+      const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+      return dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    }
+    return val;
+  };
+
   const sendOfferleter = async (e) => {
     e.preventDefault();
     setIsOfferLetterSending(true);
 
+    const cleanDate = formatCleanDate(offerDate);
+    const cleanStart = formatCleanDate(offerStart);
+    const cleanEnd = formatCleanDate(offerEnd);
+
     const offerLetterDetails = {
       id: offerData._id,
-      fullname: offerData.fullname
+      fullname: (offerFullname || offerData.fullname || "")
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(" "),
-      domain: offerData.domain,
-      email: offerData.email,
-      date: new Date(offerDate).toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+      domain: offerDomain || offerData.domain || "",
+      email: (offerEmail || offerData.email || "").trim(),
+      date: cleanDate,
       duration: offerDuration,
-      start: new Date(offerStart).toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      end: new Date(offerEnd).toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      location: offerLocation,
+      start: cleanStart,
+      end: cleanEnd,
+      location: offerLocation || "Online",
       smtpConfig: 'SMTP_MAIL2',
     };
-    // console.log("Sending Offer Letter:", offerLetterDetails);
+
     try {
       const response = await axios.post(
         `${API}/sendofferletter`,
         offerLetterDetails
       );
-      toast.success("Offer letter sent successfully");
+      toast.success("Offer letter sent successfully!");
       fetchNewStudent();
       resetOfferLeter();
     } catch (error) {
       console.error("There was an error sending the offer letter:", error);
+      toast.error(error.response?.data?.error || "Error sending offer letter");
     } finally {
-      setIsOfferLetterSending(false); // Ensure this always executes
+      setIsOfferLetterSending(false);
     }
   };
 
@@ -674,71 +701,213 @@ const BookedAmount = () => {
       <Toaster position="top-center" reverseOrder={false} />
       {offerData && (
         <div className="form">
-          <form onSubmit={sendOfferleter} className="relative">
+          <form onSubmit={sendOfferleter} className="relative" style={{ maxWidth: "560px", width: "95%" }}>
             <div
               onClick={resetOfferLeter}
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-500 cursor-pointer text-xl font-bold p-2"
+              className="absolute top-3 right-3 text-gray-400 hover:text-red-400 cursor-pointer text-xl font-bold p-1 rounded-full transition-colors"
+              title="Close"
             >
               ✖
             </div>
-            <h2>Send Offer Letter</h2>
-            <p>
-              Name: <strong>{offerData?.fullname}</strong>
-              <br />
-              Domain: <strong>{offerData?.domain}</strong>
-              <br />
-              Email: <strong>{offerData?.email}</strong>
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <span>📩</span> Send Offer Letter
+            </h2>
+            <p className="text-xs text-slate-400 mb-2">
+              Edit any information below. Whatever you type here will appear exactly on the student's Offer Letter and email.
             </p>
-            <label>Offer Letter Date:</label>
-            <input
-              type="date"
-              value={offerDate}
-              onChange={(e) => setOfferDate(e.target.value)}
-              required
-            />
-            <label>Internship Duration:</label>
-            <select
-              value={offerDuration}
-              onChange={(e) => setOfferDuration(e.target.value)}
-              required
-            >
-              <option value="">Select Duration</option>
-              <option value="One">One</option>
-              <option value="Two">Two</option>
-              <option value="Three">Three</option>
-              <option value="Four">Four</option>
-              <option value="Five">Five</option>
-              <option value="Six">Six</option>
-            </select>
-            <label>Internship Start Date:</label>
-            <input
-              type="date"
-              value={offerStart}
-              onChange={(e) => setOfferStart(e.target.value)}
-              required
-            />
-            <label>Internship End Date:</label>
-            <input
-              type="date"
-              value={offerEnd}
-              onChange={(e) => setOfferEnd(e.target.value)}
-              required
-            />
-            <label>Reporting Location:</label>
-            <select
-              value={offerLocation}
-              onChange={(e) => setOfferLocation(e.target.value)}
-              className="border p-2 rounded w-full mb-4"
-              required
-            >
-              <option value="Online">Online</option>
-              <option value="Offline">Offline</option>
-            </select>
-            <div className="flex gap-4 mt-4">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-semibold text-slate-300">Candidate Name:</label>
+                <input
+                  type="text"
+                  value={offerFullname}
+                  onChange={(e) => setOfferFullname(e.target.value)}
+                  placeholder="e.g. Tarun"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-300">Domain / Role:</label>
+                <input
+                  type="text"
+                  value={offerDomain}
+                  onChange={(e) => setOfferDomain(e.target.value)}
+                  placeholder="e.g. Corporate Law"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-300">Candidate Email:</label>
+              <input
+                type="email"
+                value={offerEmail}
+                onChange={(e) => setOfferEmail(e.target.value)}
+                placeholder="candidate@gmail.com"
+                required
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-1">
+                <label className="text-xs font-semibold text-slate-300">Offer Letter Date:</label>
+                <span className="text-[11px] text-blue-400 cursor-pointer hover:underline" onClick={() => setOfferDate(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }))}>Set Today</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={offerDate}
+                  onChange={(e) => setOfferDate(e.target.value)}
+                  placeholder="e.g. 8 October 2026 or 08-10-2026"
+                  required
+                  className="flex-1"
+                />
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const [y, m, d] = e.target.value.split("-");
+                      const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+                      setOfferDate(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+                    }
+                  }}
+                  className="w-12 p-2 cursor-pointer opacity-75 hover:opacity-100"
+                  title="Pick from calendar"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-300">Internship Duration:</label>
+              <input
+                type="text"
+                value={offerDuration}
+                onChange={(e) => setOfferDuration(e.target.value)}
+                placeholder="e.g. 3 Months or 6 Months"
+                required
+              />
+              <div className="flex gap-2 mt-1.5 flex-wrap">
+                {["1 Month", "2 Months", "3 Months", "6 Months"].map((dur) => (
+                  <button
+                    key={dur}
+                    type="button"
+                    onClick={() => setOfferDuration(dur)}
+                    className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
+                      offerDuration === dur
+                        ? "bg-blue-600 text-white border-blue-500 font-bold"
+                        : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                    }`}
+                  >
+                    {dur}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-semibold text-slate-300">Internship Start Date:</label>
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    value={offerStart}
+                    onChange={(e) => setOfferStart(e.target.value)}
+                    placeholder="e.g. 15 Oct 2026"
+                    required
+                    className="flex-1"
+                  />
+                  <input
+                    type="date"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const [y, m, d] = e.target.value.split("-");
+                        const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+                        setOfferStart(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+                      }
+                    }}
+                    className="w-10 p-1 cursor-pointer opacity-75 hover:opacity-100"
+                    title="Pick from calendar"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-300">Internship End Date:</label>
+                <div className="flex gap-1.5">
+                  <input
+                    type="text"
+                    value={offerEnd}
+                    onChange={(e) => setOfferEnd(e.target.value)}
+                    placeholder="e.g. 15 Jan 2027"
+                    required
+                    className="flex-1"
+                  />
+                  <input
+                    type="date"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const [y, m, d] = e.target.value.split("-");
+                        const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+                        setOfferEnd(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+                      }
+                    }}
+                    className="w-10 p-1 cursor-pointer opacity-75 hover:opacity-100"
+                    title="Pick from calendar"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-300">Reporting Location:</label>
+              <input
+                type="text"
+                value={offerLocation}
+                onChange={(e) => setOfferLocation(e.target.value)}
+                placeholder="e.g. Online or Offline / Bangalore"
+                required
+              />
+              <div className="flex gap-2 mt-1.5 flex-wrap">
+                {["Online", "Offline", "Hybrid", "Remote"].map((loc) => (
+                  <button
+                    key={loc}
+                    type="button"
+                    onClick={() => setOfferLocation(loc)}
+                    className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
+                      offerLocation === loc
+                        ? "bg-blue-600 text-white border-blue-500 font-bold"
+                        : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                    }`}
+                  >
+                    {loc}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Live Preview Box */}
+            <div className="p-3 bg-slate-900/90 rounded-xl border border-blue-500/30 text-xs text-slate-300 mt-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1 flex items-center gap-1.5">
+                <span>👁 Live Offer Letter Preview</span>
+              </div>
+              <div className="space-y-0.5">
+                <div>Date: <strong className="text-white">{offerDate || "—"}</strong></div>
+                <div>Candidate: <strong className="text-white">{offerFullname || "—"}</strong> ({offerEmail || "—"})</div>
+                <div>Designation: <strong className="text-white">{offerDomain || "—"} Intern</strong></div>
+                <div>Period of Service: <strong className="text-white">{offerDuration || "—"}</strong></div>
+                <div>Internship Dates: <strong className="text-white">{offerStart || "—"}</strong> to <strong className="text-white">{offerEnd || "—"}</strong></div>
+                <div>Location: <strong className="text-white">{offerLocation || "—"}</strong></div>
+              </div>
+            </div>
+
+            <div className="flex gap-4 mt-3">
               <button
                 type="button"
                 onClick={resetOfferLeter}
-                className="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition"
+                className="w-full bg-slate-700 text-white p-2.5 rounded-xl hover:bg-slate-600 transition font-semibold"
               >
                 Cancel
               </button>
@@ -747,9 +916,9 @@ const BookedAmount = () => {
                 value={
                   isOfferLetterSending
                     ? "Sending..."
-                    : "Send Letter"
+                    : "Send Offer Letter"
                 }
-                className="w-full bg-[#1e40af] text-white p-2 rounded cursor-pointer hover:bg-[#1e3a8a] transition"
+                className="w-full bg-blue-600 text-white p-2.5 rounded-xl cursor-pointer hover:bg-blue-700 transition font-bold"
                 disabled={isOfferLetterSending}
               />
             </div>
@@ -1039,7 +1208,7 @@ const BookedAmount = () => {
                           </div>
                         </td>
                         <td
-                          onClick={() => setOfferData(item)}
+                          onClick={() => handleOpenOfferLetter(item)}
                           style={{ cursor: "pointer", color: "blue" }}
                         >
                           {item.offerlettersended ? (
