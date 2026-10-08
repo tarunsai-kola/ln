@@ -20,7 +20,6 @@ const AdvBooked = () => {
   const [domain, setDomain] = useState("");
   const [programPrice, setProgramPrice] = useState("");
   const [paidAmount, setPaidAmount] = useState("");
-  const [remainingAmount, setRemainingAmount] = useState(0);
   const [monthOpted, setMonthOpted] = useState("");
   const [clearPaymentMonth, setClearPaymentMonth] = useState("");
   const [lead, setLead] = useState("");
@@ -115,7 +114,6 @@ const AdvBooked = () => {
     setDomain(editStudent.domain || "");
     setProgramPrice(editStudent.programPrice || "");
     setPaidAmount(editStudent.paidAmount || "");
-    setRemainingAmount(editStudent.programPrice - editStudent.paidAmount || 0);
     setMonthOpted(editStudent.monthOpted || "");
     setClearPaymentMonth(editStudent.clearPaymentMonth || "");
     setLead(editStudent.executive || editStudent.lead || "");
@@ -167,7 +165,6 @@ const AdvBooked = () => {
     setDomain("");
     setProgramPrice("");
     setPaidAmount("");
-    setRemainingAmount(0);
     setMonthOpted("");
     setClearPaymentMonth("");
     setLead("");
@@ -206,6 +203,33 @@ const AdvBooked = () => {
     return new Date(date).toLocaleDateString("en-GB");
   };
 
+  const convertToIST = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "N/A";
+    return date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata"
+    });
+  };
+
+  const formatFullDateTime = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "N/A";
+    const datePart = date.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata" });
+    const timePart = date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata"
+    });
+    return `${datePart} at ${timePart}`;
+  };
+
   const groupedData = filteredEnrollments.reduce((acc, item) => {
     const date = formatDate(item.createdAt);
     if (!acc[date]) {
@@ -214,6 +238,11 @@ const AdvBooked = () => {
     acc[date].push(item);
     return acc;
   }, {});
+
+  // Sort candidates within each date group so most recently filled forms appear first
+  Object.keys(groupedData).forEach((dateKey) => {
+    groupedData[dateKey].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  });
 
   return (
     <div className="admin-content-wrap min-h-screen bg-slate-50/50 py-10 px-4 sm:px-6 lg:px-8">
@@ -407,9 +436,17 @@ const AdvBooked = () => {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex flex-col">
-                              <span className="text-sm font-bold text-slate-800 capitalize mb-1">
-                                {item.fullname || "N/A"}
-                              </span>
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <span className="text-sm font-bold text-slate-800 capitalize">
+                                  {item.fullname || "N/A"}
+                                </span>
+                                <span
+                                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md shadow-xs"
+                                  title={`Form filled at: ${formatFullDateTime(item.createdAt)}`}
+                                >
+                                  <i className="fa fa-clock-o text-indigo-500"></i> {convertToIST(item.createdAt)}
+                                </span>
+                              </div>
                               <div className="flex items-center gap-3 text-xs text-slate-600">
                                 <span className="flex items-center gap-1.5 bg-slate-100 px-2 py-1 rounded-md">
                                   <i className="fa fa-envelope text-slate-400"></i> {item.email || "N/A"}
@@ -463,6 +500,13 @@ const AdvBooked = () => {
                           </td>
                           <td className="px-6 py-4 text-right">
                             <div className="flex items-center justify-end gap-2">
+                              <span
+                                className="text-xs font-semibold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 flex items-center gap-1.5 mr-1"
+                                title={`Form filled at: ${formatFullDateTime(item.createdAt)}`}
+                              >
+                                <i className="fa fa-clock-o text-indigo-500"></i>
+                                {convertToIST(item.createdAt)}
+                              </span>
                               <button onClick={() => handleStatusChange(item._id, "fullPaid")} className="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-100 transition-all group-hover:shadow-sm" title="Mark as Full Paid">
                                 <i className="fa fa-money text-sm"></i>
                               </button>
@@ -491,7 +535,7 @@ const AdvBooked = () => {
                             <i className="fa fa-folder-open text-2xl text-slate-300"></i>
                           </div>
                           <h3 className="text-base font-bold text-slate-800">No booked enrollments</h3>
-                          <p className="text-sm text-slate-500 mt-1">There are currently no enrollments with a 'booked' status.</p>
+                          <p className="text-sm text-slate-500 mt-1">There are currently no enrollments with a &apos;booked&apos; status.</p>
                         </div>
                       )}
                     </td>
@@ -520,6 +564,13 @@ const AdvBooked = () => {
                 <div>
                   <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3 pb-2 border-b border-slate-100">Contact & Academic</h3>
                   <div className="space-y-3">
+                    <div className="flex justify-between items-center bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100/80">
+                      <span className="text-xs font-semibold text-indigo-950">Form Filled At</span>
+                      <span className="text-xs font-bold text-indigo-700 flex items-center gap-1.5 font-mono">
+                        <i className="fa fa-clock-o text-indigo-500"></i>
+                        {formatFullDateTime(dialogData.createdAt)}
+                      </span>
+                    </div>
                     <div className="flex justify-between items-center"><span className="text-xs text-slate-500">Email</span><span className="text-sm font-medium text-slate-800">{dialogData.email}</span></div>
                     <div className="flex justify-between items-center"><span className="text-xs text-slate-500">Phone</span><span className="text-sm font-medium text-slate-800">{dialogData.phone}</span></div>
                     <div className="flex justify-between items-center"><span className="text-xs text-slate-500">WhatsApp</span><span className="text-sm font-medium text-slate-800">{dialogData.whatsAppNumber}</span></div>
