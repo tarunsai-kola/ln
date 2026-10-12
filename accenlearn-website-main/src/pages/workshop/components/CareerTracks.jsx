@@ -18,8 +18,8 @@ const CareerTracks = ({ title, tracks = [] }) => {
       <div className="relative max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8 z-10">
         
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Tailored for Every Career Stage</h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">No matter where you are in your journey, our curriculum adapts to get you to the next level.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Structured for Every Career Milestone</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">From landing your first engineering opportunity to spearheading enterprise architecture, our curriculum is engineered for tangible growth.</p>
         </div>
 
         {/* Tabs */}
@@ -55,7 +55,7 @@ const CareerTracks = ({ title, tracks = [] }) => {
               <p className="text-slate-600 mb-8 leading-relaxed">{tracks[activeTab].description}</p>
               
               <div className="space-y-4">
-                <p className="text-slate-900 font-semibold">What you'll gain:</p>
+                <p className="text-slate-900 font-semibold">What you will master:</p>
                 {tracks[activeTab].gains.map((gain, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <FaCheckCircle className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />

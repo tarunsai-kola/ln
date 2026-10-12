@@ -366,7 +366,8 @@ const ManagementPrograms = () => {
       {/* IBM Certification Section */}
       <IbmCertificationPath />
 
-      {/* 5. Mentor Grid */}
+      {/* 5. Mentor Grid - Commented out */}
+      {/* 
       <div className="bg-[#f8fafc] relative pt-12 pb-48">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
@@ -377,27 +378,20 @@ const ManagementPrograms = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {MENTORS.map((m, i) => (
               <div key={i} className="bg-black border border-white/10 rounded-sm overflow-hidden flex flex-col justify-end group h-[280px] sm:h-[320px] relative">
-                {/* Background Image - Right aligned */}
                 <div className="absolute inset-0 left-1/4 sm:left-1/3">
                   <img src={m.img} alt={m.name} className="w-full h-full object-cover object-top opacity-60 mix-blend-luminosity grayscale group-hover:grayscale-0 transition-all duration-700" />
                 </div>
-
-                {/* Heavy Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent sm:hidden"></div>
-
-                {/* Content */}
                 <div className="relative z-10 p-6 sm:p-8 flex flex-col h-full w-full sm:w-3/4">
                   <h3 className="text-xl sm:text-[22px] font-bold text-white mb-2 leading-tight tracking-tight">{m.domain}</h3>
                   <p className="text-slate-300 text-sm font-medium mb-1">Taught by {m.name}</p>
                   <p className="text-slate-400 text-sm mb-6">{m.role} @ <span className="font-bold text-white uppercase tracking-wider text-[11px] ml-1">{m.company}</span></p>
-
                   <div className="mt-auto border-t border-white/20 pt-4 mb-6">
                     <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed">
                       {m.bio}
                     </p>
                   </div>
-
                   <div className="flex items-center">
                     <div className="bg-white/5 border border-white/10 rounded-sm px-3 py-1.5 flex items-center gap-3 w-fit">
                       <span className="text-[10px] font-bold text-slate-300 tracking-[0.1em] uppercase">{m.yoe} YEARS OF EXPERIENCE</span>
@@ -410,13 +404,14 @@ const ManagementPrograms = () => {
             ))}
           </div>
         </div>
+      </div>
+      */}
 
-        {/* Bottom wave transition to FAQ */}
-        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0 pointer-events-none">
-          <svg className="relative block w-full h-[120px] md:h-[200px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,130.83,123.63,200.27,110.33Z" className="fill-[#0f172a]"></path>
-          </svg>
-        </div>
+      {/* Wave transition from IBM section to FAQ */}
+      <div className="w-full bg-white overflow-hidden leading-none pointer-events-none">
+        <svg className="relative block w-full h-[60px] md:h-[100px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.11,130.83,123.63,200.27,110.33Z" className="fill-[#0f172a]"></path>
+        </svg>
       </div>
 
       {/* 6. FAQ Section */}

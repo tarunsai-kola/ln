@@ -20,7 +20,7 @@ const Workshopindex = ({ title }) => {
     const resolvedProgram = {
         ...content,
         title: content.title || title,
-        duration: content.duration || "2–2/3 MONTHS",
+        duration: content.duration || "2/3 MONTHS",
         brochure: content.brochure || "/brochures/default.pdf",
         highlights: content.highlights || [
             "Designed for students, graduates and professionals",

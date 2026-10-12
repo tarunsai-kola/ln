@@ -43,7 +43,7 @@ const CurriculumRoadmap = ({ phases = [] }) => {
                 </div>
               </button>
 
-              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openPhase === idx ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openPhase === idx ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"}`}>
                 <div className="p-6 pt-0 sm:pl-[88px] text-slate-700">
                   <div className="h-[1px] w-full bg-slate-200 mb-6"></div>
                   <ul className="grid sm:grid-cols-2 gap-y-3 gap-x-8 mb-8 list-none">
