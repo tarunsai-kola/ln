@@ -10,7 +10,7 @@ import {
   HiTrophy,
 } from "react-icons/hi2";
 
-// Local Images
+// Local Images ijg sengsnigningrgljrpogjrg
 import sectionBg from "../../assets/readiness/section_bg.jpg";
 import techFoundationsImg from "../../assets/readiness/tech_foundations.jpg";
 import communicationImg from "../../assets/readiness/communication.jpg";
