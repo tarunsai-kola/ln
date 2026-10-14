@@ -1,12 +1,84 @@
 import React from "react";
 import { ACCENLEARN_PROVIDES_DATA, SPONSERS_DATA } from "../../shared/data";
 import TitleText from "../../components/TitleText";
-import LeftImageCard from "../../components/LeftImageCard";
 import { COMPANY_IMAGES } from "../../shared/ImageHelper";
-import _ from "lodash";
-import providesMentorImg from "../../assets/provides_mentor.png";
+import JobReadiness from "./JobReadiness";
+
+// Assets for ACCENLEARN PROVIDES
 import providesPathImg from "../../assets/provides_path.png";
 import providesTrainingImg from "../../assets/provides_training.png";
+import strengthProjectsImg from "../../assets/strength_projects.png";
+import providesMentorImg from "../../assets/provides_mentor.png";
+import providesHiringImg from "../../assets/provides_hiring.jpg";
+import strengthPlacementImg from "../../assets/strength_placement.png";
+
+// Icons
+import {
+  HiSparkles,
+  HiAcademicCap,
+  HiCommandLine,
+  HiChatBubbleLeftRight,
+  HiDocumentCheck,
+  HiTrophy,
+  HiArrowUpRight,
+} from "react-icons/hi2";
+
+const PROVIDES_SERVICES = [
+  {
+    id: 1,
+    tag: "Career Pathways",
+    title: "Choose Your Path",
+    description: "Pick a career-focused program in Tech, Management, or Healthcare.",
+    image: providesPathImg,
+    icon: HiSparkles,
+    accent: "from-blue-500 to-cyan-400",
+  },
+  {
+    id: 2,
+    tag: "Live Mentorship",
+    title: "Learn With Experts",
+    description: "Attend live and recorded sessions led by industry professionals.",
+    image: providesTrainingImg,
+    icon: HiAcademicCap,
+    accent: "from-indigo-500 to-purple-500",
+  },
+  {
+    id: 3,
+    tag: "Hands-on Labs",
+    title: "Build Real Projects",
+    description: "Create practical, portfolio-ready work through labs and assignments.",
+    image: strengthProjectsImg,
+    icon: HiCommandLine,
+    accent: "from-emerald-500 to-teal-400",
+  },
+  {
+    id: 4,
+    tag: "1-on-1 Guidance",
+    title: "Get Mentor Support",
+    description: "Resolve doubts and improve through one-to-one guidance and feedback.",
+    image: providesMentorImg,
+    icon: HiChatBubbleLeftRight,
+    accent: "from-amber-500 to-orange-400",
+  },
+  {
+    id: 5,
+    tag: "Career Readiness",
+    title: "Prepare for Hiring",
+    description: "Improve your resume, portfolio, communication, and interview skills.",
+    image: providesHiringImg,
+    icon: HiDocumentCheck,
+    accent: "from-rose-500 to-pink-500",
+  },
+  {
+    id: 6,
+    tag: "Hiring Network",
+    title: "Get Placement Support",
+    description: "Access career guidance and opportunities through AccenLearn’s hiring network.",
+    image: strengthPlacementImg,
+    icon: HiTrophy,
+    accent: "from-emerald-400 to-cyan-500",
+  },
+];
 
 const Sponsers = () => {
 
@@ -66,6 +138,10 @@ const Sponsers = () => {
         </div>
       </div>
 
+      {/* What It Really Takes to Get a Job Section */}
+      <JobReadiness />
+
+      {/* ACCENLEARN PROVIDES Section */}
       <section className="relative isolate overflow-hidden rounded-3xl w-full py-6 lg:py-12">
         <div className="relative mx-auto flex flex-col gap-6 sm:gap-8 w-full">
           <TitleText
@@ -76,44 +152,54 @@ const Sponsers = () => {
               </div>
             }
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full">
-            
-            {/* Card 1: Mentorship */}
-            <div data-aos="fade-up" className="relative h-64 sm:h-72 rounded-3xl overflow-hidden group shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer">
-              <img src={providesMentorImg} alt="Expert Mentorship" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
-                <h3 className="font-bold text-white text-2xl mb-2 group-hover:-translate-y-1 transition-transform duration-300">Expert Mentorship</h3>
-                <p className="text-slate-200 text-sm sm:text-base opacity-90 group-hover:-translate-y-1 transition-transform duration-300 delay-75">Get mentored by top professionals in the field.</p>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7 w-full">
+            {PROVIDES_SERVICES.map((card, index) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={card.id}
+                  data-aos="fade-up"
+                  data-aos-delay={(index % 3) * 100}
+                  className="relative h-72 sm:h-80 rounded-3xl overflow-hidden group shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 cursor-pointer border border-slate-800/80 hover:border-white/30 flex flex-col justify-between"
+                >
+                  {/* Thematic Background Image */}
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 absolute inset-0"
+                  />
 
-            {/* Card 2: Customized Paths */}
-            <div data-aos="fade-up" data-aos-delay="100" className="relative h-64 sm:h-72 rounded-3xl overflow-hidden group shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer">
-              <img src={providesPathImg} alt="Customized Paths" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
-                <h3 className="font-bold text-white text-2xl mb-2 group-hover:-translate-y-1 transition-transform duration-300">Customized Paths</h3>
-                <p className="text-slate-200 text-sm sm:text-base opacity-90 group-hover:-translate-y-1 transition-transform duration-300 delay-75">Programs customized to match your goals and ambitions.</p>
-              </div>
-            </div>
+                  {/* Multi-layered dark gradient overlay for crystal clear contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-900/35 backdrop-blur-[0.5px]"></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${card.accent} opacity-10 group-hover:opacity-25 transition-opacity duration-500`}></div>
 
-            {/* Card 3: Industrial Training */}
-            <div data-aos="fade-up" className="relative h-64 sm:h-72 rounded-3xl overflow-hidden group shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer">
-              <img src={providesTrainingImg} alt="Industrial Training" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
-                <h3 className="font-bold text-white text-2xl mb-2 group-hover:-translate-y-1 transition-transform duration-300">Industrial Training</h3>
-                <p className="text-slate-200 text-sm sm:text-base opacity-90 group-hover:-translate-y-1 transition-transform duration-300 delay-75">Skills designed to meet market and MNC standards.</p>
-              </div>
-            </div>
+                  {/* Top Badge & Step Pill */}
+                  <div className="relative z-10 p-5 sm:p-6 flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-xl text-white text-xs font-semibold shadow-xs">
+                      <Icon className="w-3.5 h-3.5 text-white" />
+                      <span>{card.tag}</span>
+                    </div>
+                    <span className="text-[11px] font-mono font-bold text-slate-300 bg-slate-950/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                      0{index + 1}
+                    </span>
+                  </div>
 
-            {/* Card 4: Proven Success */}
-            <div data-aos="fade-up" data-aos-delay="100" className="relative h-64 sm:h-72 rounded-3xl overflow-hidden group shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" alt="Proven Success" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
-                <h3 className="font-bold text-white text-2xl mb-2 group-hover:-translate-y-1 transition-transform duration-300">Proven Success</h3>
-                <p className="text-slate-200 text-sm sm:text-base opacity-90 group-hover:-translate-y-1 transition-transform duration-300 delay-75">Alumni excelling in leading global companies.</p>
-              </div>
-            </div>
+                  {/* Bottom Title & Description */}
+                  <div className="relative z-10 p-5 sm:p-6 flex flex-col justify-end">
+                    <h3 className="font-bold text-white text-xl sm:text-2xl mb-2 group-hover:text-blue-300 transition-colors duration-300 flex items-center justify-between gap-2">
+                      <span>{card.title}</span>
+                      <HiArrowUpRight className="w-5 h-5 text-white/50 group-hover:text-blue-300 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 shrink-0" />
+                    </h3>
+                    <p className="text-slate-200 text-xs sm:text-sm leading-relaxed opacity-95 group-hover:text-white transition-colors duration-300">
+                      {card.description}
+                    </p>
+                  </div>
 
+                  {/* Bottom Animated Hover Accent Strip */}
+                  <div className={`h-1.5 w-full bg-gradient-to-r ${card.accent} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left relative z-10`}></div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

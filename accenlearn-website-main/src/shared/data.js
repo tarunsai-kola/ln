@@ -513,27 +513,39 @@ export const SPONSERS_DATA = [
 export const ACCENLEARN_PROVIDES_DATA = [
   {
     id: 1,
-    title: "Expert Mentorship",
-    content: "Get mentored by top professionals in the field.",
-  icon:FaGraduationCap,
+    title: "Choose Your Path",
+    content: "Pick a career-focused program in Tech, Management, or Healthcare.",
+    icon: FaMapMarkedAlt,
   },
   {
     id: 2,
-    title: "Customized Paths",
-    content: "Programs customized to match your goals and ambitions.",
-  icon:FaMapMarkedAlt,
+    title: "Learn With Experts",
+    content: "Attend live and recorded sessions led by industry professionals.",
+    icon: FaGraduationCap,
   },
   {
     id: 3,
-    title: "Industrial Training",
-    content: "Skills designed to meet market and MNC standards.",
-  icon:IoBagRemove,
+    title: "Build Real Projects",
+    content: "Create practical, portfolio-ready work through labs and assignments.",
+    icon: IoBagRemove,
   },
   {
     id: 4,
-    title: "Proven Success",
-    content: "Alumni excelling in leading global companies.",
-  icon:GiTrophyCup,
+    title: "Get Mentor Support",
+    content: "Resolve doubts and improve through one-to-one guidance and feedback.",
+    icon: FaUserTie,
+  },
+  {
+    id: 5,
+    title: "Prepare for Hiring",
+    content: "Improve your resume, portfolio, communication, and interview skills.",
+    icon: FaIdCard,
+  },
+  {
+    id: 6,
+    title: "Get Placement Support",
+    content: "Access career guidance and opportunities through AccenLearn’s hiring network.",
+    icon: GiTrophyCup,
   },
 ];
 
