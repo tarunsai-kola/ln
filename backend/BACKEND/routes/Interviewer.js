@@ -117,7 +117,7 @@ router.get("/interviewer-dashboard/:id", async (req, res) => {
     }
 });
 
-// Get All Interviewers (Admin)
+// Get All Interviewers (Admin) kg kjsrbtksrugweitbse 
 router.get("/all", async (req, res) => {
     try {
         const interviewers = await Interviewer.find({});
