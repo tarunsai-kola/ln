@@ -7,6 +7,27 @@ const Interview = require("../models/Interview");
 const CreateCourse = require("../models/CreateCourse");
 const CreateAdvCourse = require("../models/CreateAdvCourse");
 
+// Helper to resolve assigned course from CreateCourse or CreateAdvCourse with title & sessions
+async function resolveAssignedCourse(assignedCourseId) {
+    if (!assignedCourseId) return null;
+    try {
+        let course = await CreateCourse.findById(assignedCourseId);
+        if (!course) {
+            course = await CreateAdvCourse.findById(assignedCourseId);
+        }
+        if (course) {
+            return {
+                _id: course._id,
+                title: course.title,
+                session: course.get('session') || {}
+            };
+        }
+    } catch (err) {
+        console.error("Error resolving assigned course:", err.message);
+    }
+    return null;
+}
+
 // Create Interviewer (Admin only)
 router.post("/create-interviewer", async (req, res) => {
     try {
@@ -54,6 +75,8 @@ router.post("/interviewer-login", async (req, res) => {
             { expiresIn: "10m" }
         );
 
+        const courseObj = await resolveAssignedCourse(interviewer.assignedCourseId);
+
         res.status(200).json({
             message: "Login successful",
             token,
@@ -61,7 +84,7 @@ router.post("/interviewer-login", async (req, res) => {
                 id: interviewer._id,
                 fullname: interviewer.fullname,
                 email: interviewer.email,
-                assignedCourseId: interviewer.assignedCourseId,
+                assignedCourseId: courseObj || interviewer.assignedCourseId,
             },
         });
     } catch (error) {
@@ -69,16 +92,26 @@ router.post("/interviewer-login", async (req, res) => {
     }
 });
 
-// Get Interviewer Dashboard Data (Assigned Interviews)
+// Get Interviewer Dashboard Data (Assigned Interviews + Populated Course & Sessions)
 router.get("/interviewer-dashboard/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Find all interviews assigned to this interviewer
-        // Populate booked slots student info if needed (though stored in slots)
+        // 1. Fetch interviewer details & resolve assigned course from CreateCourse or CreateAdvCourse
+        const interviewer = await Interviewer.findById(id);
+        const courseObj = interviewer ? await resolveAssignedCourse(interviewer.assignedCourseId) : null;
+
+        // 2. Find all interviews assigned to this interviewer
         const interviews = await Interview.find({ interviewer: id }).sort({ date: 1 });
 
-        res.status(200).json(interviews);
+        // Return both for rich dashboard access
+        res.status(200).json({
+            interviews,
+            mentor: interviewer ? {
+                ...interviewer.toObject(),
+                assignedCourseId: courseObj
+            } : null
+        });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
@@ -90,22 +123,30 @@ router.get("/all", async (req, res) => {
         const interviewers = await Interviewer.find({});
         const results = [];
         for (const interviewer of interviewers) {
-            let courseObj = null;
-            if (interviewer.assignedCourseId) {
-                let course = await CreateCourse.findById(interviewer.assignedCourseId);
-                if (!course) {
-                    course = await CreateAdvCourse.findById(interviewer.assignedCourseId);
-                }
-                if (course) {
-                    courseObj = { _id: course._id, title: course.title };
-                }
-            }
+            const courseObj = await resolveAssignedCourse(interviewer.assignedCourseId);
             results.push({
                 ...interviewer.toObject(),
                 assignedCourseId: courseObj
             });
         }
         res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+// Get Single Interviewer by ID (with resolved assigned course & sessions)
+router.get("/:id", async (req, res) => {
+    try {
+        const interviewer = await Interviewer.findById(req.params.id);
+        if (!interviewer) {
+            return res.status(404).json({ message: "Interviewer not found" });
+        }
+        const courseObj = await resolveAssignedCourse(interviewer.assignedCourseId);
+        res.status(200).json({
+            ...interviewer.toObject(),
+            assignedCourseId: courseObj
+        });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }

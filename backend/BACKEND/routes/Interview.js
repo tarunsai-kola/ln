@@ -127,17 +127,26 @@ router.post("/mentor-upload-video", async (req, res) => {
             createdAt: new Date()
         };
 
-        const currentSession = course.get('session') || {};
+        let courseObj = course.toObject();
+        let currentSession = courseObj.session || {};
         
         if (typeof currentSession !== "object" || Array.isArray(currentSession)) {
-            course.set('session', {});
+            currentSession = {};
         }
 
-        const sessionCount = Object.keys(course.get('session') || {}).length;
-        const newSessionKey = `session${sessionCount + 1}`;
+        let maxIndex = 0;
+        Object.keys(currentSession).forEach(key => {
+            if (key.startsWith('session')) {
+                const num = parseInt(key.replace('session', ''), 10);
+                if (!isNaN(num) && num > maxIndex) {
+                    maxIndex = num;
+                }
+            }
+        });
+        const newSessionKey = `session${maxIndex + 1}`;
 
         const updatedSession = {
-            ...(course.get('session') || {}),
+            ...currentSession,
             [newSessionKey]: newSession
         };
         
