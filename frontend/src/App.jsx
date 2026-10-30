@@ -313,9 +313,20 @@ if (typeof window !== "undefined") {
   
   const originalSetItem = localStorage.setItem;
   localStorage.setItem = function(key, value) {
-    // If we are in an impersonated tab (any token in session), save everything to session instead
+    // Keys that must ALWAYS go to real localStorage regardless of impersonation state.
+    // These are portal-login tokens & session markers that are NOT impersonation data.
+    const alwaysLocalKeys = [
+      "adminToken", "adminId", "adminName",
+      "operationToken", "operationId", "operationName",
+      "advOperationToken", "advOperationId", "advOperationName",
+      "sessionStartTime",
+      "marketingToken", "hrToken", "pctoken",
+    ];
+
+    // If we are in an impersonated tab (any token in session), save everything to session instead —
+    // EXCEPT the portal-login keys above which must survive page refresh.
     const isIsolated = !!(sessionStorage.getItem("bdaToken") || sessionStorage.getItem("advTeamToken") || sessionStorage.getItem("operationToken"));
-    if (isIsolated) {
+    if (isIsolated && !alwaysLocalKeys.includes(key)) {
       sessionStorage.setItem(key, value);
       window.AccenlearnAuth[key] = value;
     } else {
