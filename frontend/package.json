@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/standalone": "^8.0.10",
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@monaco-editor/react": "^4.7.0",
     "@mui/material": "^6.4.8",
     "@reduxjs/toolkit": "^2.5.0",
     "@tailwindcss/line-clamp": "^0.4.4",

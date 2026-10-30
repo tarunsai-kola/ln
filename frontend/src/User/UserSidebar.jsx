@@ -144,6 +144,8 @@ const UserSidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     { path: "/MyJob", label: "My Job", icon: "person", restricted: true, access: "myjob" },
     { path: "/MockInterview", label: "Mock Prep", icon: "assignment", restricted: true, access: "mockinterview" },
     { path: "/Exercise", label: "Exercise Prep", icon: "edit_note", restricted: true, access: "exercise" },
+    { path: "/advancedashboard/coding", label: "Coding Challenges", icon: "code", restricted: false },
+    { path: "/advancedashboard/ai-mock-interview", label: "AI Mock Interview", icon: "smart_toy", restricted: false },
     { path: "/ResumeATS", label: "ATS Checker", icon: "fact_check", restricted: true, access: "atschecker" },
     { path: "/events", label: "Join Events", icon: "celebration", restricted: false },
   ];

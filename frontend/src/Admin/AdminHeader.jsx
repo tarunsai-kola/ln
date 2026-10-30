@@ -9,7 +9,7 @@ import {
   PlusCircle, List, Code, Briefcase, Users, GraduationCap, 
   Bookmark, CheckSquare, XCircle, HelpCircle, FileText, UserCog, 
   LineChart, UploadCloud, TrendingUp, CheckCircle, CalendarPlus, 
-  UserCheck, CalendarDays
+  UserCheck, CalendarDays, Bot
 } from "lucide-react";
 
 const AdminHeader = () => {
@@ -50,6 +50,8 @@ const AdminHeader = () => {
     { to: "/AddAdvCourse", icon: PlusCircle, text: "Create Course" },
     { to: "/AddAdvModule", icon: List, text: "Course List" },
     { to: "/AdvExercisePage", icon: Code, text: "Exercise Builder" },
+    { to: "/AddCodingProblem", icon: Code, text: "Add Coding Problem" },
+    { to: "/AddAIMockInterview", icon: Bot, text: "Add AI Mock Interview" },
     { to: "/CreateAdvOperation", icon: Briefcase, text: "Create Operation" },
     { to: "/CreateAdvTeam", icon: Users, text: "Create Team" },
     { to: "/CreateHR", icon: UserCog, text: "Create HR" },

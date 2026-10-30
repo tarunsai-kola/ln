@@ -15,6 +15,8 @@ const sidebarItems = [
     { id: "practical", path: "/advancedashboard/practical", emoji: "🛠", icon: "build", label: "Practical" },
     { id: "internship", path: "/advancedashboard/internship", emoji: "💼", icon: "work", label: "Internship" },
     { id: "exercise", path: "/advancedashboard/exercise", emoji: "🏋️", icon: "fitness_center", label: "Exercise" },
+    { id: "coding", path: "/advancedashboard/coding", emoji: "💻", icon: "code", label: "Coding" },
+    { id: "ai-mock-interview", path: "/advancedashboard/ai-mock-interview", emoji: "🤖", icon: "smart_toy", label: "AI Mock Interview" },
     { id: "placement", path: "/advancedashboard/placement", emoji: "🚀", icon: "rocket_launch", label: "Placement" },
     { id: "resume-builder", path: "/advancedashboard/resume-builder", emoji: "📄", icon: "edit_document", label: "Resume Builder" },
     { id: "meeting", path: "/advancedashboard/meeting", emoji: "🤝", icon: "groups", label: "Meeting" },
@@ -166,6 +168,8 @@ const sectionTitles = {
     "meeting": "Meeting",
     "resume-ats": "Resume ATS",
     "resume-builder": "Resume Builder",
+    "coding": "Coding Challenges",
+    "ai-mock-interview": "AI Mock Interview",
 };
 
 const Breadcrumb = () => {

@@ -64,6 +64,8 @@ import AdminProjectPage from "./Admin/AdminProjectPage";
 import AdvProjectPage from "./Admin/AdvProjectPage";
 import AdvReferrals from "./Admin/AdvReferrals";
 import AdvExercisePage from "./Admin/AdvExercisePage";
+import AddCodingProblem from "./Admin/AddCodingProblem";
+import AddAIMockInterview from "./Admin/AddAIMockInterview";
 import PendingApplication from "./Admin/PendingApplication";
 import AcceptedApplication from "./Admin/AcceptedApplication";
 import CreateOperation from "./Admin/CreateOperation";
@@ -250,6 +252,9 @@ import ProfilePage from "./new_user/pages/ProfilePage";
 
 import ForgotPassword from "./page/ForgotPassword.jsx";
 import Exercise from "./User/Excercise.jsx";
+import CodingProblemList from "./page/CodingProblemList.jsx";
+import CodingEditor from "./page/CodingEditor.jsx";
+import AIMockInterviewPage from "./page/AIMockInterviewPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -463,7 +468,7 @@ const AppContent = () => {
     ReactPixel.pageView();
   }, [location]);
 
-  const adminheaderPaths = ["/admindashboard", "/addcourse", "/addadvcourse", "/addmodule", "/addadvmodule", "/pendingapplication", "/acceptedapplication", "/bookedlist", "/halfpayment", "/defaultlist", "/fullpaidlist", "/createoperation", "/createadvoperation", "/createbda", "/createadvteam", "/createmanager", "/mentorqueries", "/advancequeries", "/revenuesheet", "/advrevenuesheet", "/createplacementcoordinator", "/onboardingdetails", "/advonboardingdetails", "/advbooked", "/advfullpaid", "/advdefault", "/allteamdetail", "/advteamdetail", "/masterclasses", "/addevent", "/eventregistration", "/target", "/alumnidata", "/inactivebda", "/createmarketingteam", "/createinterviewer", "/createhr", "/createinterview", "/adminprojectpage", "/advprojectpage", "/advexercisepage", "/advleadmanagement", "/adminanalytics", "/advadmindashboard", "/admin/agents", "/admin/teams", "/admin/leadassignments", "/admin/agentactivity", "/admin/reports", "/bulkimport", "/admin/attendance", "/advusermanagement", "/admin/calllogs", "/advformleads", "/admin-career-assessment", "/advreferrals"];
+  const adminheaderPaths = ["/admindashboard", "/addcourse", "/addadvcourse", "/addmodule", "/addadvmodule", "/pendingapplication", "/acceptedapplication", "/bookedlist", "/halfpayment", "/defaultlist", "/fullpaidlist", "/createoperation", "/createadvoperation", "/createbda", "/createadvteam", "/createmanager", "/mentorqueries", "/advancequeries", "/revenuesheet", "/advrevenuesheet", "/createplacementcoordinator", "/onboardingdetails", "/advonboardingdetails", "/advbooked", "/advfullpaid", "/advdefault", "/allteamdetail", "/advteamdetail", "/masterclasses", "/addevent", "/eventregistration", "/target", "/alumnidata", "/inactivebda", "/createmarketingteam", "/createinterviewer", "/createhr", "/createinterview", "/adminprojectpage", "/advprojectpage", "/advexercisepage", "/advleadmanagement", "/adminanalytics", "/advadmindashboard", "/admin/agents", "/admin/teams", "/admin/leadassignments", "/admin/agentactivity", "/admin/reports", "/bulkimport", "/admin/attendance", "/advusermanagement", "/admin/calllogs", "/advformleads", "/admin-career-assessment", "/advreferrals", "/addcodingproblem", "/addaimockinterview"];
   const operationheaderPaths = ["/operationdashboard", "/fullpayment", "/bookedpayment", "/defaultpayment", "/operationrevenuesheet"];
   const advoperationheaderPaths = ["/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet"];
   const marketingheaderPaths = ["/marketing/home", "/marketing/previous", "/marketing/addexecutive"];
@@ -605,6 +610,8 @@ const AppContent = () => {
         <Route path="/CreateInterview" element={isAuthenticatedAdmin() ? (<CreateInterview />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/CreateHR" element={isAuthenticatedAdmin() ? (<CreateHR />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/AdvExercisePage" element={isAuthenticatedAdmin() ? (<AdvExercisePage />) : (<Navigate to="/AdminLogin" />)} />
+        <Route path="/AddCodingProblem" element={isAuthenticatedAdmin() ? (<AddCodingProblem />) : (<Navigate to="/AdminLogin" />)} />
+        <Route path="/AddAIMockInterview" element={isAuthenticatedAdmin() ? (<AddAIMockInterview />) : (<Navigate to="/AdminLogin" />)} />
 {/*         <Route path="/advleadmanagement" element={
           isAuthenticatedAdmin() ? <AdvLeadManagement /> : <Navigate to="/AdminLogin" />
         } /> */}
@@ -747,6 +754,9 @@ const AppContent = () => {
           <Route path="resume-ats" element={<ResumeATSPage />} />
           <Route path="exercise" element={<ExercisePage />} />
           <Route path="resume-builder" element={<ResumeBuilderPage />} />
+          <Route path="coding" element={<CodingProblemList />} />
+          <Route path="coding/:id" element={<CodingEditor />} />
+          <Route path="ai-mock-interview" element={<AIMockInterviewPage />} />
         </Route>
         {/* Advanced dashboard video player — standalone, no old sidebar */}
         <Route path="/advancedashboard/learning" element={<AdvanceLearningPage />} />
