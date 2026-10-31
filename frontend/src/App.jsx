@@ -409,7 +409,7 @@ const AppContent = () => {
   const isAuthenticatedEventUser = () => !!getAuthToken("eventToken");
   const isAuthenticatedMarketing = () => !!getAuthToken("marketingToken");
   const isAuthenticatedHR = () => !!getAuthToken("hrToken");
-
+// djhgfjvnnbfag  kusgfv 
 //   useEffect(() => {
 //     const checkTokens = () => {
 //       const currentPath = window.location.pathname.toLowerCase();
