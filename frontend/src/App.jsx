@@ -410,70 +410,70 @@ const AppContent = () => {
   const isAuthenticatedMarketing = () => !!getAuthToken("marketingToken");
   const isAuthenticatedHR = () => !!getAuthToken("hrToken");
 
-  useEffect(() => {
-    const checkTokens = () => {
-      const currentPath = window.location.pathname.toLowerCase();
-      
-      // If we just landed with an impToken, skip the expiration check for a few seconds
-      // to allow the handover to stabilize.
-      if (window.location.search.includes("impToken")) return;
-
-      const tokenKeys = ["adminToken", "bdaToken", "advTeamToken", "operationToken", "advOperationToken", "marketingToken", "studentToken"];
-      let expiredTokenKey = null;
-
-      tokenKeys.forEach(key => {
-        const token = getAuthToken(key);
-        if (token) {
-          try {
-            const parts = token.split('.');
-            if (parts.length === 3) {
-              const decoded = JSON.parse(atob(parts[1]));
-              if (decoded.exp * 1000 < Date.now()) {
-                expiredTokenKey = key;
-              }
-            }
-          } catch (e) {
-            // ignore malformed
-          }
-        }
-      });
-
-      if (expiredTokenKey) {
-        // Path checks
-        const isAdminSection = currentPath.includes("admin") || currentPath.includes("create");
-        const isBdaSection = currentPath === "/home" || currentPath === "/booked" || currentPath.includes("bda");
-        const isAdvTeamSection = currentPath.includes("advteam");
-        const isOpSection = currentPath.includes("operation") && !currentPath.includes("adv");
-        const isAdvOpSection = currentPath.includes("advoperation");
-        const isMarketingSection = currentPath.startsWith("/marketing/");
-
-        let shouldRedirect = false;
-        if (expiredTokenKey === "adminToken" && isAdminSection) shouldRedirect = true;
-        if (expiredTokenKey === "bdaToken" && isBdaSection) shouldRedirect = true;
-        if (expiredTokenKey === "advTeamToken" && isAdvTeamSection) shouldRedirect = true;
-        if (expiredTokenKey === "operationToken" && isOpSection) shouldRedirect = true;
-        if (expiredTokenKey === "advOperationToken" && isAdvOpSection) shouldRedirect = true;
-        if (expiredTokenKey === "marketingToken" && isMarketingSection) shouldRedirect = true;
-
-        if (shouldRedirect) {
-          console.warn("Security: Session expired for", expiredTokenKey);
-          localStorage.removeItem(expiredTokenKey);
-          sessionStorage.removeItem(expiredTokenKey);
-          
-          if (isAdminSection) navigate("/AdminLogin");
-          else if (isBdaSection) navigate("/TeamLogin");
-          else if (isAdvTeamSection) navigate("/employlogin");
-          else if (isOpSection) navigate("/OperationLogin");
-          else if (isAdvOpSection) navigate("/operationlogin");
-          else if (isMarketingSection) navigate("/marketing/login");
-        }
-      }
-    };
-
-    checkTokens();
-    const interval = setInterval(checkTokens, 20000);
-    return () => clearInterval(interval);
-  }, [location.pathname, navigate]);
+//   useEffect(() => {
+//     const checkTokens = () => {
+//       const currentPath = window.location.pathname.toLowerCase();
+//       
+//       // If we just landed with an impToken, skip the expiration check for a few seconds
+//       // to allow the handover to stabilize.
+//       if (window.location.search.includes("impToken")) return;
+// 
+//       const tokenKeys = ["adminToken", "bdaToken", "advTeamToken", "operationToken", "advOperationToken", "marketingToken", "studentToken"];
+//       let expiredTokenKey = null;
+// 
+//       tokenKeys.forEach(key => {
+//         const token = getAuthToken(key);
+//         if (token) {
+//           try {
+//             const parts = token.split('.');
+//             if (parts.length === 3) {
+//               const decoded = JSON.parse(atob(parts[1]));
+//               if (decoded.exp * 1000 < Date.now()) {
+//                 expiredTokenKey = key;
+//               }
+//             }
+//           } catch (e) {
+//             // ignore malformed
+//           }
+//         }
+//       });
+// 
+//       if (expiredTokenKey) {
+//         // Path checks
+//         const isAdminSection = currentPath.includes("admin") || currentPath.includes("create");
+//         const isBdaSection = currentPath === "/home" || currentPath === "/booked" || currentPath.includes("bda");
+//         const isAdvTeamSection = currentPath.includes("advteam");
+//         const isOpSection = currentPath.includes("operation") && !currentPath.includes("adv");
+//         const isAdvOpSection = currentPath.includes("advoperation");
+//         const isMarketingSection = currentPath.startsWith("/marketing/");
+// 
+//         let shouldRedirect = false;
+//         if (expiredTokenKey === "adminToken" && isAdminSection) shouldRedirect = true;
+//         if (expiredTokenKey === "bdaToken" && isBdaSection) shouldRedirect = true;
+//         if (expiredTokenKey === "advTeamToken" && isAdvTeamSection) shouldRedirect = true;
+//         if (expiredTokenKey === "operationToken" && isOpSection) shouldRedirect = true;
+//         if (expiredTokenKey === "advOperationToken" && isAdvOpSection) shouldRedirect = true;
+//         if (expiredTokenKey === "marketingToken" && isMarketingSection) shouldRedirect = true;
+// 
+//         if (shouldRedirect) {
+//           console.warn("Security: Session expired for", expiredTokenKey);
+//           localStorage.removeItem(expiredTokenKey);
+//           sessionStorage.removeItem(expiredTokenKey);
+//           
+//           if (isAdminSection) navigate("/AdminLogin");
+//           else if (isBdaSection) navigate("/TeamLogin");
+//           else if (isAdvTeamSection) navigate("/employlogin");
+//           else if (isOpSection) navigate("/OperationLogin");
+//           else if (isAdvOpSection) navigate("/operationlogin");
+//           else if (isMarketingSection) navigate("/marketing/login");
+//         }
+//       }
+//     };
+// 
+//     checkTokens();
+//     const interval = setInterval(checkTokens, 20000);
+//     return () => clearInterval(interval);
+//   }, [location.pathname, navigate]);
 
   useEffect(() => {
     ReactPixel.pageView();
