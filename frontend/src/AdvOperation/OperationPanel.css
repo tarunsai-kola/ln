@@ -1,0 +1,342 @@
+/* ========================================================
+   ADV Operation Panel — Premium Dark Theme
+   ======================================================== */
+
+/* ── Force dark background globally for this panel ── */
+html, body {
+  background: #0F172A !important;
+}
+
+
+:root {
+  --op-bg:        #0F172A;
+  --op-card:      rgba(30, 41, 59, 0.85);
+  --op-border:    rgba(255, 255, 255, 0.07);
+  --op-text:      #F1F5F9;
+  --op-muted:     #94A3B8;
+  --op-accent:    #3B82F6;
+  --op-green:     #10B981;
+  --op-red:       #EF4444;
+  --op-yellow:    #F59E0B;
+  --op-radius:    16px;
+  --op-sidebar-w: 260px;
+  --op-navbar-h:  70px;
+}
+
+/* ── Header / Navbar ── */
+#OperationHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+
+  background: transparent;
+}
+
+#OperationHeader .navbar {
+  height: var(--op-navbar-h);
+  background: rgba(15, 23, 42, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--op-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+#OperationHeader .navbar img {
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
+}
+
+/* ── Sidebar ── */
+#OperationHeader .sidebar {
+  width: var(--op-sidebar-w) !important;
+  background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%) !important;
+  border: none !important;
+  border-right: 1px solid var(--op-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3) !important;
+  padding: 0 !important;
+  position: fixed !important;
+  top: var(--op-navbar-h) !important;
+  left: 0 !important;
+  height: calc(100vh - var(--op-navbar-h)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+}
+
+#OperationHeader .sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar links — default (reset the old styling) */
+#OperationHeader .sidebar a {
+  font-size: 15px !important;
+  padding: 0 !important;
+  width: 100% !important;
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+/* Sidebar button (logout) */
+#OperationHeader .sidebar button {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--op-red) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  border-radius: 12px !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+}
+
+#OperationHeader .sidebar button:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* ── Main Content Area ── */
+#OperationEnroll {
+  margin-left: var(--op-sidebar-w);
+  min-height: 100vh;
+  background: var(--op-bg);
+  padding-top: var(--op-navbar-h);
+  color: var(--op-text);
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+/* ── Form overlay (legacy .form class) ── */
+#OperationEnroll .form {
+  position: fixed;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#OperationEnroll .form form {
+  padding: 36px;
+  border-radius: var(--op-radius);
+  margin: 0;
+  background: rgba(30, 41, 59, 0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--op-border);
+  max-width: 520px;
+  width: 95%;
+  font-size: 14px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  color: var(--op-text);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#OperationEnroll .form h2 {
+  color: var(--op-text);
+  font-weight: 800;
+  text-align: left;
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+#OperationEnroll .form input,
+#OperationEnroll .form select,
+#OperationEnroll .form textarea {
+  padding: 12px 16px;
+  border: 1px solid var(--op-border);
+  width: 100%;
+  margin: 0;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--op-text);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+#OperationEnroll .form input:focus,
+#OperationEnroll .form select:focus,
+#OperationEnroll .form textarea:focus {
+  border-color: var(--op-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#OperationEnroll .form input::placeholder,
+#OperationEnroll .form textarea::placeholder {
+  color: #475569;
+}
+
+#OperationEnroll .form .cursor-pointer,
+#OperationEnroll .form input[type="submit"],
+#OperationEnroll .form button[type="submit"] {
+  background: linear-gradient(135deg, var(--op-accent), #2563EB) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  transition: all 0.2s !important;
+  margin-top: 8px !important;
+}
+
+#OperationEnroll .form span {
+  float: none;
+  cursor: pointer;
+  color: var(--op-muted);
+}
+
+/* ── Table area ── */
+#OperationEnroll .coursetable {
+  padding: 28px;
+}
+
+#OperationEnroll .coursetable > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 16px;
+}
+
+#OperationEnroll .coursetable > div h2 {
+  color: var(--op-text);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+#OperationEnroll .coursetable table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  background: var(--op-card);
+  border-radius: var(--op-radius);
+  overflow: hidden;
+}
+
+#OperationEnroll .coursetable table button {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--op-accent) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+
+#OperationEnroll .coursetable table button:hover {
+  background: rgba(59, 130, 246, 0.2) !important;
+}
+
+#OperationEnroll .coursetable table,
+#OperationEnroll .coursetable td,
+#OperationEnroll .coursetable th {
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+#OperationEnroll .coursetable th {
+  background: rgba(15, 23, 42, 0.7) !important;
+  color: var(--op-muted) !important;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 12px 16px;
+}
+
+#OperationEnroll .coursetable td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--op-text);
+  vertical-align: middle;
+}
+
+#OperationEnroll .coursetable tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ── Input / Select in table filter area ── */
+#OperationEnroll .coursetable input[type="type"],
+#OperationEnroll .coursetable input[type="text"],
+#OperationEnroll .coursetable select.border {
+  background: rgba(15, 23, 42, 0.7) !important;
+  border: 1px solid var(--op-border) !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  color: var(--op-text) !important;
+  font-size: 14px !important;
+  outline: none !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ── Remark row colors ── */
+table tbody tr.Cleared td {
+  background: rgba(16, 185, 129, 0.06) !important;
+}
+
+table tbody tr.Default td {
+  background: rgba(239, 68, 68, 0.06) !important;
+}
+
+table tbody tr.Half_Cleared td {
+  background: rgba(245, 158, 11, 0.06) !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Responsive ── */
+@media only screen and (max-width: 768px) {
+  #OperationEnroll {
+    margin-left: 0;
+  }
+
+  #OperationEnroll .coursetable {
+    overflow-x: auto;
+  }
+
+  #OperationHeader .sidebar {
+    display: none !important;
+  }
+}

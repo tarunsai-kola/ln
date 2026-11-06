@@ -1,0 +1,43 @@
+const mongoose = require("mongoose");
+
+const careerAssessmentSchema = new mongoose.Schema({
+  fullName: { type: String, required: true },
+  mobileNumber: { type: String, required: true },
+  email: { type: String, required: true },
+  city: { type: String, required: true },
+  ageGroup: { type: String },
+  currentStatus: { type: String },
+  fieldOfStudy: { type: String },
+  currentJobRole: { type: String },
+  yearsOfExperience: { type: String },
+  primaryCareerGoal: { type: String },
+  goalTimeline: { type: String },
+  biggestChallenge: { type: String },
+  communicationSkills: { type: Number },
+  problemSolvingSkills: { type: Number },
+  techComfort: { type: String },
+  weeklyLearningHours: { type: String },
+  primaryMotivator: { type: String },
+  confidenceScore: { type: Number },
+  clearRoadmap: { type: String },
+  rightSkills: { type: String },
+  wantConsultation: { type: String },
+  helpArea: { type: String },
+  topCareerChallenge12Months: { type: String },
+  // Payment & Slot fields
+  paymentId: { type: String },
+  razorpayOrderId: { type: String },
+  razorpaySignature: { type: String },
+  paymentStatus: { type: String, default: 'Pending' },
+  bookedDate: { type: String },
+  bookedTimeSlot: { type: String },
+  // CRM assignment fields
+  assignedExecutiveId: { type: String },
+  assignedExecutiveEmail: { type: String },
+  assignedExecutiveName: { type: String },
+  managerId: { type: String },
+  managerEmail: { type: String },
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("CareerAssessment", careerAssessmentSchema);

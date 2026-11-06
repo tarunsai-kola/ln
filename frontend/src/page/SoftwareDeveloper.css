@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #0d0f14;
+  --surface: #111318;
+  --surface-2: #171922;
+  --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9;
+  --text-muted: #64748b;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.sd-font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+.sd-bg {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+}
+
+/* Stable Keyframe Animations */
+@keyframes sdSpinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sd-animate-spin-slow {
+  animation: sdSpinSlow 4s linear infinite;
+}
+
+@keyframes sdPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.sd-pulse {
+  animation: sdPulse 2s ease-in-out infinite;
+}
+
+/* Grids */
+.sd-cp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.sd-curr-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .sd-cp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hover effects */
+.sd-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+
+.sd-card:hover {
+  border-color: rgba(99,102,241, 0.4);
+  transform: translateY(-4px);
+}

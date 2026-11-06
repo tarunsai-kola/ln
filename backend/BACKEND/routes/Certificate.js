@@ -1,0 +1,183 @@
+const express = require("express");
+const router = express.Router();
+const Certificate = require("../models/Certificate");
+const mongoose = require("mongoose");
+const { uploadImageToS3, getPresignedCertificateUrl } = require("../utils/s3Uploader");
+
+// Create a new certificate entry
+router.post("/applycertificate", async (req, res) => {
+    const { name, email, domain } = req.body;
+    // Format name to Title Case
+    const formattedName = name
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    // console.log(name,email,domain);
+    try {
+        const existingCertificate = await Certificate.findOne({ email });
+        if (existingCertificate) {
+            return res.status(400).json({ error: "Certificate already exists for this email" });
+        }
+        // Auto-generate certificate details
+        const date = new Date();
+        const startdate = date.toISOString();
+        const finalOutput = domain;
+
+        const crypto = require("crypto");
+        const verifyCode = crypto.randomBytes(4).toString("hex").toUpperCase();
+
+        // Cloudinary URL generation matching frontend logic
+        const cloudName = process.env.CLOUD_NAME || "lrclnysv";
+        const isInternship = domain.toLowerCase().includes("intern");
+        const templateId = isInternship
+            ? "certificates_templates/intenship"
+            : "certificates_templates/trainining";
+        const domainX = isInternship ? "-580" : "70";
+        const domainY = isInternship ? "168" : "165";
+        const domainAlign = "left";
+        const verifyText = encodeURIComponent(`Verification Code - ${verifyCode}`);
+        const verifyUrlText = encodeURIComponent(`Verify at accenlearn.com`);
+        const cloudinaryUrl = `https://res.cloudinary.com/${cloudName}/image/upload/co_rgb:000000,l_text:times%20new%20roman_65_bold_normal_left:${encodeURIComponent(formattedName)}/fl_layer_apply,y_-125/co_rgb:000000,l_text:times%20new%20roman_45_bold_normal_${domainAlign}:${encodeURIComponent(finalOutput)}/fl_layer_apply,x_${domainX},y_${domainY}/co_rgb:000000,l_text:Arial_22_bold:${verifyUrlText}/fl_layer_apply,g_south_west,x_350,y_250/co_rgb:000000,l_text:Arial_22_bold:${verifyText}/fl_layer_apply,g_south_west,x_350,y_220/${templateId}`;
+
+        let s3Url;
+        try {
+            const s3FileName = `certificates/${formattedName.replace(/ /g, '_')}_${Date.now()}.png`;
+            s3Url = await uploadImageToS3(cloudinaryUrl, s3FileName);
+        } catch (uploadError) {
+            console.error("S3 upload failed, falling back to Cloudinary URL", uploadError);
+            s3Url = cloudinaryUrl;
+        }
+
+        const newCertificate = new Certificate({
+            name: formattedName,
+            email,
+            domain,
+            delivered: true,
+            startdate: startdate,
+            url: s3Url,
+            verifyCode: verifyCode
+        });
+
+        await newCertificate.save();
+        res.status(201).json({ message: "Certificate added and issued successfully", certificate: newCertificate });
+
+    } catch (error) {
+        console.error("Save Error:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+router.get("/getcertificate", async (req, res) => {
+    try {
+        const email = req.query.email;
+        if (!email) {
+            return res.status(400).json({ error: "Email parameter is required" });
+        }
+        // ✅ FIX #3: Use .lean() for read-only operations (faster parsing)
+        const certificate = await Certificate.findOne({ email: email }).lean();
+        if (!certificate) {
+            return res.status(404).json({ error: "Certificate not found" });
+        }
+        
+        // Generate a presigned URL if it's an S3 URL
+        if (certificate.url) {
+            certificate.url = await getPresignedCertificateUrl(certificate.url);
+        }
+        
+        res.json(certificate);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+// ✅ Verify certificate by ID
+router.get("/verify-certificate/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        let query = { delivered: true };
+
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            query.$or = [{ _id: id }, { enrolment: id }];
+        } else {
+            query.enrolment = id;
+        }
+
+        const certificate = await Certificate.findOne(query, { name: 1, domain: 1, url: 1 });
+
+        if (!certificate) {
+            return res.status(404).json({ error: "Certificate not found." });
+        }
+
+        // Convert the mongoose document to a plain object to modify the url
+        const certificateObj = certificate.toObject();
+        
+        // Generate a presigned URL if it's an S3 URL
+        if (certificateObj.url) {
+            certificateObj.url = await getPresignedCertificateUrl(certificateObj.url);
+        }
+
+        res.json(certificateObj);
+
+    } catch (error) {
+        res.status(500).json({ error: "Server error." });
+    }
+});
+
+
+
+// Proxy route to bypass CORS for downloads
+router.get("/download-proxy", async (req, res) => {
+    try {
+        const { url } = req.query;
+        if (!url) {
+            return res.status(400).json({ error: "URL parameter is required" });
+        }
+
+        const axios = require('axios'); // Require here or top level
+        const response = await axios({
+            url,
+            method: 'GET',
+            responseType: 'stream'
+        });
+
+        // Set headers to force download
+        res.setHeader('Content-Disposition', 'attachment; filename="certificate.jpg"');
+        res.setHeader('Content-Type', response.headers['content-type']);
+
+        response.data.pipe(res);
+    } catch (error) {
+        console.error("Proxy Download Error:", error.message);
+        res.status(500).json({ error: "Failed to download file" });
+    }
+});
+
+// Verify certificate by verify code
+router.post("/verify", async (req, res) => {
+    try {
+        const { verifyCode } = req.body;
+        if (!verifyCode) {
+            return res.status(400).json({ error: "Verify code is required" });
+        }
+
+        const certificate = await Certificate.findOne({ verifyCode: verifyCode }).lean();
+        
+        if (!certificate) {
+            return res.status(404).json({ error: "Invalid verify code. Certificate not found." });
+        }
+
+        res.json({
+            message: "Certificate verified successfully",
+            name: certificate.name,
+            domain: certificate.domain,
+            startdate: certificate.startdate,
+            url: certificate.url
+        });
+    } catch (error) {
+        console.error("Verification Error:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+module.exports = router;

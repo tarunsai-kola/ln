@@ -1,0 +1,189 @@
+#onboardingform {
+  form {
+    padding: 20px;
+    border-radius: 10px;
+    /* margin: auto; */
+    background-color: rgb(255, 255, 255);
+    /* max-width: 500px; */
+    font-size: 14px;
+    margin-bottom: 50px;
+
+  }
+
+
+  h2 {
+    text-align: center;
+    color: #F15B29;
+    font-weight: 600;
+  }
+
+  input {
+    padding: 8px 10px;
+    border: 1px solid #CCCCCC;
+    width: 100%;
+    margin: 3px 0;
+    border-radius: 10px;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  .input-field {
+    position: relative;
+    margin-top: 10px;
+  }
+
+  .input-field label {
+    position: absolute;
+    color: #8d8d8d;
+    pointer-events: none;
+    background-color: transparent;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  /* Specific handling for date inputs which often have persistent placeholders */
+  .input-field input[type="date"]~label {
+    top: 0;
+    transform: translateY(-50%) translateX(-5px) scale(0.85);
+    background-color: #fff;
+    padding: 0px 5px;
+    color: #8d8d8d;
+  }
+
+  .input-field input:focus,
+  .input-field input:valid {
+    outline: none;
+    border: solid 1px #F15B29;
+  }
+
+  .input-field input:focus~label,
+  .input-field input:valid~label {
+    top: 0;
+    transform: translateY(-50%) translateX(-5px) scale(0.85);
+    background-color: #fff;
+    padding: 0px 5px;
+    color: #F15B29;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+
+  select,
+  textarea {
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    margin: 5px 0;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+  }
+
+  textarea {
+    background-image: none;
+  }
+
+  .cursor-pointer {
+    background-color: black;
+    color: white;
+  }
+
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #fff8f6;
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .marquee-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 40s linear infinite;
+    color: #F15B29;
+    font-size: 13px;
+  }
+
+  .marquee-text:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  #onboardingform {
+    padding: 10px;
+  }
+  
+  #onboardingform form {
+    padding: 15px;
+    margin-bottom: 30px;
+  }
+
+  #onboardingform h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .input-field label {
+    font-size: 13px;
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* @media screen and  (max-width: 769px) {
+       .formgrid {
+            background-color: #0034de;
+        }
+    }  */
+
+.lang-dropdown-list {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+}
+
+.lang-dropdown-item {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  transition: background-color 0.2s ease;
+}
+
+.lang-dropdown-item:hover {
+  background-color: #fff7ed !important;
+}
+
+.lang-dropdown-text {
+  color: #333333 !important;
+}
+
+.lang-dropdown-text.selected {
+  color: #F15B29 !important;
+  font-weight: 600 !important;
+}

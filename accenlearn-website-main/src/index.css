@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0f172a; /* Slate 900 */
+  --color-secondary: #2563eb; /* Blue 600 */
+  --color-accent: #8b5cf6; /* Violet 500 */
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;
+}
+
+*{
+  font-family: 'Inter', sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* Fluid Mesh Gradient Background */
+.mesh-bg {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 80% 0%, hsla(228,100%,74%,0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(271,100%,76%,0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, hsla(189,100%,70%,0.15) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Glassmorphic Bento Cards */
+.bento-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bento-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px 0 rgba(31, 38, 135, 0.1);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+/* Animated Gradient Text */
+.text-gradient-animated {
+  background: linear-gradient(to right, #2563eb, #8b5cf6, #ec4899, #2563eb);
+  background-size: 300% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 300% center;
+  }
+}
+
+/* Floating animation */
+.float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+.float-medium {
+  animation: float 4s ease-in-out infinite;
+}
+.float-fast {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Pulse ring */
+.pulse-ring {
+  position: relative;
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+}
+
+@keyframes pulse-ring {
+  100% { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

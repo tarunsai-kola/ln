@@ -1,0 +1,463 @@
+const express = require("express");
+const router = express.Router();
+const { sendEmail } = require("../controllers/emailController");
+const { buildPremiumEmail, SVGS, COMPANY_NAME } = require("../utils/emailTemplate");
+const jwt = require("jsonwebtoken");
+const CreateBDA = require("../models/CreateBDA");
+const { cachedQuery, invalidateCache } = require("../utils/cache");
+const TeamName = require("../models/TeamName");
+const TransactionId = require("../models/AddTransactionId");
+const verifyAnyAuth = require("../middleware/verifyAnyAuth");
+const crypto = require('crypto');
+
+//post to create a new bda account
+router.post("/createbda", verifyAnyAuth, async (req, res) => {
+  const { fullname, email, team, teams, designation, password } = req.body;
+  try {
+    const newbda = new CreateBDA({
+      fullname: fullname,
+      email: email,
+      team: team,
+      teams: teams || [], // Store teams array for managers
+      designation: designation,
+      password: password
+    });
+    await newbda.save();
+
+    // ✅ Invalidate BDA cache when new BDA is created
+    invalidateCache('bda:all', 'static');
+
+    res.status(201).json(newbda);
+  } catch (error) {
+    console.error("Error creating BDA:", error);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// GET request to retrieve all bda accounts (WITH CACHING)
+router.get("/getbda", verifyAnyAuth, async (req, res) => {
+  const { bdaId } = req.query;
+  try {
+    let bda;
+    if (bdaId) {
+      // Don't cache individual lookups
+      bda = await CreateBDA.findById(bdaId);
+      if (!bda) {
+        return res.status(404).json({ message: "Bda not found for the given bdaId" });
+      }
+    } else {
+      // ✅ CACHE: BDA list (occasionally changes, 2 min TTL)
+      // ✅ FIX: Use aggregation to ensure target is always an array (prevents frontend .map() crashes)
+      bda = await cachedQuery(
+        'bda:all',
+        () => CreateBDA.aggregate([
+          { $sort: { _id: -1 } },
+          {
+            $project: {
+              fullname: 1,
+              email: 1,
+              team: 1,
+              teams: 1,
+              designation: 1,
+              otp: 1,
+              mailSended: 1,
+              Access: 1,
+              status: 1,
+              // ✅ CRITICAL FIX: Ensure target is always an array, never null/undefined
+              target: { $ifNull: ["$target", []] }
+            }
+          }
+        ]),
+        120,  // 2 minutes TTL
+        'static'
+      );
+
+      // Add HTTP cache header for browser caching
+      res.set('Cache-Control', 'public, max-age=120');
+    }
+
+    res.status(200).json(bda);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// put request to edit the bda details
+router.put("/updatebda/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullname, email, password, team, teams, designation } = req.body;
+    const updatedbda = await CreateBDA.findByIdAndUpdate(
+      id,
+      { fullname, email, password, team, teams: teams || [], designation },
+      { new: true }
+    );
+    if (!updatedbda) {
+      return res.status(404).json({ error: "bda not found" });
+    }
+
+    // ✅ Invalidate BDA cache when BDA is updated
+    invalidateCache('bda:all', 'static');
+
+    res.status(200).json(updatedbda);
+  } catch (error) {
+    res.status(400).json({ error: "Error updating bda" });
+  }
+});
+
+//put request to update the bda status inactive 
+router.put("/updatestatus/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const updatedstatus = await CreateBDA.findByIdAndUpdate(
+      id,
+      { $set: { status } },
+      { new: true }
+    );
+    if (!updatedstatus) {
+      return res.status(404).json({ error: "bda not found" });
+    }
+
+    // ✅ Invalidate BDA cache when status changes
+    invalidateCache('bda:all', 'static');
+
+    res.status(200).json(updatedstatus);
+  } catch (error) {
+    res.status(400).json({ error: "Error updating bda" });
+  }
+});
+
+//put request to asign a target to all bda accounts
+router.post("/assigntarget/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { target } = req.body;
+    const updatedBDA = await CreateBDA.findByIdAndUpdate(
+      id,
+      { $push: { target } },
+      { new: true }
+    );
+    if (!updatedBDA) {
+      return res.status(404).json({ error: "BDA not found" });
+    }
+    res.status(200).json(updatedBDA);
+  } catch (error) {
+    res.status(400).json({ error: "Error updating bda" });
+  }
+});
+
+//delete request to delete the bda account
+router.delete("/deletebda/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedbda = await CreateBDA.findByIdAndDelete(id);
+    if (!deletedbda) {
+      return res.status(404).json({ error: "bda not found" });
+    }
+    res.status(200).json({ message: "bda deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error deleting bda" });
+  }
+});
+
+//delete request to delete the target 
+router.put("/deletetarget/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { target } = req.body;
+    const updatedBDA = await CreateBDA.findByIdAndUpdate(
+      id,
+      { $pull: { target: target } },
+      { new: true }
+    );
+    if (!updatedBDA) {
+      return res.status(404).json({ error: "BDA not found" });
+    }
+    res.status(200).json(updatedBDA);
+  } catch (error) {
+    res.status(400).json({ error: "Error deleting target" });
+  }
+});
+
+
+//Send OTP to BDA Email
+router.post("/bdasendotp", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const bda = await CreateBDA.findOne({ email });
+    if (!bda) {
+      return res.status(404).json({ message: "BDA not found" });
+    }
+
+    if (bda.status === "Inactive") {
+      return res.status(403).json({ message: "Access denied. Your account is inactive." });
+    }
+
+    const otp = crypto.randomInt(100000, 1000000);
+
+    const content = `
+      <p style="font-size: 18px; color: #0f172a; font-weight: 600;">Welcome back, ${bda.fullname}!</p>
+      <p>Your One-Time Password (OTP) for secure verification is:</p>
+      
+      <div style="background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
+          <p style="font-size: 32px; font-weight: 800; color: #4f46e5; margin: 0; letter-spacing: 4px;">${otp}</p>
+      </div>
+
+      <div class="highlight-box" style="background: #fef2f2; border-left-color: #ef4444; margin-bottom: 25px;">
+          <p style="margin: 0;  color: #b91c1c;">
+              ${SVGS.warning} <span style="margin-top: 2px;">This OTP is valid for <strong>10 minutes</strong>. Please do not share it with anyone.</span>
+          </p>
+      </div>
+      <p style="font-size: 13px; color: #64748b;">If you didn't request this OTP, please ignore this email or contact our IT team immediately.</p>
+    `;
+    const emailMessage = buildPremiumEmail({ title: 'Team Login OTP', content });
+
+
+    bda.otp = otp;
+    await Promise.all([
+      bda.save(),
+      sendEmail({ email, subject: "Bda Login Credentials", message: emailMessage }),
+    ]);
+    res.status(200).json({ message: "OTP sent to your email!" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to send OTP", error: error.message });
+  }
+});
+
+// Verify OTP and Login
+router.post("/bdaverifyotp", async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const bda = await CreateBDA.findOne({ email });
+    if (!bda) {
+      return res.status(404).json({ message: "BDA not found" });
+    }
+
+    if (bda.otp !== otp) {
+      // Regular login: OTP must match
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (bda.status === "Inactive") {
+      return res.status(403).json({ message: "Access denied. Your account is inactive." });
+    }
+
+    // Clear OTP after successful login
+    bda.otp = null;
+    await bda.save();
+
+    const token = jwt.sign(
+      { id: bda._id, email: bda.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
+    res.status(200).json({
+      token,
+      bdaId: bda._id,
+      bdaName: bda.fullname,
+      message: "Login successful!",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "OTP verification failed", error: error.message });
+  }
+});
+
+/*
+router.post("/checkbdaauth", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    // Find the bda by email
+    const bda = await CreateBDA.findOne({ email });
+    if (!bda) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    if (password !== bda.password) {
+      // Regular login: password must match
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Generate JWT token for the BDA account
+    const token = jwt.sign(
+      { id: bda._id, email: bda.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ token, bdaId: bda._id, bdaName: bda.fullname });
+  } catch (err) {
+    console.error("Error during login", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+*/
+
+//post request to add transaction id
+router.post("/addtransactionid", async (req, res) => {
+  const { transactionId, fullname, counselor, option, executiveId, executiveName, lead } = req.body;
+  try {
+    const AddTransactionId = new TransactionId({
+      transactionId,
+      fullname,
+      counselor,
+      lead: lead,  // Store SGFL/CGFL if selected
+      // lead field is NOT set - BDA directly assigns to executive, bypassing leader
+      executiveId: executiveId,
+      executive: executiveName,
+    });
+    await AddTransactionId.save();
+    res.status(201).json(AddTransactionId);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// GET request to retrieve all transaction ids
+router.get("/gettransactionid", verifyAnyAuth, async (req, res) => {
+  try {
+    const transactionId = await TransactionId.find().sort({ _id: -1 });
+    res.status(200).json(transactionId);
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+);
+
+
+// POST request to verify a single transaction email (Secure replacement for gettransactionwithname)
+router.post("/verify-transaction-email", async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    // Search for transaction where the email matches transactionId field (based on frontend usage)
+    const transaction = await TransactionId.findOne({ transactionId: email });
+    
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaction not found for this email" });
+    }
+
+    res.status(200).json({
+      success: true,
+      counselor: transaction.counselor,
+      lead: transaction.lead
+    });
+  } catch (error) {
+    console.error("Error verifying transaction email:", error);
+    res.status(500).json({ message: "Server error during verification" });
+  }
+});
+
+//add team name from create bda page 
+router.post("/addteamname", verifyAnyAuth, async (req, res) => {
+  const { teamname } = req.body;
+  try {
+    const newTeam = new TeamName({
+      teamname,
+    });
+    await newTeam.save();
+    res.status(200).json(newTeam);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// GET request to retrieve all team names
+router.get("/getteamname", verifyAnyAuth, async (req, res) => {
+  try {
+    const teamname = await TeamName.find();
+    res.status(200).json(teamname);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// post request to assign target to team
+router.post("/targetassigntoteam", verifyAnyAuth, async (req, res) => {
+  try {
+    const { teamId, targetValue, payments, currentMonth } = req.body;
+
+    // if (!teamId || !targetValue || !payments || !currentMonth) {
+    //   return res.status(400).json({ error: "Missing required fields" });
+    // }
+
+    const newTarget = {
+      currentMonth,
+      targetValue,
+      payments,
+    };
+
+    const updatedTeam = await TeamName.findByIdAndUpdate(
+      teamId,
+      { $push: { target: newTarget } },
+      { new: true }
+    );
+
+    if (!updatedTeam) {
+      return res.status(404).json({ error: "Team not found" });
+    }
+
+    res.status(200).json(updatedTeam);
+  } catch (error) {
+    console.error("Error updating team target:", error);
+    res.status(500).json({ error: "Server error while assigning target" });
+  }
+});
+
+//delete team last index target 
+router.delete("/delete-target", verifyAnyAuth, async (req, res) => {
+  try {
+    const { teamId, targetId } = req.body;
+
+    if (!teamId || !targetId) {
+      return res.status(400).json({ error: "Missing teamId or targetId" });
+    }
+
+    const updatedTeam = await TeamName.findByIdAndUpdate(
+      teamId,
+      { $pull: { target: { _id: targetId } } }, // precise pull
+      { new: true }
+    );
+
+    if (!updatedTeam) {
+      return res.status(404).json({ error: "Team not found" });
+    }
+
+    res.status(200).json(updatedTeam);
+  } catch (error) {
+    console.error("Error deleting target:", error);
+    res.status(500).json({ error: "Internal server error while deleting target" });
+  }
+});
+
+//put request to update the bda access
+router.put("/updateaccess/:id", verifyAnyAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { Access } = req.body;
+    // console.log(id , Access);
+    const updatedstatus = await CreateBDA.findByIdAndUpdate(
+      id,
+      { $set: { Access } },
+      { new: true }
+    );
+    if (!updatedstatus) {
+      return res.status(404).json({ error: "bda account not found" });
+    }
+    res.status(200).json(updatedstatus);
+  } catch (error) {
+    res.status(400).json({ error: "Error updating bda account" });
+  }
+});
+
+module.exports = router;
