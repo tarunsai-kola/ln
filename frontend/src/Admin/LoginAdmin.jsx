@@ -83,7 +83,7 @@ const LoginAdmin = () => {
          </form>
         <p>--------------------or--------------------</p>
         <div className="loginwith">
-          <Link to="/AdminLogin">Login with OTP</Link>
+          <Link to="/AdminLogin">Go to Admin Login Portal</Link>
         </div>
       </div>
     </div>

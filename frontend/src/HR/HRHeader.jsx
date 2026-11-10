@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/accenlearn-logo.png";
 import toast, { Toaster } from "react-hot-toast";
-import { LogOut, Calendar, Menu, X } from "lucide-react";
+import { LogOut, Calendar, Menu, X, CalendarX, FileText } from "lucide-react";
 
 const HRHeader = () => {
   const navigate = useNavigate();
@@ -22,7 +22,9 @@ const HRHeader = () => {
   };
 
   const menuItems = [
-    { to: "/hrdashboard", icon: Calendar, text: "Attendance" }
+    { to: "/hrdashboard", icon: Calendar, text: "Attendance" },
+    { to: "/hr/absent-requests", icon: CalendarX, text: "Absent Requests" },
+    { to: "/hr/send-offer-letter", icon: FileText, text: "Send Offer Letter" }
   ];
 
   return (

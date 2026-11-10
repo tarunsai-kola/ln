@@ -10,8 +10,10 @@ const InterviewerDashboard = () => {
     const navigate = useNavigate();
     
     // Mentor Auth
-    const mentorName = localStorage.getItem("interviewerName");
-    const mentorId = localStorage.getItem("interviewerId");
+    const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    const initialMentorId = urlParams?.get("impId") || localStorage.getItem("interviewerId");
+    const mentorName = urlParams?.get("impName") || localStorage.getItem("interviewerName");
+    const mentorId = initialMentorId;
 
     // Video Upload State
     const [videoForm, setVideoForm] = useState({
@@ -21,17 +23,41 @@ const InterviewerDashboard = () => {
     const [mentorDetails, setMentorDetails] = useState(null);
     
     useEffect(() => {
-        if (!localStorage.getItem("interviewerToken")) {
+        const queryParams = new URLSearchParams(window.location.search);
+        const impToken = queryParams.get("impToken");
+        const impId = queryParams.get("impId");
+        const impName = queryParams.get("impName");
+
+        if (impToken) {
+            localStorage.setItem("interviewerToken", impToken);
+            sessionStorage.setItem("interviewerToken", impToken);
+            if (impId) {
+                localStorage.setItem("interviewerId", impId);
+                sessionStorage.setItem("interviewerId", impId);
+            }
+            if (impName) {
+                localStorage.setItem("interviewerName", impName);
+                sessionStorage.setItem("interviewerName", impName);
+            }
+        }
+
+        const activeToken = impToken || localStorage.getItem("interviewerToken");
+        if (!activeToken) {
             navigate("/mentor-login");
         } else {
-            fetchDashboardData();
+            fetchDashboardData(impId || mentorId);
         }
     }, []);
 
-    const fetchDashboardData = async () => {
+    const fetchDashboardData = async (targetIdParam) => {
         try {
             setLoading(true);
-            const res = await axios.get(`${API}/api/interviewer/interviewer-dashboard/${mentorId}`);
+            const activeId = targetIdParam || mentorId || localStorage.getItem("interviewerId");
+            if (!activeId) {
+                console.error("No mentor ID available to load dashboard data");
+                return;
+            }
+            const res = await axios.get(`${API}/api/interviewer/interviewer-dashboard/${activeId}`);
             if (res.data) {
                 if (res.data.interviews) {
                     setInterviews(res.data.interviews);
@@ -42,22 +68,25 @@ const InterviewerDashboard = () => {
                 if (res.data.mentor) {
                     setMentorDetails(res.data.mentor);
                 } else {
-                    fetchMentorDetails();
+                    fetchMentorDetails(activeId);
                 }
             }
         } catch (error) {
             console.error(error);
             toast.error("Failed to load dashboard data");
-            fetchMentorDetails();
+            const activeId = targetIdParam || mentorId || localStorage.getItem("interviewerId");
+            if (activeId) fetchMentorDetails(activeId);
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchMentorDetails = async () => {
+    const fetchMentorDetails = async (targetIdParam) => {
         try {
+            const activeId = targetIdParam || mentorId || localStorage.getItem("interviewerId");
+            if (!activeId) return;
             // First try direct single mentor route
-            const res = await axios.get(`${API}/api/interviewer/${mentorId}`);
+            const res = await axios.get(`${API}/api/interviewer/${activeId}`);
             if (res.data && res.data._id) {
                 setMentorDetails(res.data);
                 return;

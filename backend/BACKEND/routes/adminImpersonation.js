@@ -9,6 +9,7 @@ const Operation = require("../models/CreateOperation");
 const AdvOperation = require("../models/CreateAdvOperation");
 const AdvTeam = require("../models/CreateAdvTeam");
 const MarketingTeam = require("../models/CreateMarketing");
+const Interviewer = require("../models/Interviewer");
 
 /**
  * @route   POST /api/admin/impersonate
@@ -66,6 +67,13 @@ router.post("/impersonate", verifyAdminCookie, async (req, res) => {
           tokenPayload = { id: user._id, email: user.email };
         }
         break;
+      case "INTERVIEWER":
+      case "MENTOR":
+        user = await Interviewer.findById(userId);
+        if (user) {
+          tokenPayload = { id: user._id, email: user.email, role: "interviewer" };
+        }
+        break;
       default:
         return res.status(400).json({ message: "Invalid role specified" });
     }
@@ -74,15 +82,15 @@ router.post("/impersonate", verifyAdminCookie, async (req, res) => {
       return res.status(404).json({ message: "Staff member not found" });
     }
 
-    if (user.status === "Inactive") {
+    if (user.status && user.status === "Inactive") {
       return res.status(403).json({ message: "Cannot impersonate an inactive account" });
     }
 
-    // Generate JWT token for the target user (10 hours expiry)
+    // Generate JWT token for the target user (8 hours expiry)
     const token = jwt.sign(
       tokenPayload,
-      process.env.JWT_SECRET,
-      { expiresIn: "10h" }
+      process.env.JWT_SECRET || "fallbacksecret",
+      { expiresIn: "8h" }
     );
 
     // Prepare response data consistent with what the frontend expects for each role
@@ -108,6 +116,14 @@ router.post("/impersonate", verifyAdminCookie, async (req, res) => {
       responseData.bdaId = user._id;
       responseData.bdaName = user.fullname;
       responseData.designation = user.designation;
+    } else if (normalizedRole === "INTERVIEWER" || normalizedRole === "MENTOR") {
+      responseData.interviewerId = user._id;
+      responseData.interviewerName = user.fullname;
+      responseData.interviewer = {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email
+      };
     }
 
     res.status(200).json(responseData);

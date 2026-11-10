@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const jwt = require("jsonwebtoken");
+const verifyAdminCookie = require("../middleware/verifyAdminCookie");
 const Interviewer = require("../models/Interviewer");
 const Interview = require("../models/Interview");
 const CreateCourse = require("../models/CreateCourse");
@@ -79,7 +80,7 @@ router.post("/interviewer-login", async (req, res) => {
         const token = jwt.sign(
             { id: interviewer._id, role: "interviewer" },
             process.env.JWT_SECRET || "fallbacksecret",
-            { expiresIn: "10m" }
+            { expiresIn: "8h" }
         );
 
         const courseObj = await resolveAssignedCourse(interviewer.assignedCourseId);
@@ -93,6 +94,37 @@ router.post("/interviewer-login", async (req, res) => {
                 email: interviewer.email,
                 assignedCourseId: courseObj || interviewer.assignedCourseId,
             },
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+});
+
+// Admin Direct Login to Interviewer / Mentor Account (8h JWT)
+router.post("/admin-impersonate/:id", verifyAdminCookie, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const interviewer = await Interviewer.findById(id);
+        if (!interviewer) {
+            return res.status(404).json({ message: "Interviewer not found" });
+        }
+
+        const token = jwt.sign(
+            { id: interviewer._id, role: "interviewer", email: interviewer.email },
+            process.env.JWT_SECRET || "fallbacksecret",
+            { expiresIn: "8h" }
+        );
+
+        res.status(200).json({
+            message: "Impersonation successful",
+            token,
+            interviewer: {
+                id: interviewer._id,
+                fullname: interviewer.fullname,
+                email: interviewer.email,
+            },
+            interviewerId: interviewer._id,
+            interviewerName: interviewer.fullname
         });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });

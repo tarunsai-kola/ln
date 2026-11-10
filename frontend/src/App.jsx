@@ -242,6 +242,7 @@ import AdvanceDashboardLayout from "./new_user/AdvanceDashboardLayout";
 import HRLogin from "./HR/HRLogin";
 import HRHeader from "./HR/HRHeader";
 import HRAttendance from "./HR/HRAttendance";
+import HRSendOfferLetter from "./HR/HRSendOfferLetter";
 import CreateHR from "./Admin/CreateHR";
 
 // Lazily load Advanced Dashboard Pages
@@ -269,7 +270,7 @@ const queryClient = new QueryClient();
 // This ensures that credentials are available INSTANTLY before React even starts.
 if (typeof window !== "undefined") {
   window.AccenlearnAuth = window.AccenlearnAuth || {};
-  
+
   // A. Immediate URL Capture (First Frame)
   const urlParams = new URLSearchParams(window.location.search);
   const impToken = urlParams.get("impToken");
@@ -294,8 +295,15 @@ if (typeof window !== "undefined") {
     if (data.name) sessionStorage.setItem(impType.replace("Token", "Name"), data.name);
     if (data.role) sessionStorage.setItem("designation", data.role);
 
+    // Also mirror to native localStorage so direct reads always succeed
+    try {
+      localStorage.setItem(impType, data.token);
+      if (data.id) localStorage.setItem(impType.replace("Token", "Id"), data.id);
+      if (data.name) localStorage.setItem(impType.replace("Token", "Name"), data.name);
+    } catch (e) { }
+
     console.log("🚀 AUTH: Global handover complete for", impType);
-    
+
     // Inject artificial session start time to satisfy Header session guards
     const now = new Date().getTime().toString();
     sessionStorage.setItem("sessionStartTime", now);
@@ -308,7 +316,7 @@ if (typeof window !== "undefined") {
   // This makes localStorage.getItem() prioritize Tab-Specific (Session) data
   // while keeping everything isolated per tab.
   const originalGetItem = localStorage.getItem;
-  localStorage.getItem = function(key) {
+  localStorage.getItem = function (key) {
     // 1. Try Global Store
     if (window.AccenlearnAuth[key]) return window.AccenlearnAuth[key];
     // 2. Try Session Store
@@ -317,9 +325,9 @@ if (typeof window !== "undefined") {
     // 3. Fallback to Local
     return originalGetItem.call(localStorage, key);
   };
-  
+
   const originalSetItem = localStorage.setItem;
-  localStorage.setItem = function(key, value) {
+  localStorage.setItem = function (key, value) {
     // Keys that must ALWAYS go to real localStorage regardless of impersonation state.
     // These are portal-login tokens & session markers that are NOT impersonation data.
     const alwaysLocalKeys = [
@@ -332,7 +340,7 @@ if (typeof window !== "undefined") {
 
     // If we are in an impersonated tab (any token in session), save everything to session instead —
     // EXCEPT the portal-login keys above which must survive page refresh.
-    const isIsolated = !!(sessionStorage.getItem("bdaToken") || sessionStorage.getItem("advTeamToken") || sessionStorage.getItem("operationToken"));
+    const isIsolated = !!(sessionStorage.getItem("bdaToken") || sessionStorage.getItem("advTeamToken") || sessionStorage.getItem("operationToken") || sessionStorage.getItem("interviewerToken"));
     if (isIsolated && !alwaysLocalKeys.includes(key)) {
       sessionStorage.setItem(key, value);
       window.AccenlearnAuth[key] = value;
@@ -358,15 +366,15 @@ const getAuthToken = (key) => {
 // 🌍 3. GLOBAL TIMEZONE PROXY (IST)
 if (typeof window !== "undefined") {
   const originalToLocaleString = Date.prototype.toLocaleString;
-  Date.prototype.toLocaleString = function(locales, options) {
+  Date.prototype.toLocaleString = function (locales, options) {
     if (!locales) {
       return originalToLocaleString.call(this, 'en-IN', { timeZone: 'Asia/Kolkata', ...options });
     }
     return originalToLocaleString.call(this, locales, options);
   };
-  
+
   const originalToLocaleDateString = Date.prototype.toLocaleDateString;
-  Date.prototype.toLocaleDateString = function(locales, options) {
+  Date.prototype.toLocaleDateString = function (locales, options) {
     if (!locales) {
       return originalToLocaleDateString.call(this, 'en-IN', { timeZone: 'Asia/Kolkata', ...options });
     }
@@ -374,7 +382,7 @@ if (typeof window !== "undefined") {
   };
 
   const originalToLocaleTimeString = Date.prototype.toLocaleTimeString;
-  Date.prototype.toLocaleTimeString = function(locales, options) {
+  Date.prototype.toLocaleTimeString = function (locales, options) {
     if (!locales) {
       return originalToLocaleTimeString.call(this, 'en-IN', { timeZone: 'Asia/Kolkata', ...options });
     }
@@ -416,71 +424,71 @@ const AppContent = () => {
   const isAuthenticatedEventUser = () => !!getAuthToken("eventToken");
   const isAuthenticatedMarketing = () => !!getAuthToken("marketingToken");
   const isAuthenticatedHR = () => !!getAuthToken("hrToken");
-// djhgfjvnnbfag  kusgfv 
-//   useEffect(() => {
-//     const checkTokens = () => {
-//       const currentPath = window.location.pathname.toLowerCase();
-//       
-//       // If we just landed with an impToken, skip the expiration check for a few seconds
-//       // to allow the handover to stabilize.
-//       if (window.location.search.includes("impToken")) return;
-// 
-//       const tokenKeys = ["adminToken", "bdaToken", "advTeamToken", "operationToken", "advOperationToken", "marketingToken", "studentToken"];
-//       let expiredTokenKey = null;
-// 
-//       tokenKeys.forEach(key => {
-//         const token = getAuthToken(key);
-//         if (token) {
-//           try {
-//             const parts = token.split('.');
-//             if (parts.length === 3) {
-//               const decoded = JSON.parse(atob(parts[1]));
-//               if (decoded.exp * 1000 < Date.now()) {
-//                 expiredTokenKey = key;
-//               }
-//             }
-//           } catch (e) {
-//             // ignore malformed
-//           }
-//         }
-//       });
-// 
-//       if (expiredTokenKey) {
-//         // Path checks
-//         const isAdminSection = currentPath.includes("admin") || currentPath.includes("create");
-//         const isBdaSection = currentPath === "/home" || currentPath === "/booked" || currentPath.includes("bda");
-//         const isAdvTeamSection = currentPath.includes("advteam");
-//         const isOpSection = currentPath.includes("operation") && !currentPath.includes("adv");
-//         const isAdvOpSection = currentPath.includes("advoperation");
-//         const isMarketingSection = currentPath.startsWith("/marketing/");
-// 
-//         let shouldRedirect = false;
-//         if (expiredTokenKey === "adminToken" && isAdminSection) shouldRedirect = true;
-//         if (expiredTokenKey === "bdaToken" && isBdaSection) shouldRedirect = true;
-//         if (expiredTokenKey === "advTeamToken" && isAdvTeamSection) shouldRedirect = true;
-//         if (expiredTokenKey === "operationToken" && isOpSection) shouldRedirect = true;
-//         if (expiredTokenKey === "advOperationToken" && isAdvOpSection) shouldRedirect = true;
-//         if (expiredTokenKey === "marketingToken" && isMarketingSection) shouldRedirect = true;
-// 
-//         if (shouldRedirect) {
-//           console.warn("Security: Session expired for", expiredTokenKey);
-//           localStorage.removeItem(expiredTokenKey);
-//           sessionStorage.removeItem(expiredTokenKey);
-//           
-//           if (isAdminSection) navigate("/AdminLogin");
-//           else if (isBdaSection) navigate("/TeamLogin");
-//           else if (isAdvTeamSection) navigate("/employlogin");
-//           else if (isOpSection) navigate("/OperationLogin");
-//           else if (isAdvOpSection) navigate("/operationlogin");
-//           else if (isMarketingSection) navigate("/marketing/login");
-//         }
-//       }
-//     };
-// 
-//     checkTokens();
-//     const interval = setInterval(checkTokens, 20000);
-//     return () => clearInterval(interval);
-//   }, [location.pathname, navigate]);
+  // djhgfjvnnbfag  kusgfv 
+  //   useEffect(() => {
+  //     const checkTokens = () => {
+  //       const currentPath = window.location.pathname.toLowerCase();
+  //       
+  //       // If we just landed with an impToken, skip the expiration check for a few seconds
+  //       // to allow the handover to stabilize.
+  //       if (window.location.search.includes("impToken")) return;
+  // 
+  //       const tokenKeys = ["adminToken", "bdaToken", "advTeamToken", "operationToken", "advOperationToken", "marketingToken", "studentToken"];
+  //       let expiredTokenKey = null;
+  // 
+  //       tokenKeys.forEach(key => {
+  //         const token = getAuthToken(key);
+  //         if (token) {
+  //           try {
+  //             const parts = token.split('.');
+  //             if (parts.length === 3) {
+  //               const decoded = JSON.parse(atob(parts[1]));
+  //               if (decoded.exp * 1000 < Date.now()) {
+  //                 expiredTokenKey = key;
+  //               }
+  //             }
+  //           } catch (e) {
+  //             // ignore malformed
+  //           }
+  //         }
+  //       });
+  // 
+  //       if (expiredTokenKey) {
+  //         // Path checks
+  //         const isAdminSection = currentPath.includes("admin") || currentPath.includes("create");
+  //         const isBdaSection = currentPath === "/home" || currentPath === "/booked" || currentPath.includes("bda");
+  //         const isAdvTeamSection = currentPath.includes("advteam");
+  //         const isOpSection = currentPath.includes("operation") && !currentPath.includes("adv");
+  //         const isAdvOpSection = currentPath.includes("advoperation");
+  //         const isMarketingSection = currentPath.startsWith("/marketing/");
+  // 
+  //         let shouldRedirect = false;
+  //         if (expiredTokenKey === "adminToken" && isAdminSection) shouldRedirect = true;
+  //         if (expiredTokenKey === "bdaToken" && isBdaSection) shouldRedirect = true;
+  //         if (expiredTokenKey === "advTeamToken" && isAdvTeamSection) shouldRedirect = true;
+  //         if (expiredTokenKey === "operationToken" && isOpSection) shouldRedirect = true;
+  //         if (expiredTokenKey === "advOperationToken" && isAdvOpSection) shouldRedirect = true;
+  //         if (expiredTokenKey === "marketingToken" && isMarketingSection) shouldRedirect = true;
+  // 
+  //         if (shouldRedirect) {
+  //           console.warn("Security: Session expired for", expiredTokenKey);
+  //           localStorage.removeItem(expiredTokenKey);
+  //           sessionStorage.removeItem(expiredTokenKey);
+  //           
+  //           if (isAdminSection) navigate("/AdminLogin");
+  //           else if (isBdaSection) navigate("/TeamLogin");
+  //           else if (isAdvTeamSection) navigate("/employlogin");
+  //           else if (isOpSection) navigate("/OperationLogin");
+  //           else if (isAdvOpSection) navigate("/operationlogin");
+  //           else if (isMarketingSection) navigate("/marketing/login");
+  //         }
+  //       }
+  //     };
+  // 
+  //     checkTokens();
+  //     const interval = setInterval(checkTokens, 20000);
+  //     return () => clearInterval(interval);
+  //   }, [location.pathname, navigate]);
 
   useEffect(() => {
     ReactPixel.pageView();
@@ -492,7 +500,7 @@ const AppContent = () => {
   const marketingheaderPaths = ["/marketing/home", "/marketing/previous", "/marketing/addexecutive"];
   const bdaheaderPaths = ["/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
   const advteamheaderPaths = ["/advteam/home", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/advteam/salary-calculator"];
-  const hrheaderPaths = ["/hrdashboard"];
+  const hrheaderPaths = ["/hrdashboard", "/hr/absent-requests", "/admin/absent-requests", "/absent-requests", "/hr/send-offer-letter", "/hr/offer-letter"];
   const lmsFooterPaths = ["/jobboard"];
   const noFooterPaths = ["/operationdashboard", "/bookedpayment", "/fullpayment", "/defaultpayment", "/mentordashboard", "/MentorDashboard", "/mentor-dashboard", "/interviewer-dashboard", "/interviewerlogin", "/interviewer-login", "/mentor-login", "/mentordashboardaccessform", "/MentorDashboardAccessForm", "/mentoronboarding", "/operationrevenuesheet", "/mentorcheckin", "/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advmentorcheckin", "/assignmentorop", "/advteam/home", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/advteam/salary-calculator", "/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
   const placementcoodinatorHeaderPaths = ["/pcdashboard", "/jobpost"];
@@ -517,7 +525,7 @@ const AppContent = () => {
         <AdvTeamHeader />
       ) : placementcoodinatorHeaderPaths.includes(location.pathname.toLowerCase()) && isAuthenticatedPC() ? (
         <PCHeader />
-      ) : hrheaderPaths.includes(location.pathname.toLowerCase()) && isAuthenticatedHR() ? (
+      ) : hrheaderPaths.includes(location.pathname.toLowerCase()) && (isAuthenticatedHR() || isAuthenticatedAdmin()) ? (
         <HRHeader />
       ) : userheaderPaths.includes(location.pathname.toLowerCase()) ? (
         <UserHeader />
@@ -627,10 +635,10 @@ const AppContent = () => {
         <Route path="/SalaryCalculator" element={isAuthenticatedAdmin() ? (<SalaryCalculatorManagement />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/attendcal" element={isAuthenticatedAdmin() ? (<AdminAttendanceSalaryCalculator />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/AttendCal" element={isAuthenticatedAdmin() ? (<AdminAttendanceSalaryCalculator />) : (<Navigate to="/AdminLogin" />)} />
-        <Route path="/admin/absent-requests" element={isAuthenticatedAdmin() ? (<AdminAbsentRequests />) : (<Navigate to="/AdminLogin" />)} />
-        <Route path="/absent-requests" element={isAuthenticatedAdmin() ? (<AdminAbsentRequests />) : (<Navigate to="/AdminLogin" />)} />
+        <Route path="/admin/absent-requests" element={isAuthenticatedAdmin() || isAuthenticatedHR() ? (<AdminAbsentRequests />) : (<Navigate to="/AdminLogin" />)} />
+        <Route path="/absent-requests" element={isAuthenticatedAdmin() || isAuthenticatedHR() ? (<AdminAbsentRequests />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/AlumniData" element={isAuthenticatedAdmin() ? (<AlumniData />) : (<Navigate to="/AdminLogin" />)} />
-{/*         <Route path="/admin-career-assessment" element={isAuthenticatedAdmin() ? (<AdminCareerAssessment />) : (<Navigate to="/AdminLogin" />)} /> */}
+        {/*         <Route path="/admin-career-assessment" element={isAuthenticatedAdmin() ? (<AdminCareerAssessment />) : (<Navigate to="/AdminLogin" />)} /> */}
         <Route path="/InactiveBda" element={isAuthenticatedAdmin() ? (<InactiveBda />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/CreateMarketingTeam" element={isAuthenticatedAdmin() ? (<CreateMarketingTeam />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/CreateInterviewer" element={isAuthenticatedAdmin() ? (<CreateInterviewer />) : (<Navigate to="/AdminLogin" />)} />
@@ -642,30 +650,35 @@ const AppContent = () => {
         <Route path="/AdvExercisePage" element={isAuthenticatedAdmin() ? (<AdvExercisePage />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/AddCodingProblem" element={isAuthenticatedAdmin() ? (<AddCodingProblem />) : (<Navigate to="/AdminLogin" />)} />
         <Route path="/AddAIMockInterview" element={isAuthenticatedAdmin() ? (<AddAIMockInterview />) : (<Navigate to="/AdminLogin" />)} />
-{/*         <Route path="/advleadmanagement" element={
+        {/*         <Route path="/advleadmanagement" element={
           isAuthenticatedAdmin() ? <AdvLeadManagement /> : <Navigate to="/AdminLogin" />
         } /> */}
-{/*         <Route path="/advteam/lead-management" element={
+        {/*         <Route path="/advteam/lead-management" element={
           isAuthenticatedAdvTeam() ? <AdvTeamLeadManagement /> : <Navigate to="/employlogin" />
         } /> */}
-{/*         <Route path="/AdminAnalytics" element={isAuthenticatedAdmin() ? (<AdminAnalytics />) : (<Navigate to="/AdminLogin" />)} /> */}
+        {/*         <Route path="/AdminAnalytics" element={isAuthenticatedAdmin() ? (<AdminAnalytics />) : (<Navigate to="/AdminLogin" />)} /> */}
 
         {/* HR Portal Start */}
+        <Route path="/h" element={<Navigate to="/hrdashboard" replace />} />
+        <Route path="/hr" element={<Navigate to="/hrdashboard" replace />} />
         <Route path="/hrlogin" element={<HRLogin />} />
-        <Route path="/hrdashboard" element={isAuthenticatedHR() ? <HRAttendance /> : <Navigate to="/hrlogin" />} />
+        <Route path="/hrdashboard" element={isAuthenticatedHR() || isAuthenticatedAdmin() ? <HRAttendance /> : <Navigate to="/hrlogin" />} />
+        <Route path="/hr/absent-requests" element={isAuthenticatedAdmin() || isAuthenticatedHR() ? <AdminAbsentRequests /> : <Navigate to="/hrlogin" />} />
+        <Route path="/hr/send-offer-letter" element={isAuthenticatedAdmin() || isAuthenticatedHR() ? <HRSendOfferLetter /> : <Navigate to="/hrlogin" />} />
+        <Route path="/hr/offer-letter" element={isAuthenticatedAdmin() || isAuthenticatedHR() ? <HRSendOfferLetter /> : <Navigate to="/hrlogin" />} />
         {/* HR Portal End */}
 
         {/* Phase 13 Admin CRM Routes */}
-{/*         <Route path="/AdvAdminDashboard" element={isAuthenticatedAdmin() ? <AdvAdminDashboard /> : <Navigate to="/AdminLogin" />} /> */}
+        {/*         <Route path="/AdvAdminDashboard" element={isAuthenticatedAdmin() ? <AdvAdminDashboard /> : <Navigate to="/AdminLogin" />} /> */}
         <Route path="/Admin/Agents" element={isAuthenticatedAdmin() ? <AgentsManagement /> : <Navigate to="/AdminLogin" />} />
         <Route path="/Admin/Teams" element={isAuthenticatedAdmin() ? <TeamsManagement /> : <Navigate to="/AdminLogin" />} />
         <Route path="/Admin/LeadAssignments" element={isAuthenticatedAdmin() ? <LeadAssignments /> : <Navigate to="/AdminLogin" />} />
         <Route path="/Admin/AgentActivity/:agentId" element={isAuthenticatedAdmin() ? <AgentActivity /> : <Navigate to="/AdminLogin" />} />
-{/*         <Route path="/Admin/Reports" element={isAuthenticatedAdmin() ? <AdminReports /> : <Navigate to="/AdminLogin" />} /> */}
-{/*         <Route path="/Admin/CallLogs" element={isAuthenticatedAdmin() ? <AdvCallLogs /> : <Navigate to="/AdminLogin" />} /> */}
+        {/*         <Route path="/Admin/Reports" element={isAuthenticatedAdmin() ? <AdminReports /> : <Navigate to="/AdminLogin" />} /> */}
+        {/*         <Route path="/Admin/CallLogs" element={isAuthenticatedAdmin() ? <AdvCallLogs /> : <Navigate to="/AdminLogin" />} /> */}
         <Route path="/AdvFormLeads" element={isAuthenticatedAdmin() ? <AdvFormLeads /> : <Navigate to="/AdminLogin" />} />
 
-{/*         <Route path="/BulkImport" element={isAuthenticatedAdmin() ? (<BulkImport />) : (<Navigate to="/AdminLogin" />)} /> */}
+        {/*         <Route path="/BulkImport" element={isAuthenticatedAdmin() ? (<BulkImport />) : (<Navigate to="/AdminLogin" />)} /> */}
         <Route path="/Admin/Attendance" element={isAuthenticatedAdmin() ? <AdminAttendance /> : <Navigate to="/AdminLogin" />} />
 
 
@@ -732,9 +745,9 @@ const AppContent = () => {
         <Route path="/advteam/fullpaid" element={isAuthenticatedAdvTeam() ? <AdvTeamFullPaid /> : <Navigate to="/employlogin" />} />
         <Route path="/advteam/default" element={isAuthenticatedAdvTeam() ? <AdvTeamDefault /> : <Navigate to="/employlogin" />} />
         <Route path="/advteam/adduser" element={isAuthenticatedAdvTeam() ? <AdvAddUser /> : <Navigate to="/employlogin" />} />
-{/*         <Route path="/advteam/my-leads" element={isAuthenticatedAdvTeam() ? <AdvTeamMyLeads /> : <Navigate to="/employlogin" />} /> */}
-{/*         <Route path="/advteam/leads-book" element={isAuthenticatedAdvTeam() ? <AdvLeadsBook /> : <Navigate to="/employlogin" />} /> */}
-{/*         <Route path="/advteam/record" element={isAuthenticatedAdvTeam() ? <AdvTeamRecord /> : <Navigate to="/employlogin" />} /> */}
+        {/*         <Route path="/advteam/my-leads" element={isAuthenticatedAdvTeam() ? <AdvTeamMyLeads /> : <Navigate to="/employlogin" />} /> */}
+        {/*         <Route path="/advteam/leads-book" element={isAuthenticatedAdvTeam() ? <AdvLeadsBook /> : <Navigate to="/employlogin" />} /> */}
+        {/*         <Route path="/advteam/record" element={isAuthenticatedAdvTeam() ? <AdvTeamRecord /> : <Navigate to="/employlogin" />} /> */}
         <Route path="/advteam/team-login" element={isAuthenticatedAdvTeam() ? <AdvTeamTeamLogin /> : <Navigate to="/employlogin" />} />
         <Route path="/advteam/advreferrals" element={isAuthenticatedAdvTeam() ? <AdvTeamReferrals /> : <Navigate to="/employlogin" />} />
         <Route path="/advteam/leaderboard" element={isAuthenticatedAdvTeam() ? <AdvLeaderBoard /> : <Navigate to="/employlogin" />} />
@@ -798,19 +811,19 @@ const AppContent = () => {
       </Routes>
 
       {/* Global Footers - Exclude attendance and clean dashboards */}
-      {location.pathname.toLowerCase() !== "/attendance" && 
-       location.pathname.toLowerCase() !== "/hrlogin" &&
-       location.pathname.toLowerCase() !== "/eventdashboard" &&
-       location.pathname.toLowerCase() !== "/dashboard" &&
-       !location.pathname.toLowerCase().startsWith("/advancedashboard") &&
+      {location.pathname.toLowerCase() !== "/attendance" &&
+        location.pathname.toLowerCase() !== "/hrlogin" &&
+        location.pathname.toLowerCase() !== "/eventdashboard" &&
+        location.pathname.toLowerCase() !== "/dashboard" &&
+        !location.pathname.toLowerCase().startsWith("/advancedashboard") &&
         !noFooterPaths.some(p => p.toLowerCase() === location.pathname.toLowerCase()) &&
-       !adminheaderPaths.includes(location.pathname.toLowerCase()) && 
-       !advteamheaderPaths.includes(location.pathname.toLowerCase()) && 
-       !hrheaderPaths.includes(location.pathname.toLowerCase()) && (
-        <>
-          {lmsFooterPaths.includes(location.pathname.toLowerCase()) ? <LmsFooter /> : <Footer />}
-        </>
-      )}
+        !adminheaderPaths.includes(location.pathname.toLowerCase()) &&
+        !advteamheaderPaths.includes(location.pathname.toLowerCase()) &&
+        !hrheaderPaths.includes(location.pathname.toLowerCase()) && (
+          <>
+            {lmsFooterPaths.includes(location.pathname.toLowerCase()) ? <LmsFooter /> : <Footer />}
+          </>
+        )}
 
       {showAutoPopup && <AdvancedApplyPopup onClose={() => setShowAutoPopup(false)} />}
     </div>

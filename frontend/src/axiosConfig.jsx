@@ -10,6 +10,7 @@ axios.interceptors.request.use(
         const advTeamToken = localStorage.getItem("advTeamToken");
         const token = localStorage.getItem("token");
         const adminToken = localStorage.getItem("adminToken");
+        const hrToken = localStorage.getItem("hrToken");
 
         const currentPath = window.location.pathname.toLowerCase();
 
@@ -17,7 +18,12 @@ axios.interceptors.request.use(
         const bdaPaths = ["/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
         const opPaths = ["/operationdashboard", "/fullpayment", "/bookedpayment", "/defaultpayment", "/operationrevenuesheet", "/mentorcheckin"];
         const advOpPaths = ["/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advmentorcheckin", "/mentorcheckin"];
-        const adminPaths = ["/admindashboard", "/addcourse", "/addadvcourse", "/addmodule", "/addadvmodule", "/pendingapplication", "/acceptedapplication", "/bookedlist", "/halfpayment", "/defaultlist", "/fullpaidlist", "/createoperation", "/createadvoperation", "/createbda", "/createadvteam", "/createmanager", "/mentorqueries", "/advancequeries", "/revenuesheet", "/advrevenuesheet", "/createplacementcoordinator", "/onboardingdetails", "/advonboardingdetails", "/advbooked", "/advfullpaid", "/advdefault", "/allteamdetail", "/advteamdetail", "/masterclasses", "/addevent", "/eventregistration", "/target", "/alumnidata", "/inactivebda", "/createmarketingteam", "/createinterviewer", "/createhr", "/createinterview", "/adminprojectpage", "/advprojectpage", "/advexercisepage", "/advleadmanagement", "/adminanalytics", "/advadmindashboard", "/admin/agents", "/admin/teams", "/admin/leadassignments", "/admin/agentactivity", "/admin/reports", "/bulkimport", "/admin/attendance", "/advusermanagement", "/admin/calllogs", "/advformleads", "/admin-career-assessment", "/advreferrals", "/assignmentorop"];
+        const adminPaths = ["/admindashboard", "/addcourse", "/addadvcourse", "/addmodule", "/addadvmodule", "/pendingapplication", "/acceptedapplication", "/bookedlist", "/halfpayment", "/defaultlist", "/fullpaidlist", "/createoperation", "/createadvoperation", "/createbda", "/createadvteam", "/createmanager", "/mentorqueries", "/advancequeries", "/revenuesheet", "/advrevenuesheet", "/createplacementcoordinator", "/onboardingdetails", "/advonboardingdetails", "/advbooked", "/advfullpaid", "/advdefault", "/allteamdetail", "/advteamdetail", "/masterclasses", "/addevent", "/eventregistration", "/target", "/alumnidata", "/inactivebda", "/createmarketingteam", "/createinterviewer", "/createhr", "/createinterview", "/adminprojectpage", "/advprojectpage", "/advexercisepage", "/advleadmanagement", "/adminanalytics", "/advadmindashboard", "/admin/agents", "/admin/teams", "/admin/leadassignments", "/admin/agentactivity", "/admin/reports", "/bulkimport", "/admin/attendance", "/advusermanagement", "/admin/calllogs", "/advformleads", "/admin-career-assessment", "/advreferrals", "/assignmentorop", "/admin/absent-requests", "/absent-requests"];
+
+        // Clear invalid authorization string if present
+        if (config.headers.Authorization === "Bearer null" || config.headers.Authorization === "Bearer undefined") {
+            delete config.headers.Authorization;
+        }
 
         // Only apply default tokens if no Authorization header is already set
         if (!config.headers.Authorization) {
@@ -29,6 +35,9 @@ axios.interceptors.request.use(
                 config.headers.Authorization = advOperationToken.startsWith("Bearer ") ? advOperationToken : `Bearer ${advOperationToken}`;
             } else if ((opPaths.includes(currentPath) || currentPath.includes("operation")) && operationToken) {
                 config.headers.Authorization = operationToken.startsWith("Bearer ") ? operationToken : `Bearer ${operationToken}`;
+            } else if ((currentPath.includes("hr") || currentPath.includes("absent-requests")) && (hrToken || adminToken)) {
+                const activeToken = hrToken || adminToken;
+                config.headers.Authorization = activeToken.startsWith("Bearer ") ? activeToken : `Bearer ${activeToken}`;
             } else if ((adminPaths.includes(currentPath) || currentPath.includes("admin")) && adminToken) {
                 config.headers.Authorization = adminToken.startsWith("Bearer ") ? adminToken : `Bearer ${adminToken}`;
             } else if (token) {
@@ -61,7 +70,9 @@ axios.interceptors.response.use(
                 // Redirect based on path
                 const adminPaths = ["/admindashboard", "/addcourse", "/addadvcourse", "/addmodule", "/addadvmodule", "/pendingapplication", "/acceptedapplication", "/bookedlist", "/halfpayment", "/defaultlist", "/fullpaidlist", "/createoperation", "/createadvoperation", "/createbda", "/createadvteam", "/createmanager", "/mentorqueries", "/advancequeries", "/revenuesheet", "/advrevenuesheet", "/createplacementcoordinator", "/onboardingdetails", "/advonboardingdetails", "/advbooked", "/advfullpaid", "/advdefault", "/allteamdetail", "/advteamdetail", "/masterclasses", "/addevent", "/eventregistration", "/target", "/alumnidata", "/inactivebda", "/createmarketingteam", "/createinterviewer", "/createhr", "/createinterview", "/adminprojectpage", "/advprojectpage", "/advexercisepage", "/advleadmanagement", "/adminanalytics", "/advadmindashboard", "/admin/agents", "/admin/teams", "/admin/leadassignments", "/admin/agentactivity", "/admin/reports", "/bulkimport", "/admin/attendance", "/advusermanagement", "/admin/calllogs", "/advformleads", "/admin-career-assessment", "/advreferrals", "/assignmentorop"];
 
-                if (currentPath.includes("admin") || adminPaths.includes(currentPath)) {
+                if (currentPath.includes("hr") || (currentPath.includes("absent-requests") && localStorage.getItem("hrToken") && !localStorage.getItem("adminToken"))) {
+                    window.location.href = "/hrlogin";
+                } else if (currentPath.includes("admin") || adminPaths.includes(currentPath)) {
                     window.location.href = "/AdminLogin";
                 } else if (currentPath.includes("advteam")) {
                     window.location.href = "/employlogin";

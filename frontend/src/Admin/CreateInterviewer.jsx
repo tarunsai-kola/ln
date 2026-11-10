@@ -33,6 +33,7 @@ const CreateMentor = ({ defaultTab = "active" }) => {
     const [perSessionRate, setPerSessionRate] = useState("");
     const [isSendingOffer, setIsSendingOffer] = useState(false);
     const [isCreatingAccount, setIsCreatingAccount] = useState(false);
+    const [loggingInId, setLoggingInId] = useState(null);
 
     useEffect(() => {
         fetchMentors();
@@ -74,6 +75,45 @@ const CreateMentor = ({ defaultTab = "active" }) => {
             console.error("Failed to fetch mentor applications", error);
         } finally {
             setLoadingApplications(false);
+        }
+    };
+
+    // Admin direct login to Interviewer / Mentor Account (like BDA accounts with 8h JWT)
+    const handleLoginInterviewer = async (userId, fullname) => {
+        try {
+            setLoggingInId(userId);
+            const adminToken = localStorage.getItem("adminToken");
+            const response = await axios.post(
+                `${API}/api/admin/impersonate`,
+                { userId, role: "INTERVIEWER" },
+                {
+                    withCredentials: true,
+                    headers: adminToken ? { Authorization: `Bearer ${adminToken}` } : {}
+                }
+            );
+
+            if (response.status === 200) {
+                toast.success(`Logged in as ${fullname || "Mentor"}! Opening portal...`);
+                const { token, interviewerId, interviewerName } = response.data;
+                const targetId = interviewerId || userId;
+                const targetName = interviewerName || fullname || "";
+
+                // Mirror credentials into storage for immediate access
+                localStorage.setItem("interviewerToken", token);
+                localStorage.setItem("interviewerId", targetId);
+                localStorage.setItem("interviewerName", targetName);
+
+                const impersonateUrl = `/MentorDashboard?impToken=${encodeURIComponent(token)}&impId=${encodeURIComponent(targetId)}&impName=${encodeURIComponent(targetName)}&impType=interviewerToken`;
+
+                setTimeout(() => {
+                    window.open(impersonateUrl, "_blank");
+                }, 400);
+            }
+        } catch (error) {
+            console.error("Direct mentor login error:", error);
+            toast.error(error.response?.data?.message || "Failed to log in to mentor account");
+        } finally {
+            setLoggingInId(null);
         }
     };
 
@@ -362,6 +402,7 @@ const CreateMentor = ({ defaultTab = "active" }) => {
                                         <th className="py-3.5 px-4">Subjects / Domain</th>
                                         <th className="py-3.5 px-4">Assigned Course</th>
                                         <th className="py-3.5 px-4">Assigned OP</th>
+                                        <th className="py-3.5 px-4 text-center">Login</th>
                                         <th className="py-3.5 px-4 text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -388,6 +429,21 @@ const CreateMentor = ({ defaultTab = "active" }) => {
                                                         Unassigned
                                                     </span>
                                                 )}
+                                            </td>
+                                            <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                                                <button
+                                                    onClick={() => handleLoginInterviewer(item._id, item.fullname)}
+                                                    disabled={loggingInId === item._id}
+                                                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 hover:border-emerald-600 font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-50"
+                                                    title={`Direct Login to ${item.fullname}'s Account`}
+                                                >
+                                                    {loggingInId === item._id ? (
+                                                        <i className="fa fa-spinner fa-spin"></i>
+                                                    ) : (
+                                                        <i className="fa fa-sign-in"></i>
+                                                    )}
+                                                    <span>Login</span>
+                                                </button>
                                             </td>
                                             <td className="py-3.5 px-4 text-center whitespace-nowrap">
                                                 <Link
@@ -611,6 +667,23 @@ const CreateMentor = ({ defaultTab = "active" }) => {
                                                         <i className="fa fa-user-check"></i>
                                                         {app.interviewerId ? "Active" : "Activate"}
                                                     </button>
+
+                                                    {/* Direct Login for Active Mentor Account */}
+                                                    {app.interviewerId && (
+                                                        <button
+                                                            onClick={() => handleLoginInterviewer(app.interviewerId, app.fullname)}
+                                                            disabled={loggingInId === app.interviewerId}
+                                                            className="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                                                            title={`Direct Login to ${app.fullname}'s Account`}
+                                                        >
+                                                            {loggingInId === app.interviewerId ? (
+                                                                <i className="fa fa-spinner fa-spin"></i>
+                                                            ) : (
+                                                                <i className="fa fa-sign-in"></i>
+                                                            )}
+                                                            Login
+                                                        </button>
+                                                    )}
 
                                                     {/* View Details */}
                                                     <button

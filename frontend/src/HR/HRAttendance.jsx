@@ -4,9 +4,10 @@ import API from "../API";
 import toast, { Toaster } from "react-hot-toast";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { Link } from "react-router-dom";
 import { 
   Users, Search, Calendar, ChevronLeft, ChevronRight, X, Clock,
-  UserCheck, ArrowRight, Filter, Download, Send, Loader, Trash2, Edit3, UserPlus, CheckCircle2, ShieldCheck, Mail
+  UserCheck, ArrowRight, Filter, Download, Send, Loader, Trash2, Edit3, UserPlus, CheckCircle2, ShieldCheck, Mail, CalendarX, FileText
 } from "lucide-react";
 
 const HRAttendance = () => {
@@ -44,6 +45,22 @@ const HRAttendance = () => {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [isUpdatingUser, setIsUpdatingUser] = useState(false);
+  const [pendingAbsentCount, setPendingAbsentCount] = useState(0);
+
+  const fetchPendingAbsentCount = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("hrToken");
+      const res = await axios.get(`${API}/api/atd/admin/absent-requests`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { status: "pending" }
+      });
+      if (res.data?.stats) {
+        setPendingAbsentCount(res.data.stats.totalPending || 0);
+      }
+    } catch (err) {
+      console.error("Failed to load pending absent requests count");
+    }
+  }, []);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -86,7 +103,8 @@ const HRAttendance = () => {
   useEffect(() => {
     fetchMembers();
     fetchDailySummary();
-  }, [fetchMembers, fetchDailySummary]);
+    fetchPendingAbsentCount();
+  }, [fetchMembers, fetchDailySummary, fetchPendingAbsentCount]);
 
   const fetchUserDetail = async (userId, page = 1) => {
     setLoadingHistory(true);
@@ -405,6 +423,17 @@ const HRAttendance = () => {
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
+             <Link to="/hr/send-offer-letter" className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-sm shadow-indigo-200 text-sm">
+                <FileText size={16} /> Send Offer Letter
+             </Link>
+             <Link to="/hr/absent-requests" className="flex items-center gap-2 px-5 py-2.5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 hover:shadow-md text-indigo-700 font-bold rounded-xl transition-all shadow-sm text-sm">
+                <CalendarX size={16} /> Absent Requests
+                {pendingAbsentCount > 0 && (
+                  <span className="px-2 py-0.5 text-xs font-black bg-rose-500 text-white rounded-full animate-pulse">
+                    {pendingAbsentCount}
+                  </span>
+                )}
+             </Link>
              <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md text-indigo-600 font-bold rounded-xl transition-all shadow-sm text-sm">
                 <UserPlus size={16} /> Add Member
              </button>
@@ -422,6 +451,31 @@ const HRAttendance = () => {
              </button>
           </div>
         </div>
+
+        {/* Pending Absent Requests Notification Banner */}
+        {pendingAbsentCount > 0 && (
+          <div className="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-[fadeIn_0.3s_ease-out]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+                <CalendarX size={20} />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-amber-900">
+                  {pendingAbsentCount} Absent Request{pendingAbsentCount > 1 ? "s" : ""} Awaiting Review
+                </h4>
+                <p className="text-xs font-medium text-amber-700 mt-0.5">
+                  Employees have submitted leave requests. You can Accept (Approve), Reject, or Reactivate requests.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/hr/absent-requests"
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-black rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap"
+            >
+              Review Now <ArrowRight size={14} />
+            </Link>
+          </div>
+        )}
 
         {/* Daily Department Summary */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

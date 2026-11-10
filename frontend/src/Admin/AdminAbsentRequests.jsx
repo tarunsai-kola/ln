@@ -61,13 +61,30 @@ const AdminAbsentRequests = () => {
   });
   const [submittingHoliday, setSubmittingHoliday] = useState(false);
 
+  const isHR = !!localStorage.getItem("hrToken") && !localStorage.getItem("adminToken");
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("adminToken") || localStorage.getItem("hrToken") || localStorage.getItem("atdToken");
+    if (!token || token === "null" || token === "undefined") {
+      return {};
+    }
+    const clean = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+    return { Authorization: clean };
+  };
+
+  const getReviewerName = () => {
+    const hr = localStorage.getItem("hrName");
+    if (hr) return `${hr} (HR)`;
+    return "Admin";
+  };
+
   // 1. Fetch Absent Requests
   const fetchAbsentRequests = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
       const res = await axios.get(`${API}/api/atd/admin/absent-requests`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getAuthHeaders(),
+        withCredentials: true,
         params: {
           month: selectedMonth,
           status: statusFilter,
@@ -90,10 +107,10 @@ const AdminAbsentRequests = () => {
   const fetchHolidays = async () => {
     setLoadingHolidays(true);
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
       const year = selectedMonth ? selectedMonth.split("-")[0] : new Date().getFullYear();
       const res = await axios.get(`${API}/api/atd/admin/holidays`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getAuthHeaders(),
+        withCredentials: true,
         params: { year }
       });
       if (res.data.success) {
@@ -112,7 +129,7 @@ const AdminAbsentRequests = () => {
     fetchHolidays();
   }, [selectedMonth, statusFilter]);
 
-  // Handle Review (Approve / Reject)
+  // Handle Review (Approve / Reject / Reactivate)
   const handleOpenReview = (request, targetStatus) => {
     setReviewModalData({ request, targetStatus });
     setAdminReviewNote("");
@@ -124,19 +141,22 @@ const AdminAbsentRequests = () => {
 
     setSubmittingReview(true);
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
+      const reviewer = getReviewerName();
       const res = await axios.patch(
         `${API}/api/atd/admin/absent-requests/${request._id}`,
         {
           status: targetStatus,
-          reviewNote: adminReviewNote,
-          reviewedBy: "Admin"
+          reviewNote: adminReviewNote || (targetStatus === "approved" ? `Accepted by ${reviewer}` : targetStatus === "pending" ? `Reactivated by ${reviewer}` : `Rejected by ${reviewer}`),
+          reviewedBy: reviewer
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: getAuthHeaders(),
+          withCredentials: true
+        }
       );
 
       if (res.data.success) {
-        toast.success(`Request ${targetStatus === "approved" ? "Approved" : "Rejected"} successfully!`);
+        toast.success(`Request ${targetStatus === "approved" ? "Accepted & Approved" : targetStatus === "pending" ? "Reactivated" : "Rejected"} successfully!`);
         setReviewModalData(null);
         fetchAbsentRequests();
       }
@@ -148,26 +168,81 @@ const AdminAbsentRequests = () => {
     }
   };
 
-  // Quick Direct Approve
+  // Quick Direct Approve (Accept)
   const handleQuickApprove = async (request) => {
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
+      const reviewer = getReviewerName();
       const res = await axios.patch(
         `${API}/api/atd/admin/absent-requests/${request._id}`,
         {
           status: "approved",
-          reviewNote: "Approved by Admin",
-          reviewedBy: "Admin"
+          reviewNote: `Accepted & Approved by ${reviewer}`,
+          reviewedBy: reviewer
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: getAuthHeaders(),
+          withCredentials: true
+        }
       );
 
       if (res.data.success) {
-        toast.success(`Approved leave for ${request.userName} on ${request.date}!`);
+        toast.success(`Accepted leave for ${request.userName} on ${request.date}!`);
         fetchAbsentRequests();
       }
     } catch (err) {
       toast.error("Failed to approve request");
+    }
+  };
+
+  // Quick Direct Reject
+  const handleQuickReject = async (request) => {
+    try {
+      const reviewer = getReviewerName();
+      const res = await axios.patch(
+        `${API}/api/atd/admin/absent-requests/${request._id}`,
+        {
+          status: "rejected",
+          reviewNote: `Rejected by ${reviewer}`,
+          reviewedBy: reviewer
+        },
+        {
+          headers: getAuthHeaders(),
+          withCredentials: true
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(`Rejected leave for ${request.userName} on ${request.date}!`);
+        fetchAbsentRequests();
+      }
+    } catch (err) {
+      toast.error("Failed to reject request");
+    }
+  };
+
+  // Quick Direct Reactivate (Reset back to Pending)
+  const handleQuickReactivate = async (request) => {
+    try {
+      const reviewer = getReviewerName();
+      const res = await axios.patch(
+        `${API}/api/atd/admin/absent-requests/${request._id}`,
+        {
+          status: "pending",
+          reviewNote: `Reactivated to Pending review by ${reviewer}`,
+          reviewedBy: reviewer
+        },
+        {
+          headers: getAuthHeaders(),
+          withCredentials: true
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(`Reactivated absent request for ${request.userName} on ${request.date}!`);
+        fetchAbsentRequests();
+      }
+    } catch (err) {
+      toast.error("Failed to reactivate request");
     }
   };
 
@@ -181,9 +256,9 @@ const AdminAbsentRequests = () => {
 
     setSubmittingHoliday(true);
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
       const res = await axios.post(`${API}/api/atd/admin/holidays`, newHoliday, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       if (res.data.success) {
         toast.success("Holiday added to calendar!");
@@ -202,9 +277,9 @@ const AdminAbsentRequests = () => {
   const handleDeleteHoliday = async (id, name) => {
     if (!window.confirm(`Are you sure you want to remove holiday "${name}"?`)) return;
     try {
-      const token = localStorage.getItem("adminToken") || localStorage.getItem("atdToken");
       const res = await axios.delete(`${API}/api/atd/admin/holidays/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       if (res.data.success) {
         toast.success("Holiday removed");
@@ -229,7 +304,7 @@ const AdminAbsentRequests = () => {
   }, [requests, searchQuery]);
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen font-sans ml-[280px] mt-[70px] p-6 sm:p-8 text-slate-800">
+    <div className="bg-[#f8fafc] min-h-screen font-sans lg:ml-[265px] xl:ml-[280px] mt-[70px] p-6 sm:p-8 text-slate-800">
       <Toaster position="top-center" reverseOrder={false} />
 
       {/* ========================================================= */}
@@ -245,24 +320,34 @@ const AdminAbsentRequests = () => {
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">
                 Absent & Leave Requests
               </h1>
-              <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200">
-                Admin Approval
+              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${isHR ? "bg-indigo-50 text-indigo-700 border-indigo-200" : "bg-amber-50 text-amber-700 border-amber-200"}`}>
+                {isHR ? "HR Portal Operations" : "Admin & HR Management"}
               </span>
             </div>
             <p className="text-slate-500 text-xs mt-1">
-              Validate employee absence reasons. Per policy: 2 days/month are paid; 3rd+ day or unapproved absence is deducted.
+              Review employee absence reasons: <strong>Accept (Approve)</strong>, <strong>Reject</strong>, or <strong>Reactivate</strong> pending requests.
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Link
-            to="/attendcal"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-200 transition"
-          >
-            <span>Attendance Salary Calc</span>
-            <ChevronRight size={14} />
-          </Link>
+          {isHR ? (
+            <Link
+              to="/hrdashboard"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-200 transition"
+            >
+              <span>Back to Attendance</span>
+              <ChevronRight size={14} />
+            </Link>
+          ) : (
+            <Link
+              to="/attendcal"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-xl border border-indigo-200 transition"
+            >
+              <span>Attendance Salary Calc</span>
+              <ChevronRight size={14} />
+            </Link>
+          )}
 
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
@@ -295,11 +380,10 @@ const AdminAbsentRequests = () => {
       <div className="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
         <button
           onClick={() => setActiveTab("requests")}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${
-            activeTab === "requests"
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === "requests"
               ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
               : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-          }`}
+            }`}
         >
           <CalendarX size={15} />
           <span>Employee Leave Requests</span>
@@ -310,11 +394,10 @@ const AdminAbsentRequests = () => {
 
         <button
           onClick={() => setActiveTab("holidays")}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${
-            activeTab === "holidays"
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === "holidays"
               ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
               : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-          }`}
+            }`}
         >
           <Calendar size={15} />
           <span>Holidays & Sundays Calendar</span>
@@ -396,11 +479,10 @@ const AdminAbsentRequests = () => {
                 <button
                   key={s}
                   onClick={() => setStatusFilter(s)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition ${
-                    statusFilter === s
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition ${statusFilter === s
                       ? "bg-slate-900 text-white shadow-sm"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }`}
+                    }`}
                 >
                   {s}
                 </button>
@@ -489,28 +571,26 @@ const AdminAbsentRequests = () => {
 
                           <td className="py-4 px-5">
                             <span
-                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                                r.status === "approved"
+                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${r.status === "approved"
                                   ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
                                   : r.status === "rejected"
-                                  ? "bg-rose-100 text-rose-800 border border-rose-200"
-                                  : "bg-amber-100 text-amber-800 border border-amber-200"
-                              }`}
+                                    ? "bg-rose-100 text-rose-800 border border-rose-200"
+                                    : "bg-amber-100 text-amber-800 border border-amber-200"
+                                }`}
                             >
                               <span
-                                className={`w-1.5 h-1.5 rounded-full ${
-                                  r.status === "approved"
+                                className={`w-1.5 h-1.5 rounded-full ${r.status === "approved"
                                     ? "bg-emerald-600"
                                     : r.status === "rejected"
-                                    ? "bg-rose-600"
-                                    : "bg-amber-600"
-                                }`}
+                                      ? "bg-rose-600"
+                                      : "bg-amber-600"
+                                  }`}
                               />
                               {r.status === "approved"
                                 ? "Approved (Valid Leave)"
                                 : r.status === "rejected"
-                                ? "Rejected"
-                                : "Pending Review"}
+                                  ? "Rejected"
+                                  : "Pending Review"}
                             </span>
                           </td>
 
@@ -530,10 +610,10 @@ const AdminAbsentRequests = () => {
                                 <button
                                   onClick={() => handleQuickApprove(r)}
                                   className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-lg shadow-sm transition"
-                                  title="Approve immediately"
+                                  title="Accept & Approve leave"
                                 >
                                   <Check size={13} />
-                                  <span>Approve</span>
+                                  <span>Accept</span>
                                 </button>
 
                                 <button
@@ -546,12 +626,23 @@ const AdminAbsentRequests = () => {
                                 </button>
                               </div>
                             ) : (
-                              <button
-                                onClick={() => handleOpenReview(r, r.status === "approved" ? "rejected" : "approved")}
-                                className="text-[11px] font-bold text-slate-500 hover:text-indigo-600 underline"
-                              >
-                                Change to {r.status === "approved" ? "Rejected" : "Approved"}
-                              </button>
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  onClick={() => handleOpenReview(r, r.status === "approved" ? "rejected" : "approved")}
+                                  className="text-[11px] font-bold text-slate-500 hover:text-indigo-600 underline"
+                                >
+                                  Change to {r.status === "approved" ? "Reject" : "Accept"}
+                                </button>
+
+                                <button
+                                  onClick={() => handleQuickReactivate(r)}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold rounded-lg border border-amber-200 transition"
+                                  title="Reactivate to Pending for review"
+                                >
+                                  <RefreshCw size={12} />
+                                  <span>Reactivate</span>
+                                </button>
+                              </div>
                             )}
                           </td>
                         </tr>
@@ -657,13 +748,13 @@ const AdminAbsentRequests = () => {
 
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Admin Feedback Note (Optional)
+                  {isHR ? "HR Review Note (Optional)" : "Admin Review Note (Optional)"}
                 </label>
                 <textarea
                   rows={3}
                   value={adminReviewNote}
                   onChange={(e) => setAdminReviewNote(e.target.value)}
-                  placeholder="e.g. Critical deployment day, or Approved for medical reasons..."
+                  placeholder="e.g. Critical client meeting, approved medical leave, or personal emergency..."
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 text-xs focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -678,13 +769,20 @@ const AdminAbsentRequests = () => {
                 <button
                   onClick={handleConfirmReview}
                   disabled={submittingReview}
-                  className={`px-5 py-2 text-white text-xs font-black rounded-xl shadow-md transition ${
-                    reviewModalData.targetStatus === "approved"
+                  className={`px-5 py-2 text-white text-xs font-black rounded-xl shadow-md transition ${reviewModalData.targetStatus === "approved"
                       ? "bg-emerald-600 hover:bg-emerald-700"
-                      : "bg-rose-600 hover:bg-rose-700"
-                  }`}
+                      : reviewModalData.targetStatus === "pending"
+                        ? "bg-amber-600 hover:bg-amber-700"
+                        : "bg-rose-600 hover:bg-rose-700"
+                    }`}
                 >
-                  {submittingReview ? "Processing..." : `Confirm ${reviewModalData.targetStatus}`}
+                  {submittingReview
+                    ? "Processing..."
+                    : reviewModalData.targetStatus === "approved"
+                      ? "Confirm Accept"
+                      : reviewModalData.targetStatus === "pending"
+                        ? "Confirm Reactivate"
+                        : "Confirm Reject"}
                 </button>
               </div>
             </div>

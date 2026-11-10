@@ -247,16 +247,16 @@ exports.getAdminAbsentRequests = async (req, res) => {
   }
 };
 
-// 5. REVIEW ABSENT REQUEST (ADMIN APPROVE / REJECT)
+// 5. REVIEW ABSENT REQUEST (ADMIN / HR APPROVE / REJECT / REACTIVATE)
 exports.reviewAbsentRequest = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, reviewNote, reviewedBy } = req.body;
 
-    if (!["approved", "rejected"].includes(status)) {
+    if (!["approved", "rejected", "pending"].includes(status)) {
       return res.status(400).json({
         success: false,
-        message: "Status must be either 'approved' or 'rejected'"
+        message: "Status must be 'approved', 'rejected', or 'pending'"
       });
     }
 
@@ -267,14 +267,14 @@ exports.reviewAbsentRequest = async (req, res) => {
 
     request.status = status;
     request.reviewNote = reviewNote || request.reviewNote || "";
-    request.reviewedBy = reviewedBy || "Admin";
+    request.reviewedBy = reviewedBy || (req.user?.role === "HR" ? "HR Manager" : "Admin");
     request.reviewedAt = new Date();
 
     await request.save();
 
     res.status(200).json({
       success: true,
-      message: `Absent request ${status} successfully`,
+      message: `Absent request ${status === "pending" ? "reactivated to pending" : status} successfully`,
       data: request
     });
   } catch (error) {
