@@ -79,7 +79,7 @@ const offerLetterSchema = new mongoose.Schema(
     },
     ccEmail: {
       type: String,
-      default: "aravind@accenlearn.com"
+      default: "hr@accenlearn.com"
     },
     customNotes: {
       type: String,

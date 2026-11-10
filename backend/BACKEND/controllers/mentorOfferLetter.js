@@ -256,7 +256,7 @@ const sendMentorFreelanceOfferLetter = async ({
     from: `"Accenlearn Operations" <${process.env.SMTP_OPERATIONS_EMAIL}>`,
     replyTo: process.env.SMTP_OPERATIONS_EMAIL,
     to: email,
-    cc: "aravind@accenlearn.com",
+    cc: "hr@accenlearn.com",
     subject,
     html: body,
     priority: "normal",

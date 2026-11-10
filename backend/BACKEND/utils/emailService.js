@@ -20,6 +20,16 @@ const operationsTransporter = nodemailer.createTransport({
     }
 });
 
+const hrTransporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.SMTP_HR_EMAIL || "hr@accenlearn.com",
+        pass: process.env.SMTP_HR_PASS || "cgzx nzax gkhn pwyu",
+    }
+});
+
 const admissionsTransporter = transporter;
 const admissionsSender = process.env.SMTP_NOREPLY_EMAIL;
 const senderEmail = process.env.SMTP_NOREPLY_EMAIL;
@@ -954,6 +964,7 @@ const sendSkillEvaluationExecutiveNotification = async (executiveEmail, assessme
 module.exports = {
     transporter,
     operationsTransporter,
+    hrTransporter,
     sendWelcomeEmail,
     sendCredentialsEmail,
     sendCollegeCredentialsEmail,

@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const OfferLetter = require("../models/OfferLetter");
-const { transporter, operationsTransporter } = require("../utils/emailService");
+const { transporter, operationsTransporter, hrTransporter } = require("../utils/emailService");
 
 function xmlEscape(str) {
   if (str === null || str === undefined) return "";
@@ -191,7 +191,6 @@ async function generateOfferLetterPDFBuffer(details) {
     return lines;
   };
 
-  // Helper to add a page
   const createNewPage = () => {
     const page = pdfDoc.addPage([a4Width, a4Height]);
     if (pngImage) {
@@ -205,14 +204,51 @@ async function generateOfferLetterPDFBuffer(details) {
     return page;
   };
 
-  // ───────── PAGE 1 ─────────
   let currentPage = createNewPage();
   let cursorY = a4Height - 110;
 
+  const ensureSpace = (needed) => {
+    if (cursorY - needed < 70) {
+      currentPage = createNewPage();
+      cursorY = a4Height - 110;
+    }
+  };
+
+  const drawHeading = (text, size = 11) => {
+    ensureSpace(24);
+    currentPage.drawText(text, {
+      x: margin,
+      y: cursorY,
+      size,
+      font: timesBold,
+      color: rgb(0.1, 0.2, 0.5),
+    });
+    cursorY -= size + 5;
+  };
+
+  const drawParagraph = (text, size = 9, font = timesRoman, color = rgb(0.1, 0.1, 0.1), indent = 0) => {
+    const lines = wrapText(text, contentWidth - indent, font, size);
+    for (const line of lines) {
+      ensureSpace(size + 4);
+      if (line === "") {
+        cursorY -= 4;
+        continue;
+      }
+      currentPage.drawText(line, {
+        x: margin + indent,
+        y: cursorY,
+        size,
+        font,
+        color,
+      });
+      cursorY -= size + 3.5;
+    }
+    cursorY -= 4;
+  };
+
   // Title
-  const title = "OFFER LETTER";
-  currentPage.drawText(title, {
-    x: (a4Width - helveticaBold.widthOfTextAtSize(title, 14)) / 2,
+  currentPage.drawText("OFFER LETTER", {
+    x: (a4Width - helveticaBold.widthOfTextAtSize("OFFER LETTER", 14)) / 2,
     y: cursorY,
     size: 14,
     font: helveticaBold,
@@ -220,349 +256,282 @@ async function generateOfferLetterPDFBuffer(details) {
   });
   cursorY -= 25;
 
-  // Salutation & Date
+  // Dear & Date
   currentPage.drawText(`Dear ${candidateName}`, {
     x: margin,
     y: cursorY,
-    size: 11,
+    size: 10.5,
     font: timesBold,
     color: rgb(0, 0, 0),
   });
   const dateStr = `Date: ${offerDate}`;
   currentPage.drawText(dateStr, {
-    x: a4Width - margin - timesBold.widthOfTextAtSize(dateStr, 11),
+    x: a4Width - margin - timesBold.widthOfTextAtSize(dateStr, 10.5),
     y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0, 0, 0),
-  });
-  cursorY -= 20;
-
-  // Intro text
-  const intro = "Kindly go through the below details and let us know if you have any queries and/or acknowledge your agreement to the same.";
-  currentPage.drawText(intro, {
-    x: margin,
-    y: cursorY,
-    size: 9.5,
-    font: timesRoman,
-    color: rgb(0.1, 0.1, 0.1),
-  });
-  cursorY -= 22;
-
-  // Section: Employment Details
-  currentPage.drawText("Employment Details", {
-    x: margin,
-    y: cursorY,
-    size: 11.5,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 16;
-
-  const empDetails = [
-    ["Designation:", designation],
-    ["Date of Joining:", dateOfJoining],
-    ["Type of Employment:", letterType === "full_time" ? "Full Time Permanent" : "Internship"],
-    ["Department:", department],
-    ["Work Location:", workLocation],
-  ];
-
-  for (const [label, val] of empDetails) {
-    currentPage.drawText(label, {
-      x: margin + 10,
-      y: cursorY,
-      size: 9.5,
-      font: timesBold,
-      color: rgb(0, 0, 0),
-    });
-    const wrappedVal = wrapText(val, contentWidth - 140, timesRoman, 9.5);
-    for (let i = 0; i < wrappedVal.length; i++) {
-      currentPage.drawText(wrappedVal[i], {
-        x: margin + 140,
-        y: cursorY - (i * 12),
-        size: 9.5,
-        font: timesRoman,
-        color: rgb(0.1, 0.1, 0.1),
-      });
-    }
-    cursorY -= Math.max(16, wrappedVal.length * 12 + 4);
-  }
-
-  cursorY -= 8;
-
-  // Engagement paragraph
-  currentPage.drawText("Engagement", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const engagementText = letterType === "full_time"
-    ? `You are employed by the Company in the role of ${designation} in the ${department} department with Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.`
-    : `You are engaged by the Company in the role of ${designation} in the ${department} department with Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.`;
-
-  for (const line of wrapText(engagementText, contentWidth, timesRoman, 9.5)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 9.5,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 8;
-
-  // Period of Service
-  currentPage.drawText("Period of Service", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const periodText = letterType === "full_time"
-    ? `You shall be on a probationary period of ${probationPeriod} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
-    : `The internship is for a period of ${internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`;
-
-  for (const line of wrapText(periodText, contentWidth, timesRoman, 9.5)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 9.5,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 8;
-
-  // OJT Period
-  currentPage.drawText("On Job Training Period (OJT)", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const ojtText = `Please be advised that the training period will be of ${ojtDays}, which will be UNPAID. In the event of taking any leave during the On Job Training (OJT) period, it will be necessary to recommence the training from the initial day upon return. This policy ensures the comprehensive acquisition of the skills and knowledge essential for optimal performance in the designated role.`;
-  for (const line of wrapText(ojtText, contentWidth, timesRoman, 9.5)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 9.5,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 8;
-
-  // Remuneration
-  currentPage.drawText("Remuneration", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const remText = letterType === "full_time"
-    ? `After ${ojtDays} of OJT, you will be working on probation for the aforesaid period. Your total compensation will be INR ${fixedCompensation} per month + INR ${incentive} performance-based incentive. All benefits and allowances will be governed as per company policy.`
-    : `After ${ojtDays} of OJT, you will be offered a total compensation of INR ${fixedCompensation} per month + INR ${incentive} based on performance incentive. All benefits and allowances will be governed as per company policy.`;
-
-  for (const line of wrapText(remText, contentWidth, timesRoman, 9.5)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 9.5,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-
-  // ───────── PAGE 2 ─────────
-  currentPage = createNewPage();
-  cursorY = a4Height - 110;
-
-  // Terms & Deductions
-  currentPage.drawText("Deductions & Policies", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const deductions = [
-    "The remuneration for any calendar month shall be subject to deduction under the following conditions:",
-    "• Unexcused leaves (without prior notice and/or no notice whatsoever).",
-    "• Destruction of company property.",
-    "• Loss and/or theft of company data, leads, raw data, and client/prospects information.",
-  ];
-  for (const item of deductions) {
-    currentPage.drawText(item, {
-      x: margin,
-      y: cursorY,
-      size: 9,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 6;
-
-  // Working hours
-  currentPage.drawText("Working Hours Policy", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const hours = [
-    "• Login Time: 11:00 AM (grace period of 5 minutes allowed for unavoidable delays).",
-    "• Lunch Break: 1:30 PM – 2:30 PM | Tea Break: 5:45 PM – 6:00 PM",
-    "• Logout Time: Official logout time is 8:00 PM.",
-  ];
-  for (const item of hours) {
-    currentPage.drawText(item, {
-      x: margin,
-      y: cursorY,
-      size: 9,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 6;
-
-  // Target clause
-  if (letterType === "full_time") {
-    currentPage.drawText("Performance Expectations & Monthly Targets", {
-      x: margin,
-      y: cursorY,
-      size: 11,
-      font: timesBold,
-      color: rgb(0.1, 0.2, 0.5),
-    });
-    cursorY -= 14;
-    const targetClause = `Employees are required to maintain consistent productivity. Failing to meet the minimum monthly targets [${monthlyTargets}] during the probation period may result in an extension of probation or separation in accordance with company policy.`;
-    for (const line of wrapText(targetClause, contentWidth, timesRoman, 9)) {
-      currentPage.drawText(line, {
-        x: margin,
-        y: cursorY,
-        size: 9,
-        font: timesRoman,
-        color: rgb(0.1, 0.1, 0.1),
-      });
-      cursorY -= 13;
-    }
-    cursorY -= 6;
-  }
-
-  // Confidentiality
-  currentPage.drawText("Confidentiality & Non-Compete", {
-    x: margin,
-    y: cursorY,
-    size: 11,
-    font: timesBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const confText = "You are required to maintain strict confidentiality of all company, student, and client data during and after your employment. Remuneration is strictly confidential. You also agree not to engage in competing business activities or solicit employees/clients during and for six (6) months following the termination of employment.";
-  for (const line of wrapText(confText, contentWidth, timesRoman, 9)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 9,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 13;
-  }
-  cursorY -= 15;
-
-  // Acknowledgment section
-  currentPage.drawText("ACKNOWLEDGMENT & ACCEPTANCE", {
-    x: margin,
-    y: cursorY,
-    size: 10,
-    font: helveticaBold,
-    color: rgb(0.1, 0.2, 0.5),
-  });
-  cursorY -= 14;
-
-  const ackText = "This is to acknowledge that I have received a copy of this Offer Letter and understand that it contains important information on Company general policies and my obligations. I agree to read, understand, and adhere to Company policies.";
-  for (const line of wrapText(ackText, contentWidth, timesRoman, 8.5)) {
-    currentPage.drawText(line, {
-      x: margin,
-      y: cursorY,
-      size: 8.5,
-      font: timesRoman,
-      color: rgb(0.1, 0.1, 0.1),
-    });
-    cursorY -= 12;
-  }
-  cursorY -= 25;
-
-  // Signature lines
-  currentPage.drawText("Employee Signature: _______________________", {
-    x: margin,
-    y: cursorY,
-    size: 9,
-    font: timesBold,
-    color: rgb(0, 0, 0),
-  });
-  currentPage.drawText("HR Authorized Signatory: _______________________", {
-    x: a4Width - margin - 220,
-    y: cursorY,
-    size: 9,
+    size: 10.5,
     font: timesBold,
     color: rgb(0, 0, 0),
   });
   cursorY -= 18;
 
-  currentPage.drawText(`Candidate Name: ${candidateName}`, {
-    x: margin,
-    y: cursorY,
-    size: 9,
-    font: timesRoman,
-    color: rgb(0, 0, 0),
-  });
-  currentPage.drawText("Company: Accenlearn Solutions", {
-    x: a4Width - margin - 220,
-    y: cursorY,
-    size: 9,
-    font: timesRoman,
-    color: rgb(0, 0, 0),
-  });
-  cursorY -= 16;
+  drawParagraph(
+    "Kindly go through the below details and let us know if you have any queries and/or acknowledge your agreement to the same.",
+    9,
+    timesRoman,
+    rgb(0.2, 0.2, 0.2)
+  );
 
+  drawHeading("Employment Details");
+  const detailsTable = [
+    ["Designation:", designation],
+    ["Date of Joining:", dateOfJoining],
+    ["Type of Employment:", letterType === "full_time" ? "Full Time" : "Internship"],
+    ["Department:", department],
+    ["Work Location:", workLocation],
+  ];
+  for (const [k, v] of detailsTable) {
+    ensureSpace(16);
+    currentPage.drawText(k, {
+      x: margin + 8,
+      y: cursorY,
+      size: 9,
+      font: timesBold,
+      color: rgb(0, 0, 0),
+    });
+    const vLines = wrapText(v, contentWidth - 130, timesRoman, 9);
+    for (let i = 0; i < vLines.length; i++) {
+      if (i > 0) ensureSpace(13);
+      currentPage.drawText(vLines[i], {
+        x: margin + 130,
+        y: cursorY,
+        size: 9,
+        font: timesRoman,
+        color: rgb(0.1, 0.1, 0.1),
+      });
+      if (i < vLines.length - 1) cursorY -= 12;
+    }
+    cursorY -= 14;
+  }
+  cursorY -= 4;
+
+  drawHeading("Engagement");
+  drawParagraph(
+    `You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${designation} in the ${department} department with Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.`
+  );
+
+  drawHeading("Period of Service");
+  drawParagraph(
+    letterType === "full_time"
+      ? `You shall be on a probationary period of ${probationPeriod} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
+      : `The internship is for a period of ${internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`
+  );
+
+  drawHeading("On Job Training Period (OJT)");
+  drawParagraph(
+    `Please be advised that the training period will be of ${ojtDays}, which will be UNPAID. In the event of taking any leave during the On Job Training (OJT) period, it will be necessary to recommence the training from the initial day upon return. This policy ensures the comprehensive acquisition of the skills and knowledge essential for optimal performance in the designated role.`
+  );
+
+  drawHeading("Remuneration");
+  drawParagraph(
+    `After ${ojtDays} of OJT, you will be offered a total compensation of INR ${fixedCompensation} per month + INR ${incentive} ${
+      letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"
+    }. All benefits and allowances will be governed as per company policy.\nNote: ${
+      letterType === "full_time" ? "6-Month Probation period." : "4-Month Intern period."
+    }\nFor detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.`
+  );
+
+  drawHeading("Deductions");
+  drawParagraph(
+    "The remuneration for any calendar month shall be subject to deduction under the following conditions:\n• Unexcused leaves (without prior notice and/or no notice whatsoever).\n• Destruction of company property.\n• Loss and/or theft of company data, which includes but is not limited to leads, raw data, and information of clients/prospects; and misappropriation of company resources."
+  );
+
+  drawHeading("Working Hours Policy");
+  drawParagraph(
+    "Login Time: Employees are required to log in by 11:00 AM, with a grace period of 5 minutes allowed for unavoidable delays.\nLate Arrivals: Repeated late logins may be treated as leave or loss of pay as per company policy.\nBreak Schedule:\n• Lunch Break: 1:30 PM – 2:30 PM\n• Tea Break: 5:45 PM – 6:00 PM\nLogout Time: The official logout time is 8:00 PM. Employees may be required to extend working hours based on business requirements, including meetings, celebrations, or critical work for teams requiring additional presence."
+  );
+
+  drawHeading("Performance Expectation (Target-Based)");
+  drawParagraph(
+    `You are required to meet assigned performance targets and carry out your responsibilities diligently. Your performance will be reviewed periodically based on quality of work, productivity, and target achievement. Continuous failure to meet expectations may lead to performance improvement plans or further action as per company policy.${
+      letterType === "full_time"
+        ? ` Failing to meet the minimum monthly targets [${monthlyTargets}] during the probation period.`
+        : ""
+    }`
+  );
+
+  drawHeading("Confidentiality");
+  drawParagraph(
+    "You are required to maintain strict confidentiality of all company and client information during and after your employment. Your individual remuneration is purely between yourself and the company, and you are expected to preserve it and any changes made to it from time to time as personal and confidential."
+  );
+
+  drawHeading("Company Property");
+  drawParagraph(
+    "All company property must be used responsibly and returned in good condition upon separation from the organization."
+  );
+
+  drawHeading("Termination");
+  drawParagraph(
+    "The company reserves the right to terminate employment in accordance with company policies and applicable laws. Termination may occur in cases of misconduct, policy violations, or performance-related concerns."
+  );
+
+  // Acknowledgment section
+  ensureSpace(120);
+  drawHeading("ACKNOWLEDGMENT & ACCEPTANCE", 10);
+  drawParagraph(
+    "ALL EMPLOYEES MUST READ THIS LETTER, THEN FILL OUT AND RETURN THIS PORTION TO THE HUMAN RESOURCES DEPARTMENT WITHIN ONE WEEK OF JOINING\nThis is to acknowledge that I have received a copy of this Offer Letter and understand that it contains important information on the Company’s general policies and on my obligations as an intern. I am expected to read, understand, and adhere to Company policies and I am governed by the contents of this letter. I understand that the Company may change, rescind, or add to any policies described herein from time to time, and that the most recent policies shall prevail.",
+    8.5
+  );
+
+  ensureSpace(45);
+  currentPage.drawText("Employee Signature: _______________________", {
+    x: margin,
+    y: cursorY,
+    size: 8.5,
+    font: timesBold,
+    color: rgb(0, 0, 0),
+  });
+  currentPage.drawText(`Date: ${offerDate}`, {
+    x: a4Width - margin - 150,
+    y: cursorY,
+    size: 8.5,
+    font: timesBold,
+    color: rgb(0, 0, 0),
+  });
+  cursorY -= 15;
+  currentPage.drawText(`Employee Name: ${candidateName}`, {
+    x: margin,
+    y: cursorY,
+    size: 8.5,
+    font: timesRoman,
+    color: rgb(0, 0, 0),
+  });
+  cursorY -= 25;
+
+  // ANNEXURE-A
+  currentPage = createNewPage();
+  cursorY = a4Height - 110;
+
+  currentPage.drawText("“ANNEXURE-A”", {
+    x: (a4Width - helveticaBold.widthOfTextAtSize("“ANNEXURE-A”", 13)) / 2,
+    y: cursorY,
+    size: 13,
+    font: helveticaBold,
+    color: rgb(0.1, 0.2, 0.5),
+  });
+  cursorY -= 18;
+  currentPage.drawText("TERMS OF EMPLOYMENT", {
+    x: (a4Width - helveticaBold.widthOfTextAtSize("TERMS OF EMPLOYMENT", 11)) / 2,
+    y: cursorY,
+    size: 11,
+    font: helveticaBold,
+    color: rgb(0.12, 0.16, 0.24),
+  });
+  cursorY -= 22;
+
+  const annexureSections = [
+    [
+      "1. Employment",
+      "Your employment with the Company will commence from the date of joining mentioned in this letter and will be governed by Company policies.",
+    ],
+    [
+      "2. Roles & Responsibilities",
+      "You are expected to perform your duties diligently, meet assigned targets, and follow instructions from your reporting manager.",
+    ],
+    [
+      "3. Working Hours",
+      "You are required to adhere to the Company’s working hours and attendance policies as communicated. Given your role, you may need to work beyond standard hours when necessary; the Company will strive to provide advance notice, but this may not always be feasible.",
+    ],
+    [
+      "4. Policy Compliance",
+      "You are expected to comply with all Company policies, rules, and regulations as updated from time to time.",
+    ],
+    [
+      "Effectiveness",
+      "Your employment with Accenlearn will be governed by the Company’s policies, as modified from time to time at the Company’s discretion. These Terms of Employment must be read as part of all of the Company’s current policies. This agreement becomes effective on the commencement of your internship. The Company reserves the right to withdraw the offer even after acceptance if it becomes aware of any material information that was concealed or misrepresented by you. You are requested to abide by the guidelines and regulations of the office and to maintain the code of conduct and disciplinary rules, which may be framed or modified from time to time. You will employ yourself efficiently and diligently to the best of your ability, carry out all duties assigned to you, and comply with all lawful directions given by the Management.",
+    ],
+    [
+      "Employee Conduct",
+      "The success of our organization hinges on how we treat each other. All managers and employees are expected to engage with our clients, vendors, guests, and fellow team members with respect and consideration. Behaviours such as rudeness, gossiping, use of profanity, yelling, or employing vulgar or offensive language, along with suggestive or sarcastic gestures, are unacceptable and may result in disciplinary measures, which could include immediate termination.\nTo uphold a professional atmosphere, employees are prohibited from engaging in personal relationships with clients or guests if such relationships are deemed by the Company to create conflicts of interest, disrupt the workplace, or contribute to a negative or unprofessional environment. Should the Company find that a relationship poses an actual or potential issue, it reserves the right to take appropriate action, which may include transfers, reassignments, shift changes, or termination.",
+    ],
+    [
+      "Reassignment",
+      "The Company reserves the right to reassign you at any time to a comparable position for which you are deemed qualified, either within the Company or as a secondment to an affiliated entity. Unless a different agreement is made in writing, any reassignment will be governed by the terms and conditions outlined in this contract and will not be considered a termination of this contract or your employment with the Company.",
+    ],
+    [
+      "Termination of Employment",
+      "The Company may terminate your employment immediately, with or without notice, under the following circumstances:\n• Serious Offences: Embezzlement, intoxication, illegal drug abuse, unauthorized absences that exceed Company leave policies, unauthorized disclosure or misuse of the Company’s confidential information, gross insubordination, or receipt of any improper rebate, kickback, or similar compensation related to any opportunity involving the Company, its affiliates, and their employees, contractors, and clients.\n• Misconduct: Willful or intentional misconduct in connection with your duties, or being arrested, charged, or convicted of a criminal offence that the Company believes could affect your ability to perform your responsibilities or damage the Company’s reputation.\n• Acts of Moral Turpitude: Crimes characterized by baseness or depravity, such as rape, forgery, theft, solicitation, etc.\n• Sexual Harassment: Being found guilty under Company policy and local laws.\n• Reputational Threats: Any action likely to harm the Company’s reputation.\n• Breach of Contract: Any misconduct or violation of the terms of this contract, including Company policies.\n• Loss of Business: Any activity that leads to a loss of business.\n• Incompetence: Prolonged failure to perform duties effectively, as assessed by the Company.",
+    ],
+    [
+      "Return of Company Property",
+      "Employees are required to return all Company property in their possession or control immediately upon termination of employment, regardless of the reason. The Company reserves the right to take necessary actions to protect or recover its property. Arrangements should also be made to settle any outstanding dues with the Company, and final settlement will be processed as per the Company’s settlement policy.",
+    ],
+    [
+      "Recreational, Social or Athletic Disclaimer Notice",
+      "Your employer and its insurance provider will not be responsible for any compensation or benefits for injuries sustained during your voluntary participation in off-duty recreational, social, or athletic activities that are not related to your work responsibilities.",
+    ],
+    [
+      "Code of Ethics Policy",
+      "The integrity of the Company is its most valuable asset, closely tied to the behaviour of its employees. All employees are expected to fully commit their efforts and attention to their roles, exercise sound judgment, uphold high ethical standards, and steer clear of situations that could create an actual or potential conflict between their personal interests and those of the Company.\nEmployees must never leverage their positions within the Company or with its clients or guests for personal gain, to further their own interests, or to seek favours or benefits for themselves or their families. A conflict of interest arises when an employee’s loyalties or actions are divided between the interests of the Company and those of another party, such as a competitor, supplier, client, or guest. Both actual conflicts and the appearance of conflicts should be avoided.\nCommon conflicts include: working for a competitor/supplier; engaging in self-employment competing with the Company; using proprietary information; holding direct/indirect financial interests; or committing Company to external sponsorships without authorization.",
+    ],
+    [
+      "Non-Disclosure",
+      "During your employment with the Company, you may gain access to certain “Confidential Information.” You agree to maintain strict confidentiality at all times; use it solely for fulfilling authorized tasks; refrain from unauthorized disclosure; return all information upon conclusion of employment; and permanently destroy copies upon termination.",
+    ],
+    [
+      "Non-Compete Agreement",
+      "The Employee agrees that for a period of six (6) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India that competes, or is likely to compete, with the Company’s business.",
+    ],
+    [
+      "Non-Solicitation Agreement",
+      "During the term of this agreement and for a period of six (6) months following its termination or expiration, you agree not to induce or attempt to induce any employee to terminate employment; interfere with employee relationships; hire former employees; or solicit any customer of the Company.",
+    ],
+    [
+      "Intellectual Property",
+      "All work products created during your employment shall be considered “works made for hire” under applicable copyright laws. To the extent that any work product does not qualify as a work made for hire, you hereby irrevocably assign all worldwide rights, title, and interest in such work product to the Company and its affiliates.",
+    ],
+  ];
+
+  for (const [secTitle, secText] of annexureSections) {
+    drawHeading(secTitle, 9.5);
+    drawParagraph(secText, 8.5);
+  }
+
+  ensureSpace(80);
+  drawParagraph(
+    "“We sincerely hope you have a rewarding learning experience with us and that you grow in your role.”\nKindly confirm your acceptance by signing below.",
+    8.5,
+    timesBold,
+    rgb(0.1, 0.2, 0.5)
+  );
+  cursorY -= 5;
+
+  ensureSpace(40);
+  currentPage.drawText("Employee Signature: _______________________", {
+    x: margin,
+    y: cursorY,
+    size: 8.5,
+    font: timesBold,
+    color: rgb(0, 0, 0),
+  });
+  currentPage.drawText("HR Authorized Signatory: _______________________", {
+    x: a4Width - margin - 200,
+    y: cursorY,
+    size: 8.5,
+    font: timesBold,
+    color: rgb(0, 0, 0),
+  });
+  cursorY -= 14;
   currentPage.drawText(`Date: ${offerDate}`, {
     x: margin,
     y: cursorY,
-    size: 9,
+    size: 8.5,
     font: timesRoman,
     color: rgb(0, 0, 0),
   });
   currentPage.drawText(`Date: ${offerDate}`, {
-    x: a4Width - margin - 220,
+    x: a4Width - margin - 200,
     y: cursorY,
-    size: 9,
+    size: 8.5,
     font: timesRoman,
     color: rgb(0, 0, 0),
   });
@@ -592,7 +561,7 @@ async function sendOfferLetterEmail(details) {
     probationPeriod = "six (6) months",
     ojtDays = "10 working days",
     emailSubject,
-    ccEmail = "aravind@accenlearn.com",
+    ccEmail = "hr@accenlearn.com",
     customNotes = "",
     sentBy = "HR Manager"
   } = details;
@@ -601,9 +570,9 @@ async function sendOfferLetterEmail(details) {
     throw new Error("Candidate name and email are required.");
   }
 
-  // 1. Generate DOCX buffer (Word document only)
-  const docxBuffer = await generateOfferLetterDocxBuffer(details);
-  const docxFilename = getSafeFilename(candidateName, "docx");
+  // 1. Generate PDF buffer (PDF only)
+  const pdfBuffer = await generateOfferLetterPDFBuffer(details);
+  const pdfFilename = getSafeFilename(candidateName, "pdf");
 
   const effectiveSubject =
     emailSubject ||
@@ -690,7 +659,7 @@ async function sendOfferLetterEmail(details) {
           <div class="action-box">
             <strong>Next Steps:</strong>
             <ul style="margin: 8px 0 0 0; padding-left: 20px;">
-              <li>Please review the attached official Offer Letter Word document (<strong>.docx</strong>).</li>
+              <li>Please review the attached official Offer Letter document (<strong>.pdf</strong>).</li>
               <li>Acknowledge and accept by replying to this email within <strong>48 hours</strong>.</li>
               <li>Submit a signed copy of the letter to the HR department on your date of joining.</li>
             </ul>
@@ -709,7 +678,7 @@ async function sendOfferLetterEmail(details) {
         </div>
 
         <div class="footer">
-          This is an official communication from Accenlearn HR Portal. Please do not hesitate to contact us at operation@accenlearn.com for any queries.
+          This is an official communication from Accenlearn HR Portal. Please do not hesitate to contact us at hr@accenlearn.com for any queries.
         </div>
       </div>
     </body>
@@ -718,20 +687,19 @@ async function sendOfferLetterEmail(details) {
 
   const attachments = [
     {
-      filename: docxFilename,
-      content: docxBuffer,
-      contentType:
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      filename: pdfFilename,
+      content: pdfBuffer,
+      contentType: "application/pdf",
     },
   ];
 
-  const senderEmail = process.env.SMTP_OPERATIONS_EMAIL || "operation@accenlearn.com";
+  const senderEmail = process.env.SMTP_HR_EMAIL || "hr@accenlearn.com";
 
   const mailOptions = {
     from: `"Accenlearn HR Team" <${senderEmail}>`,
     replyTo: senderEmail,
     to: candidateEmail,
-    cc: ccEmail || "aravind@accenlearn.com",
+    cc: ccEmail || "hr@accenlearn.com",
     subject: effectiveSubject,
     html: emailHtml,
     priority: "normal",
@@ -742,7 +710,7 @@ async function sendOfferLetterEmail(details) {
     attachments,
   };
 
-  const activeTransporter = operationsTransporter || transporter;
+  const activeTransporter = hrTransporter || operationsTransporter || transporter;
   let emailResponse = "";
 
   try {

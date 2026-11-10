@@ -63,6 +63,7 @@ const HRSendOfferLetter = () => {
   const [previewSection, setPreviewSection] = useState("all"); // "all" | "letter" | "annexure"
   const [letterType, setLetterType] = useState("intern"); // "intern" | "full_time"
   const [loadingSend, setLoadingSend] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
   const [loadingDocx, setLoadingDocx] = useState(false);
   const [historyList, setHistoryList] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
@@ -88,7 +89,7 @@ const HRSendOfferLetter = () => {
     monthlyTargets: "target to be confirmed by management",
     probationPeriod: "six (6) months",
     // Email specifics
-    ccEmail: "aravind@accenlearn.com",
+    ccEmail: "hr@accenlearn.com",
     customNotes: "",
     workLocation:
       "Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.",
@@ -193,7 +194,37 @@ const HRSendOfferLetter = () => {
     return true;
   };
 
-  // 1. Download DOCX
+  // 1. Download PDF
+  const handleDownloadPdf = async () => {
+    if (!validateForm()) return;
+    setLoadingPdf(true);
+    try {
+      const payload = getPayload();
+      const res = await axios.post(`${API}/api/hr/offer-letter/generate-pdf`, payload, {
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], {
+        type: "application/pdf",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const cleanName = (payload.candidateName || "Candidate").replace(/[^a-zA-Z0-9_-]/g, "_");
+      link.setAttribute("download", `Accenlearn_Offer_Letter_${cleanName}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success("PDF offer letter downloaded successfully!");
+    } catch (err) {
+      console.error("Download PDF failed:", err);
+      toast.error("Failed to generate PDF file.");
+    } finally {
+      setLoadingPdf(false);
+    }
+  };
+
+  // 2. Download DOCX
   const handleDownloadDocx = async () => {
     if (!validateForm()) return;
     setLoadingDocx(true);
@@ -898,7 +929,7 @@ Date:	`;
                         name="ccEmail"
                         value={formData.ccEmail}
                         onChange={handleChange}
-                        placeholder="aravind@accenlearn.com"
+                        placeholder="hr@accenlearn.com"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                       />
                     </div>
@@ -910,8 +941,8 @@ Date:	`;
                       <input
                         type="text"
                         disabled
-                        value={`Accenlearn HR Team (${hrName})`}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-500 cursor-not-allowed"
+                        value="Accenlearn HR Team <hr@accenlearn.com>"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-700 font-semibold cursor-not-allowed"
                       />
                     </div>
 
@@ -974,7 +1005,7 @@ Date:	`;
                   </div>
 
                   <div className="space-y-3">
-                    {/* Primary Button: Send Email */}
+                    {/* Primary Button: Send PDF via Email */}
                     <button
                       type="submit"
                       disabled={loadingSend}
@@ -983,31 +1014,51 @@ Date:	`;
                       {loadingSend ? (
                         <>
                           <RefreshCw size={18} className="animate-spin" />
-                          Sending Email...
+                          Sending PDF via Email...
                         </>
                       ) : (
                         <>
                           <Send size={18} />
-                          Send Offer Letter via Email
+                          Send Offer Letter (PDF) via Email
                         </>
                       )}
                     </button>
 
-                    {/* Secondary Button: Download DOCX */}
+                    {/* Secondary Button: Download PDF */}
+                    <button
+                      type="button"
+                      onClick={handleDownloadPdf}
+                      disabled={loadingPdf}
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+                    >
+                      {loadingPdf ? (
+                        <>
+                          <RefreshCw size={16} className="animate-spin" />
+                          Generating PDF...
+                        </>
+                      ) : (
+                        <>
+                          <Download size={16} />
+                          Download PDF (.pdf)
+                        </>
+                      )}
+                    </button>
+
+                    {/* Tertiary Button: Download DOCX */}
                     <button
                       type="button"
                       onClick={handleDownloadDocx}
                       disabled={loadingDocx}
-                      className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-sm transition-all disabled:opacity-50 cursor-pointer"
+                      className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all disabled:opacity-50 cursor-pointer"
                     >
                       {loadingDocx ? (
                         <>
-                          <RefreshCw size={16} className="animate-spin" />
+                          <RefreshCw size={14} className="animate-spin" />
                           Generating Word (.docx)...
                         </>
                       ) : (
                         <>
-                          <Download size={16} className="text-indigo-600" />
+                          <Download size={14} className="text-slate-500" />
                           Download Word (.docx)
                         </>
                       )}
@@ -1023,10 +1074,10 @@ Date:	`;
                     </button>
                   </div>
 
-                  <div className="mt-6 p-3 bg-amber-50 rounded-xl border border-amber-200/60 text-[11px] text-amber-800 flex items-start gap-2">
-                    <Info size={16} className="flex-shrink-0 mt-0.5 text-amber-600" />
+                  <div className="mt-6 p-3 bg-indigo-50 rounded-xl border border-indigo-200/60 text-[11px] text-indigo-900 flex items-start gap-2">
+                    <Info size={16} className="flex-shrink-0 mt-0.5 text-indigo-600" />
                     <span>
-                      Generated documents are created directly from the authentic Accenlearn templates with all highlighted areas replaced and yellow markers removed.
+                      The offer letter will be delivered to the candidate as an official <strong>PDF document (.pdf)</strong> with full Accenlearn letterhead and complete Terms of Employment.
                     </span>
                   </div>
                 </div>
@@ -1059,10 +1110,21 @@ Date:	`;
                 </button>
                 <button
                   type="button"
-                  onClick={handleDownloadDocx}
-                  className="px-3.5 py-2 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-xs font-black hover:bg-indigo-100 transition-colors flex items-center gap-1.5"
+                  onClick={handleDownloadPdf}
+                  disabled={loadingPdf}
+                  className="px-3.5 py-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-600 text-xs font-black hover:bg-rose-100 transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <Download size={14} /> Download DOCX
+                  {loadingPdf ? <RefreshCw size={14} className="animate-spin" /> : <Download size={14} />}
+                  Download PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadDocx}
+                  disabled={loadingDocx}
+                  className="px-3.5 py-2 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-xs font-black hover:bg-indigo-100 transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  {loadingDocx ? <RefreshCw size={14} className="animate-spin" /> : <Download size={14} />}
+                  Download DOCX
                 </button>
                 <button
                   type="button"
@@ -1564,11 +1626,21 @@ Date:	`;
                         <td className="py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
                           <button
                             type="button"
+                            onClick={() => handleDownloadHistoryItem(item._id, item.candidateName, "pdf")}
+                            className="p-1.5 rounded-lg text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors inline-flex items-center gap-0.5"
+                            title="Download PDF (.pdf)"
+                          >
+                            <Download size={14} />
+                            <span className="text-[10px] font-bold">PDF</span>
+                          </button>
+                          <button
+                            type="button"
                             onClick={() => handleDownloadHistoryItem(item._id, item.candidateName, "docx")}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors inline-flex items-center gap-0.5"
                             title="Download Word (.docx)"
                           >
                             <Download size={14} />
+                            <span className="text-[10px] font-bold">DOCX</span>
                           </button>
                           <button
                             type="button"

@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
-const { transporter, operationsTransporter } = require("../utils/emailService");
+const { transporter, operationsTransporter, hrTransporter } = require("../utils/emailService");
 
 const createOfferLetterPDF = async (pdfword1, pdfword2) => {
     const pdfDoc = await PDFDocument.create();
@@ -147,11 +147,12 @@ DATE:
 
     const pdfBuffer = await createOfferLetterPDF(pdfword1, pdfword2);
 
+    const senderEmail = process.env.SMTP_HR_EMAIL || "hr@accenlearn.com";
     const mailOptions = {
-        from: `"Accenlearn HR Team" <${process.env.SMTP_OPERATIONS_EMAIL}>`,
-        replyTo: process.env.SMTP_OPERATIONS_EMAIL,
+        from: `"Accenlearn HR Team" <${senderEmail}>`,
+        replyTo: senderEmail,
         to: email,
-        cc: "aravind@accenlearn.com",
+        cc: "hr@accenlearn.com",
       
         subject,
         html: body,
@@ -170,8 +171,10 @@ DATE:
         ],
     };
 
+    const activeTransporter = hrTransporter || operationsTransporter;
+
     return new Promise((resolve, reject) => {
-        operationsTransporter.sendMail(mailOptions, (error, info) => {
+        activeTransporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error("Error sending email:", error);
                 reject(error);

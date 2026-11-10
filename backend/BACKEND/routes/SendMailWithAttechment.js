@@ -83,7 +83,7 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
-const formidable = require("formidable"); 
+const formidable = require("formidable");
 const path = require("path");
 const fs = require("fs");
 const { transporter, operationsTransporter } = require("../utils/emailService");
@@ -91,7 +91,7 @@ const { buildPremiumEmail, SVGS, COMPANY_NAME, COMPANY_SUPPORT_EMAIL } = require
 
 router.post("/sendedOfferLetterMail", (req, res) => {
   const form = new formidable.IncomingForm();
-  form.uploadDir = path.join(__dirname, 'uploads'); 
+  form.uploadDir = path.join(__dirname, 'uploads');
   form.keepExtensions = true;
 
   form.parse(req, async (err, fields, files) => {
@@ -105,10 +105,10 @@ router.post("/sendedOfferLetterMail", (req, res) => {
     const file = files.offerLetter;
 
     if (!file) {
-        return res.status(400).json({ message: "No file uploaded." });
-      }
+      return res.status(400).json({ message: "No file uploaded." });
+    }
 
-      console.log("File details:", file);
+    console.log("File details:", file);
     const content = `
       <p style="font-size: 16px; color: #0f172a; font-weight: 600;">Dear ${fullname},</p>
       
@@ -131,15 +131,15 @@ router.post("/sendedOfferLetterMail", (req, res) => {
       const attachment = {
         path: file.filepath,
         filename: file.originalFilename,
-        contentType: 'application/pdf', 
+        contentType: 'application/pdf',
       };
 
 
       const mailOptions = {
         from: process.env.SMTP_OPERATIONS_EMAIL,
         to: email,
-        cc: "aravind@accenlearn.com",
-       
+        cc: "hr@accenlearn.com",
+
         subject: `Offer Letter - ${domain} Intern`,
         html: emailMessage,
         priority: "high",
@@ -158,7 +158,7 @@ router.post("/sendedOfferLetterMail", (req, res) => {
           }
         });
       });
-     
+
       console.log("File Path to Delete:", file.filepath);
       if (file.filepath) {
         fs.unlink(file.filepath, (err) => {
