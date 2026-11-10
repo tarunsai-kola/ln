@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const MentorCheckIn = require("../models/MentorCheckIn");
 const Interviewer = require("../models/Interviewer");
+const MentorOnboarding = require("../models/MentorOnboarding");
 const Operation = require("../models/CreateOperation");
 const AdvOperation = require("../models/CreateAdvOperation");
 const CreateCourse = require("../models/CreateCourse");
@@ -14,6 +15,76 @@ function extractDriveId(url) {
     if (match) return match[1];
     const matchId = url.match(/id=([a-zA-Z0-9_-]+)/);
     if (matchId) return matchId[1];
+    return "";
+}
+
+// Helper to resolve mentor phone with comprehensive fallbacks across collections
+async function resolveMentorPhone(m, checkIn = null) {
+    if (!m) return "";
+    let phone =
+        m.phone ||
+        m.whatsAppNumber ||
+        m.phoneNumber ||
+        m.mobileNumber ||
+        m.mobile ||
+        m.contactNumber ||
+        m.contact ||
+        "";
+    if (phone && String(phone).trim() !== "") return String(phone).trim();
+
+    // 1. Check current checkIn object
+    if (checkIn && checkIn.mentorPhone && String(checkIn.mentorPhone).trim() !== "") {
+        return String(checkIn.mentorPhone).trim();
+    }
+
+    // 2. Check any previous check-in for this mentor
+    try {
+        if (m._id) {
+            const anyCheckIn = await MentorCheckIn.findOne({
+                mentorId: m._id,
+                mentorPhone: { $exists: true, $ne: "" },
+            }).lean();
+            if (anyCheckIn && anyCheckIn.mentorPhone && String(anyCheckIn.mentorPhone).trim() !== "") {
+                phone = String(anyCheckIn.mentorPhone).trim();
+                Interviewer.updateOne({ _id: m._id }, { $set: { phone } }).exec().catch(() => {});
+                return phone;
+            }
+        }
+    } catch (e) {}
+
+    // 3. Check MentorOnboarding application
+    try {
+        const query = [];
+        if (m.email) {
+            query.push({ email: m.email.toLowerCase().trim() });
+            query.push({ companyEmail: m.email.toLowerCase().trim() });
+        }
+        if (m.companyEmail) {
+            query.push({ email: m.companyEmail.toLowerCase().trim() });
+            query.push({ companyEmail: m.companyEmail.toLowerCase().trim() });
+        }
+        if (m.fullname) {
+            query.push({ fullname: new RegExp(`^${m.fullname.trim()}$`, "i") });
+        }
+
+        if (query.length > 0) {
+            const onboarding = await MentorOnboarding.findOne({ $or: query }).lean();
+            if (onboarding) {
+                phone = onboarding.phone || onboarding.whatsAppNumber || "";
+                if (phone && String(phone).trim() !== "") {
+                    phone = String(phone).trim();
+                    if (m._id) {
+                        Interviewer.updateOne(
+                            { _id: m._id },
+                            { $set: { phone, whatsAppNumber: onboarding.whatsAppNumber || phone } }
+                        ).exec().catch(() => {});
+                    }
+                    return phone;
+                }
+            }
+        }
+    } catch (e) {}
+
     return "";
 }
 
@@ -86,11 +157,25 @@ router.get("/all", async (req, res) => {
             .limit(parseInt(limit, 10))
             .lean();
 
+        const enrichedCheckins = await Promise.all(
+            checkins.map(async (c) => {
+                if (c.mentorPhone && c.mentorPhone.trim() !== "") {
+                    return c;
+                }
+                const mentor = await Interviewer.findById(c.mentorId).lean();
+                const phone = await resolveMentorPhone(mentor, c);
+                return {
+                    ...c,
+                    mentorPhone: phone || "",
+                };
+            })
+        );
+
         res.status(200).json({
             total,
             page: parseInt(page, 10),
             totalPages: Math.ceil(total / parseInt(limit, 10)),
-            checkins,
+            checkins: enrichedCheckins,
         });
     } catch (error) {
         console.error("Error fetching mentor check-ins:", error);
@@ -205,11 +290,15 @@ router.get("/today-mentor-status", async (req, res) => {
                           .sort({ sessionDate: -1, createdAt: -1 })
                           .lean();
 
+                const phone = await resolveMentorPhone(m, todayUpload || lastCheckIn);
+
                 return {
                     mentorId: m._id,
                     mentorName: m.fullname,
                     mentorEmail: m.email,
-                    mentorPhone: m.phone,
+                    mentorPhone: phone || m.phone || m.whatsAppNumber || "",
+                    phone: phone || m.phone || m.whatsAppNumber || "",
+                    whatsAppNumber: m.whatsAppNumber || phone || "",
                     assignedOperationId: m.assignedOperationId,
                     assignedOperationName: m.assignedOperationName,
                     assignedOperationType: m.assignedOperationType,
@@ -270,13 +359,14 @@ router.post("/create", async (req, res) => {
         let finalOpEmail = mentor ? mentor.assignedOperationEmail : "";
         let finalFee = sessionFee || (mentor ? mentor.perSessionRate : 0) || 0;
 
+        const resolvedPhone = mentorPhone || (await resolveMentorPhone(mentor));
         const driveId = extractDriveId(driveLink);
 
         const newCheckIn = new MentorCheckIn({
             mentorId,
             mentorName: mentorName || (mentor ? mentor.fullname : "Mentor"),
             mentorEmail: mentorEmail || (mentor ? mentor.email : ""),
-            mentorPhone: mentorPhone || (mentor ? mentor.phone : ""),
+            mentorPhone: resolvedPhone || "",
             assignedOperationId: finalOpId,
             assignedOperationName: finalOpName,
             assignedOperationEmail: finalOpEmail,
@@ -573,8 +663,12 @@ router.get("/mentors-with-ops", async (req, res) => {
                     }
                 }
                 const counts = countMap[m._id.toString()] || { total: 0, verified: 0, pending: 0 };
+                const phone = await resolveMentorPhone(m);
                 return {
                     ...m,
+                    phone: phone || m.phone || m.whatsAppNumber || "",
+                    mentorPhone: phone || m.phone || m.whatsAppNumber || "",
+                    whatsAppNumber: m.whatsAppNumber || phone || "",
                     courseTitle,
                     stats: counts,
                 };

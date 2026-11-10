@@ -24,7 +24,9 @@ import {
   X,
   FileVideo,
   Sparkles,
-  Users
+  Users,
+  Phone,
+  Mail
 } from "lucide-react";
 
 const MentorCheckIn = ({ isAdv = false }) => {
@@ -221,7 +223,7 @@ const MentorCheckIn = ({ isAdv = false }) => {
         mentorId: manualForm.mentorId,
         mentorName: mentorObj ? mentorObj.fullname : "",
         mentorEmail: mentorObj ? mentorObj.email : "",
-        mentorPhone: mentorObj ? mentorObj.phone : "",
+        mentorPhone: mentorObj ? (mentorObj.mentorPhone || mentorObj.phone || mentorObj.whatsAppNumber || mentorObj.mobile || "") : "",
         courseId: mentorObj ? mentorObj.assignedCourseId : null,
         courseTitle: mentorObj ? mentorObj.courseTitle : "",
         assignedOperationId: operationId,
@@ -297,21 +299,19 @@ const MentorCheckIn = ({ isAdv = false }) => {
             <div className="bg-slate-900/80 p-1 rounded-xl border border-slate-700 flex items-center">
               <button
                 onClick={() => setViewScope("my")}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  viewScope === "my"
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${viewScope === "my"
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                     : "text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 My Assigned Mentors
               </button>
               <button
                 onClick={() => setViewScope("all")}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  viewScope === "all"
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${viewScope === "all"
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
                     : "text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 All Mentors
               </button>
@@ -413,11 +413,10 @@ const MentorCheckIn = ({ isAdv = false }) => {
               {todayMentors.map((tm) => (
                 <div
                   key={tm.mentorId}
-                  className={`p-3 rounded-xl border transition-all ${
-                    tm.uploadedToday
+                  className={`p-3 rounded-xl border transition-all ${tm.uploadedToday
                       ? "bg-emerald-500/10 border-emerald-500/30"
                       : "bg-slate-900/60 border-slate-700/70"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-white text-xs truncate max-w-[150px]">
@@ -433,7 +432,25 @@ const MentorCheckIn = ({ isAdv = false }) => {
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-1 truncate">{tm.mentorEmail}</p>
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mt-1.5">
+                    <Mail size={12} className="text-slate-500 flex-shrink-0" />
+                    <span className="truncate" title={tm.mentorEmail || tm.email}>
+                      {tm.mentorEmail || tm.email || "No email"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mt-1">
+                    <Phone size={12} className="text-indigo-400 flex-shrink-0" />
+                    {tm.mentorPhone || tm.phone || tm.whatsAppNumber || tm.mobile ? (
+                      <a
+                        href={`tel:${tm.mentorPhone || tm.phone || tm.whatsAppNumber || tm.mobile}`}
+                        className="truncate text-indigo-300 hover:text-indigo-200 hover:underline font-medium"
+                      >
+                        {tm.mentorPhone || tm.phone || tm.whatsAppNumber || tm.mobile}
+                      </a>
+                    ) : (
+                      <span className="text-slate-500 italic">No phone number</span>
+                    )}
+                  </div>
                   {tm.todayCheckIn ? (
                     <div className="mt-2 pt-2 border-t border-slate-700/50 flex items-center justify-between text-[11px]">
                       <span className="text-slate-300 truncate max-w-[140px]">
@@ -584,6 +601,17 @@ const MentorCheckIn = ({ isAdv = false }) => {
                             <User size={13} className="text-indigo-400" />
                             {item.mentorName} ({item.mentorEmail})
                           </span>
+                          {(item.mentorPhone || item.phone) && (
+                            <span className="text-slate-400 flex items-center gap-1">
+                              <Phone size={12} className="text-indigo-400" />
+                              <a
+                                href={`tel:${item.mentorPhone || item.phone}`}
+                                className="text-indigo-300 hover:underline"
+                              >
+                                {item.mentorPhone || item.phone}
+                              </a>
+                            </span>
+                          )}
                           {item.courseTitle && (
                             <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
                               <BookOpen size={12} className="text-blue-400" />
@@ -664,15 +692,14 @@ const MentorCheckIn = ({ isAdv = false }) => {
                           <select
                             value={item.paymentStatus || "unpaid"}
                             onChange={(e) => handleQuickPaymentChange(item._id, e.target.value)}
-                            className={`text-xs font-bold rounded-lg px-2.5 py-1 border focus:outline-none cursor-pointer ${
-                              item.paymentStatus === "approved"
+                            className={`text-xs font-bold rounded-lg px-2.5 py-1 border focus:outline-none cursor-pointer ${item.paymentStatus === "approved"
                                 ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
                                 : item.paymentStatus === "paid"
-                                ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
-                                : item.paymentStatus === "hold"
-                                ? "bg-rose-500/20 text-rose-400 border-rose-500/30"
-                                : "bg-slate-700 text-slate-300 border-slate-600"
-                            }`}
+                                  ? "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                                  : item.paymentStatus === "hold"
+                                    ? "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                                    : "bg-slate-700 text-slate-300 border-slate-600"
+                              }`}
                           >
                             <option value="unpaid">Unpaid</option>
                             <option value="approved">Approved</option>
@@ -797,11 +824,10 @@ const MentorCheckIn = ({ isAdv = false }) => {
             <div className="p-5 border-b border-slate-700 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div
-                  className={`p-2.5 rounded-xl ${
-                    actionModal.targetStatus === "verified"
+                  className={`p-2.5 rounded-xl ${actionModal.targetStatus === "verified"
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                       : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                  }`}
+                    }`}
                 >
                   {actionModal.targetStatus === "verified" ? (
                     <CheckCircle size={22} />
@@ -843,11 +869,10 @@ const MentorCheckIn = ({ isAdv = false }) => {
                         paymentStatus: "approved"
                       })
                     }
-                    className={`py-2.5 rounded-xl text-xs font-bold border transition-all ${
-                      actionModal.targetStatus === "verified"
+                    className={`py-2.5 rounded-xl text-xs font-bold border transition-all ${actionModal.targetStatus === "verified"
                         ? "bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30"
                         : "bg-slate-900/60 text-slate-400 border-slate-700 hover:text-slate-200"
-                    }`}
+                      }`}
                   >
                     ✓ Class Taken (Verify)
                   </button>
@@ -860,11 +885,10 @@ const MentorCheckIn = ({ isAdv = false }) => {
                         paymentStatus: "hold"
                       })
                     }
-                    className={`py-2.5 rounded-xl text-xs font-bold border transition-all ${
-                      actionModal.targetStatus === "rejected"
+                    className={`py-2.5 rounded-xl text-xs font-bold border transition-all ${actionModal.targetStatus === "rejected"
                         ? "bg-rose-600 text-white border-rose-500 shadow-md shadow-rose-600/30"
                         : "bg-slate-900/60 text-slate-400 border-slate-700 hover:text-slate-200"
-                    }`}
+                      }`}
                   >
                     ✕ Class Not Taken / Flag
                   </button>
@@ -939,11 +963,10 @@ const MentorCheckIn = ({ isAdv = false }) => {
                 </button>
                 <button
                   type="submit"
-                  className={`px-5 py-2 rounded-xl text-white font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 ${
-                    actionModal.targetStatus === "verified"
+                  className={`px-5 py-2 rounded-xl text-white font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 ${actionModal.targetStatus === "verified"
                       ? "bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/30"
                       : "bg-rose-600 hover:bg-rose-500 shadow-rose-600/30"
-                  }`}
+                    }`}
                 >
                   Save & Apply
                 </button>
