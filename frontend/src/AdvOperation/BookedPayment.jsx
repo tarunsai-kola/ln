@@ -1,16 +1,305 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import API from "../API";
 import toast, { Toaster } from "react-hot-toast";
-import { RiMailSendFill } from "react-icons/ri";
+import {
+  Search,
+  Plus,
+  Calendar,
+  BookOpen,
+  BadgeCheck,
+  AlertOctagon,
+  IndianRupee,
+  Clock,
+  CheckCircle2,
+  Mail,
+  Send,
+  Info,
+  Edit3,
+  Phone,
+  Sparkles,
+  RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  ExternalLink,
+  X,
+  KeyRound,
+  User,
+  ShieldCheck,
+  CalendarDays,
+  FileText
+} from "lucide-react";
+import { FaWhatsapp, FaUserCheck, FaUserTimes } from "react-icons/fa";
 import { PiLockKeyOpenFill, PiLockKeyFill } from "react-icons/pi";
-import { FaUserTimes } from "react-icons/fa";
-import { FaUserCheck, FaWhatsapp } from "react-icons/fa";
 
-// VERSION: 2026-01-08-v2 - Year-aware month filtering fix
+const formatINR = (val) => {
+  const num = Number(val) || 0;
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0
+  }).format(num);
+};
 
 const BookedAmount = () => {
+  /* ── State ── */
   const [iscourseFormVisible, setiscourseFormVisible] = useState(false);
+  const [course, setCourse] = useState([]);
+  const [bda, setBda] = useState([]);
+  const [operationData, setOperationData] = useState(null);
+  const [newStudent, setNewStudent] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Form Fields
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [whatsAppNumber, setWhatsAppNumber] = useState("");
+  const [counselor, setCounselor] = useState("");
+  const [domain, setDomain] = useState("");
+  const [programPrice, setProgramPrice] = useState("");
+  const [paidAmount, setPaidAmount] = useState("");
+  const [remainingAmount, setRemainingAmount] = useState(0);
+  const [monthOpted, setMonthOpted] = useState("");
+  const [monthsToShow, setMonthsToShow] = useState([]);
+  const [clearPaymentMonth, setClearPaymentMonth] = useState("");
+  const [modeofpayment, setModeofpayment] = useState("");
+  const [collegeName, setCollegeName] = useState("");
+  const [branch, setBranch] = useState("");
+  const [yearOfPassingOut, setYearOfPassingOut] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [role, setRole] = useState("");
+  const [transactionId, setTransactionId] = useState("");
+  const [internshipstartsmonth, setInternshipstartsmonth] = useState("");
+  const [internshipendsmonth, setInternshipendsmonth] = useState("");
+  const [batchTiming, setBatchTiming] = useState("");
+  const [referFriend, setReferFriend] = useState("");
+  const [languages, setLanguages] = useState(["English"]);
+  const [editingStudentId, setEditingStudentId] = useState(null);
+
+  // Offer Letter Modal State
+  const [offerData, setOfferData] = useState(null);
+  const [offerFullname, setOfferFullname] = useState("");
+  const [offerDomain, setOfferDomain] = useState("");
+  const [offerEmail, setOfferEmail] = useState("");
+  const [offerDate, setOfferDate] = useState("");
+  const [offerDuration, setOfferDuration] = useState("");
+  const [offerStart, setOfferStart] = useState("");
+  const [offerEnd, setOfferEnd] = useState("");
+  const [offerLocation, setOfferLocation] = useState("Online");
+  const [isOfferLetterSending, setIsOfferLetterSending] = useState(false);
+
+  // Detail Dialog State
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogData, setDialogData] = useState(null);
+
+  // Filtering & Pagination
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [months, setMonths] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
+
+  const [minDate, setMinDate] = useState("");
+  const [maxDate, setMaxDate] = useState("");
+
+  const operationName = localStorage.getItem("advOperationName") || "Operations";
+
+  /* ── Date Helpers ── */
+  const formatDate = (date) => new Date(date).toLocaleDateString("en-GB");
+
+  const getCurrentMonth = () => {
+    const m = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date();
+    return `${m[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
+  const getPastMonths = () => {
+    const m = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date();
+    const ci = d.getMonth();
+    const cy = d.getFullYear();
+    const pastMonths = [];
+    for (let i = 0; i < 4; i++) {
+      const td = new Date(cy, ci - i, 1);
+      pastMonths.push(`${m[td.getMonth()]} ${td.getFullYear()}`);
+    }
+    return pastMonths;
+  };
+
+  const getMonthFromDate = (date) => {
+    const m = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date(date);
+    return `${m[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
+  const formatCleanDate = (val) => {
+    if (!val) return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, mn, d] = val.split("-");
+      const dt = new Date(parseInt(y), parseInt(mn) - 1, parseInt(d));
+      return dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    }
+    return val;
+  };
+
+  /* ── Calculations ── */
+  useEffect(() => {
+    const price = parseFloat(programPrice) || 0;
+    const paid = parseFloat(paidAmount) || 0;
+    setRemainingAmount(price - paid);
+  }, [programPrice, paidAmount]);
+
+  useEffect(() => {
+    const today = new Date();
+    const min = today.toISOString().split("T")[0];
+    const max = new Date(today.setDate(today.getDate() + 5))
+      .toISOString()
+      .split("T")[0];
+    setMinDate(min);
+    setMaxDate(max);
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    setMonthsToShow(monthNames);
+  }, []);
+
+  /* ── API Data Fetching ── */
+  const fetchCourses = async () => {
+    try {
+      const res = await axios.get(`${API}/getadvcourses`);
+      setCourse(res.data);
+    } catch (err) {
+      console.error("Error fetching adv courses:", err);
+    }
+  };
+
+  const fetchBda = async () => {
+    try {
+      const res = await axios.get(`${API}/getbda`);
+      setBda(res.data);
+    } catch (err) {
+      console.error("Error fetching bda:", err);
+    }
+  };
+
+  const fetchOperationData = async () => {
+    const operationId = localStorage.getItem("advOperationId");
+    try {
+      const res = await axios.get(`${API}/getadvoperation`, {
+        params: { operationId },
+      });
+      setOperationData(res.data);
+    } catch (err) {
+      console.error("Failed to fetch operation user data", err);
+    }
+  };
+
+  const fetchNewStudent = async (showToast = false) => {
+    const opName = localStorage.getItem("advOperationName");
+    if (showToast) setIsRefreshing(true);
+    try {
+      const res = await axios.get(`${API}/getadvenrolls?all=true`);
+      const booked = res.data.filter(
+        (item) => item.status === "booked" && item.operationName === opName
+      );
+      setNewStudent(booked);
+
+      const curMonth = getCurrentMonth();
+      if (!selectedMonth) {
+        setSelectedMonth(curMonth);
+        const filtered = booked.filter(
+          (student) => getMonthFromDate(student.createdAt) === curMonth
+        );
+        setFilteredStudents(filtered);
+      } else {
+        const filtered = booked.filter(
+          (student) => getMonthFromDate(student.createdAt) === selectedMonth
+        );
+        setFilteredStudents(filtered);
+      }
+    } catch (err) {
+      console.error("Error fetching booked students:", err);
+    } finally {
+      if (showToast) {
+        setTimeout(() => setIsRefreshing(false), 500);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();
+    fetchBda();
+    fetchNewStudent();
+    fetchOperationData();
+    const past = getPastMonths();
+    setMonths(past);
+  }, []);
+
+  /* ── Filter Handlers ── */
+  const handleMonthChange = (e) => {
+    const month = e.target.value;
+    setSelectedMonth(month);
+    let filtered = newStudent.filter(
+      (student) => getMonthFromDate(student.createdAt) === month
+    );
+    if (searchQuery) {
+      filtered = filtered.filter(matchesSearchQuery);
+    }
+    setFilteredStudents(filtered);
+  };
+
+  const matchesSearchQuery = (student) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      (student.email && student.email.toLowerCase().includes(q)) ||
+      (student.phone && student.phone.toLowerCase().includes(q)) ||
+      (student.fullname && student.fullname.toLowerCase().includes(q)) ||
+      (student.counselor && student.counselor.toLowerCase().includes(q)) ||
+      (student.domain && student.domain.toLowerCase().includes(q)) ||
+      (student.whatsAppNumber && student.whatsAppNumber.toLowerCase().includes(q)) ||
+      (student.clearPaymentMonth && student.clearPaymentMonth.toLowerCase().includes(q))
+    );
+  };
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    let filtered = newStudent;
+    if (selectedMonth) {
+      filtered = filtered.filter(
+        (student) => getMonthFromDate(student.createdAt) === selectedMonth
+      );
+    }
+    if (val) {
+      const q = val.toLowerCase();
+      filtered = filtered.filter((student) =>
+        (student.email && student.email.toLowerCase().includes(q)) ||
+        (student.phone && student.phone.toLowerCase().includes(q)) ||
+        (student.fullname && student.fullname.toLowerCase().includes(q)) ||
+        (student.counselor && student.counselor.toLowerCase().includes(q)) ||
+        (student.domain && student.domain.toLowerCase().includes(q)) ||
+        (student.whatsAppNumber && student.whatsAppNumber.toLowerCase().includes(q)) ||
+        (student.clearPaymentMonth && student.clearPaymentMonth.toLowerCase().includes(q))
+      );
+    }
+    setFilteredStudents(filtered);
+  };
+
+  /* ── Form Actions ── */
   const resetForm = () => {
     setiscourseFormVisible(false);
     setFullname("");
@@ -38,154 +327,49 @@ const BookedAmount = () => {
     setLanguages(["English"]);
     setEditingStudentId(null);
   };
-  const [course, setCourse] = useState([]);
 
-  const [offerData, setOfferData] = useState(null);
-  const [offerFullname, setOfferFullname] = useState("");
-  const [offerDomain, setOfferDomain] = useState("");
-  const [offerEmail, setOfferEmail] = useState("");
-  const [offerDate, setOfferDate] = useState("");
-  const [offerDuration, setOfferDuration] = useState("");
-  const [offerStart, setOfferStart] = useState("");
-  const [offerEnd, setOfferEnd] = useState("");
-  const [offerLocation, setOfferLocation] = useState("Online");
-  const [isOfferLetterSending, setIsOfferLetterSending] = useState(false);
+  const handleAddNewCandidate = () => {
+    resetForm();
+    setEditingStudentId(null);
+    setiscourseFormVisible(true);
+  };
 
-  const handleOpenOfferLetter = (student) => {
-    setOfferData(student);
-    setOfferFullname(student.fullname || "");
-    setOfferDomain(student.domain || "");
-    setOfferEmail(student.email || "");
-
-    const todayFormatted = new Date().toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
+  const handleEdit = (studentId) => {
+    const student = newStudent.find((item) => item._id === studentId);
+    if (!student) return;
+    setEditingStudentId(student._id);
+    setFullname(student.fullname || "");
+    setEmail(student.email || "");
+    setPhone(student.phone || "");
+    setWhatsAppNumber(student.whatsAppNumber || "");
+    setCounselor(student.counselor || "");
+    setDomain(student.domain || "");
+    setProgramPrice(student.programPrice || "");
+    setPaidAmount(student.paidAmount || "");
+    setRemainingAmount(student.remainingAmount || 0);
+    setMonthOpted(student.monthOpted || "");
+    setClearPaymentMonth(() => {
+      try {
+        return student.clearPaymentMonth
+          ? new Date(student.clearPaymentMonth).toISOString().split("T")[0]
+          : "";
+      } catch (e) {
+        return "";
+      }
     });
-    setOfferDate(student.offerDate || todayFormatted);
-    setOfferDuration(student.offerDuration || student.program || "3 Months");
-    setOfferStart(student.offerStart || student.internshipstartsmonth || "");
-    setOfferEnd(student.offerEnd || student.internshipendsmonth || "");
-    setOfferLocation(student.offerLocation || "Online");
-  };
-
-  const resetOfferLeter = () => {
-    setOfferData(null);
-    setOfferFullname("");
-    setOfferDomain("");
-    setOfferEmail("");
-    setOfferDate("");
-    setOfferDuration("");
-    setOfferStart("");
-    setOfferEnd("");
-    setOfferLocation("Online");
-  };
-
-  const formatCleanDate = (val) => {
-    if (!val) return "";
-    // If entered via native date input (YYYY-MM-DD), format nicely
-    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-      const [y, m, d] = val.split("-");
-      const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-      return dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-    }
-    return val;
-  };
-
-  const sendOfferleter = async (e) => {
-    e.preventDefault();
-    setIsOfferLetterSending(true);
-
-    const cleanDate = formatCleanDate(offerDate);
-    const cleanStart = formatCleanDate(offerStart);
-    const cleanEnd = formatCleanDate(offerEnd);
-
-    const offerLetterDetails = {
-      id: offerData._id,
-      fullname: (offerFullname || offerData.fullname || "")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(" "),
-      domain: offerDomain || offerData.domain || "",
-      email: (offerEmail || offerData.email || "").trim(),
-      date: cleanDate,
-      duration: offerDuration,
-      start: cleanStart,
-      end: cleanEnd,
-      location: offerLocation || "Online",
-      smtpConfig: 'SMTP_MAIL2',
-    };
-
-    try {
-      const response = await axios.post(
-        `${API}/sendofferletter`,
-        offerLetterDetails
-      );
-      toast.success("Offer letter sent successfully!");
-      fetchNewStudent();
-      resetOfferLeter();
-    } catch (error) {
-      console.error("There was an error sending the offer letter:", error);
-      toast.error(error.response?.data?.error || "Error sending offer letter");
-    } finally {
-      setIsOfferLetterSending(false);
-    }
-  };
-
-  const fetchCourses = async () => {
-    try {
-      const response = await axios.get(`${API}/getadvcourses`);
-      setCourse(response.data);
-    } catch (error) {
-      console.error("There was an error fetching courses:", error);
-    }
-  };
-  const [bda, setBda] = useState([]);
-  const fetchBda = async () => {
-    try {
-      const response = await axios.get(`${API}/getbda`);
-      setBda(response.data);
-    } catch (error) {
-      console.error("There was an error fetching courses:", error);
-    }
-  };
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [counselor, setCounselor] = useState("");
-  const [domain, setDomain] = useState("");
-  const [programPrice, setProgramPrice] = useState("");
-  const [paidAmount, setPaidAmount] = useState("");
-  const [monthOpted, setMonthOpted] = useState("");
-  const [monthsToShow, setMonthsToShow] = useState([]);
-  const [clearPaymentMonth, setClearPaymentMonth] = useState("");
-  const [whatsAppNumber, setWhatsAppNumber] = useState("");
-  const [modeofpayment, setModeofpayment] = useState("");
-  const [remainingAmount, setRemainingAmount] = useState(0);
-  const [collegeName, setCollegeName] = useState("");
-  const [branch, setBranch] = useState("");
-  const [yearOfPassingOut, setYearOfPassingOut] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [role, setRole] = useState("");
-  const [transactionId, setTransactionId] = useState("");
-  const [internshipstartsmonth, setInternshipstartsmonth] = useState("");
-  const [internshipendsmonth, setInternshipendsmonth] = useState("");
-  const [batchTiming, setBatchTiming] = useState("");
-  const [referFriend, setReferFriend] = useState("");
-  const [languages, setLanguages] = useState(["English"]);
-  const [newStudent, setNewStudent] = useState([]);
-  const [editingStudentId, setEditingStudentId] = useState(null);
-
-  useEffect(() => {
-    const price = parseFloat(programPrice) || 0;
-    const paid = parseFloat(paidAmount) || 0;
-    setRemainingAmount(price - paid);
-  }, [programPrice, paidAmount]);
-
-  const handleLanguageChange = (lang) => {
-    setLanguages(prev =>
-      prev.includes(lang) ? prev.filter(l => l !== lang) : [...prev, lang]
-    );
+    setModeofpayment(student.modeofpayment || "");
+    setCollegeName(student.collegeName || "");
+    setBranch(student.branch || "");
+    setYearOfPassingOut(student.yearOfStudy || student.yearOfPassingOut || "");
+    setCompanyName(student.companyName || "");
+    setRole(student.role || "");
+    setTransactionId(student.transactionId || "");
+    setInternshipstartsmonth(student.internshipstartsmonth || "");
+    setInternshipendsmonth(student.internshipendsmonth || "");
+    setBatchTiming(student.batchTiming || "");
+    setReferFriend(student.referFriend || "");
+    setLanguages(student.languages || ["English"]);
+    setiscourseFormVisible(true);
   };
 
   const handleSubmit = async (event) => {
@@ -234,9 +418,7 @@ const BookedAmount = () => {
       }
       if (response.status === 200 || response.status === 201) {
         toast.success(
-          editingStudentId
-            ? "Student updated successfully."
-            : "Form submitted successfully."
+          editingStudentId ? "Student updated successfully." : "Form submitted successfully."
         );
         fetchNewStudent();
         resetForm();
@@ -250,137 +432,107 @@ const BookedAmount = () => {
     }
   };
 
-  const fetchNewStudent = async () => {
-    const operationName = localStorage.getItem("advOperationName");
-    try {
-      // Operations need all records to filter by month across 2/3 MONTHS
-      const response = await axios.get(`${API}/getadvenrolls?all=true`);
-      const bookedStudents = response.data.filter(
-        (item) =>
-          item.status === "booked" && item.operationName === operationName
-      );
-      console.log(`📊 Total booked students for ${operationName}:`, bookedStudents.length);
-      setNewStudent(bookedStudents);
-      setFilteredStudents(bookedStudents);
-
-      const currentMonth = getCurrentMonth();
-      setSelectedMonth(currentMonth);
-
-      // Filter the students based on the current month by default
-      const filtered = bookedStudents.filter(
-        (student) => getMonthFromDate(student.createdAt) === currentMonth
-      );
-      console.log(`📅 Students in ${currentMonth}:`, filtered.length);
-      setFilteredStudents(filtered);
-    } catch (error) {
-      console.error("There was an error fetching new student:", error);
-    }
-  };
-  const [remarks, setRemarks] = useState("");
+  /* ── Remarks ── */
   const handleRemarkChange = async (e, studentId) => {
     const selectedRemark = e.target.value;
-    if (!selectedRemark) {
-      console.error("No remark selected");
-      return;
-    }
-    setRemarks(selectedRemark);
-    if (selectedRemark && studentId) {
-      try {
-        const response = await axios.post(`${API}/updateremark`, {
-          remark: selectedRemark,
-          studentId: studentId,
-        });
-        if (response.status === 200) {
-          toast.success(response.data.message);
-          // Update local state to reflect the new remark immediately
-          setNewStudent((prev) =>
-            prev.map((student) =>
-              student._id === studentId
-                ? { ...student, remark: [...student.remark, selectedRemark] }
-                : student
-            )
-          );
-          setFilteredStudents((prev) =>
-            prev.map((student) =>
-              student._id === studentId
-                ? { ...student, remark: [...student.remark, selectedRemark] }
-                : student
-            )
-          );
-        } else {
-          toast.error(response.data.error);
-        }
-      } catch (error) {
-        toast.error("An error occurred while updating the remark.");
-      }
-    }
-  };
+    if (!selectedRemark || !studentId) return;
 
-  const handleEdit = (studentId) => {
-    const isConfirmed = window.confirm("Are you sure you want to edit this?");
-    if (isConfirmed) {
-      const student = newStudent.find((item) => item._id === studentId);
-      setEditingStudentId(student._id);
-      setFullname(student.fullname);
-      setEmail(student.email);
-      setPhone(student.phone);
-      setWhatsAppNumber(student.whatsAppNumber || "");
-      setCounselor(student.counselor || "");
-      setDomain(student.domain || "");
-      setProgramPrice(student.programPrice || "");
-      setPaidAmount(student.paidAmount || "");
-      setRemainingAmount(student.remainingAmount || 0);
-      setMonthOpted(student.monthOpted || "");
-      setClearPaymentMonth(() => {
-        try {
-          return student.clearPaymentMonth
-            ? new Date(student.clearPaymentMonth).toISOString().split("T")[0]
-            : "";
-        } catch (e) {
-          return "";
-        }
-      });
-      setModeofpayment(student.modeofpayment || "");
-      setCollegeName(student.collegeName || "");
-      setBranch(student.branch || "");
-      setYearOfPassingOut(student.yearOfStudy || student.yearOfPassingOut || "");
-      setCompanyName(student.companyName || "");
-      setRole(student.role || "");
-      setTransactionId(student.transactionId || "");
-      setInternshipstartsmonth(student.internshipstartsmonth || "");
-      setInternshipendsmonth(student.internshipendsmonth || "");
-      setBatchTiming(student.batchTiming || "");
-      setReferFriend(student.referFriend || "");
-      setLanguages(student.languages || ["English"]);
-      setiscourseFormVisible(true);
-    }
-  };
-
-  const [operationData, setOperationData] = useState(null);
-  const fetchOperationData = async () => {
-    const operationId = localStorage.getItem("advOperationId");
     try {
-      const response = await axios.get(`${API}/getadvoperation`, {
-        params: { operationId },
+      const response = await axios.post(`${API}/updateremark`, {
+        remark: selectedRemark,
+        studentId,
       });
-      setOperationData(response.data);
-    } catch (err) {
-      console.log("Failed to fetch user data");
+      if (response.status === 200) {
+        toast.success("Remark updated!");
+        setNewStudent((prev) =>
+          prev.map((student) =>
+            student._id === studentId
+              ? { ...student, remark: [...(student.remark || []), selectedRemark] }
+              : student
+          )
+        );
+        setFilteredStudents((prev) =>
+          prev.map((student) =>
+            student._id === studentId
+              ? { ...student, remark: [...(student.remark || []), selectedRemark] }
+              : student
+          )
+        );
+      }
+    } catch (error) {
+      toast.error("An error occurred while updating the remark.");
     }
   };
 
-  useEffect(() => {
-    console.log("🚀 BookedPayment component mounted - Starting data fetch...");
-    fetchCourses();
-    fetchBda();
-    fetchNewStudent();
-    fetchOperationData();
-    const monthsArray = getPastMonths();
-    console.log("🔍 DEBUG: Months array =", monthsArray);
-    console.log("🔍 DEBUG: Current month =", getCurrentMonth());
-    setMonths(monthsArray);
-  }, []);
+  /* ── Offer Letter ── */
+  const handleOpenOfferLetter = (student) => {
+    setOfferData(student);
+    setOfferFullname(student.fullname || "");
+    setOfferDomain(student.domain || "");
+    setOfferEmail(student.email || "");
 
+    const todayFormatted = new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    setOfferDate(student.offerDate || todayFormatted);
+    setOfferDuration(student.offerDuration || student.program || "3 Months");
+    setOfferStart(student.offerStart || student.internshipstartsmonth || "");
+    setOfferEnd(student.offerEnd || student.internshipendsmonth || "");
+    setOfferLocation(student.offerLocation || "Online");
+  };
+
+  const resetOfferLeter = () => {
+    setOfferData(null);
+    setOfferFullname("");
+    setOfferDomain("");
+    setOfferEmail("");
+    setOfferDate("");
+    setOfferDuration("");
+    setOfferStart("");
+    setOfferEnd("");
+    setOfferLocation("Online");
+  };
+
+  const sendOfferleter = async (e) => {
+    e.preventDefault();
+    setIsOfferLetterSending(true);
+
+    const cleanDate = formatCleanDate(offerDate);
+    const cleanStart = formatCleanDate(offerStart);
+    const cleanEnd = formatCleanDate(offerEnd);
+
+    const offerLetterDetails = {
+      id: offerData._id,
+      fullname: (offerFullname || offerData.fullname || "")
+        .split(" ")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(" "),
+      domain: offerDomain || offerData.domain || "",
+      email: (offerEmail || offerData.email || "").trim(),
+      date: cleanDate,
+      duration: offerDuration,
+      start: cleanStart,
+      end: cleanEnd,
+      location: offerLocation || "Online",
+      smtpConfig: "SMTP_MAIL2",
+    };
+
+    try {
+      await axios.post(`${API}/sendofferletter`, offerLetterDetails);
+      toast.success("Offer letter sent successfully!");
+      fetchNewStudent();
+      resetOfferLeter();
+    } catch (error) {
+      console.error("Error sending offer letter:", error);
+      toast.error(error.response?.data?.error || "Error sending offer letter");
+    } finally {
+      setIsOfferLetterSending(false);
+    }
+  };
+
+  /* ── Credentials & Account ── */
   const handleSendEmail = async (value) => {
     if (value.isSending) return;
     value.isSending = true;
@@ -397,208 +549,19 @@ const BookedAmount = () => {
     try {
       const response = await axios.post(`${API}/send-email`, emailData);
       if (response.status === 200) {
-        toast.success("Email sent successfully!");
-        const studentData = {
-          mailSended: true,
-        };
-        const updateResponse = await axios.put(
-          `${API}/mailsendedchange/${value._id}`,
-          studentData
+        toast.success("Credentials email sent successfully!");
+        await axios.put(`${API}/mailsendedchange/${value._id}`, { mailSended: true });
+        setNewStudent((prev) =>
+          prev.map((s) => (s._id === value._id ? { ...s, mailSended: true } : s))
         );
-        if (updateResponse.status === 200) {
-          toast.success("Operation record updated successfully!");
-          setNewStudent((prev) =>
-            prev.map((student) =>
-              student._id === value._id
-                ? { ...student, mailSended: true }
-                : student
-            )
-          );
-          setFilteredStudents((prev) =>
-            prev.map((student) =>
-              student._id === value._id
-                ? { ...student, mailSended: true }
-                : student
-            )
-          );
-        } else {
-          toast.error("Failed to update student record.");
-        }
-      } else {
-        toast.error("Failed to send email.");
+        setFilteredStudents((prev) =>
+          prev.map((s) => (s._id === value._id ? { ...s, mailSended: true } : s))
+        );
       }
     } catch (error) {
-      toast.error("An error occurred while sending the email.");
+      toast.error("Failed to send credentials email.");
     } finally {
       value.isSending = false;
-    }
-  };
-
-  const [dialogVisible, setDialogVisible] = useState(false);
-  const [dialogData, setDialogData] = useState(null);
-  const handleDialogOpen = (item) => {
-    setDialogData(item);
-    setDialogVisible(true);
-  };
-
-  const handleDialogClose = () => {
-    setDialogVisible(false);
-    setDialogData(null);
-  };
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredStudents, setFilteredStudents] = useState([]);
-  const handleSearchChange = (event) => {
-    const value = event.target.value;
-    setSearchQuery(value);
-    const filtered = newStudent.filter((student) => {
-      return (
-        (student.email &&
-          student.email.toLowerCase().includes(value.toLowerCase())) ||
-        (student.phone &&
-          student.phone.toLowerCase().includes(value.toLowerCase())) ||
-        (student.fullname &&
-          student.fullname.toLowerCase().includes(value.toLowerCase())) ||
-        (student.counselor &&
-          student.counselor.toLowerCase().includes(value.toLowerCase())) ||
-        (student.operationName &&
-          student.operationName.toLowerCase().includes(value.toLowerCase())) ||
-        (student.createdAt &&
-          student.createdAt.toLowerCase().includes(value.toLowerCase())) ||
-        (student.clearPaymentMonth &&
-          student.clearPaymentMonth
-            .toLowerCase()
-            .includes(value.toLowerCase())) ||
-        (student.collegeName &&
-          student.collegeName.toLowerCase().includes(value.toLowerCase())) ||
-        (student.branch &&
-          student.branch.toLowerCase().includes(value.toLowerCase()))
-      );
-    });
-    setFilteredStudents(filtered);
-  };
-
-  const formatDate = (date) => new Date(date).toLocaleDateString("en-GB");
-
-
-
-  const handleAddNewCandidate = () => {
-    resetForm();
-    setEditingStudentId(null);
-    setiscourseFormVisible(true);
-  };
-
-  const handleSendOnboardingDetails = async (value) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to send onboading email?"
-    );
-    if (isConfirmed) {
-      const emailData = {
-        fullname: value.fullname,
-        email: value.email,
-        program: value.program,
-        domain: value.domain,
-        clearPaymentMonth: value.clearPaymentMonth,
-        monthOpted: value.monthOpted,
-      };
-      try {
-        const response = await axios.post(
-          `${API}/sendedOnboardingMail`,
-          emailData
-        );
-        if (response.status === 200) {
-          toast.success("Onboarding email sent successfully!!");
-          const onboardingData = {
-            onboardingSended: true,
-          };
-          const updateResponse = await axios.put(
-            `${API}/mailsendedchange/${value._id}`,
-            onboardingData
-          );
-          if (updateResponse.status === 200) {
-            toast.success("Onboarding record updated successfully!");
-            setNewStudent((prev) =>
-              prev.map((student) =>
-                student._id === value._id
-                  ? { ...student, onboardingSended: true }
-                  : student
-              )
-            );
-
-            setFilteredStudents((prev) =>
-              prev.map((student) =>
-                student._id === value._id
-                  ? { ...student, onboardingSended: true }
-                  : student
-              )
-            );
-          } else {
-            toast.error("Failed to update onboarding record.");
-          }
-        } else {
-          toast.error("Failed to send onboading email.");
-        }
-      } catch (error) {
-        toast.error("An error occurred while sending the email.");
-      }
-    }
-  };
-
-  const [minDate, setMinDate] = useState("");
-  const [maxDate, setMaxDate] = useState("");
-
-  useEffect(() => {
-    const today = new Date();
-    const minDate = today.toISOString().split("T")[0];
-    const maxDate = new Date(today.setDate(today.getDate() + 5))
-      .toISOString()
-      .split("T")[0];
-    setMinDate(minDate);
-    setMaxDate(maxDate);
-  }, []);
-  useEffect(() => {
-    // const currentDate = new Date();
-    // const currentMonthIndex = currentDate.getMonth();
-    // const currentDay = currentDate.getDate();
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    // let months = [];
-    // if (currentMonthIndex === 1 && currentDay <= 7) {
-    //   months = [monthNames[1], monthNames[2], monthNames[3]];
-    // } else {
-    //   months = [monthNames[2], monthNames[3], monthNames[4]];
-    // }
-    setMonthsToShow(monthNames);
-  }, []);
-
-  const handleCopyMobileNumbers = (selectedDate) => {
-    const students = groupedData[selectedDate];
-    if (Array.isArray(students)) {
-      const mobileNumbers = students
-        .map((student) => student.whatsAppNumber)
-        .join("\n");
-      navigator.clipboard
-        .writeText(mobileNumbers)
-        .then(() => {
-          toast.success("Mobile numbers copied to clipboard!");
-        })
-        .catch((err) => {
-          toast.error("Failed to copy: " + err);
-        });
-    } else {
-      alert("No students found or invalid data format.");
     }
   };
 
@@ -614,140 +577,49 @@ const BookedAmount = () => {
     try {
       const response = await axios.post(`${API}/users`, Data);
       if (response.status === 200) {
-        toast.success("User has been created");
-        const userCreated = {
-          userCreated: true,
-        };
-        const updateResponse = await axios.put(
-          `${API}/mailsendedchange/${value._id}`,
-          userCreated
+        toast.success("User account created successfully!");
+        await axios.put(`${API}/mailsendedchange/${value._id}`, { userCreated: true });
+        setNewStudent((prev) =>
+          prev.map((s) => (s._id === value._id ? { ...s, userCreated: true } : s))
         );
-        if (updateResponse.status === 200) {
-          toast.success("User created true updated successfully!");
-          setNewStudent((prev) =>
-            prev.map((student) =>
-              student._id === value._id
-                ? { ...student, userCreated: true }
-                : student
-            )
-          );
-
-          setFilteredStudents((prev) =>
-            prev.map((student) =>
-              student._id === value._id
-                ? { ...student, userCreated: true }
-                : student
-            )
-          );
-        } else {
-          toast.error("Failed to update user record.");
-        }
-      } else {
-        toast.error("Failed to create user.");
+        setFilteredStudents((prev) =>
+          prev.map((s) => (s._id === value._id ? { ...s, userCreated: true } : s))
+        );
       }
     } catch (error) {
-      toast.success("User already Created check in active user");
+      toast.success("User already created (check active users).");
     } finally {
       value.isSending = false;
     }
   };
 
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [months, setMonths] = useState([]);
-  const handleMonthChange = (event) => {
-    const selectedMonth = event.target.value;
-    setSelectedMonth(selectedMonth); // Update selected month
-    const filtered = newStudent.filter(
-      (student) => getMonthFromDate(student.createdAt) === selectedMonth
-    );
-    setFilteredStudents(filtered); // Update filtered students
-  };
-  // Format date to display
-  // const formatDate = (date) => new Date(date).toLocaleDateString("en-GB");
-
-  // Get current month (in string format like "Jan", "Feb", etc.)
-  const getCurrentMonth = () => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const currentDate = new Date();
-    const currentMonthIndex = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    return `${months[currentMonthIndex]} ${currentYear}`;
-  };
-
-  // Get the previous months including the current month (with year awareness)
-  const getPastMonths = () => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const currentDate = new Date();
-    const currentMonthIndex = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    let pastMonths = [];
-
-    for (let i = 0; i < 4; i++) {
-      const targetDate = new Date(currentYear, currentMonthIndex - i, 1);
-      const monthName = months[targetDate.getMonth()];
-      const year = targetDate.getFullYear();
-      // Store as "Month Year" format for proper year-aware filtering
-      pastMonths.push(`${monthName} ${year}`);
+  /* ── Copy Mobile Numbers ── */
+  const handleCopyMobileNumbers = (selectedDate) => {
+    const students = groupedData[selectedDate];
+    if (Array.isArray(students)) {
+      const mobileNumbers = students
+        .map((s) => s.whatsAppNumber || s.phone)
+        .filter(Boolean)
+        .join("\n");
+      navigator.clipboard
+        .writeText(mobileNumbers)
+        .then(() => toast.success(`Copied ${students.length} WhatsApp numbers!`))
+        .catch(() => toast.error("Failed to copy numbers."));
     }
-
-    return pastMonths;
   };
 
-  // Get the month from the student's created date (with year)
-  const getMonthFromDate = (date) => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const dateObj = new Date(date);
-    const monthIndex = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${months[monthIndex]} ${year}`;
+  /* ── Dialog Handlers ── */
+  const handleDialogOpen = (item) => {
+    setDialogData(item);
+    setDialogVisible(true);
   };
 
-  // Pagination Logic (Moved to avoid TDZ)
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 30;
+  const handleDialogClose = () => {
+    setDialogVisible(false);
+    setDialogData(null);
+  };
 
+  /* ── Pagination ── */
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, selectedMonth, newStudent]);
@@ -755,1112 +627,220 @@ const BookedAmount = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage) || 1;
 
-  const nextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
+  const groupedData = useMemo(() => {
+    return currentItems.reduce((acc, item) => {
+      const date = formatDate(item.createdAt);
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(item);
+      return acc;
+    }, {});
+  }, [currentItems]);
 
-  const prevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
+  // Aggregate Stats for selected month
+  const totalBookedValue = useMemo(() => {
+    return filteredStudents.reduce((acc, s) => acc + (s.programPrice || 0), 0);
+  }, [filteredStudents]);
 
-  const groupedData = currentItems.reduce((acc, item) => {
-    const date = formatDate(item.createdAt);
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(item);
-    return acc;
-  }, {});
+  const totalPaidCollected = useMemo(() => {
+    return filteredStudents.reduce((acc, s) => acc + (s.paidAmount || 0), 0);
+  }, [filteredStudents]);
 
-  if (!groupedData) {
-    return (
-      <div id="loader">
-        <div className="three-body">
-          <div className="three-body__dot"></div>
-          <div className="three-body__dot"></div>
-          <div className="three-body__dot"></div>
-        </div>
-      </div>
-    );
-  }
+  const totalPendingAmount = Math.max(0, totalBookedValue - totalPaidCollected);
 
   return (
-    <div id="OperationEnroll">
-      <Toaster position="top-center" toastOptions={{ style: { background: '#1E293B', color: '#F8FAFC', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' } }} />
-      {/* ── Premium Dark Theme Override ── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    <div className="min-h-screen bg-[#F8FAFC] font-sans ml-[260px] mt-[70px] p-6 lg:p-8">
+      <Toaster position="top-center" reverseOrder={false} />
 
-        /* ── Kill the white body background for this page ── */
-        html, body {
-          background: #0F172A !important;
-          color: #F1F5F9 !important;
-        }
+      {/* ── Executive Header Banner ── */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A0F1D] text-white p-7 md:p-8 shadow-xl shadow-slate-900/10 mb-8 border border-slate-800">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-16 -mt-16"></div>
+        <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        #OperationEnroll {
-          background: #0F172A !important;
-          color: #F1F5F9 !important;
-          min-height: 100vh !important;
-          margin-left: 260px !important;
-          padding: 90px 28px 40px !important;
-          font-family: 'Inter', sans-serif !important;
-          box-sizing: border-box !important;
-        }
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-2.5">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Booked Pipeline Console
+              </span>
+              <span className="text-slate-400 text-xs flex items-center gap-1 font-medium">
+                <Calendar size={13} className="text-slate-500" />
+                {selectedMonth || getCurrentMonth()}
+              </span>
+            </div>
 
-        /* ── Filter/Header bar ── */
-        #OperationEnroll .coursetable {
-          padding: 0 !important;
-        }
-        #OperationEnroll .coursetable > div {
-          display: flex !important;
-          justify-content: space-between !important;
-          align-items: center !important;
-          margin: 0 0 20px !important;
-          flex-wrap: wrap !important;
-          gap: 12px !important;
-        }
-        #OperationEnroll .coursetable > div h2 {
-          color: #F1F5F9 !important;
-          font-size: 24px !important;
-          font-weight: 800 !important;
-          background: linear-gradient(90deg, #F8FAFC, #94A3B8) !important;
-          -webkit-background-clip: text !important;
-          -webkit-text-fill-color: transparent !important;
-        }
+            <div>
+              <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
+                Advance Booked Payments
+                <Sparkles size={20} className="text-amber-400 hidden sm:inline" />
+              </h1>
+              <p className="text-slate-400 text-xs md:text-sm font-normal max-w-xl">
+                Track booked enrollments, follow up on pending instalments, send WhatsApp payment links, and dispatch offer letters.
+              </p>
+            </div>
+          </div>
 
-        /* ── Search input ── */
-        /* ── Inputs & Form Controls ── */
-        #OperationEnroll input,
-        #OperationEnroll select,
-        #OperationEnroll textarea {
-          background: rgba(15,23,42,0.8) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 12px !important;
-          padding: 10px 16px !important;
-          color: #F1F5F9 !important;
-          font-size: 14px !important;
-          outline: none !important;
-          font-family: 'Inter', sans-serif !important;
-          transition: border 0.2s !important;
-        }
-        #OperationEnroll input:focus,
-        #OperationEnroll select:focus {
-          border-color: #3B82F6 !important;
-          box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important;
-        }
-        #OperationEnroll input::placeholder {
-          color: #475569 !important;
-        }
-
-        /* ── Modal Dark Theme ── */
-        #OperationEnroll .bg-white.rounded-lg.shadow-xl {
-          background: #1E293B !important;
-          border: 1px solid rgba(255,255,255,0.1) !important;
-        }
-        #OperationEnroll .text-gray-800 {
-          color: #F8FAFC !important;
-        }
-        #OperationEnroll .text-gray-600 {
-          color: #94A3B8 !important;
-        }
-        #OperationEnroll .border-b {
-          border-color: rgba(255,255,255,0.1) !important;
-        }
-        #OperationEnroll .bg-gray-50 {
-          background: rgba(0,0,0,0.2) !important;
-          border-color: rgba(255,255,255,0.05) !important;
-        }
-        #OperationEnroll .text-gray-700 {
-          color: #CBD5E1 !important;
-        }
-
-        /* ── Month select ── */
-        #OperationEnroll select.border,
-        #OperationEnroll section + select {
-          background: rgba(15,23,42,0.8) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 12px !important;
-          padding: 10px 16px !important;
-          color: #F1F5F9 !important;
-          font-size: 14px !important;
-          outline: none !important;
-          font-family: 'Inter', sans-serif !important;
-          cursor: pointer !important;
-          margin-bottom: 16px !important;
-        }
-
-        /* ── Table wrapper ── */
-        #OperationEnroll table {
-          width: 100% !important;
-          border-collapse: collapse !important;
-          background: rgba(30,41,59,0.8) !important;
-          border-radius: 20px !important;
-          overflow: hidden !important;
-          text-align: left !important;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.3) !important;
-          border: 1px solid rgba(255,255,255,0.06) !important;
-        }
-
-        /* ── Table headers ── */
-        #OperationEnroll th {
-          background: rgba(15,23,42,0.9) !important;
-          color: #94A3B8 !important;
-          font-size: 11px !important;
-          font-weight: 700 !important;
-          text-transform: uppercase !important;
-          letter-spacing: 0.8px !important;
-          padding: 14px 16px !important;
-          border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-          border: none !important;
-          border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-          white-space: nowrap !important;
-        }
-
-        /* ── Table cells ── */
-        #OperationEnroll td {
-          padding: 14px 16px !important;
-          font-size: 13px !important;
-          color: #CBD5E1 !important;
-          border: none !important;
-          border-bottom: 1px solid rgba(255,255,255,0.03) !important;
-          vertical-align: middle !important;
-          white-space: nowrap !important;
-        }
-        #OperationEnroll tr:hover td {
-          background: rgba(255,255,255,0.025) !important;
-        }
-
-        /* ── Date separator rows ── */
-        #OperationEnroll tr.cursor-pointer td {
-          background: rgba(59,130,246,0.08) !important;
-          color: #60A5FA !important;
-          font-weight: 700 !important;
-          font-size: 13px !important;
-          letter-spacing: 0.3px !important;
-          border-left: 3px solid #3B82F6 !important;
-        }
-
-        /* ── Row remark tints ── */
-        #OperationEnroll tbody tr.Cleared,
-        #OperationEnroll tbody tr.Default,
-        #OperationEnroll tbody tr.Half_Cleared {
-          background: transparent !important;
-        }
-        #OperationEnroll tbody tr.Cleared td {
-          background: rgba(16,185,129,0.15) !important;
-        }
-        #OperationEnroll tbody tr.Default td {
-          background: rgba(239,68,68,0.15) !important;
-        }
-        #OperationEnroll tbody tr.Half_Cleared td {
-          background: rgba(245,158,11,0.3) !important;
-          color: #fff !important;
-        }
-
-        /* ── Table buttons ── */
-        #OperationEnroll table button {
-          background: rgba(59,130,246,0.1) !important;
-          color: #60A5FA !important;
-          border: 1px solid rgba(59,130,246,0.2) !important;
-          border-radius: 8px !important;
-          padding: 6px 14px !important;
-          font-size: 12px !important;
-          font-weight: 600 !important;
-          cursor: pointer !important;
-          transition: all 0.2s !important;
-          font-family: 'Inter', sans-serif !important;
-        }
-        #OperationEnroll table button:hover {
-          background: rgba(59,130,246,0.2) !important;
-          transform: translateY(-1px) !important;
-        }
-
-        /* ── Remark select inside table ── */
-        #OperationEnroll td select,
-        #OperationEnroll select.border.rounded-full {
-          background: rgba(15,23,42,0.8) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 10px !important;
-          padding: 7px 12px !important;
-          color: #F1F5F9 !important;
-          font-size: 12px !important;
-          outline: none !important;
-          font-family: 'Inter', sans-serif !important;
-          cursor: pointer !important;
-        }
-        #OperationEnroll td select option,
-        #OperationEnroll select option {
-          background: #1E293B !important;
-          color: #F1F5F9 !important;
-        }
-
-        /* ── Pagination ── */
-        #OperationEnroll .flex.justify-center button {
-          border-radius: 10px !important;
-          padding: 10px 20px !important;
-          font-weight: 600 !important;
-          font-size: 14px !important;
-          font-family: 'Inter', sans-serif !important;
-          border: none !important;
-          cursor: pointer !important;
-          transition: all 0.2s !important;
-        }
-        #OperationEnroll .bg-blue-500 {
-          background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
-          color: #fff !important;
-          box-shadow: 0 4px 12px rgba(59,130,246,0.3) !important;
-        }
-        #OperationEnroll .bg-gray-300 {
-          background: rgba(255,255,255,0.07) !important;
-          color: #475569 !important;
-        }
-        #OperationEnroll .font-semibold {
-          color: #94A3B8 !important;
-        }
-
-        /* ── Modals / Form overlay ── */
-        #OperationEnroll .form {
-          background: rgba(0,0,0,0.6) !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          padding: 0 !important;
-        }
-        #OperationEnroll .form form {
-          background: rgba(15,23,42,0.98) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 24px !important;
-          padding: 36px !important;
-          color: #F1F5F9 !important;
-          box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
-          max-height: 90vh !important;
-          overflow-y: auto !important;
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 12px !important;
-        }
-        #OperationEnroll .form h2 {
-          color: #F1F5F9 !important;
-          font-size: 20px !important;
-          font-weight: 800 !important;
-          text-align: left !important;
-          margin-bottom: 8px !important;
-        }
-        #OperationEnroll .form input,
-        #OperationEnroll .form select,
-        #OperationEnroll .form textarea {
-          background: rgba(30,41,59,0.8) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 12px !important;
-          padding: 12px 16px !important;
-          color: #F1F5F9 !important;
-          font-size: 14px !important;
-          outline: none !important;
-          font-family: 'Inter', sans-serif !important;
-          width: 100% !important;
-          box-sizing: border-box !important;
-          transition: border 0.2s !important;
-        }
-        #OperationEnroll .form input:focus,
-        #OperationEnroll .form select:focus,
-        #OperationEnroll .form textarea:focus {
-          border-color: #3B82F6 !important;
-          box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important;
-        }
-        #OperationEnroll .form input::placeholder,
-        #OperationEnroll .form textarea::placeholder {
-          color: #475569 !important;
-        }
-        #OperationEnroll .form input[type="submit"],
-        #OperationEnroll .form .cursor-pointer {
-          background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
-          color: #fff !important;
-          border: none !important;
-          border-radius: 12px !important;
-          padding: 14px !important;
-          font-size: 15px !important;
-          font-weight: 700 !important;
-          cursor: pointer !important;
-          width: 100% !important;
-          margin-top: 8px !important;
-        }
-        #OperationEnroll .form label {
-          color: #94A3B8 !important;
-          font-size: 12px !important;
-          font-weight: 600 !important;
-          text-transform: uppercase !important;
-          letter-spacing: 0.5px !important;
-          margin-bottom: 4px !important;
-          display: block !important;
-        }
-        #OperationEnroll .form p {
-          color: #94A3B8 !important;
-          font-size: 13px !important;
-          background: rgba(30,41,59,0.6) !important;
-          padding: 14px !important;
-          border-radius: 12px !important;
-        }
-        #OperationEnroll .form p strong {
-          color: #F1F5F9 !important;
-        }
-        #OperationEnroll .form span {
-          color: #94A3B8 !important;
-          cursor: pointer !important;
-          font-size: 18px !important;
-        }
-
-        /* ── Detail dialog ── */
-        .fixed.flex.flex-col.rounded-md {
-          background: rgba(15,23,42,0.99) !important;
-          border: 1px solid rgba(255,255,255,0.08) !important;
-          border-radius: 20px !important;
-          color: #F1F5F9 !important;
-          box-shadow: 0 25px 60px rgba(0,0,0,0.7) !important;
-          padding: 32px !important;
-        }
-        .fixed.flex.flex-col.rounded-md h2 {
-          color: #F1F5F9 !important;
-          font-size: 20px !important;
-          font-weight: 800 !important;
-          margin-bottom: 16px !important;
-        }
-        .fixed.flex.flex-col.rounded-md p {
-          color: #94A3B8 !important;
-          font-size: 14px !important;
-        }
-        .fixed.flex.flex-col.rounded-md p strong {
-          color: #F1F5F9 !important;
-        }
-        .fixed.flex.flex-col.rounded-md button {
-          background: rgba(59,130,246,0.1) !important;
-          color: #60A5FA !important;
-          border: 1px solid rgba(59,130,246,0.2) !important;
-          border-radius: 10px !important;
-          padding: 10px 24px !important;
-          font-weight: 600 !important;
-          cursor: pointer !important;
-          margin-top: 16px !important;
-          width: 100% !important;
-          font-family: 'Inter', sans-serif !important;
-        }
-
-        /* ── Scrollbar ── */
-        #OperationEnroll::-webkit-scrollbar,
-        #OperationEnroll *::-webkit-scrollbar { width: 5px; height: 5px; }
-        #OperationEnroll::-webkit-scrollbar-thumb,
-        #OperationEnroll *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
-      `}</style>
-      {offerData && (
-        <div className="form">
-          <form onSubmit={sendOfferleter} className="relative" style={{ maxWidth: "560px", width: "95%" }}>
-            <div
-              onClick={resetOfferLeter}
-              className="absolute top-3 right-3 text-gray-400 hover:text-red-400 cursor-pointer text-xl font-bold p-1 rounded-full transition-colors"
-              title="Close"
+          <div className="flex flex-wrap items-center gap-3 self-start lg:self-center">
+            <button
+              onClick={() => fetchNewStudent(true)}
+              disabled={isRefreshing}
+              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 text-xs font-semibold transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Refresh roster"
             >
-              ✖
-            </div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <span>📩</span> Send Offer Letter
-            </h2>
-            <p className="text-xs text-slate-400 mb-2">
-              Edit any information below. Whatever you type here will appear exactly on the student's Offer Letter and email.
-            </p>
+              <RefreshCw size={14} className={isRefreshing ? "animate-spin text-amber-400" : "text-slate-400"} />
+              <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
+            </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-slate-300">Candidate Name:</label>
-                <input
-                  type="text"
-                  value={offerFullname}
-                  onChange={(e) => setOfferFullname(e.target.value)}
-                  placeholder="e.g. Tarun"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-slate-300">Domain / Role:</label>
-                <input
-                  type="text"
-                  value={offerDomain}
-                  onChange={(e) => setOfferDomain(e.target.value)}
-                  placeholder="e.g. Corporate Law"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-300">Candidate Email:</label>
-              <input
-                type="email"
-                value={offerEmail}
-                onChange={(e) => setOfferEmail(e.target.value)}
-                placeholder="candidate@gmail.com"
-                required
-              />
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="text-xs font-semibold text-slate-300">Offer Letter Date:</label>
-                <span className="text-[11px] text-blue-400 cursor-pointer hover:underline" onClick={() => setOfferDate(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }))}>Set Today</span>
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={offerDate}
-                  onChange={(e) => setOfferDate(e.target.value)}
-                  placeholder="e.g. 8 October 2026 or 08-10-2026"
-                  required
-                  className="flex-1"
-                />
-                <input
-                  type="date"
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      const [y, m, d] = e.target.value.split("-");
-                      const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-                      setOfferDate(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
-                    }
-                  }}
-                  className="w-12 p-2 cursor-pointer opacity-75 hover:opacity-100"
-                  title="Pick from calendar"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-300">Internship Duration:</label>
-              <input
-                type="text"
-                value={offerDuration}
-                onChange={(e) => setOfferDuration(e.target.value)}
-                placeholder="e.g. 3 Months or 6 Months"
-                required
-              />
-              <div className="flex gap-2 mt-1.5 flex-wrap">
-                {["1 Month", "2 Months", "3 Months", "6 Months"].map((dur) => (
-                  <button
-                    key={dur}
-                    type="button"
-                    onClick={() => setOfferDuration(dur)}
-                    className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
-                      offerDuration === dur
-                        ? "bg-blue-600 text-white border-blue-500 font-bold"
-                        : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
-                    }`}
-                  >
-                    {dur}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-slate-300">Internship Start Date:</label>
-                <div className="flex gap-1.5">
-                  <input
-                    type="text"
-                    value={offerStart}
-                    onChange={(e) => setOfferStart(e.target.value)}
-                    placeholder="e.g. 15 Oct 2026"
-                    required
-                    className="flex-1"
-                  />
-                  <input
-                    type="date"
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        const [y, m, d] = e.target.value.split("-");
-                        const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-                        setOfferStart(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
-                      }
-                    }}
-                    className="w-10 p-1 cursor-pointer opacity-75 hover:opacity-100"
-                    title="Pick from calendar"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-slate-300">Internship End Date:</label>
-                <div className="flex gap-1.5">
-                  <input
-                    type="text"
-                    value={offerEnd}
-                    onChange={(e) => setOfferEnd(e.target.value)}
-                    placeholder="e.g. 15 Jan 2027"
-                    required
-                    className="flex-1"
-                  />
-                  <input
-                    type="date"
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        const [y, m, d] = e.target.value.split("-");
-                        const dt = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
-                        setOfferEnd(dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
-                      }
-                    }}
-                    className="w-10 p-1 cursor-pointer opacity-75 hover:opacity-100"
-                    title="Pick from calendar"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-300">Reporting Location:</label>
-              <input
-                type="text"
-                value={offerLocation}
-                onChange={(e) => setOfferLocation(e.target.value)}
-                placeholder="e.g. Online or Offline / Bangalore"
-                required
-              />
-              <div className="flex gap-2 mt-1.5 flex-wrap">
-                {["Online", "Offline", "Hybrid", "Remote"].map((loc) => (
-                  <button
-                    key={loc}
-                    type="button"
-                    onClick={() => setOfferLocation(loc)}
-                    className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors ${
-                      offerLocation === loc
-                        ? "bg-blue-600 text-white border-blue-500 font-bold"
-                        : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
-                    }`}
-                  >
-                    {loc}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Live Preview Box */}
-            <div className="p-3 bg-slate-900/90 rounded-xl border border-blue-500/30 text-xs text-slate-300 mt-1">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1 flex items-center gap-1.5">
-                <span>👁 Live Offer Letter Preview</span>
-              </div>
-              <div className="space-y-0.5">
-                <div>Date: <strong className="text-white">{offerDate || "—"}</strong></div>
-                <div>Candidate: <strong className="text-white">{offerFullname || "—"}</strong> ({offerEmail || "—"})</div>
-                <div>Designation: <strong className="text-white">{offerDomain || "—"} Intern</strong></div>
-                <div>Period of Service: <strong className="text-white">{offerDuration || "—"}</strong></div>
-                <div>Internship Dates: <strong className="text-white">{offerStart || "—"}</strong> to <strong className="text-white">{offerEnd || "—"}</strong></div>
-                <div>Location: <strong className="text-white">{offerLocation || "—"}</strong></div>
-              </div>
-            </div>
-
-            <div className="flex gap-4 mt-3">
-              <button
-                type="button"
-                onClick={resetOfferLeter}
-                className="w-full bg-slate-700 text-white p-2.5 rounded-xl hover:bg-slate-600 transition font-semibold"
-              >
-                Cancel
-              </button>
-              <input
-                type="submit"
-                value={
-                  isOfferLetterSending
-                    ? "Sending..."
-                    : "Send Offer Letter"
-                }
-                className="w-full bg-blue-600 text-white p-2.5 rounded-xl cursor-pointer hover:bg-blue-700 transition font-bold"
-                disabled={isOfferLetterSending}
-              />
-            </div>
-          </form>
-        </div>
-      )}
-      {iscourseFormVisible && (
-        <div className="fixed inset-0 z-[2000] bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl p-6 relative overflow-y-auto max-h-[90vh]">
-            <span
-              onClick={resetForm}
-              className="absolute top-4 right-4 text-2xl cursor-pointer text-gray-500 hover:text-black z-10"
+            <button
+              onClick={handleAddNewCandidate}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
             >
-              ✖
-            </span>
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 border-b pb-3">
-              {editingStudentId ? "Edit Enrolled Details" : "Add New Enrollment"}
-            </h2>
-
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Full Name</label>
-                <input
-                  value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
-                  type="text"
-                  placeholder="Full Name"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Email</label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="text"
-                  placeholder="Email"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Contact No</label>
-                <input
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  type="number"
-                  placeholder="Contact No"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Whatsapp Number</label>
-                <input
-                  value={whatsAppNumber}
-                  onChange={(e) => setWhatsAppNumber(e.target.value)}
-                  type="number"
-                  placeholder="Whatsapp Number"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Counselor Name</label>
-                <input
-                  value={counselor}
-                  onChange={(e) => setCounselor(e.target.value)}
-                  type="text"
-                  placeholder="Counselor Name"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Mode of Payment</label>
-                <select
-                  value={modeofpayment}
-                  onChange={(e) => setModeofpayment(e.target.value)}
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>Mode of Payment</option>
-                  <option value="Online">Online</option>
-                  <option value="Cash">Cash</option>
-                  <option value="Transfer">Transfer</option>
-                  <option value="RazorPay">RazorPay</option>
-                  <option value="QR Code">QR Code</option>
-                  <option value="EaseBuZZ">EaseBuZZ</option>
-                  <option value="PayPal">PayPal</option>
-                  <option value="Credit Card">Credit Card</option>
-                  <option value="Debit Card">Debit Card</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Opted Domain</label>
-                <select
-                  value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>Select Opted Domain</option>
-                  {course.map((item) => (
-                    <option key={item._id} value={item.title}>{item.title}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Opted Month</label>
-                <select
-                  value={monthOpted}
-                  onChange={(e) => setMonthOpted(e.target.value)}
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>Select Opted Month</option>
-                  {monthsToShow.map((month, index) => (
-                    <option key={index} value={month}>{month}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Program Price</label>
-                <input
-                  value={programPrice}
-                  onChange={(e) => setProgramPrice(e.target.value)}
-                  type="number"
-                  placeholder="Program Price"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Paid Amount</label>
-                <input
-                  value={paidAmount}
-                  onChange={(e) => setPaidAmount(e.target.value)}
-                  type="number"
-                  placeholder="Paid Amount"
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Remaining Amount</label>
-                <input
-                  value={remainingAmount}
-                  type="number"
-                  placeholder="Remaining Amount"
-                  readOnly
-                  className="border border-gray-300 p-2.5 rounded-md bg-gray-100 font-bold text-blue-700 outline-none"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">College Name</label>
-                <input
-                  value={collegeName}
-                  onChange={(e) => setCollegeName(e.target.value)}
-                  type="text"
-                  placeholder="College Name"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Branch/Department</label>
-                <input
-                  value={branch}
-                  onChange={(e) => setBranch(e.target.value)}
-                  type="text"
-                  placeholder="Branch/Department"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Year of Passing Out</label>
-                <input
-                  value={yearOfPassingOut}
-                  onChange={(e) => setYearOfPassingOut(e.target.value)}
-                  type="text"
-                  placeholder="Year of Passing Out"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Company Name</label>
-                <input
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  type="text"
-                  placeholder="Company Name (if working)"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Role</label>
-                <input
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  type="text"
-                  placeholder="Role (if working)"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Transaction ID</label>
-                <input
-                  value={transactionId}
-                  onChange={(e) => setTransactionId(e.target.value)}
-                  type="text"
-                  placeholder="Transaction ID"
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="col-span-full mt-2">
-                <label className="text-xs font-bold text-gray-600 mb-2 uppercase tracking-wider block">Languages Known</label>
-                <div className="flex flex-wrap gap-4 border border-gray-200 p-3 rounded-md bg-gray-50">
-                  {["English", "Hindi", "Kannada", "Telugu", "Tamil", "Malayalam", "Bengali"].map(lang => (
-                    <label key={lang} className="flex items-center gap-2 cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={languages.includes(lang)}
-                        onChange={() => handleLanguageChange(lang)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-sm text-gray-700 group-hover:text-blue-600 transition">{lang}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Clear Payment Due Date</label>
-                <input
-                  value={clearPaymentMonth}
-                  onChange={(e) => setClearPaymentMonth(e.target.value)}
-                  type="date"
-                  min={minDate}
-                  max={maxDate}
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Internship Start Month</label>
-                <select
-                  value={internshipstartsmonth}
-                  onChange={(e) => setInternshipstartsmonth(e.target.value)}
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>Start Month</option>
-                  {monthsToShow.map((month, index) => (
-                    <option key={index} value={month}>{month}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Internship End Month</label>
-                <select
-                  value={internshipendsmonth}
-                  onChange={(e) => setInternshipendsmonth(e.target.value)}
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>End Month</option>
-                  {monthsToShow.map((month, index) => (
-                    <option key={index} value={month}>{month}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Batch Timing</label>
-                <select
-                  value={batchTiming}
-                  onChange={(e) => setBatchTiming(e.target.value)}
-                  required
-                  className="border border-gray-300 p-2.5 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition h-[45px]"
-                >
-                  <option value="" disabled>Select Batch Timing</option>
-                  <option value="Monday-Friday (8:00 pm - 9:30 pm)">Monday-Friday (8:00 pm - 9:30 pm)</option>
-                  <option value="Saturday-Sunday (1 to 2 hours per day)">Saturday-Sunday (1 to 2 hours per day)</option>
-                </select>
-              </div>
-
-              <div className="col-span-full mt-2">
-                <label className="text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Referral (Name & Contact)</label>
-                <textarea
-                  value={referFriend}
-                  onChange={(e) => setReferFriend(e.target.value)}
-                  placeholder="Refer your friends to earn cashback. Name and Contact Number"
-                  className="border border-gray-300 p-3 rounded-md w-full h-24 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="col-span-full mt-4 flex gap-4">
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="flex-1 bg-gray-100 text-gray-700 font-bold py-3 rounded-lg hover:bg-gray-200 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-[2] bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 shadow-md transition"
-                >
-                  {editingStudentId ? "Update Student" : "Submit Registration"}
-                </button>
-              </div>
-            </form>
+              <Plus size={16} />
+              <span>Add Candidate</span>
+            </button>
           </div>
         </div>
-      )}
 
-      <div className="coursetable">
-        <div className="mb-2">
-          <h2>New Enroll Booking: </h2>
-          {/* <span onClick={handleAddNewCandidate}>+ Add New Candidate</span> */}
+        {/* Aggregate Mini KPI Pills */}
+        <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-800/80 text-xs">
+          <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
+            <span className="text-slate-400 font-semibold block text-[11px]">Booked Students</span>
+            <span className="text-xl font-black text-white mt-0.5 block">{filteredStudents.length}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
+            <span className="text-slate-400 font-semibold block text-[11px]">Total Pipeline</span>
+            <span className="text-xl font-black text-white mt-0.5 block">{formatINR(totalBookedValue)}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
+            <span className="text-emerald-400 font-semibold block text-[11px]">Collected So Far</span>
+            <span className="text-xl font-black text-emerald-400 mt-0.5 block">{formatINR(totalPaidCollected)}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
+            <span className="text-amber-400 font-semibold block text-[11px]">Pending Balance</span>
+            <span className="text-xl font-black text-amber-400 mt-0.5 block">{formatINR(totalPendingAmount)}</span>
+          </div>
         </div>
-        <section className="flex items-center gap-1 mb-2">
+      </div>
+
+      {/* ── Filter & Search Toolbar ── */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm mb-6 flex flex-col md:flex-row gap-3.5 items-center justify-between">
+        {/* Search */}
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
           <input
-            type="type"
-            placeholder="Search here by "
+            type="text"
+            placeholder="Search by name, email, phone, WhatsApp or counselor..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="border border-black px-2 py-1 rounded-lg"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all"
           />
+          {searchQuery && (
+            <button
+              onClick={() => handleSearchChange({ target: { value: "" } })}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold"
+            >
+              Clear
+            </button>
+          )}
+        </div>
 
-          <div className="relative group inline-block">
-            <i className="fa fa-info-circle text-lg cursor-pointer"></i>
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden w-max bg-gray-800 text-white text-sm rounded-md py-2 px-3 group-hover:block">
-              Name, Email, Contact No and Counselor Name
-              <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-t-8 border-gray-800 border-x-8 border-x-transparent"></div>
-            </div>
+        {/* Month Dropdown & Counter */}
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative flex-1 md:flex-initial">
+            <CalendarDays className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <select
+              value={selectedMonth}
+              onChange={handleMonthChange}
+              className="w-full md:w-48 bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-8 py-2.5 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all cursor-pointer appearance-none"
+            >
+              {months.map((m, i) => (
+                <option key={i} value={m}>{m}</option>
+              ))}
+            </select>
           </div>
-        </section>
 
-        <select
-          className="border border-black px-2 py-1 rounded-lg"
-          name="month"
-          id="month"
-          value={selectedMonth} // Bind to selectedMonth state
-          onChange={handleMonthChange} // Trigger filter on month change
-        >
-          {months.map((month, index) => (
-            <option key={index} value={month}>
-              {month}
-            </option>
-          ))}
-        </select>
+          <div className="px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs whitespace-nowrap">
+            {filteredStudents.length} Records
+          </div>
+        </div>
+      </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Sl No</th>
-              <th>Name</th>
-              <th>WhatsApp No</th>
-              <th>Program Price</th>
-              <th>Paid Amount</th>
-              <th>Remaining Amount</th>
-              <th>Month Opted</th>
-              <th>Clear Month</th>
-              <th>Hierarchy</th>
-              <th>Actions</th>
-              <th>Login Credentials</th>
-              <th>Create User account</th>
-              <th>pending payment link</th>
-              <th>send offer letter</th>
-              {/* <th>Whatsapp</th> */}
-              <th>More Details</th>
-              <th>Last Remark</th>
-              <th>Remark</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(groupedData).length > 0 ? (
-              Object.keys(groupedData).map((date) => (
-                <React.Fragment key={date}>
-                  <tr
-                    className="cursor-pointer"
-                    onClick={() => handleCopyMobileNumbers(date)}
-                  >
-                    <td colSpan="16" style={{ fontWeight: "bold" }}>
-                      {date}
-                    </td>
-                  </tr>
-                  {groupedData[date].map((item, index) => {
-                    const bdaObj = bda.find(b => b.fullname === item.counselor);
-                    const teamName = bdaObj?.team || '';
-                    const managers = bda.filter(b => b.designation && b.designation.toLowerCase() === 'manager');
-                    const managerObj = managers.find(mgr => Array.isArray(mgr.teams) && mgr.teams.includes(teamName));
-                    const managerName = managerObj?.fullname || '';
-                    return (
-                      <tr
-                        key={item._id}
-                        className={`${item.remark[item.remark.length - 1]}`}
-                      >
-                        <td>{index + 1}</td>
-                        <td className="capitalize">{item.fullname}</td>
-                        <td>{item.whatsAppNumber}</td>
-                        <td>{item.programPrice}</td>
-                        <td>{item.paidAmount}</td>
-                        <td>{item.programPrice - item.paidAmount}</td>
-                        <td className="capitalize">{item.monthOpted}</td>
-                        <td className="whitespace-nowrap">
-                          {item.clearPaymentMonth}
-                        </td>
-                        <td>
-                          <div className="flex flex-col text-sm text-left px-2">
-                            <span className="font-bold text-gray-700">{managerName} <span className="text-xs font-normal text-gray-500">(Mgr)</span></span>
-                            <span className="text-gray-600 font-semibold">{teamName}</span>
-                            {/* <span className="text-gray-500 text-xs">{item.counselor} <span className="text-[10px]">(BDA)</span></span> */}
-                          </div>
-                        </td>
-                        <td>
-                          <button onClick={() => handleEdit(item._id)}>
-                            Edit
-                          </button>
-                        </td>
-                        <td>
-                          <div
-                            className="cursor-pointer transition hover:opacity-80"
-                            onClick={() => handleSendEmail(item)}
-                          >
-                            {item.mailSended ? (
-                              <div className="flex items-center justify-center w-full" title="Resend Login Credentials">
-                                <PiLockKeyOpenFill />
-                                <i className="fa fa-send-o text-green-600"></i>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center w-full" title="Send Login Credentials">
-                                <PiLockKeyFill />
-                                <i className="fa fa-send-o text-red-600"></i>
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                        <td>
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => createAccount(item)}
-                          >
-                            {item.userCreated ? (
-                              <div className="flex items-center justify-center text-green-600 font-bold flex-col">
-                                <FaUserCheck />
-                                UC
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center text-red-600 font-bold flex-col">
-                                <FaUserTimes className="text-lg" />
-                                NotCreated
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                        <td>
-                          {(() => {
-                            const pendingAmount = (item.programPrice || 0) - (item.paidAmount || 0);
-                            const opName = item.operationName || localStorage.getItem("advOperationName") || localStorage.getItem("operationName") || "Operations Team";
-                            const formattedOpName = opName ? opName.charAt(0).toUpperCase() + opName.slice(1) : "Operations Team";
-                            const rawNum = String(item.whatsAppNumber || item.phone || "").replace(/[^0-9]/g, "");
-                            const cleanNum = rawNum.length === 10 ? `91${rawNum}` : rawNum;
+      {/* ── Table Container ── */}
+      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs whitespace-nowrap">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider">
+                <th className="py-4 px-4 text-center w-12">#</th>
+                <th className="py-4 px-4">Student Info</th>
+                <th className="py-4 px-4">Financials</th>
+                <th className="py-4 px-4">Program & Due Date</th>
+                <th className="py-4 px-4">Hierarchy</th>
+                <th className="py-4 px-4 text-center">Actions & Links</th>
+                <th className="py-4 px-4 text-center">Remark & Update</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {Object.keys(groupedData).length > 0 ? (
+                Object.keys(groupedData).map((date) => (
+                  <React.Fragment key={date}>
+                    {/* Date Separator Banner */}
+                    <tr
+                      onClick={() => handleCopyMobileNumbers(date)}
+                      className="group cursor-pointer bg-slate-50/70 hover:bg-emerald-50/50 transition-colors border-y border-slate-200/60"
+                      title="Click to copy WhatsApp numbers for this date"
+                    >
+                      <td colSpan={7} className="py-2.5 px-5">
+                        <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                          <span className="flex items-center gap-2 text-emerald-700">
+                            <CalendarDays size={14} className="text-emerald-600" />
+                            <span>{date}</span>
+                            <span className="text-slate-400 font-normal ml-2">
+                              ({groupedData[date].length} {groupedData[date].length === 1 ? "student" : "students"})
+                            </span>
+                          </span>
 
-                            const whatsappMessage = `Hello ${item.fullname || "Student"}  ,
+                          <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1 group-hover:underline">
+                            <Copy size={12} /> Click to Copy Phone Numbers
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+
+                    {/* Student Rows */}
+                    {groupedData[date].map((item, index) => {
+                      const bdaObj = bda.find((b) => b.fullname === item.counselor);
+                      const teamName = bdaObj?.team || "";
+                      const managers = bda.filter(
+                        (b) => b.designation && b.designation.toLowerCase() === "manager"
+                      );
+                      const managerObj = managers.find(
+                        (mgr) => Array.isArray(mgr.teams) && mgr.teams.includes(teamName)
+                      );
+                      const managerName = managerObj?.fullname || "";
+
+                      const dueAmount = (item.programPrice || 0) - (item.paidAmount || 0);
+                      const lastRemark =
+                        Array.isArray(item.remark) && item.remark.length > 0
+                          ? item.remark[item.remark.length - 1]
+                          : "";
+
+                      // WhatsApp message builder
+                      const opN = item.operationName || operationName || "Operations Team";
+                      const formattedOpName = opN ? opN.charAt(0).toUpperCase() + opN.slice(1) : "Operations Team";
+                      const rawNum = String(item.whatsAppNumber || item.phone || "").replace(/[^0-9]/g, "");
+                      const cleanNum = rawNum.length === 10 ? `91${rawNum}` : rawNum;
+                      const whatsappMessage = `Hello ${item.fullname || "Student"},
 
 Greetings from AccenLearn Solutions! 
 
 This is ${formattedOpName} from the Operations Department. We are contacting you regarding your application for the AccenLearn × IBM Nationwide Training & Internship Program.
 
-💳 Pending Amount: ₹${pendingAmount}
+💳 Pending Amount: ₹${dueAmount}
 
 Kindly complete the pending payment by the end of today using the payment link below:
 
@@ -1875,214 +855,613 @@ ${formattedOpName}
 Operations Department
 AccenLearn Solutions`;
 
-                            return (
-                              <div className="flex items-center justify-center">
-                                <a
-                                  href={`https://web.whatsapp.com/send?phone=${cleanNum}&text=${encodeURIComponent(whatsappMessage)}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-emerald-600 hover:text-emerald-700 hover:scale-110 transition-transform p-1.5 rounded-lg hover:bg-emerald-50"
-                                  title="Send Pending Payment Link on WhatsApp"
-                                >
-                                  <FaWhatsapp className="text-2xl text-emerald-600" />
-                                </a>
+                      return (
+                        <tr key={item._id} className="hover:bg-slate-50/80 transition-colors">
+                          {/* Row Number */}
+                          <td className="py-3.5 px-4 text-center font-bold text-slate-400">
+                            {indexOfFirstItem + index + 1}
+                          </td>
+
+                          {/* Student Info */}
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs uppercase flex-shrink-0">
+                                {item.fullname ? item.fullname.charAt(0) : "S"}
                               </div>
-                            );
-                          })()}
-                        </td>
-                        <td
-                          onClick={() => handleOpenOfferLetter(item)}
-                          style={{ cursor: "pointer", color: "blue" }}
-                        >
-                          {item.offerlettersended ? (
-                            <i className="fa fa-send">sended</i>
-                          ) : (
-                            <i className="fa fa-send"></i>
-                          )}
-                        </td>
-                        {/* <td>
-                        {" "}
-                        <a
-                          href={`https://web.whatsapp.com/send?phone=${item.whatsAppNumber
-                            }&text=${encodeURIComponent(
-                              `Registration Confirmation - ${item.domain} Program at Accenlearn
+                              <div>
+                                <p className="font-bold text-slate-800 capitalize leading-tight">
+                                  {item.fullname}
+                                </p>
+                                <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500">
+                                  <span>{item.whatsAppNumber || item.phone}</span>
+                                  {item.email && (
+                                    <>
+                                      <span>•</span>
+                                      <span className="max-w-[140px] truncate text-slate-400">{item.email}</span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
 
-Dear ${item.fullname},
+                          {/* Financials */}
+                          <td className="py-3.5 px-4">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-2">
+                                <span className="font-black text-emerald-600 text-sm">
+                                  {formatINR(item.paidAmount)}
+                                </span>
+                                <span className="text-[10px] text-slate-400">
+                                  of {formatINR(item.programPrice)}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
+                                  Due: {formatINR(dueAmount)}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
 
-Greetings from Accenlearn!
+                          {/* Program & Due Date */}
+                          <td className="py-3.5 px-4">
+                            <div className="space-y-1">
+                              <span className="inline-block font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md text-[11px]">
+                                {item.domain || item.program || "Advance Track"}
+                              </span>
+                              <div className="text-[11px] text-slate-500 flex items-center gap-1">
+                                <Clock size={11} className="text-slate-400" />
+                                <span>Due: <strong className="text-slate-700">{item.clearPaymentMonth || "N/A"}</strong></span>
+                              </div>
+                            </div>
+                          </td>
 
-I am ${item.operationName.charAt(0).toUpperCase() + item.operationName.slice(1)} from the Operations Department, and I am pleased to confirm your successful registration for the ${item.domain} program at Accenlearn.
+                          {/* Hierarchy */}
+                          <td className="py-3.5 px-4">
+                            <div className="flex flex-col text-[11px] space-y-0.5">
+                              {managerName && (
+                                <span className="font-bold text-slate-700">
+                                  {managerName} <span className="text-[10px] text-slate-400 font-normal">(Mgr)</span>
+                                </span>
+                              )}
+                              {teamName && (
+                                <span className="font-semibold text-slate-500">{teamName}</span>
+                              )}
+                              {item.counselor && (
+                                <span className="text-slate-400 text-[10px]">BDA: {item.counselor}</span>
+                              )}
+                            </div>
+                          </td>
 
-Please find the details of your Registration below:
+                          {/* Actions & Tools */}
+                          <td className="py-3.5 px-4 text-center">
+                            <div className="flex items-center justify-center gap-1.5">
+                              {/* Edit Button */}
+                              <button
+                                onClick={() => handleEdit(item._id)}
+                                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                                title="Edit Candidate Details"
+                              >
+                                <Edit3 size={14} />
+                              </button>
 
-Program Name: ${item.domain}
-Program Fee: ₹${item.programPrice}
-Start Date: 5th ${item.monthOpted}
-Program Duration: ${item.program}
-Mode of Training: 100% Online (Virtual)
-Due Amount: ₹${item.programPrice - item.paidAmount}
-Payment Due Date: ${item.clearPaymentMonth}
+                              {/* WhatsApp Direct Reminder */}
+                              <a
+                                href={`https://web.whatsapp.com/send?phone=${cleanNum}&text=${encodeURIComponent(whatsappMessage)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 transition"
+                                title="Send WhatsApp Payment Link"
+                              >
+                                <FaWhatsapp size={15} />
+                              </a>
 
-Thank you for choosing Accenlearn as your learning partner. We are committed to delivering a high-quality training experience led by seasoned industry professionals.
+                              {/* Send Credentials */}
+                              <button
+                                onClick={() => handleSendEmail(item)}
+                                className={`p-1.5 rounded-lg transition ${
+                                  item.mailSended
+                                    ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                                    : "bg-rose-50 text-rose-600 hover:bg-rose-100"
+                                }`}
+                                title={item.mailSended ? "Credentials Sent (Click to resend)" : "Send Credentials"}
+                              >
+                                {item.mailSended ? <PiLockKeyOpenFill size={15} /> : <PiLockKeyFill size={15} />}
+                              </button>
 
-If you have any questions or need further assistance, feel free to reach out to us at support@Accenlearn.com or contact me directly.
+                              {/* Create User Account */}
+                              <button
+                                onClick={() => createAccount(item)}
+                                className={`p-1.5 rounded-lg transition ${
+                                  item.userCreated
+                                    ? "bg-emerald-50 text-emerald-600"
+                                    : "bg-amber-50 text-amber-600 hover:bg-amber-100"
+                                }`}
+                                title={item.userCreated ? "User Account Created" : "Create LMS Account"}
+                              >
+                                {item.userCreated ? <FaUserCheck size={14} /> : <FaUserTimes size={14} />}
+                              </button>
 
-We look forward to welcoming you to the program on 5th ${item.monthOpted}!
+                              {/* Send Offer Letter */}
+                              <button
+                                onClick={() => handleOpenOfferLetter(item)}
+                                className={`p-1.5 rounded-lg transition ${
+                                  item.offerlettersended
+                                    ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                }`}
+                                title={item.offerlettersended ? "Offer Letter Sent (Click to resend)" : "Send Offer Letter"}
+                              >
+                                <FileText size={14} />
+                              </button>
 
-Warm regards,
-${item.operationName.charAt(0).toUpperCase() + item.operationName.slice(1)}
-Operations Department
-Team Accenlearn`
-                            )}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="fa fa-whatsapp text-green-700 text-2xl cursor-pointer"></i>
-                        </a>
-                      </td> */}
-                        <td>
-                          <i
-                            className="fa fa-info-circle text-2xl cursor-pointer"
-                            onClick={() => handleDialogOpen(item)}
-                          ></i>
-                        </td>
-                        <td>{item.remark[item.remark.length - 1]}</td>
-                        <td>
-                          <select
-                            className="border rounded-full w-40 border-black"
-                            onChange={(e) => handleRemarkChange(e, item._id)}
-                            defaultValue="Select Remark"
-                          >
-                            <option disabled value="Select Remark">
-                              {" "}
-                              Select Remark
-                            </option>
-                            <option value="Reminder Issued">
-                              {" "}
-                              Reminder Issued
-                            </option>
-                            <option value="DNP">DNP</option>
-                            <option value="NATC">NATC</option>
-                            <option value="Not Interested">Not Interested</option>
-                            <option value="Cut Call">Cut Call</option>
-                            <option value="Default">Default</option>
-                            <option value="Cleared">Cleared</option>
-                            <option value="Half_Cleared">Half_Cleared</option>
-                            <option value="Switch Off">Switch Off</option>
-                            <option value="Call Back later">
-                              {" "}
-                              Call Back later
-                            </option>
-                            <option value="Busy">Busy</option>
-                            <option value="Declined">Declined</option>
-                            <option value="Need More Time">Need More Time</option>
-                            <option value="Reviews are not good">
-                              Reviews are not good
-                            </option>
-                            <option value="When Batch Starts">
-                              When Batch Starts
-                            </option>
-                            <option value="No response">No response</option>
-                            <option value="False pitch so not intrested">
-                              False pitch so not intrested
-                            </option>
-                            <option value="Offer letter issues">
-                              Offer letter issues
-                            </option>
-                            <option value="Counselor Told To Pay Before Class Start">
-                              Counselor Told To Pay Before Class Start
-                            </option>
-                          </select>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </React.Fragment>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="17">No data found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                              {/* More Info */}
+                              <button
+                                onClick={() => handleDialogOpen(item)}
+                                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+                                title="View Complete Enrollment Details"
+                              >
+                                <Info size={14} />
+                              </button>
+                            </div>
+                          </td>
 
-        {filteredStudents.length > itemsPerPage && (
-          <div className="flex justify-center items-center gap-4 mt-4 mb-4">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-            >
-              Previous
-            </button>
-            <span className="font-semibold">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
-            >
-              Next
-            </button>
-          </div>
-        )}
-        {dialogVisible && dialogData && (
-          <div className="fixed flex flex-col rounded-md top-[30%] left-[50%] shadow-black shadow-sm transform translate-x-[-50%] transalate-y-[-50%] bg-white p-[20px] z-[1000]">
-            <h2>Details</h2>
-            <div className="space-y-2">
-              <p>
-                <strong>Email:</strong> {dialogData.email}
-              </p>
-              <p>
-                <strong>Phone:</strong> {dialogData.phone}
-              </p>
-              <p>
-                <strong>Program:</strong> {dialogData.program}
-              </p>
-              <p>
-                <strong>Domian Opted:</strong> {dialogData.domain}
-              </p>
+                          {/* Remark & Update */}
+                          <td className="py-3.5 px-4 text-center">
+                            <div className="flex flex-col items-center gap-1">
+                              {lastRemark && (
+                                <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                                  {lastRemark}
+                                </span>
+                              )}
+                              <select
+                                onChange={(e) => handleRemarkChange(e, item._id)}
+                                defaultValue=""
+                                className="bg-slate-50 border border-slate-200 text-[11px] font-medium text-slate-700 rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                              >
+                                <option value="" disabled>Update</option>
+                                <option value="Cleared">Cleared</option>
+                                <option value="Default">Default</option>
+                                <option value="DNP">DNP</option>
+                                <option value="NATC">NATC</option>
+                                <option value="Interested">Interested</option>
+                                <option value="Call Back">Call Back</option>
+                                <option value="Wrong Number">Wrong Number</option>
+                              </select>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </React.Fragment>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="py-16 text-center text-slate-400">
+                    <BookOpen size={36} className="mx-auto text-slate-300 mb-2" />
+                    <p className="font-semibold text-sm">No booked records found for {selectedMonth || "this period"}.</p>
+                    <p className="text-xs text-slate-400 mt-1">Try choosing a different month or clearing your search filter.</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-              <p>
-                <strong>Counselor:</strong> {dialogData.counselor}
-              </p>
-              <p>
-                <strong>College Name:</strong> {dialogData.collegeName}
-              </p>
-              <p>
-                <strong>Branch:</strong> {dialogData.branch}
-              </p>
-              <p>
-                <strong>Aadhar No:</strong> {dialogData.aadharNumber}
-              </p>
-              <p>
-                <strong>Batch Timing:</strong> {dialogData.batchTiming || "N/A"}
-              </p>
-              <p>
-                <strong>Mode of Payment:</strong> {dialogData.modeofpayment || "N/A"}
-              </p>
+        {/* ── Pagination Bar ── */}
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-600">
+            <div>
+              Showing <span className="font-bold">{indexOfFirstItem + 1}</span> to{" "}
+              <span className="font-bold">{Math.min(indexOfLastItem, filteredStudents.length)}</span> of{" "}
+              <span className="font-bold">{filteredStudents.length}</span> students
             </div>
-            <button onClick={handleDialogClose}>Close</button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={prevPage}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+              >
+                <ChevronLeft size={14} /> Previous
+              </button>
+              <span className="font-bold px-2">Page {currentPage} of {totalPages}</span>
+              <button
+                onClick={nextPage}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+              >
+                Next <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
-        )}
-        {dialogVisible && (
-          <div
-            onClick={handleDialogClose}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              zIndex: 999,
-            }}
-          ></div>
         )}
       </div>
+
+      {/* ── Add / Edit Enrollment Modal ── */}
+      {iscourseFormVisible && (
+        <div className="fixed inset-0 z-[2000] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-6 sm:p-8 relative overflow-y-auto max-h-[90vh] border border-slate-100">
+            <button
+              onClick={resetForm}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="mb-6 pb-4 border-b border-slate-100">
+              <h2 className="text-xl font-bold text-slate-800">
+                {editingStudentId ? "Edit Advance Enrollment" : "New Candidate Registration"}
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Ensure financial figures and payment due dates are verified before submission.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Full Name</label>
+                <input
+                  value={fullname}
+                  onChange={(e) => setFullname(e.target.value)}
+                  type="text"
+                  placeholder="Student Full Name"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Email</label>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="student@gmail.com"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Contact Phone</label>
+                <input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  type="number"
+                  placeholder="Primary Phone Number"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">WhatsApp Number</label>
+                <input
+                  value={whatsAppNumber}
+                  onChange={(e) => setWhatsAppNumber(e.target.value)}
+                  type="number"
+                  placeholder="WhatsApp Number"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Counselor / BDA</label>
+                <input
+                  value={counselor}
+                  onChange={(e) => setCounselor(e.target.value)}
+                  type="text"
+                  placeholder="Counselor Name"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Domain / Course</label>
+                <input
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  type="text"
+                  placeholder="e.g. Data Science, MERN"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Program Price (₹)</label>
+                <input
+                  value={programPrice}
+                  onChange={(e) => setProgramPrice(e.target.value)}
+                  type="number"
+                  placeholder="Total Price"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Paid Amount (₹)</label>
+                <input
+                  value={paidAmount}
+                  onChange={(e) => setPaidAmount(e.target.value)}
+                  type="number"
+                  placeholder="Amount Paid Now"
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Remaining Due (₹)</label>
+                <input
+                  value={remainingAmount}
+                  disabled
+                  type="number"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2.5 font-bold text-slate-600"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Month Opted</label>
+                <select
+                  value={monthOpted}
+                  onChange={(e) => setMonthOpted(e.target.value)}
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+                >
+                  <option value="" disabled>Select Month</option>
+                  {monthsToShow.map((m, i) => (
+                    <option key={i} value={m}>{m}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Clear Payment Due Date</label>
+                <input
+                  value={clearPaymentMonth}
+                  onChange={(e) => setClearPaymentMonth(e.target.value)}
+                  type="date"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 uppercase tracking-wider block mb-1">Batch Timing</label>
+                <select
+                  value={batchTiming}
+                  onChange={(e) => setBatchTiming(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+                >
+                  <option value="">Select Batch Timing</option>
+                  <option value="Monday-Friday (8:00 pm - 9:30 pm)">Monday-Friday (8:00 pm - 9:30 pm)</option>
+                  <option value="Saturday-Sunday (1 to 2 hours per day)">Saturday-Sunday (1 to 2 hours per day)</option>
+                </select>
+              </div>
+
+              <div className="col-span-full pt-4 border-t border-slate-100 flex gap-3">
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-[2] py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold transition shadow-lg shadow-emerald-600/30 cursor-pointer"
+                >
+                  {editingStudentId ? "Update Student" : "Submit Registration"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Send Offer Letter Modal ── */}
+      {offerData && (
+        <div className="fixed inset-0 z-[2000] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl p-6 sm:p-7 relative border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={resetOfferLeter}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="mb-5 pb-3 border-b border-slate-100">
+              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Mail className="text-emerald-600" size={18} />
+                Send Offer Letter
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Verify details before dispatching candidate's official internship offer.
+              </p>
+            </div>
+
+            <form onSubmit={sendOfferleter} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-600 block mb-1">Candidate Name</label>
+                  <input
+                    type="text"
+                    value={offerFullname}
+                    onChange={(e) => setOfferFullname(e.target.value)}
+                    required
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-600 block mb-1">Domain / Track</label>
+                  <input
+                    type="text"
+                    value={offerDomain}
+                    onChange={(e) => setOfferDomain(e.target.value)}
+                    required
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-600 block mb-1">Candidate Email</label>
+                <input
+                  type="email"
+                  value={offerEmail}
+                  onChange={(e) => setOfferEmail(e.target.value)}
+                  required
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="font-bold text-slate-600">Letter Date</label>
+                    <span
+                      onClick={() => setOfferDate(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }))}
+                      className="text-[10px] text-emerald-600 cursor-pointer font-bold hover:underline"
+                    >
+                      Set Today
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    value={offerDate}
+                    onChange={(e) => setOfferDate(e.target.value)}
+                    required
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-600 block mb-1">Duration</label>
+                  <input
+                    type="text"
+                    value={offerDuration}
+                    onChange={(e) => setOfferDuration(e.target.value)}
+                    required
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 text-[11px] text-slate-600 space-y-1">
+                <div className="font-bold text-slate-700">Preview Summary:</div>
+                <div>Candidate: <strong className="text-slate-800">{offerFullname}</strong> ({offerEmail})</div>
+                <div>Role: <strong className="text-slate-800">{offerDomain} Intern</strong></div>
+                <div>Duration: <strong className="text-slate-800">{offerDuration}</strong></div>
+              </div>
+
+              <div className="pt-2 flex gap-3">
+                <button
+                  type="button"
+                  onClick={resetOfferLeter}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isOfferLetterSending}
+                  className="flex-[2] py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-emerald-600/30"
+                >
+                  <Send size={14} />
+                  <span>{isOfferLetterSending ? "Dispatching..." : "Send Offer Letter"}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Student Details Modal ── */}
+      {dialogVisible && dialogData && (
+        <div className="fixed inset-0 z-[2000] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 relative border border-slate-100 max-h-[90vh] overflow-y-auto text-xs">
+            <button
+              onClick={handleDialogClose}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="mb-4 pb-3 border-b border-slate-100">
+              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <Info className="text-emerald-600" size={18} />
+                Candidate Full File
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">Comprehensive registration parameters.</p>
+            </div>
+
+            <div className="space-y-2.5">
+              <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 rounded-xl">
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Name</span>
+                  <span className="font-bold text-slate-800 text-sm capitalize">{dialogData.fullname}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Domain</span>
+                  <span className="font-bold text-slate-800">{dialogData.domain || "N/A"}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 rounded-xl">
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Email</span>
+                  <span className="font-semibold text-slate-700 break-all">{dialogData.email || "N/A"}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">WhatsApp / Contact</span>
+                  <span className="font-semibold text-slate-700">{dialogData.whatsAppNumber || dialogData.phone || "N/A"}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 p-3 bg-slate-50 rounded-xl">
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Price</span>
+                  <span className="font-bold text-slate-800">{formatINR(dialogData.programPrice)}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Paid</span>
+                  <span className="font-bold text-emerald-600">{formatINR(dialogData.paidAmount)}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Due</span>
+                  <span className="font-bold text-amber-600">
+                    {formatINR((dialogData.programPrice || 0) - (dialogData.paidAmount || 0))}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                <div>Counselor: <strong className="text-slate-700">{dialogData.counselor || "N/A"}</strong></div>
+                <div>Clear Month: <strong className="text-slate-700">{dialogData.clearPaymentMonth || "N/A"}</strong></div>
+                <div>Month Opted: <strong className="text-slate-700">{dialogData.monthOpted || "N/A"}</strong></div>
+                <div>Batch Timing: <strong className="text-slate-700">{dialogData.batchTiming || "N/A"}</strong></div>
+                {dialogData.collegeName && <div>College: <strong className="text-slate-700">{dialogData.collegeName}</strong></div>}
+                {dialogData.transactionId && <div>Txn ID: <strong className="text-slate-700">{dialogData.transactionId}</strong></div>}
+              </div>
+            </div>
+
+            <div className="mt-5 pt-3 border-t border-slate-100">
+              <button
+                onClick={handleDialogClose}
+                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
 export default BookedAmount;

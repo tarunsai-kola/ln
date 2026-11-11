@@ -16,11 +16,6 @@ import {
 } from "lucide-react";
 
 const DARK_STYLES = `
-  html, body { 
-    background: #0F172A !important; 
-    color: #F1F5F9 !important; 
-  }
-
   #AdvFullPaymentPage {
     background: #0F172A;
     min-height: 100vh;
@@ -529,7 +524,15 @@ const FullPayment = () => {
   };
 
   const getOptedMonthValue = (student) => {
-    return (student.monthOpted || student.optedMonth || student.internshipstartsmonth || "").trim();
+    return (
+      student.internshipstartsmonth ||
+      student.internshipstartdate ||
+      student.internshipstartsdate ||
+      student.offerStart ||
+      student.monthOpted ||
+      student.optedMonth ||
+      ""
+    ).trim();
   };
 
   const buildOptedMonthsList = (students) => {
@@ -735,7 +738,7 @@ const FullPayment = () => {
           <h1>Full Payments & Program Cohorts</h1>
           <p className="page-sub">
             <Sparkles size={14} color="#60A5FA" />
-            Track full paid candidate records by both <strong>Batch Opted Month</strong> and <strong>Payment Received Date</strong>
+            Track full paid candidate records by both <strong>Internship Start Month</strong> and <strong>Payment Received Date</strong>
           </p>
         </div>
       </div>
@@ -749,7 +752,7 @@ const FullPayment = () => {
           </div>
           <div className="stat-info">
             <span className="stat-label">
-              Opted: {selectedOptedMonth === "all" ? "All Cohorts" : selectedOptedMonth}
+              Start: {selectedOptedMonth === "all" ? "All Cohorts" : selectedOptedMonth}
             </span>
             <span className="stat-value">{filteredOptedStudents.length} Candidates</span>
             <span className="stat-sub" style={{ color: "#A5B4FC" }}>
@@ -796,7 +799,7 @@ const FullPayment = () => {
           onClick={() => setActiveTab("optedMonth")}
         >
           <GraduationCap size={16} />
-          Opted Month Data
+          Internship Start Month Data
           <span className="tab-badge">{filteredOptedStudents.length}</span>
         </button>
 
@@ -819,7 +822,7 @@ const FullPayment = () => {
       </div>
 
       {/* ═════════════════════════════════════════════════════════════════════════ */}
-      {/* SECTION 1: OPTED MONTH DATA (Batch Cohorts)                             */}
+      {/* SECTION 1: INTERNSHIP START MONTH DATA                                    */}
       {/* ═════════════════════════════════════════════════════════════════════════ */}
       {(activeTab === "optedMonth" || activeTab === "both") && (
         <div className="section-box opted-theme">
@@ -837,19 +840,19 @@ const FullPayment = () => {
               </div>
               <div>
                 <h2 className="section-title">
-                  Opted Month Cohort Data:{" "}
+                  Internship Start Month Data:{" "}
                   <span style={{ color: "#A5B4FC" }}>
                     {selectedOptedMonth === "all" ? "All Cohorts" : selectedOptedMonth}
                   </span>
                 </h2>
                 <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
-                  Students scheduled to start program/internship in the opted cohort
+                  Students scheduled by internship start date / month cohort
                 </p>
               </div>
             </div>
 
             <div className="count-badge opted">
-              {filteredOptedStudents.length} Candidates Opted
+              {filteredOptedStudents.length} Candidates Starting
             </div>
           </div>
 
@@ -876,7 +879,7 @@ const FullPayment = () => {
               <Search size={16} />
               <input
                 type="text"
-                placeholder="Search opted candidates by name, email, phone, domain, counselor…"
+                placeholder="Search candidates by name, email, phone, domain, start month…"
                 value={searchOptedQuery}
                 onChange={(e) => setSearchOptedQuery(e.target.value)}
               />
@@ -889,7 +892,7 @@ const FullPayment = () => {
                 value={selectedOptedMonth}
                 onChange={(e) => setSelectedOptedMonth(e.target.value)}
               >
-                <option value="all">All Opted Months</option>
+                <option value="all">All Start Months</option>
                 {optedMonthsList.map((m, idx) => (
                   <option key={idx} value={m}>
                     {m}
@@ -926,7 +929,7 @@ const FullPayment = () => {
                       "Name",
                       "Email",
                       "Contact",
-                      "Opted Month",
+                      "Internship Start Month",
                       "Mode",
                       "Counselor",
                       "Got Payment On",
@@ -1110,7 +1113,7 @@ const FullPayment = () => {
                       "Program Price",
                       "Paid",
                       "Pending",
-                      "Month Opted",
+                      "Internship Start Month",
                       "A/c Created"
                     ].map((h) => (
                       <th key={h}>{h}</th>
