@@ -49,7 +49,6 @@ const BookedAmount = () => {
   const [bda, setBda] = useState([]);
   const [operationData, setOperationData] = useState(null);
   const [newStudent, setNewStudent] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Form Fields
@@ -136,12 +135,37 @@ const BookedAmount = () => {
   };
 
   const getMonthFromDate = (date) => {
+    if (!date) return "";
     const m = [
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
     const d = new Date(date);
+    if (isNaN(d.getTime())) return "";
     return `${m[d.getMonth()]} ${d.getFullYear()}`;
+  };
+
+  const buildDynamicMonths = (students = []) => {
+    const set = new Set();
+    students.forEach((s) => {
+      const m = getMonthFromDate(s.createdAt);
+      if (m) set.add(m);
+    });
+    // Include standard past 4 months as fallback
+    const past = getPastMonths();
+    past.forEach((p) => set.add(p));
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return Array.from(set).sort((a, b) => {
+      const partsA = a.split(" ");
+      const partsB = b.split(" ");
+      const dateA = new Date(parseInt(partsA[1] || 0), monthNames.indexOf(partsA[0]), 1);
+      const dateB = new Date(parseInt(partsB[1] || 0), monthNames.indexOf(partsB[0]), 1);
+      return dateB - dateA;
+    });
   };
 
   const formatCleanDate = (val) => {
@@ -189,10 +213,24 @@ const BookedAmount = () => {
 
   const fetchBda = async () => {
     try {
-      const res = await axios.get(`${API}/getbda`);
-      setBda(res.data);
+      const [bdaRes, teamRes] = await Promise.allSettled([
+        axios.get(`${API}/getbda`),
+        axios.get(`${API}/getadvteam`),
+      ]);
+      const bdaData =
+        bdaRes.status === "fulfilled" && Array.isArray(bdaRes.value.data)
+          ? bdaRes.value.data
+          : [];
+      const teamRaw = teamRes.status === "fulfilled" ? teamRes.value.data : [];
+      const teamData = Array.isArray(teamRaw)
+        ? teamRaw
+        : Array.isArray(teamRaw?.data)
+        ? teamRaw.data
+        : [];
+      setBda([...bdaData, ...teamData]);
     } catch (err) {
-      console.error("Error fetching bda:", err);
+      console.error("Error fetching bda/advteam:", err);
+      setBda([]);
     }
   };
 
@@ -209,33 +247,51 @@ const BookedAmount = () => {
   };
 
   const fetchNewStudent = async (showToast = false) => {
-    const opName = localStorage.getItem("advOperationName");
+    const opName = localStorage.getItem("advOperationName") || "";
+    const opId = localStorage.getItem("advOperationId") || "";
+    const cleanOp = opName.trim().toLowerCase();
     if (showToast) setIsRefreshing(true);
     try {
       const res = await axios.get(`${API}/getadvenrolls?all=true`);
-      const booked = res.data.filter(
-        (item) => item.status === "booked" && item.operationName === opName
-      );
+      const rawData = res.data;
+      const list = Array.isArray(rawData) ? rawData : (rawData?.data || []);
+
+      const booked = list.filter((item) => {
+        const isBooked = String(item.status || "").toLowerCase() === "booked";
+        if (!isBooked) return false;
+
+        // If no operation user specified, show all
+        if (!cleanOp && !opId) return true;
+
+        const itemOp = String(item.operationName || "").trim().toLowerCase();
+        const itemOpId = String(item.operationId || "").trim();
+
+        if (opId && itemOpId && itemOpId === opId) return true;
+        if (cleanOp && itemOp) {
+          return itemOp === cleanOp || itemOp.includes(cleanOp) || cleanOp.includes(itemOp);
+        }
+        return false;
+      });
       setNewStudent(booked);
 
+      // Dynamic months from actual candidates
+      const dynamicMonths = buildDynamicMonths(booked);
+      setMonths(dynamicMonths);
+
       const curMonth = getCurrentMonth();
-      if (!selectedMonth) {
-        setSelectedMonth(curMonth);
-        const filtered = booked.filter(
-          (student) => getMonthFromDate(student.createdAt) === curMonth
-        );
-        setFilteredStudents(filtered);
-      } else {
-        const filtered = booked.filter(
-          (student) => getMonthFromDate(student.createdAt) === selectedMonth
-        );
-        setFilteredStudents(filtered);
-      }
+      setSelectedMonth((prev) => {
+        if (prev) return prev;
+        const hasRecordsInCurrent = booked.some((s) => getMonthFromDate(s.createdAt) === curMonth);
+        if (hasRecordsInCurrent) return curMonth;
+        if (dynamicMonths.length > 0) return dynamicMonths[0];
+        return curMonth;
+      });
     } catch (err) {
       console.error("Error fetching booked students:", err);
+      toast.error("Failed to load candidates roster.");
     } finally {
       if (showToast) {
-        setTimeout(() => setIsRefreshing(false), 500);
+        setTimeout(() => setIsRefreshing(false), 400);
       }
     }
   };
@@ -245,59 +301,42 @@ const BookedAmount = () => {
     fetchBda();
     fetchNewStudent();
     fetchOperationData();
-    const past = getPastMonths();
-    setMonths(past);
   }, []);
 
-  /* ── Filter Handlers ── */
+  /* ── Filter Handlers (Unified via useMemo) ── */
   const handleMonthChange = (e) => {
-    const month = e.target.value;
-    setSelectedMonth(month);
-    let filtered = newStudent.filter(
-      (student) => getMonthFromDate(student.createdAt) === month
-    );
-    if (searchQuery) {
-      filtered = filtered.filter(matchesSearchQuery);
-    }
-    setFilteredStudents(filtered);
-  };
-
-  const matchesSearchQuery = (student) => {
-    const q = searchQuery.toLowerCase();
-    return (
-      (student.email && student.email.toLowerCase().includes(q)) ||
-      (student.phone && student.phone.toLowerCase().includes(q)) ||
-      (student.fullname && student.fullname.toLowerCase().includes(q)) ||
-      (student.counselor && student.counselor.toLowerCase().includes(q)) ||
-      (student.domain && student.domain.toLowerCase().includes(q)) ||
-      (student.whatsAppNumber && student.whatsAppNumber.toLowerCase().includes(q)) ||
-      (student.clearPaymentMonth && student.clearPaymentMonth.toLowerCase().includes(q))
-    );
+    setSelectedMonth(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleSearchChange = (e) => {
-    const val = e.target.value;
-    setSearchQuery(val);
-    let filtered = newStudent;
-    if (selectedMonth) {
-      filtered = filtered.filter(
-        (student) => getMonthFromDate(student.createdAt) === selectedMonth
-      );
-    }
-    if (val) {
-      const q = val.toLowerCase();
-      filtered = filtered.filter((student) =>
-        (student.email && student.email.toLowerCase().includes(q)) ||
-        (student.phone && student.phone.toLowerCase().includes(q)) ||
-        (student.fullname && student.fullname.toLowerCase().includes(q)) ||
-        (student.counselor && student.counselor.toLowerCase().includes(q)) ||
-        (student.domain && student.domain.toLowerCase().includes(q)) ||
-        (student.whatsAppNumber && student.whatsAppNumber.toLowerCase().includes(q)) ||
-        (student.clearPaymentMonth && student.clearPaymentMonth.toLowerCase().includes(q))
-      );
-    }
-    setFilteredStudents(filtered);
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
+
+  const filteredStudents = useMemo(() => {
+    return newStudent.filter((student) => {
+      // 1. Month Filter
+      if (selectedMonth && selectedMonth !== "all") {
+        const studentMonth = getMonthFromDate(student.createdAt);
+        if (studentMonth !== selectedMonth) return false;
+      }
+      // 2. Search Query Filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matches =
+          (student.email && String(student.email).toLowerCase().includes(q)) ||
+          (student.phone && String(student.phone).toLowerCase().includes(q)) ||
+          (student.fullname && String(student.fullname).toLowerCase().includes(q)) ||
+          (student.counselor && String(student.counselor).toLowerCase().includes(q)) ||
+          (student.domain && String(student.domain).toLowerCase().includes(q)) ||
+          (student.whatsAppNumber && String(student.whatsAppNumber).toLowerCase().includes(q)) ||
+          (student.clearPaymentMonth && String(student.clearPaymentMonth).toLowerCase().includes(q));
+        if (!matches) return false;
+      }
+      return true;
+    });
+  }, [newStudent, selectedMonth, searchQuery]);
 
   /* ── Form Actions ── */
   const resetForm = () => {
@@ -619,15 +658,28 @@ const BookedAmount = () => {
     setDialogData(null);
   };
 
-  /* ── Pagination ── */
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedMonth, newStudent]);
+  /* ── Production-Grade Pagination ── */
+  const totalPages = Math.max(1, Math.ceil(filteredStudents.length / itemsPerPage));
+  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage) || 1;
+  const indexOfLastItem = safeCurrentPage * itemsPerPage;
+  const indexOfFirstItem = Math.max(0, indexOfLastItem - itemsPerPage);
+  const currentItems = useMemo(() => {
+    return filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+  }, [filteredStudents, indexOfFirstItem, indexOfLastItem]);
+
+  const nextPage = () => {
+    if (safeCurrentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const prevPage = () => {
+    if (safeCurrentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  const goToPage = (page) => {
+    const target = Math.min(Math.max(1, page), totalPages);
+    setCurrentPage(target);
+  };
 
   const groupedData = useMemo(() => {
     return currentItems.reduce((acc, item) => {
@@ -755,8 +807,9 @@ const BookedAmount = () => {
             <select
               value={selectedMonth}
               onChange={handleMonthChange}
-              className="w-full md:w-48 bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-8 py-2.5 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all cursor-pointer appearance-none"
+              className="w-full md:w-52 bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-8 py-2.5 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all cursor-pointer appearance-none"
             >
+              <option value="all">All Months ({newStudent.length})</option>
               {months.map((m, i) => (
                 <option key={i} value={m}>{m}</option>
               ))}
@@ -813,28 +866,42 @@ const BookedAmount = () => {
 
                     {/* Student Rows */}
                     {groupedData[date].map((item, index) => {
-                      const bdaObj = bda.find((b) => b.fullname === item.counselor);
-                      const teamName = bdaObj?.team || "";
-                      const managers = bda.filter(
-                        (b) => b.designation && b.designation.toLowerCase() === "manager"
-                      );
-                      const managerObj = managers.find(
-                        (mgr) => Array.isArray(mgr.teams) && mgr.teams.includes(teamName)
-                      );
-                      const managerName = managerObj?.fullname || "";
+                      try {
+                        const bdaArr = Array.isArray(bda) ? bda : [];
+                        const counselorClean = String(item.counselor || "").trim().toLowerCase();
+                        const bdaObj = bdaArr.find(
+                          (b) => b && String(b.fullname || "").trim().toLowerCase() === counselorClean
+                        );
+                        const teamName = bdaObj?.team || "";
+                        const managers = bdaArr.filter(
+                          (b) => b && b.designation && String(b.designation).toLowerCase() === "manager"
+                        );
+                        const managerObj = managers.find(
+                          (mgr) => Array.isArray(mgr?.teams) && mgr.teams.includes(teamName)
+                        );
+                        const managerName = managerObj?.fullname || "";
 
-                      const dueAmount = (item.programPrice || 0) - (item.paidAmount || 0);
-                      const lastRemark =
-                        Array.isArray(item.remark) && item.remark.length > 0
-                          ? item.remark[item.remark.length - 1]
-                          : "";
+                        const priceNum = Number(item.programPrice) || 0;
+                        const paidNum = Number(item.paidAmount) || 0;
+                        const dueAmount = Math.max(0, priceNum - paidNum);
 
-                      // WhatsApp message builder
-                      const opN = item.operationName || operationName || "Operations Team";
-                      const formattedOpName = opN ? opN.charAt(0).toUpperCase() + opN.slice(1) : "Operations Team";
-                      const rawNum = String(item.whatsAppNumber || item.phone || "").replace(/[^0-9]/g, "");
-                      const cleanNum = rawNum.length === 10 ? `91${rawNum}` : rawNum;
-                      const whatsappMessage = `Hello ${item.fullname || "Student"},
+                        let lastRemark = "";
+                        if (Array.isArray(item.remark) && item.remark.length > 0) {
+                          const rawR = item.remark[item.remark.length - 1];
+                          lastRemark = typeof rawR === "string" ? rawR : JSON.stringify(rawR);
+                        } else if (item.remark && typeof item.remark === "string") {
+                          lastRemark = item.remark;
+                        }
+
+                        // WhatsApp message builder
+                        const opN = String(item.operationName || operationName || "Operations Team");
+                        const formattedOpName = opN.length > 0 ? opN.charAt(0).toUpperCase() + opN.slice(1) : "Operations Team";
+                        const rawNum = String(item.whatsAppNumber || item.phone || "").replace(/[^0-9]/g, "");
+                        const cleanNum = rawNum.length === 10 ? `91${rawNum}` : rawNum;
+                        const studentName = String(item.fullname || "Student").trim();
+                        const studentInitial = studentName.length > 0 ? studentName.charAt(0).toUpperCase() : "S";
+
+                        const whatsappMessage = `Hello ${studentName},
 
 Greetings from AccenLearn Solutions! 
 
@@ -855,184 +922,188 @@ ${formattedOpName}
 Operations Department
 AccenLearn Solutions`;
 
-                      return (
-                        <tr key={item._id} className="hover:bg-slate-50/80 transition-colors">
-                          {/* Row Number */}
-                          <td className="py-3.5 px-4 text-center font-bold text-slate-400">
-                            {indexOfFirstItem + index + 1}
-                          </td>
+                        return (
+                          <tr key={item._id} className="hover:bg-slate-50/80 transition-colors">
+                            {/* Row Number */}
+                            <td className="py-3.5 px-4 text-center font-bold text-slate-400">
+                              {indexOfFirstItem + index + 1}
+                            </td>
 
-                          {/* Student Info */}
-                          <td className="py-3.5 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs uppercase flex-shrink-0">
-                                {item.fullname ? item.fullname.charAt(0) : "S"}
-                              </div>
-                              <div>
-                                <p className="font-bold text-slate-800 capitalize leading-tight">
-                                  {item.fullname}
-                                </p>
-                                <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500">
-                                  <span>{item.whatsAppNumber || item.phone}</span>
-                                  {item.email && (
-                                    <>
-                                      <span>•</span>
-                                      <span className="max-w-[140px] truncate text-slate-400">{item.email}</span>
-                                    </>
-                                  )}
+                            {/* Student Info */}
+                            <td className="py-3.5 px-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs uppercase flex-shrink-0">
+                                  {studentInitial}
+                                </div>
+                                <div>
+                                  <p className="font-bold text-slate-800 capitalize leading-tight">
+                                    {studentName}
+                                  </p>
+                                  <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-500">
+                                    <span>{item.whatsAppNumber || item.phone}</span>
+                                    {item.email && (
+                                      <>
+                                        <span>•</span>
+                                        <span className="max-w-[140px] truncate text-slate-400">{item.email}</span>
+                                      </>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
 
-                          {/* Financials */}
-                          <td className="py-3.5 px-4">
-                            <div className="space-y-0.5">
-                              <div className="flex items-center gap-2">
-                                <span className="font-black text-emerald-600 text-sm">
-                                  {formatINR(item.paidAmount)}
-                                </span>
-                                <span className="text-[10px] text-slate-400">
-                                  of {formatINR(item.programPrice)}
-                                </span>
+                            {/* Financials */}
+                            <td className="py-3.5 px-4">
+                              <div className="space-y-0.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-black text-emerald-600 text-sm">
+                                    {formatINR(item.paidAmount)}
+                                  </span>
+                                  <span className="text-[10px] text-slate-400">
+                                    of {formatINR(item.programPrice)}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
+                                    Due: {formatINR(dueAmount)}
+                                  </span>
+                                </div>
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
-                                  Due: {formatINR(dueAmount)}
+                            </td>
+
+                            {/* Program & Due Date */}
+                            <td className="py-3.5 px-4">
+                              <div className="space-y-1">
+                                <span className="inline-block font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md text-[11px]">
+                                  {item.domain || item.program || "Advance Track"}
                                 </span>
+                                <div className="text-[11px] text-slate-500 flex items-center gap-1">
+                                  <Clock size={11} className="text-slate-400" />
+                                  <span>Due: <strong className="text-slate-700">{item.clearPaymentMonth || "N/A"}</strong></span>
+                                </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
 
-                          {/* Program & Due Date */}
-                          <td className="py-3.5 px-4">
-                            <div className="space-y-1">
-                              <span className="inline-block font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md text-[11px]">
-                                {item.domain || item.program || "Advance Track"}
-                              </span>
-                              <div className="text-[11px] text-slate-500 flex items-center gap-1">
-                                <Clock size={11} className="text-slate-400" />
-                                <span>Due: <strong className="text-slate-700">{item.clearPaymentMonth || "N/A"}</strong></span>
+                            {/* Hierarchy */}
+                            <td className="py-3.5 px-4">
+                              <div className="flex flex-col text-[11px] space-y-0.5">
+                                {managerName && (
+                                  <span className="font-bold text-slate-700">
+                                    {managerName} <span className="text-[10px] text-slate-400 font-normal">(Mgr)</span>
+                                  </span>
+                                )}
+                                {teamName && (
+                                  <span className="font-semibold text-slate-500">{teamName}</span>
+                                )}
+                                {item.counselor && (
+                                  <span className="text-slate-400 text-[10px]">BDA: {item.counselor}</span>
+                                )}
                               </div>
-                            </div>
-                          </td>
+                            </td>
 
-                          {/* Hierarchy */}
-                          <td className="py-3.5 px-4">
-                            <div className="flex flex-col text-[11px] space-y-0.5">
-                              {managerName && (
-                                <span className="font-bold text-slate-700">
-                                  {managerName} <span className="text-[10px] text-slate-400 font-normal">(Mgr)</span>
-                                </span>
-                              )}
-                              {teamName && (
-                                <span className="font-semibold text-slate-500">{teamName}</span>
-                              )}
-                              {item.counselor && (
-                                <span className="text-slate-400 text-[10px]">BDA: {item.counselor}</span>
-                              )}
-                            </div>
-                          </td>
+                            {/* Actions & Tools */}
+                            <td className="py-3.5 px-4 text-center">
+                              <div className="flex items-center justify-center gap-1.5">
+                                {/* Edit Button */}
+                                <button
+                                  onClick={() => handleEdit(item._id)}
+                                  className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                                  title="Edit Candidate Details"
+                                >
+                                  <Edit3 size={14} />
+                                </button>
 
-                          {/* Actions & Tools */}
-                          <td className="py-3.5 px-4 text-center">
-                            <div className="flex items-center justify-center gap-1.5">
-                              {/* Edit Button */}
-                              <button
-                                onClick={() => handleEdit(item._id)}
-                                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
-                                title="Edit Candidate Details"
-                              >
-                                <Edit3 size={14} />
-                              </button>
+                                {/* WhatsApp Direct Reminder */}
+                                <a
+                                  href={`https://web.whatsapp.com/send?phone=${cleanNum}&text=${encodeURIComponent(whatsappMessage)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 transition"
+                                  title="Send WhatsApp Payment Link"
+                                >
+                                  <FaWhatsapp size={15} />
+                                </a>
 
-                              {/* WhatsApp Direct Reminder */}
-                              <a
-                                href={`https://web.whatsapp.com/send?phone=${cleanNum}&text=${encodeURIComponent(whatsappMessage)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 transition"
-                                title="Send WhatsApp Payment Link"
-                              >
-                                <FaWhatsapp size={15} />
-                              </a>
+                                {/* Send Credentials */}
+                                <button
+                                  onClick={() => handleSendEmail(item)}
+                                  className={`p-1.5 rounded-lg transition ${
+                                    item.mailSended
+                                      ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                                      : "bg-rose-50 text-rose-600 hover:bg-rose-100"
+                                  }`}
+                                  title={item.mailSended ? "Credentials Sent (Click to resend)" : "Send Credentials"}
+                                >
+                                  {item.mailSended ? <PiLockKeyOpenFill size={15} /> : <PiLockKeyFill size={15} />}
+                                </button>
 
-                              {/* Send Credentials */}
-                              <button
-                                onClick={() => handleSendEmail(item)}
-                                className={`p-1.5 rounded-lg transition ${
-                                  item.mailSended
-                                    ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                                    : "bg-rose-50 text-rose-600 hover:bg-rose-100"
-                                }`}
-                                title={item.mailSended ? "Credentials Sent (Click to resend)" : "Send Credentials"}
-                              >
-                                {item.mailSended ? <PiLockKeyOpenFill size={15} /> : <PiLockKeyFill size={15} />}
-                              </button>
+                                {/* Create User Account */}
+                                <button
+                                  onClick={() => createAccount(item)}
+                                  className={`p-1.5 rounded-lg transition ${
+                                    item.userCreated
+                                      ? "bg-emerald-50 text-emerald-600"
+                                      : "bg-amber-50 text-amber-600 hover:bg-amber-100"
+                                  }`}
+                                  title={item.userCreated ? "User Account Created" : "Create LMS Account"}
+                                >
+                                  {item.userCreated ? <FaUserCheck size={14} /> : <FaUserTimes size={14} />}
+                                </button>
 
-                              {/* Create User Account */}
-                              <button
-                                onClick={() => createAccount(item)}
-                                className={`p-1.5 rounded-lg transition ${
-                                  item.userCreated
-                                    ? "bg-emerald-50 text-emerald-600"
-                                    : "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                                }`}
-                                title={item.userCreated ? "User Account Created" : "Create LMS Account"}
-                              >
-                                {item.userCreated ? <FaUserCheck size={14} /> : <FaUserTimes size={14} />}
-                              </button>
+                                {/* Send Offer Letter */}
+                                <button
+                                  onClick={() => handleOpenOfferLetter(item)}
+                                  className={`p-1.5 rounded-lg transition ${
+                                    item.offerlettersended
+                                      ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                  }`}
+                                  title={item.offerlettersended ? "Offer Letter Sent (Click to resend)" : "Send Offer Letter"}
+                                >
+                                  <FileText size={14} />
+                                </button>
 
-                              {/* Send Offer Letter */}
-                              <button
-                                onClick={() => handleOpenOfferLetter(item)}
-                                className={`p-1.5 rounded-lg transition ${
-                                  item.offerlettersended
-                                    ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
-                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                }`}
-                                title={item.offerlettersended ? "Offer Letter Sent (Click to resend)" : "Send Offer Letter"}
-                              >
-                                <FileText size={14} />
-                              </button>
+                                {/* More Info */}
+                                <button
+                                  onClick={() => handleDialogOpen(item)}
+                                  className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+                                  title="View Complete Enrollment Details"
+                                >
+                                  <Info size={14} />
+                                </button>
+                              </div>
+                            </td>
 
-                              {/* More Info */}
-                              <button
-                                onClick={() => handleDialogOpen(item)}
-                                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
-                                title="View Complete Enrollment Details"
-                              >
-                                <Info size={14} />
-                              </button>
-                            </div>
-                          </td>
-
-                          {/* Remark & Update */}
-                          <td className="py-3.5 px-4 text-center">
-                            <div className="flex flex-col items-center gap-1">
-                              {lastRemark && (
-                                <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                                  {lastRemark}
-                                </span>
-                              )}
-                              <select
-                                onChange={(e) => handleRemarkChange(e, item._id)}
-                                defaultValue=""
-                                className="bg-slate-50 border border-slate-200 text-[11px] font-medium text-slate-700 rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                              >
-                                <option value="" disabled>Update</option>
-                                <option value="Cleared">Cleared</option>
-                                <option value="Default">Default</option>
-                                <option value="DNP">DNP</option>
-                                <option value="NATC">NATC</option>
-                                <option value="Interested">Interested</option>
-                                <option value="Call Back">Call Back</option>
-                                <option value="Wrong Number">Wrong Number</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                      );
+                            {/* Remark & Update */}
+                            <td className="py-3.5 px-4 text-center">
+                              <div className="flex flex-col items-center gap-1">
+                                {lastRemark && (
+                                  <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                                    {lastRemark}
+                                  </span>
+                                )}
+                                <select
+                                  onChange={(e) => handleRemarkChange(e, item._id)}
+                                  defaultValue=""
+                                  className="bg-slate-50 border border-slate-200 text-[11px] font-medium text-slate-700 rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                                >
+                                  <option value="" disabled>Update</option>
+                                  <option value="Cleared">Cleared</option>
+                                  <option value="Default">Default</option>
+                                  <option value="DNP">DNP</option>
+                                  <option value="NATC">NATC</option>
+                                  <option value="Interested">Interested</option>
+                                  <option value="Call Back">Call Back</option>
+                                  <option value="Wrong Number">Wrong Number</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      } catch (rowErr) {
+                        console.error("Error rendering student row:", rowErr, item);
+                        return null;
+                      }
                     })}
                   </React.Fragment>
                 ))
@@ -1049,28 +1120,44 @@ AccenLearn Solutions`;
           </table>
         </div>
 
-        {/* ── Pagination Bar ── */}
+        {/* ── Production Pagination Bar ── */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-600">
+          <div className="p-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600 bg-slate-50/50">
             <div>
-              Showing <span className="font-bold">{indexOfFirstItem + 1}</span> to{" "}
-              <span className="font-bold">{Math.min(indexOfLastItem, filteredStudents.length)}</span> of{" "}
-              <span className="font-bold">{filteredStudents.length}</span> students
+              Showing <span className="font-bold text-slate-800">{indexOfFirstItem + 1}</span> to{" "}
+              <span className="font-bold text-slate-800">{Math.min(indexOfLastItem, filteredStudents.length)}</span> of{" "}
+              <span className="font-bold text-slate-800">{filteredStudents.length}</span> students
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={prevPage}
-                disabled={currentPage === 1}
-                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                disabled={safeCurrentPage === 1}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition cursor-pointer"
               >
                 <ChevronLeft size={14} /> Previous
               </button>
-              <span className="font-bold px-2">Page {currentPage} of {totalPages}</span>
+
+              <div className="flex items-center gap-1 px-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                  <button
+                    key={pg}
+                    onClick={() => goToPage(pg)}
+                    className={`w-7 h-7 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
+                      safeCurrentPage === pg
+                        ? "bg-emerald-600 text-white shadow-sm"
+                        : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    {pg}
+                  </button>
+                ))}
+              </div>
+
               <button
                 onClick={nextPage}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                disabled={safeCurrentPage === totalPages}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition cursor-pointer"
               >
                 Next <ChevronRight size={14} />
               </button>
@@ -1464,4 +1551,56 @@ AccenLearn Solutions`;
   );
 };
 
-export default BookedAmount;
+/* ── Enterprise Production Error Boundary ── */
+class BookedPaymentErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Critical error in BookedPayment component:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#F8FAFC] ml-[260px] mt-[70px] p-8 flex items-center justify-center">
+          <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-4">
+            <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-500 mx-auto flex items-center justify-center">
+              <AlertOctagon size={28} />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">Roster View Temporarily Interrupted</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                A rendering discrepancy was safely caught. Click below to refresh the candidate roster.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                this.setState({ hasError: false, error: null });
+                window.location.reload();
+              }}
+              className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-md cursor-pointer"
+            >
+              Reload Booked Roster
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const SafeBookedAmount = (props) => (
+  <BookedPaymentErrorBoundary>
+    <BookedAmount {...props} />
+  </BookedPaymentErrorBoundary>
+);
+
+export default SafeBookedAmount;
