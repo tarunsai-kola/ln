@@ -169,6 +169,39 @@ const BookedAmount = () => {
     });
   };
 
+  const generateOptedMonthOptions = (students = []) => {
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const optionsSet = new Set();
+
+    // 1. Gather existing cohort months from all student records
+    if (Array.isArray(students)) {
+      students.forEach((s) => {
+        if (s.monthOpted && typeof s.monthOpted === "string" && s.monthOpted.trim()) {
+          optionsSet.add(s.monthOpted.trim());
+        }
+        if (s.internshipstartsmonth && typeof s.internshipstartsmonth === "string" && s.internshipstartsmonth.trim()) {
+          optionsSet.add(s.internshipstartsmonth.trim());
+        }
+      });
+    }
+
+    // 2. Generate comprehensive year-aware cohort months (past year, current year, next 2 years)
+    const cy = new Date().getFullYear();
+    for (let yr = cy - 1; yr <= cy + 2; yr++) {
+      for (const m of monthNames) {
+        optionsSet.add(`${m} ${yr}`);
+      }
+    }
+
+    // 3. Include plain month names for legacy backwards-compatibility
+    monthNames.forEach((m) => optionsSet.add(m));
+
+    return Array.from(optionsSet);
+  };
+
   const formatCleanDate = (val) => {
     if (!val) return "";
     if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
@@ -195,11 +228,7 @@ const BookedAmount = () => {
     setMinDate(min);
     setMaxDate(max);
 
-    const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    setMonthsToShow(monthNames);
+    setMonthsToShow(generateOptedMonthOptions());
   }, []);
 
   /* ── API Data Fetching ── */
@@ -226,8 +255,8 @@ const BookedAmount = () => {
       const teamData = Array.isArray(teamRaw)
         ? teamRaw
         : Array.isArray(teamRaw?.data)
-        ? teamRaw.data
-        : [];
+          ? teamRaw.data
+          : [];
       setBda([...bdaData, ...teamData]);
     } catch (err) {
       console.error("Error fetching bda/advteam:", err);
@@ -268,6 +297,7 @@ const BookedAmount = () => {
       // Build dynamic month list from booked items + fallback months
       const dynamicMonths = buildDynamicMonths(booked);
       setMonths(dynamicMonths);
+      setMonthsToShow(generateOptedMonthOptions(booked));
 
       const curMonth = getCurrentMonth();
       let activeMonth = selectedMonth;
@@ -402,7 +432,22 @@ const BookedAmount = () => {
     setProgramPrice(student.programPrice || "");
     setPaidAmount(student.paidAmount || "");
     setRemainingAmount(student.remainingAmount || 0);
-    setMonthOpted(student.monthOpted || "");
+
+    // Resolve original Month Opted with fallback to internship starts month
+    const originalMonth = (student.monthOpted || student.internshipstartsmonth || "").trim();
+    if (originalMonth) {
+      const matched = monthsToShow.find(
+        (m) => m.toLowerCase() === originalMonth.toLowerCase()
+      );
+      if (matched) {
+        setMonthOpted(matched);
+      } else {
+        setMonthsToShow((prev) => [originalMonth, ...prev]);
+        setMonthOpted(originalMonth);
+      }
+    } else {
+      setMonthOpted("");
+    }
     setClearPaymentMonth(() => {
       try {
         return student.clearPaymentMonth
@@ -533,7 +578,7 @@ const BookedAmount = () => {
     });
     setOfferDate(student.offerDate || todayFormatted);
     setOfferDuration(student.offerDuration || student.program || "3 Months");
-    setOfferStart(student.offerStart || student.internshipstartsmonth || "");
+    setOfferStart(student.offerStart || student.internshipstartsmonth || student.monthOpted || "");
     setOfferEnd(student.offerEnd || student.internshipendsmonth || "");
     setOfferLocation(student.offerLocation || "Online");
   };
@@ -1038,11 +1083,10 @@ AccenLearn Solutions`;
                                 {/* Send Credentials */}
                                 <button
                                   onClick={() => handleSendEmail(item)}
-                                  className={`p-1.5 rounded-lg transition ${
-                                    item.mailSended
+                                  className={`p-1.5 rounded-lg transition ${item.mailSended
                                       ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
                                       : "bg-rose-50 text-rose-600 hover:bg-rose-100"
-                                  }`}
+                                    }`}
                                   title={item.mailSended ? "Credentials Sent (Click to resend)" : "Send Credentials"}
                                 >
                                   {item.mailSended ? <PiLockKeyOpenFill size={15} /> : <PiLockKeyFill size={15} />}
@@ -1051,11 +1095,10 @@ AccenLearn Solutions`;
                                 {/* Create User Account */}
                                 <button
                                   onClick={() => createAccount(item)}
-                                  className={`p-1.5 rounded-lg transition ${
-                                    item.userCreated
+                                  className={`p-1.5 rounded-lg transition ${item.userCreated
                                       ? "bg-emerald-50 text-emerald-600"
                                       : "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                                  }`}
+                                    }`}
                                   title={item.userCreated ? "User Account Created" : "Create LMS Account"}
                                 >
                                   {item.userCreated ? <FaUserCheck size={14} /> : <FaUserTimes size={14} />}
@@ -1064,11 +1107,10 @@ AccenLearn Solutions`;
                                 {/* Send Offer Letter */}
                                 <button
                                   onClick={() => handleOpenOfferLetter(item)}
-                                  className={`p-1.5 rounded-lg transition ${
-                                    item.offerlettersended
+                                  className={`p-1.5 rounded-lg transition ${item.offerlettersended
                                       ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
                                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                  }`}
+                                    }`}
                                   title={item.offerlettersended ? "Offer Letter Sent (Click to resend)" : "Send Offer Letter"}
                                 >
                                   <FileText size={14} />
@@ -1106,6 +1148,8 @@ AccenLearn Solutions`;
                                   <option value="Interested">Interested</option>
                                   <option value="Call Back">Call Back</option>
                                   <option value="Wrong Number">Wrong Number</option>
+                                  <option value="switch off">switch off</option>
+                                  <option value="Counsellor said pay before class start">Counsellor said pay before class start</option>
                                 </select>
                               </div>
                             </td>
@@ -1297,6 +1341,9 @@ AccenLearn Solutions`;
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
                 >
                   <option value="" disabled>Select Month</option>
+                  {monthOpted && !monthsToShow.some((m) => m.toLowerCase() === monthOpted.toLowerCase()) && (
+                    <option value={monthOpted}>{monthOpted}</option>
+                  )}
                   {monthsToShow.map((m, i) => (
                     <option key={i} value={m}>{m}</option>
                   ))}
@@ -1524,7 +1571,7 @@ AccenLearn Solutions`;
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                 <div>Counselor: <strong className="text-slate-700">{dialogData.counselor || "N/A"}</strong></div>
                 <div>Clear Month: <strong className="text-slate-700">{dialogData.clearPaymentMonth || "N/A"}</strong></div>
-                <div>Month Opted: <strong className="text-slate-700">{dialogData.monthOpted || "N/A"}</strong></div>
+                <div>Month Opted: <strong className="text-slate-700">{dialogData.monthOpted || dialogData.internshipstartsmonth || "N/A"}</strong></div>
                 <div>Batch Timing: <strong className="text-slate-700">{dialogData.batchTiming || "N/A"}</strong></div>
                 {dialogData.collegeName && <div>College: <strong className="text-slate-700">{dialogData.collegeName}</strong></div>}
                 {dialogData.transactionId && <div>Txn ID: <strong className="text-slate-700">{dialogData.transactionId}</strong></div>}
