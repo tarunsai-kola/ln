@@ -535,21 +535,21 @@ const FullPayment = () => {
     ).trim();
   };
 
-  const buildOptedMonthsList = (students) => {
+  const buildSubmissionMonthsList = (students) => {
     const set = new Set();
     const mNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const now = new Date();
 
-    // 1. Add future & current months
-    for (let i = -1; i <= 5; i++) {
-      const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    // 1. Add current & past 6 months
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       set.add(`${mNames[d.getMonth()]} ${d.getFullYear()}`);
     }
 
-    // 2. Add all unique values actually present in students' data
+    // 2. Add all unique submission months from student.createdAt (Dashboard Access Form submission)
     students.forEach((s) => {
-      const val = getOptedMonthValue(s);
-      if (val) set.add(val);
+      const m = getMonthFromDate(s.createdAt);
+      if (m) set.add(m);
     });
 
     return Array.from(set);
@@ -570,21 +570,21 @@ const FullPayment = () => {
 
       setNewStudent(fullPaid);
 
-      // Populate month options
+      // Populate month options based on Dashboard Access Form submission date (createdAt)
       const current = getCurrentMonthName();
       setSelectedPaymentMonth(current);
       setPaymentMonthsList(getPastMonthsList());
 
-      const dynamicOptedMonths = buildOptedMonthsList(fullPaid);
-      setOptedMonthsList(dynamicOptedMonths);
+      const dynamicSubmissionMonths = buildSubmissionMonthsList(fullPaid);
+      setOptedMonthsList(dynamicSubmissionMonths);
       
-      // Default opted month to current month if in list, else first available
-      if (dynamicOptedMonths.includes(current)) {
+      // Default to current month if present, else first available, else "all"
+      if (dynamicSubmissionMonths.includes(current)) {
         setSelectedOptedMonth(current);
-      } else if (dynamicOptedMonths.length > 0) {
-        setSelectedOptedMonth(dynamicOptedMonths[0]);
+      } else if (dynamicSubmissionMonths.length > 0) {
+        setSelectedOptedMonth(dynamicSubmissionMonths[0]);
       } else {
-        setSelectedOptedMonth(current);
+        setSelectedOptedMonth("all");
       }
     } catch (error) {
       console.error("Error fetching advance enrolls:", error);
@@ -615,35 +615,25 @@ const FullPayment = () => {
     return Array.from(set);
   }, [newStudent]);
 
-  /* ── Match Opted Month Logic ── */
-  const matchesOptedMonth = (student, target) => {
+  /* ── Match Form Submission Month (when person filled Dashboard Access Form) ── */
+  const matchesSubmissionMonth = (student, target) => {
     if (!target || target === "all") return true;
-    const val = getOptedMonthValue(student).toLowerCase();
-    const tgt = target.toLowerCase().trim();
-    if (!val) return tgt === "unassigned" || tgt === "none";
-    if (val === tgt) return true;
-
-    // Word match (e.g. "April" or "April 2026")
-    const parts = tgt.split(" ");
-    if (parts.length > 0 && val.includes(parts[0])) {
-      if (parts.length > 1) {
-        return val.includes(parts[1]) || !val.match(/\d{4}/);
-      }
-      return true;
-    }
-    return false;
+    const submissionMonth = getMonthFromDate(student.createdAt);
+    if (!submissionMonth) return false;
+    return submissionMonth.toLowerCase().trim() === target.toLowerCase().trim();
   };
 
   /* ── Filtered Datasets ── */
-  // 1. Opted Month Candidates
+  // 1. Form Submission Month Candidates (filtered by createdAt when Dashboard Access Form was filled)
   const filteredOptedStudents = useMemo(() => {
     return newStudent.filter((student) => {
-      if (!matchesOptedMonth(student, selectedOptedMonth)) return false;
+      if (!matchesSubmissionMonth(student, selectedOptedMonth)) return false;
       if (selectedDomain !== "all" && student.domain !== selectedDomain) return false;
 
       if (searchOptedQuery.trim()) {
         const q = searchOptedQuery.toLowerCase().trim();
-        const opted = getOptedMonthValue(student).toLowerCase();
+        const startMonth = getOptedMonthValue(student).toLowerCase();
+        const submissionDate = student.createdAt ? new Date(student.createdAt).toLocaleDateString("en-GB") : "";
         const matches = (
           (student.fullname && student.fullname.toLowerCase().includes(q)) ||
           (student.email && student.email.toLowerCase().includes(q)) ||
@@ -653,7 +643,8 @@ const FullPayment = () => {
           (student.program && student.program.toLowerCase().includes(q)) ||
           (student.collegeName && student.collegeName.toLowerCase().includes(q)) ||
           (student.branch && student.branch.toLowerCase().includes(q)) ||
-          opted.includes(q)
+          startMonth.includes(q) ||
+          submissionDate.includes(q)
         );
         if (!matches) return false;
       }
@@ -710,21 +701,17 @@ const FullPayment = () => {
   const currentPaymentItems = filteredPaymentStudents.slice(indexOfLastPayment - itemsPerPage, indexOfLastPayment);
   const totalPaymentPages = Math.ceil(filteredPaymentStudents.length / itemsPerPage) || 1;
 
-  // Quick suggestion chips for recent & upcoming cohorts
+  // Quick suggestion chips for recent & past submission months
   const quickCohortChips = useMemo(() => {
     const mNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const now = new Date();
+    const prev1 = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const prev2 = new Date(now.getFullYear(), now.getMonth() - 2, 1);
     return [
       { label: "All Months", value: "all" },
       { label: `Current (${mNames[now.getMonth()]})`, value: `${mNames[now.getMonth()]} ${now.getFullYear()}` },
-      { 
-        label: `Next (${mNames[(now.getMonth() + 1) % 12]})`, 
-        value: `${mNames[(now.getMonth() + 1) % 12]} ${now.getMonth() + 1 > 11 ? now.getFullYear() + 1 : now.getFullYear()}` 
-      },
-      { 
-        label: `+2 Mo (${mNames[(now.getMonth() + 2) % 12]})`, 
-        value: `${mNames[(now.getMonth() + 2) % 12]} ${now.getMonth() + 2 > 11 ? now.getFullYear() + 1 : now.getFullYear()}` 
-      }
+      { label: `Last Month (${mNames[prev1.getMonth()]})`, value: `${mNames[prev1.getMonth()]} ${prev1.getFullYear()}` },
+      { label: `${mNames[prev2.getMonth()]}`, value: `${mNames[prev2.getMonth()]} ${prev2.getFullYear()}` }
     ];
   }, []);
 
@@ -738,21 +725,21 @@ const FullPayment = () => {
           <h1>Full Payments & Program Cohorts</h1>
           <p className="page-sub">
             <Sparkles size={14} color="#60A5FA" />
-            Track full paid candidate records by both <strong>Internship Start Month</strong> and <strong>Payment Received Date</strong>
+            Track full paid candidate records by both <strong>Form Submission Month</strong> and <strong>Payment Received Date</strong>
           </p>
         </div>
       </div>
 
       {/* Top Stat Cards */}
       <div className="stat-grid">
-        {/* Opted Month Card */}
+        {/* Form Submission Month Card */}
         <div className="stat-card" style={{ borderColor: "rgba(99, 102, 241, 0.3)" }}>
           <div className="stat-icon-wrap" style={{ background: "rgba(99, 102, 241, 0.15)", color: "#818CF8" }}>
-            <GraduationCap size={24} />
+            <Calendar size={24} />
           </div>
           <div className="stat-info">
             <span className="stat-label">
-              Start: {selectedOptedMonth === "all" ? "All Cohorts" : selectedOptedMonth}
+              Form Filled: {selectedOptedMonth === "all" ? "All Time" : selectedOptedMonth}
             </span>
             <span className="stat-value">{filteredOptedStudents.length} Candidates</span>
             <span className="stat-sub" style={{ color: "#A5B4FC" }}>
@@ -798,8 +785,8 @@ const FullPayment = () => {
           className={`tab-btn opted ${activeTab === "optedMonth" ? "active opted" : ""}`}
           onClick={() => setActiveTab("optedMonth")}
         >
-          <GraduationCap size={16} />
-          Internship Start Month Data
+          <Calendar size={16} />
+          Form Submission Month
           <span className="tab-badge">{filteredOptedStudents.length}</span>
         </button>
 
@@ -822,7 +809,7 @@ const FullPayment = () => {
       </div>
 
       {/* ═════════════════════════════════════════════════════════════════════════ */}
-      {/* SECTION 1: INTERNSHIP START MONTH DATA                                    */}
+      {/* SECTION 1: FORM SUBMISSION MONTH (When person filled Dashboard Access Form) */}
       {/* ═════════════════════════════════════════════════════════════════════════ */}
       {(activeTab === "optedMonth" || activeTab === "both") && (
         <div className="section-box opted-theme">
@@ -836,23 +823,23 @@ const FullPayment = () => {
                   borderRadius: "10px" 
                 }}
               >
-                <GraduationCap size={22} />
+                <Calendar size={22} />
               </div>
               <div>
                 <h2 className="section-title">
-                  Internship Start Month Data:{" "}
+                  Form Submission Month:{" "}
                   <span style={{ color: "#A5B4FC" }}>
-                    {selectedOptedMonth === "all" ? "All Cohorts" : selectedOptedMonth}
+                    {selectedOptedMonth === "all" ? "All Submission Months" : selectedOptedMonth}
                   </span>
                 </h2>
                 <p style={{ margin: "3px 0 0", fontSize: "12px", color: "#64748B" }}>
-                  Students scheduled by internship start date / month cohort
+                  Students filtered by the month they submitted the Dashboard Access Form
                 </p>
               </div>
             </div>
 
             <div className="count-badge opted">
-              {filteredOptedStudents.length} Candidates Starting
+              {filteredOptedStudents.length} Forms Submitted
             </div>
           </div>
 
@@ -879,7 +866,7 @@ const FullPayment = () => {
               <Search size={16} />
               <input
                 type="text"
-                placeholder="Search candidates by name, email, phone, domain, start month…"
+                placeholder="Search candidates by name, email, phone, domain, internship start month…"
                 value={searchOptedQuery}
                 onChange={(e) => setSearchOptedQuery(e.target.value)}
               />
@@ -892,7 +879,7 @@ const FullPayment = () => {
                 value={selectedOptedMonth}
                 onChange={(e) => setSelectedOptedMonth(e.target.value)}
               >
-                <option value="all">All Start Months</option>
+                <option value="all">All Submission Months</option>
                 {optedMonthsList.map((m, idx) => (
                   <option key={idx} value={m}>
                     {m}
@@ -932,7 +919,7 @@ const FullPayment = () => {
                       "Internship Start Month",
                       "Mode",
                       "Counselor",
-                      "Got Payment On",
+                      "Form Filled On",
                       "Domain",
                       "Program Price",
                       "Paid",
