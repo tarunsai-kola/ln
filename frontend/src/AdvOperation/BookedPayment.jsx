@@ -49,6 +49,7 @@ const BookedAmount = () => {
   const [bda, setBda] = useState([]);
   const [operationData, setOperationData] = useState(null);
   const [newStudent, setNewStudent] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Form Fields
@@ -248,7 +249,6 @@ const BookedAmount = () => {
 
   const fetchNewStudent = async (showToast = false) => {
     const opName = localStorage.getItem("advOperationName") || "";
-    const opId = localStorage.getItem("advOperationId") || "";
     const cleanOp = opName.trim().toLowerCase();
     if (showToast) setIsRefreshing(true);
     try {
@@ -259,39 +259,44 @@ const BookedAmount = () => {
       const booked = list.filter((item) => {
         const isBooked = String(item.status || "").toLowerCase() === "booked";
         if (!isBooked) return false;
-
-        // If no operation user specified, show all
-        if (!cleanOp && !opId) return true;
-
+        if (!cleanOp) return true;
         const itemOp = String(item.operationName || "").trim().toLowerCase();
-        const itemOpId = String(item.operationId || "").trim();
-
-        if (opId && itemOpId && itemOpId === opId) return true;
-        if (cleanOp && itemOp) {
-          return itemOp === cleanOp || itemOp.includes(cleanOp) || cleanOp.includes(itemOp);
-        }
-        return false;
+        return itemOp === cleanOp || itemOp.includes(cleanOp) || cleanOp.includes(itemOp);
       });
       setNewStudent(booked);
 
-      // Dynamic months from actual candidates
+      // Build dynamic month list from booked items + fallback months
       const dynamicMonths = buildDynamicMonths(booked);
       setMonths(dynamicMonths);
 
       const curMonth = getCurrentMonth();
-      setSelectedMonth((prev) => {
-        if (prev) return prev;
+      let activeMonth = selectedMonth;
+
+      if (!activeMonth) {
+        // If current month has records, use it; otherwise pick the latest month that has records
         const hasRecordsInCurrent = booked.some((s) => getMonthFromDate(s.createdAt) === curMonth);
-        if (hasRecordsInCurrent) return curMonth;
-        if (dynamicMonths.length > 0) return dynamicMonths[0];
-        return curMonth;
-      });
+        if (hasRecordsInCurrent) {
+          activeMonth = curMonth;
+        } else if (dynamicMonths.length > 0) {
+          activeMonth = dynamicMonths[0];
+        } else {
+          activeMonth = curMonth;
+        }
+        setSelectedMonth(activeMonth);
+      }
+
+      let filtered = booked;
+      if (activeMonth && activeMonth !== "all") {
+        filtered = booked.filter(
+          (student) => getMonthFromDate(student.createdAt) === activeMonth
+        );
+      }
+      setFilteredStudents(filtered);
     } catch (err) {
       console.error("Error fetching booked students:", err);
-      toast.error("Failed to load candidates roster.");
     } finally {
       if (showToast) {
-        setTimeout(() => setIsRefreshing(false), 400);
+        setTimeout(() => setIsRefreshing(false), 500);
       }
     }
   };
@@ -303,40 +308,51 @@ const BookedAmount = () => {
     fetchOperationData();
   }, []);
 
-  /* ── Filter Handlers (Unified via useMemo) ── */
+  /* ── Filter Handlers ── */
   const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
+    const month = e.target.value;
+    setSelectedMonth(month);
     setCurrentPage(1);
+    let filtered = newStudent;
+    if (month && month !== "all") {
+      filtered = filtered.filter(
+        (student) => getMonthFromDate(student.createdAt) === month
+      );
+    }
+    if (searchQuery) {
+      filtered = filtered.filter(matchesSearchQuery);
+    }
+    setFilteredStudents(filtered);
+  };
+
+  const matchesSearchQuery = (student) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      (student.email && String(student.email).toLowerCase().includes(q)) ||
+      (student.phone && String(student.phone).toLowerCase().includes(q)) ||
+      (student.fullname && String(student.fullname).toLowerCase().includes(q)) ||
+      (student.counselor && String(student.counselor).toLowerCase().includes(q)) ||
+      (student.domain && String(student.domain).toLowerCase().includes(q)) ||
+      (student.whatsAppNumber && String(student.whatsAppNumber).toLowerCase().includes(q)) ||
+      (student.clearPaymentMonth && String(student.clearPaymentMonth).toLowerCase().includes(q))
+    );
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const val = e.target.value;
+    setSearchQuery(val);
     setCurrentPage(1);
+    let filtered = newStudent;
+    if (selectedMonth && selectedMonth !== "all") {
+      filtered = filtered.filter(
+        (student) => getMonthFromDate(student.createdAt) === selectedMonth
+      );
+    }
+    if (val) {
+      filtered = filtered.filter(matchesSearchQuery);
+    }
+    setFilteredStudents(filtered);
   };
-
-  const filteredStudents = useMemo(() => {
-    return newStudent.filter((student) => {
-      // 1. Month Filter
-      if (selectedMonth && selectedMonth !== "all") {
-        const studentMonth = getMonthFromDate(student.createdAt);
-        if (studentMonth !== selectedMonth) return false;
-      }
-      // 2. Search Query Filter
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        const matches =
-          (student.email && String(student.email).toLowerCase().includes(q)) ||
-          (student.phone && String(student.phone).toLowerCase().includes(q)) ||
-          (student.fullname && String(student.fullname).toLowerCase().includes(q)) ||
-          (student.counselor && String(student.counselor).toLowerCase().includes(q)) ||
-          (student.domain && String(student.domain).toLowerCase().includes(q)) ||
-          (student.whatsAppNumber && String(student.whatsAppNumber).toLowerCase().includes(q)) ||
-          (student.clearPaymentMonth && String(student.clearPaymentMonth).toLowerCase().includes(q));
-        if (!matches) return false;
-      }
-      return true;
-    });
-  }, [newStudent, selectedMonth, searchQuery]);
 
   /* ── Form Actions ── */
   const resetForm = () => {
@@ -658,27 +674,22 @@ const BookedAmount = () => {
     setDialogData(null);
   };
 
-  /* ── Production-Grade Pagination ── */
-  const totalPages = Math.max(1, Math.ceil(filteredStudents.length / itemsPerPage));
-  const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  /* ── Pagination ── */
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedMonth, newStudent]);
 
-  const indexOfLastItem = safeCurrentPage * itemsPerPage;
-  const indexOfFirstItem = Math.max(0, indexOfLastItem - itemsPerPage);
-  const currentItems = useMemo(() => {
-    return filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
-  }, [filteredStudents, indexOfFirstItem, indexOfLastItem]);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage) || 1;
 
   const nextPage = () => {
-    if (safeCurrentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
 
   const prevPage = () => {
-    if (safeCurrentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
-
-  const goToPage = (page) => {
-    const target = Math.min(Math.max(1, page), totalPages);
-    setCurrentPage(target);
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
 
   const groupedData = useMemo(() => {
@@ -1120,44 +1131,28 @@ AccenLearn Solutions`;
           </table>
         </div>
 
-        {/* ── Production Pagination Bar ── */}
+        {/* ── Pagination Bar ── */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600 bg-slate-50/50">
+          <div className="p-4 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-600">
             <div>
-              Showing <span className="font-bold text-slate-800">{indexOfFirstItem + 1}</span> to{" "}
-              <span className="font-bold text-slate-800">{Math.min(indexOfLastItem, filteredStudents.length)}</span> of{" "}
-              <span className="font-bold text-slate-800">{filteredStudents.length}</span> students
+              Showing <span className="font-bold">{indexOfFirstItem + 1}</span> to{" "}
+              <span className="font-bold">{Math.min(indexOfLastItem, filteredStudents.length)}</span> of{" "}
+              <span className="font-bold">{filteredStudents.length}</span> students
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={prevPage}
-                disabled={safeCurrentPage === 1}
-                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition cursor-pointer"
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
               >
                 <ChevronLeft size={14} /> Previous
               </button>
-
-              <div className="flex items-center gap-1 px-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
-                  <button
-                    key={pg}
-                    onClick={() => goToPage(pg)}
-                    className={`w-7 h-7 rounded-lg text-xs font-bold transition flex items-center justify-center cursor-pointer ${
-                      safeCurrentPage === pg
-                        ? "bg-emerald-600 text-white shadow-sm"
-                        : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
-                    }`}
-                  >
-                    {pg}
-                  </button>
-                ))}
-              </div>
-
+              <span className="font-bold px-2">Page {currentPage} of {totalPages}</span>
               <button
                 onClick={nextPage}
-                disabled={safeCurrentPage === totalPages}
-                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition cursor-pointer"
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
               >
                 Next <ChevronRight size={14} />
               </button>
@@ -1551,56 +1546,4 @@ AccenLearn Solutions`;
   );
 };
 
-/* ── Enterprise Production Error Boundary ── */
-class BookedPaymentErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Critical error in BookedPayment component:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen bg-[#F8FAFC] ml-[260px] mt-[70px] p-8 flex items-center justify-center">
-          <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-500 mx-auto flex items-center justify-center">
-              <AlertOctagon size={28} />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-slate-800">Roster View Temporarily Interrupted</h3>
-              <p className="text-xs text-slate-500 mt-1">
-                A rendering discrepancy was safely caught. Click below to refresh the candidate roster.
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null });
-                window.location.reload();
-              }}
-              className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-md cursor-pointer"
-            >
-              Reload Booked Roster
-            </button>
-          </div>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-const SafeBookedAmount = (props) => (
-  <BookedPaymentErrorBoundary>
-    <BookedAmount {...props} />
-  </BookedPaymentErrorBoundary>
-);
-
-export default SafeBookedAmount;
+export default BookedAmount;
