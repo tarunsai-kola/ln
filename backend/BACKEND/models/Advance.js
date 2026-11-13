@@ -39,6 +39,42 @@ const AdvanceSchema = new mongoose.Schema({
     type: String,
     default: "Unseen"
   },
+  // Assignment to Sales Person
+  assignedTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "AdvTeam",
+  },
+  assignedToName: {
+    type: String,
+  },
+  assignedToEmail: {
+    type: String,
+  },
+  assignedToTeam: {
+    type: String,
+  },
+  assignedBy: {
+    type: String,
+    default: "Admin",
+  },
+  assignedAt: {
+    type: Date,
+  },
+  // Lead Progress & Followup
+  leadStatus: {
+    type: String,
+    default: "New",
+  },
+  lastContactedAt: {
+    type: Date,
+  },
+  remarks: [
+    {
+      text: { type: String, required: true },
+      by: { type: String },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

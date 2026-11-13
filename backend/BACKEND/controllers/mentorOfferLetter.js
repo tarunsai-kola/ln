@@ -203,10 +203,10 @@ const sendMentorFreelanceOfferLetter = async ({
         </p>
         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
           <tr>
-            <td style="padding: 7px 0; color: #64748b; width: 140px;"><strong>Portal Route:</strong></td>
+            <td style="padding: 7px 0; color: #64748b; width: 140px;"><strong>Portal Link:</strong></td>
             <td style="padding: 7px 0;">
-              <a href="https://accenlearn-main.vercel.app/mentor-login" style="color: #4f46e5; font-weight: bold; text-decoration: none;">
-                /mentor-login
+              <a href="https://user.accenlearn.com/mentor-login" style="color: #4f46e5; font-weight: bold; text-decoration: none;">
+                https://user.accenlearn.com/mentor-login
               </a>
             </td>
           </tr>
@@ -224,7 +224,7 @@ const sendMentorFreelanceOfferLetter = async ({
           </tr>
         </table>
         <div style="margin-top: 16px;">
-          <a href="https://accenlearn-main.vercel.app/mentor-login" style="display: inline-block; background: #4f46e5; color: #ffffff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px;">
+          <a href="https://user.accenlearn.com/mentor-login" style="display: inline-block; background: #4f46e5; color: #ffffff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px;">
             Log In to Mentor Portal &rarr;
           </a>
         </div>
@@ -234,7 +234,7 @@ const sendMentorFreelanceOfferLetter = async ({
       <ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #334155;">
         <li style="margin-bottom: 8px;">Review and sign the attached Offer Letter.</li>
         <li style="margin-bottom: 8px;">Reply to this email or send the signed copy back to <a href="mailto:operations@accenlearn.com" style="color: #4f46e5; text-decoration: none; font-weight: 600;">operations@accenlearn.com</a>.</li>
-        <li style="margin-bottom: 8px;">Log into <a href="https://accenlearn-main.vercel.app/mentor-login" style="color: #4f46e5; font-weight: bold;">/mentor-login</a> using the credentials above to explore your mentor dashboard.</li>
+        <li style="margin-bottom: 8px;">Log into <a href="https://user.accenlearn.com/mentor-login" style="color: #4f46e5; font-weight: bold;">https://user.accenlearn.com/mentor-login</a> using the credentials above to explore your mentor dashboard.</li>
       </ol>
 
       <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #f1f5f9;">

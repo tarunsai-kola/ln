@@ -268,7 +268,7 @@ router.post("/send-offer-letter/:id", async (req, res) => {
 
     application.interviewerId = mentor._id;
 
-    // Send PDF offer letter via email with credentials (/mentor-login, name@accenlearn.com, Accenlearn@123)
+    // Send PDF offer letter via email with credentials (https://user.accenlearn.com/mentor-login, name@accenlearn.com, Accenlearn@123)
     await sendMentorFreelanceOfferLetter({
       email: application.email,
       fullname: application.fullname,
@@ -378,7 +378,7 @@ router.post("/create-account/:id", async (req, res) => {
             <p>Dear <strong>${application.fullname}</strong>,</p>
             <p>Your mentor account has been activated. You can now log in to the <strong>Accenlearn Mentor Portal</strong> to manage your sessions, view batch schedules, and submit session drive recordings.</p>
             <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #cbd5e1;">
-              <p style="margin: 0; font-size: 14px;"><strong>Portal URL:</strong> <a href="https://accenlearn-main.vercel.app/mentor-login" style="color: #4f46e5;">Accenlearn Mentor Login</a></p>
+              <p style="margin: 0; font-size: 14px;"><strong>Portal URL:</strong> <a href="https://user.accenlearn.com/mentor-login" style="color: #4f46e5;">https://user.accenlearn.com/mentor-login</a></p>
               <p style="margin: 8px 0 0 0; font-size: 14px;"><strong>Email:</strong> ${application.email}</p>
               <p style="margin: 8px 0 0 0; font-size: 14px;"><strong>Password:</strong> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${tempPassword}</code></p>
             </div>
