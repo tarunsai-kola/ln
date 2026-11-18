@@ -10,23 +10,22 @@ const SalaryGrowth = ({ title, salaryData, techStack = [] }) => {
   return (
     <section className="bg-white py-24 border-b border-slate-200 relative overflow-hidden">
       
-      {/* Tech Stack Marquee */}
+      {/* Tech Stack */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="text-center mb-10">
-          <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest">Master the most in-demand technologies</p>
+          <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest">
+            Master the most in-demand technologies
+          </p>
         </div>
         
-        <div className="relative flex overflow-hidden">
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10"></div>
-          
-          <div className="flex gap-16 items-center px-4">
+        <div className="flex justify-center items-center w-full">
+          <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 md:gap-16 px-4 mx-auto">
             {techStack.map((tech, idx) => (
               <div key={idx} className="flex flex-col items-center gap-3 hover:-translate-y-1 transition-all duration-300">
-                <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center shadow-sm">
+                <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center shadow-sm hover:shadow-md hover:border-slate-300 transition-all">
                   {tech.icon}
                 </div>
-                <span className="text-xs font-semibold text-slate-900">{tech.name}</span>
+                <span className="text-xs font-semibold text-slate-900 text-center">{tech.name}</span>
               </div>
             ))}
           </div>

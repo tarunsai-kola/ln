@@ -20,6 +20,11 @@ const advEnrollSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+    alternativeEmail: {
+      type: String,
+      lowercase: true,
+      trim: true,
+    },
     phone: {
       type: String,
     },

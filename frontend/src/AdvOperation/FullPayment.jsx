@@ -10,9 +10,23 @@ import {
   Filter, 
   ChevronLeft, 
   ChevronRight,
-  TrendingUp,
   Sparkles,
-  Layers
+  Layers,
+  Building2,
+  Phone,
+  MessageSquare,
+  Copy,
+  Check,
+  Eye,
+  X,
+  Clock,
+  BookOpen,
+  DollarSign,
+  UserCheck,
+  Share2,
+  ExternalLink,
+  ShieldCheck,
+  Mail
 } from "lucide-react";
 
 const DARK_STYLES = `
@@ -218,15 +232,6 @@ const DARK_STYLES = `
     margin: 0;
   }
 
-  #AdvFullPaymentPage .section-chip {
-    padding: 4px 12px;
-    border-radius: 9999px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-  }
-
   /* Filters Bar */
   #AdvFullPaymentPage .filters-bar {
     display: flex;
@@ -242,7 +247,7 @@ const DARK_STYLES = `
 
   #AdvFullPaymentPage .search-input-wrap {
     flex: 1;
-    min-width: 220px;
+    min-width: 260px;
     position: relative;
     display: flex;
     align-items: center;
@@ -368,19 +373,18 @@ const DARK_STYLES = `
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    padding: 14px 16px;
+    padding: 14px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     white-space: nowrap;
     text-align: left;
   }
 
   #AdvFullPaymentPage td {
-    padding: 14px 16px;
+    padding: 14px 14px;
     font-size: 13px;
     color: #CBD5E1;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     vertical-align: middle;
-    white-space: nowrap;
   }
 
   #AdvFullPaymentPage tr:hover td { 
@@ -391,6 +395,131 @@ const DARK_STYLES = `
   #AdvFullPaymentPage .td-blue   { color: #60A5FA; font-weight: 700; }
   #AdvFullPaymentPage .td-yellow { color: #F59E0B; font-weight: 700; }
   #AdvFullPaymentPage .td-name   { text-transform: capitalize; font-weight: 700; color: #F8FAFC; }
+
+  /* Academic cell styles */
+  #AdvFullPaymentPage .academic-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 190px;
+    max-width: 250px;
+  }
+  #AdvFullPaymentPage .college-name {
+    font-weight: 700;
+    color: #F8FAFC;
+    font-size: 13px;
+    line-height: 1.3;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    word-break: break-word;
+  }
+  #AdvFullPaymentPage .college-sub {
+    font-size: 11px;
+    color: #94A3B8;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+
+  /* Contact cell styles */
+  #AdvFullPaymentPage .contact-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 135px;
+  }
+  #AdvFullPaymentPage .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #CBD5E1;
+  }
+  #AdvFullPaymentPage .whatsapp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(37, 211, 102, 0.12);
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    color: #25D366;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: fit-content;
+  }
+  #AdvFullPaymentPage .whatsapp-badge:hover {
+    background: rgba(37, 211, 102, 0.25);
+    color: #ffffff;
+  }
+
+  /* Txn badge */
+  #AdvFullPaymentPage .txn-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: monospace;
+    font-size: 11px;
+    color: #CBD5E1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  #AdvFullPaymentPage .txn-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Actions column buttons */
+  #AdvFullPaymentPage .action-btn-details {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  #AdvFullPaymentPage .action-btn-details:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
+  }
+  #AdvFullPaymentPage .action-btn-wa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(37, 211, 102, 0.15);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  #AdvFullPaymentPage .action-btn-wa:hover {
+    background: #25D366;
+    color: #FFFFFF;
+  }
 
   #AdvFullPaymentPage .badge-opted {
     background: rgba(99, 102, 241, 0.16);
@@ -404,6 +533,7 @@ const DARK_STYLES = `
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
   }
 
   #AdvFullPaymentPage .badge-true {
@@ -414,6 +544,7 @@ const DARK_STYLES = `
     padding: 3px 10px;
     font-size: 11px;
     font-weight: 700;
+    white-space: nowrap;
   }
 
   #AdvFullPaymentPage .badge-false {
@@ -424,6 +555,7 @@ const DARK_STYLES = `
     padding: 3px 10px;
     font-size: 11px;
     font-weight: 700;
+    white-space: nowrap;
   }
 
   /* Pagination */
@@ -473,8 +605,183 @@ const DARK_STYLES = `
     font-size: 13px;
   }
 
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
+  /* Full Student Details Modal */
+  .fullpay-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .fullpay-modal-card {
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 950px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+    color: #F1F5F9;
+    overflow: hidden;
+    animation: fullpayModalFadeIn 0.22s ease-out;
+  }
+
+  @keyframes fullpayModalFadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .fullpay-modal-header {
+    padding: 22px 28px;
+    background: rgba(15, 23, 42, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .fullpay-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .fullpay-modal-close-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94A3B8;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .fullpay-modal-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .fullpay-modal-body {
+    padding: 24px 28px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Quick Stats Strip in Modal */
+  .modal-quick-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .modal-quick-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .modal-quick-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #94A3B8;
+  }
+
+  .modal-quick-val {
+    font-size: 17px;
+    font-weight: 800;
+    color: #FFFFFF;
+  }
+
+  .modal-section {
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+
+  .modal-section-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #818CF8;
+    margin: 0 0 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .modal-field {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .modal-field-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #94A3B8;
+  }
+
+  .modal-field-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #F8FAFC;
+    word-break: break-word;
+  }
+
+  .fullpay-modal-footer {
+    padding: 16px 28px;
+    background: rgba(15, 23, 42, 0.75);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 99px; }
 `;
 
 const FullPayment = () => {
@@ -496,6 +803,11 @@ const FullPayment = () => {
   const [paymentMonthsList, setPaymentMonthsList] = useState([]);
   const [searchPaymentQuery, setSearchPaymentQuery] = useState("");
   const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
+
+  // Modal State for Viewing Full Student Details
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [copiedTxn, setCopiedTxn] = useState(false);
 
   const itemsPerPage = 25;
 
@@ -553,6 +865,30 @@ const FullPayment = () => {
     });
 
     return Array.from(set);
+  };
+
+  const getCleanPhone = (phoneStr) => {
+    if (!phoneStr) return "";
+    const digits = String(phoneStr).replace(/\D/g, "");
+    if (digits.length === 10) return `91${digits}`;
+    return digits;
+  };
+
+  const handleCopyTxn = (txnId) => {
+    if (!txnId) return;
+    navigator.clipboard.writeText(txnId);
+    setCopiedTxn(true);
+    setTimeout(() => setCopiedTxn(false), 2000);
+  };
+
+  const openStudentDetails = (student) => {
+    setSelectedStudent(student);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeStudentDetails = () => {
+    setIsDetailModalOpen(false);
+    setSelectedStudent(null);
   };
 
   /* ── Fetch Data ── */
@@ -623,6 +959,36 @@ const FullPayment = () => {
     return submissionMonth.toLowerCase().trim() === target.toLowerCase().trim();
   };
 
+  /* ── Comprehensive search matcher including College, Branch, WhatsApp, Txn, etc. ── */
+  const matchesFullStudentQuery = (student, q) => {
+    if (!q) return true;
+    const startMonth = getOptedMonthValue(student).toLowerCase();
+    const submissionDate = student.createdAt ? new Date(student.createdAt).toLocaleDateString("en-GB") : "";
+    return (
+      (student.fullname && student.fullname.toLowerCase().includes(q)) ||
+      (student.email && student.email.toLowerCase().includes(q)) ||
+      (student.alternativeEmail && student.alternativeEmail.toLowerCase().includes(q)) ||
+      (student.phone && student.phone.toLowerCase().includes(q)) ||
+      (student.whatsAppNumber && student.whatsAppNumber.toLowerCase().includes(q)) ||
+      (student.collegeName && student.collegeName.toLowerCase().includes(q)) ||
+      (student.branch && student.branch.toLowerCase().includes(q)) ||
+      (student.yearOfStudy && String(student.yearOfStudy).toLowerCase().includes(q)) ||
+      (student.yearOfPassingOut && String(student.yearOfPassingOut).toLowerCase().includes(q)) ||
+      (student.counselor && student.counselor.toLowerCase().includes(q)) ||
+      (student.domain && student.domain.toLowerCase().includes(q)) ||
+      (student.program && student.program.toLowerCase().includes(q)) ||
+      (student.transactionId && student.transactionId.toLowerCase().includes(q)) ||
+      (student.modeofpayment && student.modeofpayment.toLowerCase().includes(q)) ||
+      (student.referFriend && student.referFriend.toLowerCase().includes(q)) ||
+      (student.lead && student.lead.toLowerCase().includes(q)) ||
+      (student.batchTiming && student.batchTiming.toLowerCase().includes(q)) ||
+      (student.modeofclasses && student.modeofclasses.toLowerCase().includes(q)) ||
+      (student.internshipendsmonth && student.internshipendsmonth.toLowerCase().includes(q)) ||
+      startMonth.includes(q) ||
+      submissionDate.includes(q)
+    );
+  };
+
   /* ── Filtered Datasets ── */
   // 1. Form Submission Month Candidates (filtered by createdAt when Dashboard Access Form was filled)
   const filteredOptedStudents = useMemo(() => {
@@ -632,21 +998,7 @@ const FullPayment = () => {
 
       if (searchOptedQuery.trim()) {
         const q = searchOptedQuery.toLowerCase().trim();
-        const startMonth = getOptedMonthValue(student).toLowerCase();
-        const submissionDate = student.createdAt ? new Date(student.createdAt).toLocaleDateString("en-GB") : "";
-        const matches = (
-          (student.fullname && student.fullname.toLowerCase().includes(q)) ||
-          (student.email && student.email.toLowerCase().includes(q)) ||
-          (student.phone && student.phone.toLowerCase().includes(q)) ||
-          (student.counselor && student.counselor.toLowerCase().includes(q)) ||
-          (student.domain && student.domain.toLowerCase().includes(q)) ||
-          (student.program && student.program.toLowerCase().includes(q)) ||
-          (student.collegeName && student.collegeName.toLowerCase().includes(q)) ||
-          (student.branch && student.branch.toLowerCase().includes(q)) ||
-          startMonth.includes(q) ||
-          submissionDate.includes(q)
-        );
-        if (!matches) return false;
+        if (!matchesFullStudentQuery(student, q)) return false;
       }
       return true;
     });
@@ -661,19 +1013,7 @@ const FullPayment = () => {
 
       if (searchPaymentQuery.trim()) {
         const q = searchPaymentQuery.toLowerCase().trim();
-        const opted = getOptedMonthValue(student).toLowerCase();
-        const matches = (
-          (student.fullname && student.fullname.toLowerCase().includes(q)) ||
-          (student.email && student.email.toLowerCase().includes(q)) ||
-          (student.phone && student.phone.toLowerCase().includes(q)) ||
-          (student.counselor && student.counselor.toLowerCase().includes(q)) ||
-          (student.domain && student.domain.toLowerCase().includes(q)) ||
-          (student.program && student.program.toLowerCase().includes(q)) ||
-          (student.collegeName && student.collegeName.toLowerCase().includes(q)) ||
-          (student.branch && student.branch.toLowerCase().includes(q)) ||
-          opted.includes(q)
-        );
-        if (!matches) return false;
+        if (!matchesFullStudentQuery(student, q)) return false;
       }
       return true;
     });
@@ -725,7 +1065,7 @@ const FullPayment = () => {
           <h1>Full Payments & Program Cohorts</h1>
           <p className="page-sub">
             <Sparkles size={14} color="#60A5FA" />
-            Track full paid candidate records by both <strong>Form Submission Month</strong> and <strong>Payment Received Date</strong>
+            Complete candidate details submitted in the Dashboard Access Form &amp; Payment Records
           </p>
         </div>
       </div>
@@ -866,7 +1206,7 @@ const FullPayment = () => {
               <Search size={16} />
               <input
                 type="text"
-                placeholder="Search candidates by name, email, phone, domain, internship start month…"
+                placeholder="Search candidates by name, college, branch, email, phone, WhatsApp, Txn ID…"
                 value={searchOptedQuery}
                 onChange={(e) => setSearchOptedQuery(e.target.value)}
               />
@@ -913,18 +1253,16 @@ const FullPayment = () => {
                   <tr>
                     {[
                       "Sl",
-                      "Name",
-                      "Email",
-                      "Contact",
-                      "Internship Start Month",
-                      "Mode",
+                      "Student Name & Contact",
+                      "College & Branch",
+                      "Domain & Track",
+                      "Cohort & Timeline",
+                      "Txn ID & Mode",
                       "Counselor",
-                      "Form Filled On",
-                      "Domain",
-                      "Program Price",
-                      "Paid",
-                      "Pending",
-                      "A/c Created"
+                      "Financials",
+                      "Submitted On",
+                      "A/c Created",
+                      "Actions"
                     ].map((h) => (
                       <th key={h}>{h}</th>
                     ))}
@@ -933,7 +1271,7 @@ const FullPayment = () => {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan="13" style={{ textAlign: "center", padding: "60px", color: "#94A3B8" }}>
+                      <td colSpan="11" style={{ textAlign: "center", padding: "60px", color: "#94A3B8" }}>
                         Loading candidate records…
                       </td>
                     </tr>
@@ -945,43 +1283,177 @@ const FullPayment = () => {
                       return (
                         <tr key={item._id}>
                           <td>{indexOfLastOpted - itemsPerPage + index + 1}</td>
-                          <td className="td-name">{item.fullname}</td>
-                          <td>{item.email}</td>
-                          <td>{item.phone}</td>
+                          
+                          {/* Student Name & Contact */}
+                          <td style={{ minWidth: "190px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              <span className="td-name">{item.fullname || "N/A"}</span>
+                              <span style={{ fontSize: "11px", color: "#94A3B8" }}>{item.email}</span>
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "2px" }}>
+                                <span style={{ fontSize: "11px", color: "#CBD5E1", display: "flex", alignItems: "center", gap: "4px" }}>
+                                  <Phone size={10} color="#94A3B8" />
+                                  {item.phone || "N/A"}
+                                </span>
+                                {(item.whatsAppNumber || item.phone) && (
+                                  <a
+                                    href={`https://wa.me/${getCleanPhone(item.whatsAppNumber || item.phone)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="whatsapp-badge"
+                                    title="Open WhatsApp Chat"
+                                  >
+                                    <MessageSquare size={10} />
+                                    WA
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* College & Academics */}
                           <td>
-                            <span className="badge-opted">
-                              <GraduationCap size={12} />
-                              {itemOpted}
+                            <div className="academic-cell">
+                              <div className="college-name">
+                                <Building2 size={14} color="#818CF8" style={{ flexShrink: 0, marginTop: "2px" }} />
+                                <span>{item.collegeName || "N/A"}</span>
+                              </div>
+                              <div className="college-sub">
+                                {item.branch ? (
+                                  <span style={{ color: "#CBD5E1" }}>{item.branch}</span>
+                                ) : (
+                                  <span style={{ color: "#64748B", fontStyle: "italic" }}>No Branch</span>
+                                )}
+                                {(item.yearOfStudy || item.yearOfPassingOut) && (
+                                  <span style={{ color: "#94A3B8" }}> • {item.yearOfStudy || item.yearOfPassingOut}</span>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Domain & Track */}
+                          <td style={{ minWidth: "150px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              <span style={{ fontWeight: 700, color: "#F8FAFC", textTransform: "capitalize" }}>
+                                {item.domain || "N/A"}
+                              </span>
+                              {item.program && (
+                                <span style={{ fontSize: "11px", color: "#818CF8", textTransform: "capitalize" }}>
+                                  {item.program}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Cohort & Timeline */}
+                          <td style={{ minWidth: "160px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                              <span className="badge-opted">
+                                <GraduationCap size={12} />
+                                {itemOpted}
+                                {item.internshipendsmonth && ` → ${item.internshipendsmonth}`}
+                              </span>
+                              {(item.batchTiming || item.modeofclasses) && (
+                                <span style={{ fontSize: "11px", color: "#94A3B8", display: "flex", alignItems: "center", gap: "4px" }}>
+                                  <Clock size={11} />
+                                  {item.batchTiming || item.modeofclasses}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Txn ID & Payment Mode */}
+                          <td style={{ minWidth: "140px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              {item.transactionId ? (
+                                <span 
+                                  className="txn-badge" 
+                                  title="Click to copy Transaction ID"
+                                  onClick={() => handleCopyTxn(item.transactionId)}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <Copy size={11} />
+                                  {item.transactionId}
+                                </span>
+                              ) : (
+                                <span style={{ fontSize: "11px", color: "#64748B" }}>No Txn ID</span>
+                              )}
+                              {item.modeofpayment && (
+                                <span style={{ fontSize: "10px", color: "#60A5FA", textTransform: "uppercase", fontWeight: 700 }}>
+                                  {item.modeofpayment}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Counselor */}
+                          <td>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                              <span style={{ fontWeight: 600, color: "#F1F5F9" }}>{item.counselor || "N/A"}</span>
+                              {item.lead && (
+                                <span style={{ fontSize: "10px", color: "#A78BFA" }}>Lead: {item.lead}</span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Financials */}
+                          <td>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                              <span className="td-green">₹{Number(item.programPrice || 0).toLocaleString()}</span>
+                              <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+                                Paid: <strong className="td-blue">₹{Number(item.paidAmount || 0).toLocaleString()}</strong>
+                              </span>
+                              {itemRemaining > 0 && (
+                                <span style={{ fontSize: "10px", color: "#F59E0B" }}>
+                                  Due: ₹{itemRemaining.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Form Submitted Date */}
+                          <td>
+                            <span style={{ fontSize: "12px", color: "#CBD5E1" }}>
+                              {item.createdAt 
+                                ? new Date(item.createdAt).toLocaleDateString("en-GB") 
+                                : "N/A"}
                             </span>
                           </td>
-                          <td style={{ textTransform: "capitalize" }}>{item.program}</td>
-                          <td>{item.counselor}</td>
-                          <td>
-                            {item.createdAt 
-                              ? new Date(item.createdAt).toLocaleDateString("en-GB") 
-                              : "N/A"}
-                          </td>
-                          <td style={{ textTransform: "capitalize" }}>{item.domain}</td>
-                          <td className="td-green">
-                            ₹{Number(item.programPrice || 0).toLocaleString()}
-                          </td>
-                          <td className="td-blue">
-                            ₹{Number(item.paidAmount || 0).toLocaleString()}
-                          </td>
-                          <td className="td-yellow">
-                            ₹{itemRemaining > 0 ? itemRemaining.toLocaleString() : "0"}
-                          </td>
+
+                          {/* LMS Account Created */}
                           <td>
                             <span className={item.mailSended || item.userCreated ? "badge-true" : "badge-false"}>
                               {item.mailSended || item.userCreated ? "Yes" : "No"}
                             </span>
+                          </td>
+
+                          {/* Actions */}
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                              <button
+                                className="action-btn-details"
+                                onClick={() => openStudentDetails(item)}
+                                title="View All Candidate Details"
+                              >
+                                <Eye size={13} />
+                                <span>Details</span>
+                              </button>
+                              <a
+                                href={`https://wa.me/${getCleanPhone(item.whatsAppNumber || item.phone)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="action-btn-wa"
+                                title="Direct WhatsApp Chat"
+                              >
+                                <MessageSquare size={13} />
+                              </a>
+                            </div>
                           </td>
                         </tr>
                       );
                     })
                   ) : (
                     <tr>
-                      <td colSpan="13" style={{ textAlign: "center", padding: "60px", color: "#64748B" }}>
+                      <td colSpan="11" style={{ textAlign: "center", padding: "60px", color: "#64748B" }}>
                         No full paid candidate records found for opted cohort{" "}
                         <strong style={{ color: "#F1F5F9" }}>{selectedOptedMonth}</strong>.
                       </td>
@@ -1059,7 +1531,7 @@ const FullPayment = () => {
               <Search size={16} />
               <input
                 type="text"
-                placeholder="Search payments by name, email, phone, counselor, domain…"
+                placeholder="Search payments by name, college, branch, email, phone, Txn ID…"
                 value={searchPaymentQuery}
                 onChange={(e) => setSearchPaymentQuery(e.target.value)}
               />
@@ -1090,18 +1562,16 @@ const FullPayment = () => {
                   <tr>
                     {[
                       "Sl",
-                      "Name",
-                      "Email",
-                      "Contact",
-                      "Mode",
+                      "Student Name & Contact",
+                      "College & Branch",
+                      "Domain & Track",
+                      "Txn ID & Mode",
                       "Counselor",
-                      "Got Payment On",
-                      "Domain",
-                      "Program Price",
-                      "Paid",
-                      "Pending",
-                      "Internship Start Month",
-                      "A/c Created"
+                      "Financials",
+                      "Payment Received On",
+                      "Cohort Start Month",
+                      "A/c Created",
+                      "Actions"
                     ].map((h) => (
                       <th key={h}>{h}</th>
                     ))}
@@ -1110,7 +1580,7 @@ const FullPayment = () => {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan="13" style={{ textAlign: "center", padding: "60px", color: "#94A3B8" }}>
+                      <td colSpan="11" style={{ textAlign: "center", padding: "60px", color: "#94A3B8" }}>
                         Loading payment records…
                       </td>
                     </tr>
@@ -1122,43 +1592,168 @@ const FullPayment = () => {
                       return (
                         <tr key={item._id}>
                           <td>{indexOfLastPayment - itemsPerPage + index + 1}</td>
-                          <td className="td-name">{item.fullname}</td>
-                          <td>{item.email}</td>
-                          <td>{item.phone}</td>
-                          <td style={{ textTransform: "capitalize" }}>{item.program}</td>
-                          <td>{item.counselor}</td>
+                          
+                          {/* Student Name & Contact */}
+                          <td style={{ minWidth: "190px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              <span className="td-name">{item.fullname || "N/A"}</span>
+                              <span style={{ fontSize: "11px", color: "#94A3B8" }}>{item.email}</span>
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "2px" }}>
+                                <span style={{ fontSize: "11px", color: "#CBD5E1", display: "flex", alignItems: "center", gap: "4px" }}>
+                                  <Phone size={10} color="#94A3B8" />
+                                  {item.phone || "N/A"}
+                                </span>
+                                {(item.whatsAppNumber || item.phone) && (
+                                  <a
+                                    href={`https://wa.me/${getCleanPhone(item.whatsAppNumber || item.phone)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="whatsapp-badge"
+                                    title="Open WhatsApp Chat"
+                                  >
+                                    <MessageSquare size={10} />
+                                    WA
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* College & Academics */}
                           <td>
-                            {item.createdAt 
-                              ? new Date(item.createdAt).toLocaleDateString("en-GB") 
-                              : "N/A"}
+                            <div className="academic-cell">
+                              <div className="college-name">
+                                <Building2 size={14} color="#10B981" style={{ flexShrink: 0, marginTop: "2px" }} />
+                                <span>{item.collegeName || "N/A"}</span>
+                              </div>
+                              <div className="college-sub">
+                                {item.branch ? (
+                                  <span style={{ color: "#CBD5E1" }}>{item.branch}</span>
+                                ) : (
+                                  <span style={{ color: "#64748B", fontStyle: "italic" }}>No Branch</span>
+                                )}
+                                {(item.yearOfStudy || item.yearOfPassingOut) && (
+                                  <span style={{ color: "#94A3B8" }}> • {item.yearOfStudy || item.yearOfPassingOut}</span>
+                                )}
+                              </div>
+                            </div>
                           </td>
-                          <td style={{ textTransform: "capitalize" }}>{item.domain}</td>
-                          <td className="td-green">
-                            ₹{Number(item.programPrice || 0).toLocaleString()}
+
+                          {/* Domain & Track */}
+                          <td style={{ minWidth: "150px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              <span style={{ fontWeight: 700, color: "#F8FAFC", textTransform: "capitalize" }}>
+                                {item.domain || "N/A"}
+                              </span>
+                              {item.program && (
+                                <span style={{ fontSize: "11px", color: "#60A5FA", textTransform: "capitalize" }}>
+                                  {item.program}
+                                </span>
+                              )}
+                            </div>
                           </td>
-                          <td className="td-blue">
-                            ₹{Number(item.paidAmount || 0).toLocaleString()}
+
+                          {/* Txn ID & Payment Mode */}
+                          <td style={{ minWidth: "140px" }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                              {item.transactionId ? (
+                                <span 
+                                  className="txn-badge" 
+                                  title="Click to copy Transaction ID"
+                                  onClick={() => handleCopyTxn(item.transactionId)}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <Copy size={11} />
+                                  {item.transactionId}
+                                </span>
+                              ) : (
+                                <span style={{ fontSize: "11px", color: "#64748B" }}>No Txn ID</span>
+                              )}
+                              {item.modeofpayment && (
+                                <span style={{ fontSize: "10px", color: "#34D399", textTransform: "uppercase", fontWeight: 700 }}>
+                                  {item.modeofpayment}
+                                </span>
+                              )}
+                            </div>
                           </td>
-                          <td className="td-yellow">
-                            ₹{itemRemaining > 0 ? itemRemaining.toLocaleString() : "0"}
+
+                          {/* Counselor */}
+                          <td>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                              <span style={{ fontWeight: 600, color: "#F1F5F9" }}>{item.counselor || "N/A"}</span>
+                              {item.lead && (
+                                <span style={{ fontSize: "10px", color: "#A78BFA" }}>Lead: {item.lead}</span>
+                              )}
+                            </div>
                           </td>
+
+                          {/* Financials */}
+                          <td>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                              <span className="td-green">₹{Number(item.programPrice || 0).toLocaleString()}</span>
+                              <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+                                Paid: <strong className="td-blue">₹{Number(item.paidAmount || 0).toLocaleString()}</strong>
+                              </span>
+                              {itemRemaining > 0 && (
+                                <span style={{ fontSize: "10px", color: "#F59E0B" }}>
+                                  Due: ₹{itemRemaining.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Got Payment On */}
+                          <td>
+                            <span style={{ fontSize: "12px", color: "#CBD5E1" }}>
+                              {item.createdAt 
+                                ? new Date(item.createdAt).toLocaleDateString("en-GB") 
+                                : "N/A"}
+                            </span>
+                          </td>
+
+                          {/* Cohort Start Month */}
                           <td>
                             <span className="badge-opted">
                               <GraduationCap size={12} />
                               {itemOpted}
                             </span>
                           </td>
+
+                          {/* LMS A/c Created */}
                           <td>
                             <span className={item.mailSended || item.userCreated ? "badge-true" : "badge-false"}>
                               {item.mailSended || item.userCreated ? "Yes" : "No"}
                             </span>
+                          </td>
+
+                          {/* Actions */}
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                              <button
+                                className="action-btn-details"
+                                onClick={() => openStudentDetails(item)}
+                                title="View All Candidate Details"
+                              >
+                                <Eye size={13} />
+                                <span>Details</span>
+                              </button>
+                              <a
+                                href={`https://wa.me/${getCleanPhone(item.whatsAppNumber || item.phone)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="action-btn-wa"
+                                title="Direct WhatsApp Chat"
+                              >
+                                <MessageSquare size={13} />
+                              </a>
+                            </div>
                           </td>
                         </tr>
                       );
                     })
                   ) : (
                     <tr>
-                      <td colSpan="13" style={{ textAlign: "center", padding: "60px", color: "#64748B" }}>
+                      <td colSpan="11" style={{ textAlign: "center", padding: "60px", color: "#64748B" }}>
                         No records found for payment month{" "}
                         <strong style={{ color: "#F1F5F9" }}>{selectedPaymentMonth}</strong>.
                       </td>
@@ -1190,6 +1785,423 @@ const FullPayment = () => {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ═════════════════════════════════════════════════════════════════════════ */}
+      {/* CANDIDATE FULL DETAILS MODAL                                             */}
+      {/* ═════════════════════════════════════════════════════════════════════════ */}
+      {isDetailModalOpen && selectedStudent && (
+        <div className="fullpay-modal-overlay" onClick={closeStudentDetails}>
+          <div className="fullpay-modal-card" onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className="fullpay-modal-header">
+              <div>
+                <h3 className="fullpay-modal-title">
+                  <span>{selectedStudent.fullname || "Student Details"}</span>
+                  <span className="badge-true" style={{ fontSize: "12px", padding: "4px 12px" }}>
+                    FULL PAID
+                  </span>
+                  {selectedStudent.domain && (
+                    <span className="badge-opted" style={{ fontSize: "12px", padding: "4px 12px" }}>
+                      {selectedStudent.domain}
+                    </span>
+                  )}
+                </h3>
+                <p style={{ margin: "4px 0 0", fontSize: "12px", color: "#94A3B8" }}>
+                  Candidate details submitted via Dashboard Access Form &amp; Registration
+                </p>
+              </div>
+
+              <button 
+                className="fullpay-modal-close-btn"
+                onClick={closeStudentDetails}
+                title="Close dialog"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Scrollable Body */}
+            <div className="fullpay-modal-body">
+              {/* Quick Financial & Transaction Summary Strip */}
+              <div className="modal-quick-strip">
+                <div className="modal-quick-item">
+                  <span className="modal-quick-label">Program Fee</span>
+                  <span className="modal-quick-val" style={{ color: "#10B981" }}>
+                    ₹{Number(selectedStudent.programPrice || 0).toLocaleString()}
+                  </span>
+                </div>
+                <div className="modal-quick-item">
+                  <span className="modal-quick-label">Paid Amount</span>
+                  <span className="modal-quick-val" style={{ color: "#60A5FA" }}>
+                    ₹{Number(selectedStudent.paidAmount || 0).toLocaleString()}
+                  </span>
+                </div>
+                <div className="modal-quick-item">
+                  <span className="modal-quick-label">Remaining Balance</span>
+                  <span className="modal-quick-val" style={{ color: "#34D399" }}>
+                    ₹{(Number(selectedStudent.programPrice || 0) - Number(selectedStudent.paidAmount || 0)) <= 0 ? "0 (Cleared)" : (Number(selectedStudent.programPrice || 0) - Number(selectedStudent.paidAmount || 0)).toLocaleString()}
+                  </span>
+                </div>
+                <div className="modal-quick-item">
+                  <span className="modal-quick-label">Transaction ID</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span className="modal-quick-val" style={{ fontSize: "14px", fontFamily: "monospace", color: "#F1F5F9" }}>
+                      {selectedStudent.transactionId || "N/A"}
+                    </span>
+                    {selectedStudent.transactionId && (
+                      <button
+                        onClick={() => handleCopyTxn(selectedStudent.transactionId)}
+                        style={{
+                          background: "rgba(255, 255, 255, 0.08)",
+                          border: "none",
+                          color: copiedTxn ? "#10B981" : "#94A3B8",
+                          borderRadius: "6px",
+                          padding: "4px 7px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          fontSize: "11px"
+                        }}
+                        title="Copy Txn ID"
+                      >
+                        {copiedTxn ? <Check size={12} /> : <Copy size={12} />}
+                        {copiedTxn ? "Copied" : "Copy"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 1: PERSONAL & CONTACT INFORMATION */}
+              <div className="modal-section">
+                <h4 className="modal-section-title">
+                  <Users size={16} />
+                  Personal &amp; Contact Details
+                </h4>
+                <div className="modal-grid">
+                  <div className="modal-field">
+                    <span className="modal-field-label">Full Name</span>
+                    <span className="modal-field-value">{selectedStudent.fullname || "N/A"}</span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Primary Email</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                      <span className="modal-field-value">{selectedStudent.email || "N/A"}</span>
+                      {selectedStudent.email && (
+                        <a 
+                          href={`mailto:${selectedStudent.email}`} 
+                          style={{ color: "#60A5FA" }}
+                          title="Send Email"
+                        >
+                          <Mail size={13} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Alternative Email</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.alternativeEmail || "None provided"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Contact Phone</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span className="modal-field-value">{selectedStudent.phone || "N/A"}</span>
+                      {selectedStudent.phone && (
+                        <a href={`tel:${selectedStudent.phone}`} style={{ color: "#10B981" }} title="Call">
+                          <Phone size={13} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">WhatsApp Number</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span className="modal-field-value">
+                        {selectedStudent.whatsAppNumber || selectedStudent.phone || "N/A"}
+                      </span>
+                      {(selectedStudent.whatsAppNumber || selectedStudent.phone) && (
+                        <a
+                          href={`https://wa.me/${getCleanPhone(selectedStudent.whatsAppNumber || selectedStudent.phone)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="whatsapp-badge"
+                        >
+                          <MessageSquare size={12} /> Chat
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 2: ACADEMIC & PROFESSIONAL DETAILS */}
+              <div className="modal-section">
+                <h4 className="modal-section-title">
+                  <Building2 size={16} />
+                  College &amp; Academic Background
+                </h4>
+                <div className="modal-grid">
+                  <div className="modal-field" style={{ gridColumn: "span 2" }}>
+                    <span className="modal-field-label">College / Institute / University</span>
+                    <span className="modal-field-value" style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: 700 }}>
+                      {selectedStudent.collegeName || "Not provided by student"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Branch / Stream / Department</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.branch || "Not provided"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Year of Study / Passing Year</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.yearOfStudy || selectedStudent.yearOfPassingOut || "Not provided"}
+                    </span>
+                  </div>
+
+                  {(selectedStudent.companyName || selectedStudent.role || selectedStudent.experience) && (
+                    <>
+                      <div className="modal-field">
+                        <span className="modal-field-label">Company Name</span>
+                        <span className="modal-field-value">{selectedStudent.companyName || "N/A"}</span>
+                      </div>
+                      <div className="modal-field">
+                        <span className="modal-field-label">Job Role</span>
+                        <span className="modal-field-value">{selectedStudent.role || "N/A"}</span>
+                      </div>
+                      <div className="modal-field">
+                        <span className="modal-field-label">Experience</span>
+                        <span className="modal-field-value">{selectedStudent.experience || "N/A"}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* SECTION 3: COURSE & COHORT TIMELINE */}
+              <div className="modal-section">
+                <h4 className="modal-section-title">
+                  <GraduationCap size={16} />
+                  Program, Cohort &amp; Timings
+                </h4>
+                <div className="modal-grid">
+                  <div className="modal-field">
+                    <span className="modal-field-label">Opted Domain / Course</span>
+                    <span className="modal-field-value" style={{ color: "#A5B4FC", fontWeight: 700 }}>
+                      {selectedStudent.domain || "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Program Track</span>
+                    <span className="modal-field-value" style={{ textTransform: "capitalize" }}>
+                      {selectedStudent.program || "Advance Program"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Cohort Month Opted</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.monthOpted || getOptedMonthValue(selectedStudent) || "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Internship Start Month</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.internshipstartsmonth || getOptedMonthValue(selectedStudent) || "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Internship End Month</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.internshipendsmonth || "Not specified"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Batch Timing / Mode of Classes</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.batchTiming || selectedStudent.modeofclasses || "Weekdays / Standard"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Preferred Language</span>
+                    <span className="modal-field-value">
+                      {Array.isArray(selectedStudent.languages) 
+                        ? selectedStudent.languages.join(", ") 
+                        : (selectedStudent.languages || "English")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 4: PAYMENT & FINANCIALS */}
+              <div className="modal-section">
+                <h4 className="modal-section-title">
+                  <CreditCard size={16} />
+                  Financial Clearance &amp; Verification
+                </h4>
+                <div className="modal-grid">
+                  <div className="modal-field">
+                    <span className="modal-field-label">Total Program Fee</span>
+                    <span className="modal-field-value td-green">
+                      ₹{Number(selectedStudent.programPrice || 0).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Total Amount Paid</span>
+                    <span className="modal-field-value td-blue">
+                      ₹{Number(selectedStudent.paidAmount || 0).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Remaining Balance</span>
+                    <span className="modal-field-value">
+                      ₹{(Number(selectedStudent.programPrice || 0) - Number(selectedStudent.paidAmount || 0)) <= 0 ? "0" : (Number(selectedStudent.programPrice || 0) - Number(selectedStudent.paidAmount || 0)).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Payment Mode</span>
+                    <span className="modal-field-value" style={{ textTransform: "uppercase" }}>
+                      {selectedStudent.modeofpayment || "UPI"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Transaction ID / Reference</span>
+                    <span className="modal-field-value" style={{ fontFamily: "monospace" }}>
+                      {selectedStudent.transactionId || "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Payment Due / Clearance Date</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.clearPaymentMonth 
+                        ? new Date(selectedStudent.clearPaymentMonth).toLocaleDateString("en-GB") 
+                        : "Cleared"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 5: COUNSELOR, REFERRAL & STATUS */}
+              <div className="modal-section">
+                <h4 className="modal-section-title">
+                  <UserCheck size={16} />
+                  Counselor, Attribution &amp; System Status
+                </h4>
+                <div className="modal-grid">
+                  <div className="modal-field">
+                    <span className="modal-field-label">Admissions Counselor / BDA</span>
+                    <span className="modal-field-value">{selectedStudent.counselor || "N/A"}</span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Lead Source</span>
+                    <span className="modal-field-value">{selectedStudent.lead || "Direct"}</span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Operations Executive Assigned</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.operationName || selectedStudent.executive || "Not Assigned"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Refer a Friend</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.referFriend || "None"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Dashboard Form Submitted At</span>
+                    <span className="modal-field-value">
+                      {selectedStudent.createdAt 
+                        ? new Date(selectedStudent.createdAt).toLocaleString("en-GB") 
+                        : "N/A"}
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">LMS Account Status</span>
+                    <span className="modal-field-value">
+                      <span className={selectedStudent.mailSended || selectedStudent.userCreated ? "badge-true" : "badge-false"}>
+                        {selectedStudent.mailSended || selectedStudent.userCreated ? "Account Created" : "Pending Creation"}
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="modal-field">
+                    <span className="modal-field-label">Offer Letter Status</span>
+                    <span className="modal-field-value">
+                      <span className={selectedStudent.offerlettersended ? "badge-true" : "badge-false"}>
+                        {selectedStudent.offerlettersended ? "Dispatched" : "Pending Dispatch"}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="fullpay-modal-footer">
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "12px", color: "#94A3B8" }}>
+                  Record ID: <code style={{ color: "#CBD5E1" }}>{selectedStudent._id}</code>
+                </span>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <a
+                  href={`https://wa.me/${getCleanPhone(selectedStudent.whatsAppNumber || selectedStudent.phone)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="action-btn-wa"
+                  style={{ padding: "8px 14px" }}
+                >
+                  <MessageSquare size={14} style={{ marginRight: "6px" }} />
+                  Chat on WhatsApp
+                </a>
+                <button
+                  onClick={closeStudentDetails}
+                  style={{
+                    background: "rgba(255, 255, 255, 0.08)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    color: "#F1F5F9",
+                    borderRadius: "10px",
+                    padding: "8px 18px",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit"
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
