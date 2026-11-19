@@ -35,8 +35,10 @@ async function generateOfferLetterDocxBuffer(details) {
     incentive = "",
     monthlyTargets = "target to be confirmed by management",
     internshipDuration = "four (4) months",
-    probationPeriod = "six (6) months",
-    ojtDays = "10 working days"
+    probationPeriod = "four (4) months",
+    ojtDays = "10 working days",
+    postProbationCtc = "",
+    includePostProbationCtc = false
   } = details;
 
   // Resolve template path
@@ -100,6 +102,7 @@ async function generateOfferLetterDocxBuffer(details) {
     const fixed = fixedCompensation || "15,000";
     const inc = incentive || "10,000";
     const target = monthlyTargets || "target to be confirmed by management";
+    const probation = probationPeriod || "four (4) months";
 
     xml = xml.replace(/\[15,000\]/g, xmlEscape(fixed));
     xml = xml.replace(/\[10,000\]/g, xmlEscape(inc));
@@ -107,12 +110,26 @@ async function generateOfferLetterDocxBuffer(details) {
       /\[target to be confirmed by management\]/g,
       xmlEscape(target)
     );
+    xml = xml.replace(/three \(3\) months of probation/g, xmlEscape(`${probation} of probation`));
+    xml = xml.replace(/3-Month Probation period/g, xmlEscape("4-Month Probation period"));
+    xml = xml.replace(/six \(6\) months/g, xmlEscape(probation));
+    xml = xml.replace(/six \(4\) months/g, xmlEscape(probation));
 
     if (designation && designation !== "Business Development Associate") {
       xml = xml.replace(/Business Development Associate/g, xmlEscape(designation));
     }
-    if (probationPeriod && probationPeriod !== "six (6) months") {
-      xml = xml.replace(/six \(6\) months/g, xmlEscape(probationPeriod));
+
+    if ((postProbationCtc || includePostProbationCtc) && postProbationCtc) {
+      const oldSnippet = `After 10 working days of OJT, you will be working on probation for the aforesaid period. Your total compensation will be INR ${fixed} per month + INR ${inc} performance-based incentive. All benefits and allowances will be governed as per company policy.`;
+      const newSnippet = `After 10 working days of OJT, during the probationary period of ${probation}, your monthly compensation will be INR ${fixed} (Fixed Base) + INR ${inc} performance-based incentive. Upon successful completion of the ${probation} probation period, subject to satisfactory performance evaluation, target achievements, and management discretion, you may be considered for an annual compensation package of up to ${postProbationCtc}. All benefits and allowances will be governed as per company policy.`;
+      if (xml.includes(oldSnippet)) {
+        xml = xml.replace(oldSnippet, xmlEscape(newSnippet));
+      } else {
+        xml = xml.replace(
+          /Your total compensation will be INR [^.]+ performance-based incentive\. All benefits and allowances will be governed as per company policy\./,
+          xmlEscape(`during the probationary period of ${probation}, your monthly compensation will be INR ${fixed} (Fixed Base) + INR ${inc} performance-based incentive. Upon successful completion of the ${probation} probation period, subject to satisfactory performance evaluation, target achievements, and management discretion, you may be considered for an annual compensation package of up to ${postProbationCtc}. All benefits and allowances will be governed as per company policy.`)
+        );
+      }
     }
   }
 
@@ -139,8 +156,10 @@ async function generateOfferLetterPDFBuffer(details) {
     incentive = "10,000",
     monthlyTargets = "target to be confirmed by management",
     internshipDuration = "four (4) months",
-    probationPeriod = "six (6) months",
-    ojtDays = "10 working days"
+    probationPeriod = "four (4) months",
+    ojtDays = "10 working days",
+    postProbationCtc = "",
+    includePostProbationCtc = false
   } = details;
 
   const pdfDoc = await PDFDocument.create();
@@ -282,13 +301,18 @@ async function generateOfferLetterPDFBuffer(details) {
   );
 
   drawHeading("Employment Details");
+  const isFullTimeWithLpa = letterType === "full_time" && (postProbationCtc || includePostProbationCtc) && postProbationCtc;
   const detailsTable = [
     ["Designation:", designation],
     ["Date of Joining:", dateOfJoining],
-    ["Type of Employment:", letterType === "full_time" ? "Full Time" : "Internship"],
+    ["Type of Employment:", letterType === "full_time" ? (isFullTimeWithLpa ? `Full Time (${probationPeriod || "4-Month"} Probation)` : "Full Time") : "Internship"],
     ["Department:", department],
     ["Work Location:", workLocation],
   ];
+  if (isFullTimeWithLpa) {
+    detailsTable.push(["Probation Remuneration:", `INR ${fixedCompensation} (Fixed Base) + INR ${incentive} (Incentive) / month`]);
+    detailsTable.push(["Target Annual CTC:", `Up to ${postProbationCtc} (Subject to performance review post-probation)`]);
+  }
   for (const [k, v] of detailsTable) {
     ensureSpace(16);
     currentPage.drawText(k, {
@@ -322,7 +346,10 @@ async function generateOfferLetterPDFBuffer(details) {
   drawHeading("Period of Service");
   drawParagraph(
     letterType === "full_time"
-      ? `You shall be on a probationary period of ${probationPeriod} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
+      ? (isFullTimeWithLpa
+          ? `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance evaluation and management discretion, you may be considered for confirmation with an annual package of up to ${postProbationCtc}.`
+          : `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
+        )
       : `The internship is for a period of ${internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`
   );
 
@@ -333,11 +360,11 @@ async function generateOfferLetterPDFBuffer(details) {
 
   drawHeading("Remuneration");
   drawParagraph(
-    `After ${ojtDays} of OJT, you will be offered a total compensation of INR ${fixedCompensation} per month + INR ${incentive} ${
-      letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"
-    }. All benefits and allowances will be governed as per company policy.\nNote: ${
-      letterType === "full_time" ? "6-Month Probation period." : "4-Month Intern period."
-    }\nFor detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.`
+    isFullTimeWithLpa
+      ? `After ${ojtDays} of OJT, during the probationary period of ${probationPeriod || "four (4) months"}, you will be offered a monthly compensation of INR ${fixedCompensation} (Fixed Base) + INR ${incentive} (Performance-Based Incentive). Upon successful completion of the ${probationPeriod || "four (4) months"} probation period, subject to satisfactory performance evaluation, target achievements, and management discretion, you may be considered for an annual compensation package of up to ${postProbationCtc}. All benefits and allowances will be governed as per company policy.\nNote: ${probationPeriod || "4-Month"} Probation period.\nFor detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.`
+      : `After ${ojtDays} of OJT, you will be offered a total compensation of INR ${fixedCompensation} per month + INR ${incentive} ${letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"
+      }. All benefits and allowances will be governed as per company policy.\nNote: ${letterType === "full_time" ? "4-Month Probation period." : "4-Month Intern period."
+      }\nFor detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.`
   );
 
   drawHeading("Deductions");
@@ -352,10 +379,9 @@ async function generateOfferLetterPDFBuffer(details) {
 
   drawHeading("Performance Expectation (Target-Based)");
   drawParagraph(
-    `You are required to meet assigned performance targets and carry out your responsibilities diligently. Your performance will be reviewed periodically based on quality of work, productivity, and target achievement. Continuous failure to meet expectations may lead to performance improvement plans or further action as per company policy.${
-      letterType === "full_time"
-        ? ` Failing to meet the minimum monthly targets [${monthlyTargets}] during the probation period.`
-        : ""
+    `You are required to meet assigned performance targets and carry out your responsibilities diligently. Your performance will be reviewed periodically based on quality of work, productivity, and target achievement. Continuous failure to meet expectations may lead to performance improvement plans or further action as per company policy.${letterType === "full_time"
+      ? ` Failing to meet the minimum monthly targets [${monthlyTargets}] during the probation period.`
+      : ""
     }`
   );
 
@@ -479,11 +505,11 @@ async function generateOfferLetterPDFBuffer(details) {
     ],
     [
       "Non-Compete Agreement",
-      "The Employee agrees that for a period of six (6) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India that competes, or is likely to compete, with the Company’s business.",
+      "The Employee agrees that for a period of four (4) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India that competes, or is likely to compete, with the Company’s business.",
     ],
     [
       "Non-Solicitation Agreement",
-      "During the term of this agreement and for a period of six (6) months following its termination or expiration, you agree not to induce or attempt to induce any employee to terminate employment; interfere with employee relationships; hire former employees; or solicit any customer of the Company.",
+      "During the term of this agreement and for a period of four (4) months following its termination or expiration, you agree not to induce or attempt to induce any employee to terminate employment; interfere with employee relationships; hire former employees; or solicit any customer of the Company.",
     ],
     [
       "Intellectual Property",
@@ -558,8 +584,10 @@ async function sendOfferLetterEmail(details) {
     incentive,
     monthlyTargets,
     internshipDuration = "four (4) months",
-    probationPeriod = "six (6) months",
+    probationPeriod = "four (4) months",
     ojtDays = "10 working days",
+    postProbationCtc = "",
+    includePostProbationCtc = false,
     emailSubject,
     ccEmail = "hr@accenlearn.com",
     customNotes = "",
@@ -644,17 +672,27 @@ async function sendOfferLetterEmail(details) {
               <span class="card-label">Date of Joining:</span>
               <span class="card-value">${dateOfJoining}</span>
             </div>
+            ${letterType === "full_time" && (postProbationCtc || includePostProbationCtc) && postProbationCtc ? `
+            <div class="card-row">
+              <span class="card-label">Probation Remuneration:</span>
+              <span class="card-value">INR ${fixedLabel} / month (Fixed Base) + INR ${incLabel} Incentive (4-Month Probation)</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Target Annual CTC:</span>
+              <span class="card-value" style="color: #4f46e5; font-size: 14px;"><strong>Up to ${postProbationCtc}</strong> (Subject to performance review post-probation)</span>
+            </div>
+            ` : `
             <div class="card-row">
               <span class="card-label">Compensation:</span>
               <span class="card-value">INR ${fixedLabel} / month + INR ${incLabel} Incentive</span>
             </div>
+            `}
           </div>
 
-          ${
-            customNotes
-              ? `<div class="custom-notes"><strong>Note from HR:</strong><br/>${customNotes.replace(/\n/g, "<br/>")}</div>`
-              : ""
-          }
+          ${customNotes
+      ? `<div class="custom-notes"><strong>Note from HR:</strong><br/>${customNotes.replace(/\n/g, "<br/>")}</div>`
+      : ""
+    }
 
           <div class="action-box">
             <strong>Next Steps:</strong>
@@ -742,6 +780,8 @@ async function sendOfferLetterEmail(details) {
     ojtDays,
     monthlyTargets,
     probationPeriod,
+    postProbationCtc: postProbationCtc || "",
+    includePostProbationCtc: Boolean(includePostProbationCtc || postProbationCtc),
     emailSubject: effectiveSubject,
     ccEmail,
     customNotes,

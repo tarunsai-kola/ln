@@ -87,7 +87,9 @@ const HRSendOfferLetter = () => {
     ojtDays: "10 working days",
     // Full Time fields
     monthlyTargets: "target to be confirmed by management",
-    probationPeriod: "six (6) months",
+    probationPeriod: "four (4) months",
+    postProbationCtc: "4.0 LPA",
+    includePostProbationCtc: true,
     // Email specifics
     ccEmail: "hr@accenlearn.com",
     customNotes: "",
@@ -106,6 +108,7 @@ const HRSendOfferLetter = () => {
         incentive: "10,000",
         internshipDuration: "four (4) months",
         ojtDays: "10 working days",
+        includePostProbationCtc: false,
       }));
     } else {
       setFormData((prev) => ({
@@ -114,7 +117,9 @@ const HRSendOfferLetter = () => {
         fixedCompensation: "15,000",
         incentive: "10,000",
         monthlyTargets: "target to be confirmed by management",
-        probationPeriod: "six (6) months",
+        probationPeriod: "four (4) months",
+        includePostProbationCtc: true,
+        postProbationCtc: prev.postProbationCtc || "4.0 LPA",
       }));
     }
   };
@@ -141,6 +146,8 @@ const HRSendOfferLetter = () => {
       ojtDays: formData.ojtDays.trim(),
       monthlyTargets: formData.monthlyTargets.trim(),
       probationPeriod: formData.probationPeriod.trim(),
+      postProbationCtc: formData.includePostProbationCtc ? formData.postProbationCtc.trim() : "",
+      includePostProbationCtc: Boolean(formData.includePostProbationCtc),
       ccEmail: formData.ccEmail.trim(),
       customNotes: formData.customNotes.trim(),
       workLocation: formData.workLocation.trim(),
@@ -341,24 +348,26 @@ Kindly go through the below details and let us know if you have any queries and/
 Employment Details
 Designation: ${formData.designation}
 Date of Joining: ${joiningDateFormatted}
-Type of Employment: ${letterType === "full_time" ? "Full Time" : "Internship"}
+Type of Employment: ${letterType === "full_time" ? (formData.includePostProbationCtc && formData.postProbationCtc ? `Full Time (${formData.probationPeriod || "4-Month"} Probation)` : "Full Time") : "Internship"}
 Department: ${formData.department}
 Work Location: ${formData.workLocation}
+${letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc ? `Probation Remuneration: INR ${formData.fixedCompensation} (Base) + INR ${formData.incentive} (Incentive) / month\nTarget Annual CTC: Up to ${formData.postProbationCtc} (Subject to performance review post-probation)` : ""}
 
 Engagement
 You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${formData.designation} in the ${formData.department} department with Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.
 
 Period of Service
 ${letterType === "full_time"
-  ? `You shall be on a probationary period of ${formData.probationPeriod} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
-  : `The internship is for a period of ${formData.internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`}
+        ? `You shall be on a probationary period of ${formData.probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance evaluation and management discretion, you may be considered for confirmation with an annual package of up to ${formData.postProbationCtc}.`
+        : `The internship is for a period of ${formData.internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`}
 
 On Job Training Period (OJT)
 Please be advised that the training period will be of ${formData.ojtDays}, which will be UNPAID. In the event of taking any leave during the On Job Training (OJT) period, it will be necessary to recommence the training from the initial day upon return. This policy ensures the comprehensive acquisition of the skills and knowledge essential for optimal performance in the designated role.
 
 Remuneration
-After ${formData.ojtDays} of OJT, you will be offered a total compensation of INR ${formData.fixedCompensation} per month + INR ${formData.incentive} ${letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"}. All benefits and allowances will be governed as per company policy.
-Note: 4-Month Intern period.
+${letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc
+        ? `After ${formData.ojtDays} of OJT, during the probationary period of ${formData.probationPeriod || "four (4) months"}, you will be offered a monthly compensation of INR ${formData.fixedCompensation} (Fixed Base) + INR ${formData.incentive} (Performance-Based Incentive). Upon successful completion of the ${formData.probationPeriod || "four (4) months"} probation period, subject to satisfactory performance evaluation, target achievements, and management discretion, you may be considered for an annual compensation package of up to ${formData.postProbationCtc}. All benefits and allowances will be governed as per company policy.\nNote: ${formData.probationPeriod || "4-Month"} Probation period.`
+        : `After ${formData.ojtDays} of OJT, you will be offered a total compensation of INR ${formData.fixedCompensation} per month + INR ${formData.incentive} ${letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"}. All benefits and allowances will be governed as per company policy.\nNote: ${letterType === "full_time" ? "4-Month Probation period." : "4-Month Intern period."}`}
 For detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.
 
 Deductions
@@ -458,11 +467,11 @@ By accepting this offer, you agree to the following obligations:
 • You acknowledge that any breach of these obligations may result in liability for damages to the Company, and that the Company reserves the right to pursue all available legal remedies, including injunctive relief.
 
 Non-Compete Agreement
-The Employee agrees that for a period of six (6) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India (or as otherwise specified by the Company) that is the same as or similar to the business activities conducted by the Company, or that competes, or is likely to compete, with the Company’s business.
+The Employee agrees that for a period of four (4) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India (or as otherwise specified by the Company) that is the same as or similar to the business activities conducted by the Company, or that competes, or is likely to compete, with the Company’s business.
 The Employee acknowledges that these non-compete obligations are reasonable and necessary to protect the integrity of the Company’s Confidential Information, as well as to safeguard the goodwill and other legitimate business interests of the Company, its affiliates, and its clients and customers.
 
 Non-Solicitation Agreement
-During the term of this agreement and for a period of six (6) months following its termination or expiration, you agree not to:
+During the term of this agreement and for a period of six (4) months following its termination or expiration, you agree not to:
 • Induce or attempt to induce any employee of Accenlearn to terminate their relationship with the Company.
 • Interfere in any manner with the relationship between Accenlearn and any of its employees.
 • Hire, directly or indirectly, any individual who was employed by Accenlearn at any time during the term of this agreement, whether directly or through another entity.
@@ -511,33 +520,30 @@ Date:	`;
               <button
                 type="button"
                 onClick={() => setActiveTab("form")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${
-                  activeTab === "form"
-                    ? "bg-white text-indigo-600 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${activeTab === "form"
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <FileText size={15} /> Editor
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("preview")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${
-                  activeTab === "preview"
-                    ? "bg-white text-indigo-600 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${activeTab === "preview"
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <Eye size={15} /> Document Preview
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("history")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${
-                  activeTab === "history"
-                    ? "bg-white text-indigo-600 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all ${activeTab === "history"
+                  ? "bg-white text-indigo-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <History size={15} /> Sent History
               </button>
@@ -554,18 +560,16 @@ Date:	`;
                 {/* Intern Option */}
                 <div
                   onClick={() => handleTypeChange("intern")}
-                  className={`cursor-pointer rounded-xl p-4 border-2 transition-all flex items-start gap-4 ${
-                    letterType === "intern"
-                      ? "border-indigo-600 bg-indigo-50/40 shadow-sm"
-                      : "border-slate-200 hover:border-slate-300 bg-white"
-                  }`}
+                  className={`cursor-pointer rounded-xl p-4 border-2 transition-all flex items-start gap-4 ${letterType === "intern"
+                    ? "border-indigo-600 bg-indigo-50/40 shadow-sm"
+                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
                 >
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black ${
-                      letterType === "intern"
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                        : "bg-slate-100 text-slate-500"
-                    }`}
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black ${letterType === "intern"
+                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+                      : "bg-slate-100 text-slate-500"
+                      }`}
                   >
                     <Layers size={20} />
                   </div>
@@ -597,18 +601,16 @@ Date:	`;
                 {/* Full Time Option */}
                 <div
                   onClick={() => handleTypeChange("full_time")}
-                  className={`cursor-pointer rounded-xl p-4 border-2 transition-all flex items-start gap-4 ${
-                    letterType === "full_time"
-                      ? "border-indigo-600 bg-indigo-50/40 shadow-sm"
-                      : "border-slate-200 hover:border-slate-300 bg-white"
-                  }`}
+                  className={`cursor-pointer rounded-xl p-4 border-2 transition-all flex items-start gap-4 ${letterType === "full_time"
+                    ? "border-indigo-600 bg-indigo-50/40 shadow-sm"
+                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
                 >
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black ${
-                      letterType === "full_time"
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                        : "bg-slate-100 text-slate-500"
-                    }`}
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black ${letterType === "full_time"
+                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+                      : "bg-slate-100 text-slate-500"
+                      }`}
                   >
                     <Briefcase size={20} />
                   </div>
@@ -626,12 +628,12 @@ Date:	`;
                     <p className="text-xs text-slate-500 mt-0.5">
                       Template: <span className="font-semibold text-slate-700">Accenlearn_Offer_Letter_Full_Time.docx</span>
                     </p>
-                    <div className="flex items-center gap-2 mt-2 text-[11px] font-bold text-slate-600">
+                    <div className="flex flex-wrap items-center gap-2 mt-2 text-[11px] font-bold text-slate-600">
                       <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">
-                        ₹15,000/mo + ₹10,000 Inc.
+                        ₹15,000 Base + ₹10,000 Inc. (4 Mo Probation)
                       </span>
-                      <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">
-                        Permanent / Probation
+                      <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-black">
+                        X LPA Post-Probation
                       </span>
                     </div>
                   </div>
@@ -845,6 +847,92 @@ Date:	`;
 
                     {letterType === "full_time" ? (
                       <>
+                        {/* New Option for HR: Post-Probation Annual Package (X LPA) */}
+                        <div className="sm:col-span-2 bg-indigo-50/60 border border-indigo-200/80 rounded-2xl p-5 space-y-4 shadow-sm">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <label className="flex items-center gap-2.5 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={formData.includePostProbationCtc}
+                                onChange={(e) =>
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    includePostProbationCtc: e.target.checked,
+                                  }))
+                                }
+                                className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+                              />
+                              <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                                Mention Potential Annual Package (Up to X LPA) Post-Probation
+                              </span>
+                            </label>
+                            <span className="text-[10px] font-black bg-indigo-600 text-white px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                              Target Term
+                            </span>
+                          </div>
+
+                          <p className="text-xs text-slate-600 leading-relaxed">
+                            Candidate will receive <strong className="text-slate-900">₹15,000 Fixed Base + ₹10,000 Performance Incentive</strong> per month during the <strong>4 months probation</strong>. Upon successful completion of probation and subject to performance review and management discretion, the candidate may be considered for an annual package of <strong className="text-indigo-700">up to {formData.postProbationCtc || "X LPA"}</strong>.
+                          </p>
+
+                          {formData.includePostProbationCtc && (
+                            <div className="space-y-3 pt-1 border-t border-indigo-100">
+                              <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                                <div className="flex-1 w-full">
+                                  <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                    Target Annual Package / CTC (e.g. 4.0 LPA)
+                                  </label>
+                                  <input
+                                    type="text"
+                                    name="postProbationCtc"
+                                    value={formData.postProbationCtc}
+                                    onChange={handleChange}
+                                    placeholder="e.g. 4.0 LPA"
+                                    className="w-full px-3.5 py-2.5 rounded-xl border border-indigo-300 text-sm font-black text-indigo-900 bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 outline-none transition-all shadow-sm"
+                                  />
+                                </div>
+
+                                <div className="flex flex-wrap gap-1.5 self-end sm:self-auto pt-1 sm:pt-4">
+                                  {["3.0 LPA", "3.5 LPA", "4.0 LPA", "4.5 LPA", "5.0 LPA", "6.0 LPA"].map((val) => (
+                                    <button
+                                      key={val}
+                                      type="button"
+                                      onClick={() =>
+                                        setFormData((prev) => ({
+                                          ...prev,
+                                          postProbationCtc: val,
+                                        }))
+                                      }
+                                      className={`px-2.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                                        formData.postProbationCtc === val
+                                          ? "bg-indigo-600 text-white shadow-sm"
+                                          : "bg-white border border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50"
+                                      }`}
+                                    >
+                                      {val}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="bg-white p-3.5 rounded-xl border border-indigo-100/80 text-xs text-slate-700 space-y-1.5">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-semibold text-slate-500">1. Probation Compensation (4 Months):</span>
+                                  <span className="font-bold text-slate-800">
+                                    ₹{formData.fixedCompensation || "15,000"} Base + ₹{formData.incentive || "10,000"} Incentive / month
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between border-t border-slate-100 pt-1.5">
+                                  <span className="font-semibold text-slate-500">2. Post-Probation (Target):</span>
+                                  <span className="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                                    Up to {formData.postProbationCtc || "X LPA"} (Subject to performance review post-probation)
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
                         <div className="sm:col-span-2">
                           <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
                             Probation Monthly Targets
@@ -874,7 +962,7 @@ Date:	`;
                             name="probationPeriod"
                             value={formData.probationPeriod}
                             onChange={handleChange}
-                            placeholder="six (6) months"
+                            placeholder="four (4) months"
                             className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                           />
                         </div>
@@ -1141,33 +1229,30 @@ Date:	`;
               <button
                 type="button"
                 onClick={() => setPreviewSection("all")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  previewSection === "all"
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${previewSection === "all"
+                  ? "bg-indigo-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+                  }`}
               >
                 Entire Document (Letter + Annexure-A)
               </button>
               <button
                 type="button"
                 onClick={() => setPreviewSection("letter")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  previewSection === "letter"
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${previewSection === "letter"
+                  ? "bg-indigo-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+                  }`}
               >
                 Part 1: Main Offer Letter
               </button>
               <button
                 type="button"
                 onClick={() => setPreviewSection("annexure")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  previewSection === "annexure"
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${previewSection === "annexure"
+                  ? "bg-indigo-600 text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+                  }`}
               >
                 Part 2: Annexure-A (Terms)
               </button>
@@ -1175,7 +1260,7 @@ Date:	`;
 
             {/* Document Container */}
             <div className="bg-slate-50 border border-slate-300 rounded-2xl p-8 sm:p-14 font-serif text-slate-800 leading-relaxed text-sm shadow-inner space-y-8">
-              
+
               {/* ── PART 1: MAIN OFFER LETTER ── */}
               {(previewSection === "all" || previewSection === "letter") && (
                 <div className="space-y-6">
@@ -1214,8 +1299,30 @@ Date:	`;
                       </div>
                       <div className="flex justify-between py-1 border-b border-slate-100">
                         <span className="font-bold text-slate-500">Type of Employment:</span>
-                        <span className="font-black text-slate-900">{letterType === "full_time" ? "Full Time" : "Internship"}</span>
+                        <span className="font-black text-slate-900">
+                          {letterType === "full_time"
+                            ? (formData.includePostProbationCtc && formData.postProbationCtc
+                                ? `Full Time (${formData.probationPeriod || "4-Month"} Probation)`
+                                : "Full Time")
+                            : "Internship"}
+                        </span>
                       </div>
+                      {letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc && (
+                        <>
+                          <div className="flex justify-between py-1 border-b border-slate-100">
+                            <span className="font-bold text-slate-500">Probation Remuneration:</span>
+                            <span className="font-bold text-slate-900">
+                              INR {formData.fixedCompensation || "15,000"} (Base) + INR {formData.incentive || "10,000"} (Incentive) / mo
+                            </span>
+                          </div>
+                          <div className="flex justify-between py-1 border-b border-slate-100">
+                            <span className="font-bold text-slate-500">Target Annual CTC:</span>
+                            <span className="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                              Up to {formData.postProbationCtc} (Subject to performance review post-probation)
+                            </span>
+                          </div>
+                        </>
+                      )}
                       <div className="flex justify-between py-1 border-b border-slate-100">
                         <span className="font-bold text-slate-500">Department:</span>
                         <span className="font-black text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">{formData.department}</span>
@@ -1244,7 +1351,7 @@ Date:	`;
                     </h4>
                     <p className="text-xs">
                       {letterType === "full_time"
-                        ? `You shall be on a probationary period of ${formData.probationPeriod} from the date of your joining, which includes the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`
+                        ? `You shall be on a probationary period of ${formData.probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance evaluation and management discretion, you may be considered for confirmation with an annual package of up to ${formData.postProbationCtc}.`
                         : `The internship is for a period of ${formData.internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`}
                     </p>
                   </div>
@@ -1264,12 +1371,25 @@ Date:	`;
                     <h4 className="font-bold text-sm text-slate-900 mb-1 font-sans uppercase tracking-wider text-indigo-900">
                       Remuneration
                     </h4>
-                    <p className="text-xs">
-                      After {formData.ojtDays} of OJT, you will be offered a total compensation of <strong>INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.fixedCompensation}</span> per month + INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.incentive}</span></strong> {letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"}. All benefits and allowances will be governed as per company policy.
-                    </p>
-                    <p className="text-xs font-bold text-slate-700 mt-2">
-                      Note: {letterType === "full_time" ? "6-Month Probation period." : "4-Month Intern period."}
-                    </p>
+                    {letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc ? (
+                      <>
+                        <p className="text-xs">
+                          After {formData.ojtDays} of OJT, during the probationary period of <strong>{formData.probationPeriod || "four (4) months"}</strong>, you will be offered a monthly compensation of <strong>INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.fixedCompensation}</span> (Fixed Base) + INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.incentive}</span> (Performance-Based Incentive)</strong>. Upon successful completion of the {formData.probationPeriod || "four (4) months"} probation period, subject to satisfactory performance evaluation, target achievements, and management discretion, you may be considered for an annual compensation package of <strong className="text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">up to {formData.postProbationCtc}</strong>. All benefits and allowances will be governed as per company policy.
+                        </p>
+                        <p className="text-xs font-bold text-slate-700 mt-2">
+                          Note: {formData.probationPeriod || "4-Month"} Probation period.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-xs">
+                          After {formData.ojtDays} of OJT, you will be offered a total compensation of <strong>INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.fixedCompensation}</span> per month + INR <span className="bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 text-indigo-900 font-black">{formData.incentive}</span></strong> {letterType === "full_time" ? "performance-based incentive" : "based on performance incentive"}. All benefits and allowances will be governed as per company policy.
+                        </p>
+                        <p className="text-xs font-bold text-slate-700 mt-2">
+                          Note: {letterType === "full_time" ? "4-Month Probation period." : "4-Month Intern period."}
+                        </p>
+                      </>
+                    )}
                     <p className="text-xs text-slate-600 mt-1">
                       For detailed terms of the contract, kindly refer to the Terms of Employment (Annexure-A) for your review and acceptance. If you choose to accept this offer of employment, please revert to our mail confirming your acceptance and also submit the hard copy to the HR Department.
                     </p>
@@ -1386,7 +1506,7 @@ Date:	`;
               {(previewSection === "all" || previewSection === "annexure") && (
                 <div className="pt-8 border-t-2 border-slate-300 space-y-6">
                   <div className="text-center font-bold text-xl tracking-wider text-slate-900 border-b border-slate-300 pb-3">
-                    “ANNEXURE-A”<br/>
+                    “ANNEXURE-A”<br />
                     <span className="text-base text-slate-700">TERMS OF EMPLOYMENT</span>
                   </div>
 
@@ -1474,13 +1594,13 @@ Date:	`;
 
                   <div>
                     <h4 className="font-bold text-sm text-slate-900 mb-1 font-sans">Non-Compete Agreement</h4>
-                    <p className="text-xs">The Employee agrees that for a period of six (6) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India (or as otherwise specified by the Company) that is the same as or similar to the business activities conducted by the Company, or that competes, or is likely to compete, with the Company’s business.</p>
+                    <p className="text-xs">The Employee agrees that for a period of four (4) months following the termination or expiration of this agreement (the “Non-Compete Period”), they will not, either directly or indirectly, engage in any employment or activity with any company, association, firm, or individual within India (or as otherwise specified by the Company) that is the same as or similar to the business activities conducted by the Company, or that competes, or is likely to compete, with the Company’s business.</p>
                     <p className="text-xs mt-1">The Employee acknowledges that these non-compete obligations are reasonable and necessary to protect the integrity of the Company’s Confidential Information, as well as to safeguard the goodwill and other legitimate business interests of the Company, its affiliates, and its clients and customers.</p>
                   </div>
 
                   <div>
                     <h4 className="font-bold text-sm text-slate-900 mb-1 font-sans">Non-Solicitation Agreement</h4>
-                    <p className="text-xs">During the term of this agreement and for a period of six (6) months following its termination or expiration, you agree not to: (1) induce or attempt to induce any employee of Accenlearn to terminate their relationship; (2) interfere with employee relationships; (3) hire directly or indirectly former employees; (4) disclose customer/client information; or (5) solicit or take away any customer of the Company.</p>
+                    <p className="text-xs">During the term of this agreement and for a period of six (4) months following its termination or expiration, you agree not to: (1) induce or attempt to induce any employee of Accenlearn to terminate their relationship; (2) interfere with employee relationships; (3) hire directly or indirectly former employees; (4) disclose customer/client information; or (5) solicit or take away any customer of the Company.</p>
                   </div>
 
                   <div>
@@ -1595,11 +1715,10 @@ Date:	`;
                         </td>
                         <td className="py-3.5 px-4">
                           <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                              item.letterType === "full_time"
-                                ? "bg-emerald-100 text-emerald-800"
-                                : "bg-indigo-100 text-indigo-800"
-                            }`}
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${item.letterType === "full_time"
+                              ? "bg-emerald-100 text-emerald-800"
+                              : "bg-indigo-100 text-indigo-800"
+                              }`}
                           >
                             {item.letterType === "full_time" ? "Full Time" : "Internship"}
                           </span>
@@ -1612,7 +1731,12 @@ Date:	`;
                           {item.dateOfJoining}
                         </td>
                         <td className="py-3.5 px-4 font-bold text-slate-700">
-                          ₹{item.fixedCompensation} + ₹{item.incentive}
+                          <div>₹{item.fixedCompensation} + ₹{item.incentive}</div>
+                          {item.postProbationCtc && (
+                            <div className="text-[10px] text-indigo-700 font-extrabold mt-0.5 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 inline-block">
+                              Target: Up to {item.postProbationCtc}
+                            </div>
+                          )}
                         </td>
                         <td className="py-3.5 px-4 text-slate-500">
                           {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "-"}

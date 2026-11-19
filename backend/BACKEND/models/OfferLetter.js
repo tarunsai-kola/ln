@@ -70,7 +70,15 @@ const offerLetterSchema = new mongoose.Schema(
     },
     probationPeriod: {
       type: String,
-      default: "six (6) months"
+      default: "four (4) months"
+    },
+    postProbationCtc: {
+      type: String,
+      default: ""
+    },
+    includePostProbationCtc: {
+      type: Boolean,
+      default: false
     },
     // Email specifics
     emailSubject: {
