@@ -26,6 +26,7 @@ const createbda = require("./routes/CreateBDA");
 const createadvteam = require("./routes/CreateAdvTeam");
 const createhr = require("./routes/CreateHR");
 const hrOfferLetterRoutes = require("./routes/hrOfferLetterRoutes");
+const studentReminderRoutes = require("./routes/studentReminderRoutes");
 const Mentorship = require("./routes/Mentorship");
 const workshopRoutes = require("./routes/Workshop");
 const Advance = require("./routes/Advance");
@@ -147,6 +148,8 @@ app.use("/", createadvteam);
 app.use("/", createhr);
 app.use("/api/hr/offer-letter", hrOfferLetterRoutes);
 app.use("/api/hr-offer-letter", hrOfferLetterRoutes);
+app.use("/api/studentsremainer", studentReminderRoutes);
+app.use("/api/studentsremainder", studentReminderRoutes);
 // mentorship
 app.use("/", Mentorship);
 //advance

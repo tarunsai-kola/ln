@@ -47,6 +47,7 @@ import AdvanceDashboardAccess from "./page/AdvanceDashboardAccess";
 import MentorDashboardAccessForm from "./page/MentorDashboardAccessForm";
 
 import Attendance from "./page/Attendance";
+import StudentsRemainer from "./page/StudentsRemainer";
 import AdvanceApplyPage from "./page/AdvanceApplyPage";
 import AdvanceForm from "./page/AdvanceForm";
 
@@ -503,7 +504,7 @@ const AppContent = () => {
   const advteamheaderPaths = ["/advteam/home", "/advteam/admin-assigned-leads", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/advteam/salary-calculator"];
   const hrheaderPaths = ["/hrdashboard", "/hr/absent-requests", "/admin/absent-requests", "/absent-requests", "/hr/send-offer-letter", "/hr/offer-letter"];
   const lmsFooterPaths = ["/jobboard"];
-  const noFooterPaths = ["/operationdashboard", "/bookedpayment", "/fullpayment", "/defaultpayment", "/mentordashboard", "/MentorDashboard", "/mentor-dashboard", "/interviewer-dashboard", "/interviewerlogin", "/interviewer-login", "/mentor-login", "/mentordashboardaccessform", "/MentorDashboardAccessForm", "/mentoronboarding", "/operationrevenuesheet", "/mentorcheckin", "/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advmentorcheckin", "/assignmentorop", "/advteam/home", "/advteam/admin-assigned-leads", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/advteam/salary-calculator", "/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
+  const noFooterPaths = ["/studentsremainer", "/studentsremainder", "/operationdashboard", "/bookedpayment", "/fullpayment", "/defaultpayment", "/mentordashboard", "/MentorDashboard", "/mentor-dashboard", "/interviewer-dashboard", "/interviewerlogin", "/interviewer-login", "/mentor-login", "/mentordashboardaccessform", "/MentorDashboardAccessForm", "/mentoronboarding", "/operationrevenuesheet", "/mentorcheckin", "/advoperationdashboard", "/advfullpayment", "/advbookedpayment", "/advdefaultpayment", "/advoperationrevenuesheet", "/advmentorcheckin", "/assignmentorop", "/advteam/home", "/advteam/admin-assigned-leads", "/advteam/onboarding", "/advteam/revenue", "/advteam/booked", "/advteam/fullpaid", "/advteam/default", "/advteam/record", "/advteam/lead-management", "/advteam/team-login", "/advteam/adduser", "/advteam/my-leads", "/advteam/leads-book", "/advteam/leaderboard", "/advteam/advreferrals", "/advteam/salary-calculator", "/home", "/fullpaid", "/default", "/booked", "/onboarding", "/adduser", "/teamdetail", "/bdarevenuesheet", "/reference", "/companyleads", "/addteam", "/assigntarget", "/leaderboard"];
   const placementcoodinatorHeaderPaths = ["/pcdashboard", "/jobpost"];
   const userheaderPaths = ["/profile", "/resume-builder"];
   const headerPaths = ["/", "/login", "/loginwithotp", "/forgotpassword", "/contactus", "/aboutus", "/career", "/collabration", "/advancecourses", "/terms", "/privacy", "/refundpolicy", "/feestructure", "/advance", "/advance-apply", "/mentorship", "/datascience", "/vlsi", "/dataanalytics", "/digitalmarket", "/mernstack", "/investmentbanking", "/productmanagement", "/automationtesting", "/promptengineering", "/generativeai", "/operationlogin", "/operationlogin", "/teamlogin", "/adminlogin", "/managerlogin", "/loginadmin", "/pclogin", "/employlogin", "/dashboardaccessform", "/DashboardAccessForm", "/verify", "/marketing/login", "/interviewer-login", "/interviewerlogin", "/hrlogin", "/advanceform", "/agenticandgenai", "/softwaredeveloper", "/blog", "/aiml", "/cybersecurity", "/cloudcomputing", "/iotrobotics", "/devops", "/embeddedsystems", "/autocad", "/graphicdesign", "/fullstackweb"];
@@ -590,6 +591,8 @@ const AppContent = () => {
 
 
         <Route path="/attendance" element={<Attendance />} />
+        <Route path="/studentsremainer" element={<StudentsRemainer />} />
+        <Route path="/studentsremainder" element={<Navigate to="/studentsremainer" replace />} />
 
         {/* Admin Panel Start */}
         <Route path="/AdminLogin" element={<AdminLogIn />} />
