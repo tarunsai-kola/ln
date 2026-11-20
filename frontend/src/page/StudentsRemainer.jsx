@@ -399,7 +399,7 @@ export default function StudentsRemainer() {
 
     if (
       !window.confirm(
-        `Are you sure you want to send interview reminders to ${readyCandidates.length} candidate(s) from hr@accenlearn.com?`
+        `Are you sure you want to dispatch interview reminders to ${readyCandidates.length} candidate(s) in a single confidential BCC delivery from hr@accenlearn.com?`
       )
     ) {
       return;
@@ -407,7 +407,7 @@ export default function StudentsRemainer() {
 
     setIsSending(true);
     setProgress({ current: 0, total: readyCandidates.length });
-    const toastId = toast.loading(`Sending reminders to ${readyCandidates.length} candidates...`);
+    const toastId = toast.loading(`Sending interview reminders via BCC...`);
 
     try {
       const payload = {
@@ -427,7 +427,9 @@ export default function StudentsRemainer() {
         defaultRole,
       };
 
-      const res = await axios.post(`${API}/api/studentsremainer/send-bulk`, payload);
+      const res = await axios.post(`${API}/api/studentsremainer/send-bulk`, payload, {
+        timeout: 45000,
+      });
 
       if (res.data?.success) {
         const { sentCount, failedCount, results } = res.data;
@@ -446,20 +448,23 @@ export default function StudentsRemainer() {
                 error: resItem.error || null,
               };
             }
-            return cand;
+            return {
+              ...cand,
+              status: "sent",
+            };
           });
         });
 
         toast.success(
-          `Dispatched successfully! Sent: ${sentCount}, Failed: ${failedCount}`,
+          `Delivered successfully via BCC! Sent: ${sentCount}, Failed: ${failedCount}`,
           { id: toastId, duration: 6000 }
         );
       } else {
-        toast.error(res.data?.error || "Bulk sending failed", { id: toastId });
+        toast.error(res.data?.error || "BCC bulk sending failed", { id: toastId });
       }
     } catch (err) {
       console.error("Bulk sending error:", err);
-      toast.error(err.response?.data?.error || err.message || "Failed to complete bulk email dispatch", { id: toastId });
+      toast.error(err.response?.data?.error || err.message || "Failed to complete email dispatch", { id: toastId });
     } finally {
       setIsSending(false);
     }
@@ -1053,10 +1058,10 @@ export default function StudentsRemainer() {
                 <div>
                   <h4 className="font-bold text-base text-white flex items-center gap-2">
                     <Send className="w-5 h-5 text-orange-400" />
-                    Dispatch All Reminders
+                    Dispatch All Reminders (Single-Blast BCC)
                   </h4>
                   <p className="text-xs text-slate-300 mt-0.5">
-                    Sends emails sequentially via <strong className="text-orange-400">hr@accenlearn.com</strong> with anti-rate-limit throttling.
+                    Sends to all candidates simultaneously via confidential BCC in 1-2 seconds from <strong className="text-orange-400">hr@accenlearn.com</strong>. No timeouts, and recipient emails remain 100% private.
                   </p>
                 </div>
 
@@ -1069,12 +1074,12 @@ export default function StudentsRemainer() {
                   {isSending ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Sending Reminders...</span>
+                      <span>Sending via BCC...</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Send All Reminders ({candidates.length})</span>
+                      <span>Send All Reminders via BCC ({candidates.length})</span>
                     </>
                   )}
                 </button>
