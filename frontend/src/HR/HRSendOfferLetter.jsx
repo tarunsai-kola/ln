@@ -351,7 +351,7 @@ Date of Joining: ${joiningDateFormatted}
 Type of Employment: ${letterType === "full_time" ? (formData.includePostProbationCtc && formData.postProbationCtc ? `Full Time (${formData.probationPeriod || "4-Month"} Probation)` : "Full Time") : "Internship"}
 Department: ${formData.department}
 Work Location: ${formData.workLocation}
-${letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc ? `Probation Remuneration: INR ${formData.fixedCompensation} (Base) + INR ${formData.incentive} (Incentive) / month\nTarget Annual CTC: Up to ${formData.postProbationCtc} (Subject to performance review post-probation)` : ""}
+${letterType === "full_time" && formData.includePostProbationCtc && formData.postProbationCtc ? `Probation Remuneration: INR ${formData.fixedCompensation} (Base) + INR ${formData.incentive} (Incentive) / month\nAnnual CTC: Up to ${formData.postProbationCtc} (Subject to performance review post-probation)` : ""}
 
 Engagement
 You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${formData.designation} in the ${formData.department} department with Accenlearn at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.
@@ -880,7 +880,7 @@ Date:	`;
                               <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                                 <div className="flex-1 w-full">
                                   <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider mb-1">
-                                    Target Annual Package / CTC (e.g. 4.0 LPA)
+                                    Annual Package / CTC (e.g. 4.0 LPA)
                                   </label>
                                   <input
                                     type="text"
@@ -903,11 +903,10 @@ Date:	`;
                                           postProbationCtc: val,
                                         }))
                                       }
-                                      className={`px-2.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                                        formData.postProbationCtc === val
-                                          ? "bg-indigo-600 text-white shadow-sm"
-                                          : "bg-white border border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50"
-                                      }`}
+                                      className={`px-2.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${formData.postProbationCtc === val
+                                        ? "bg-indigo-600 text-white shadow-sm"
+                                        : "bg-white border border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50"
+                                        }`}
                                     >
                                       {val}
                                     </button>
@@ -1302,8 +1301,8 @@ Date:	`;
                         <span className="font-black text-slate-900">
                           {letterType === "full_time"
                             ? (formData.includePostProbationCtc && formData.postProbationCtc
-                                ? `Full Time (${formData.probationPeriod || "4-Month"} Probation)`
-                                : "Full Time")
+                              ? `Full Time (${formData.probationPeriod || "4-Month"} Probation)`
+                              : "Full Time")
                             : "Internship"}
                         </span>
                       </div>
@@ -1316,7 +1315,7 @@ Date:	`;
                             </span>
                           </div>
                           <div className="flex justify-between py-1 border-b border-slate-100">
-                            <span className="font-bold text-slate-500">Target Annual CTC:</span>
+                            <span className="font-bold text-slate-500">Annual CTC:</span>
                             <span className="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
                               Up to {formData.postProbationCtc} (Subject to performance review post-probation)
                             </span>

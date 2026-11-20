@@ -311,7 +311,7 @@ async function generateOfferLetterPDFBuffer(details) {
   ];
   if (isFullTimeWithLpa) {
     detailsTable.push(["Probation Remuneration:", `INR ${fixedCompensation} (Fixed Base) + INR ${incentive} (Incentive) / month`]);
-    detailsTable.push(["Target Annual CTC:", `Up to ${postProbationCtc} (Subject to performance review post-probation)`]);
+    detailsTable.push(["Annual CTC:", `Up to ${postProbationCtc} (Subject to performance review post-probation)`]);
   }
   for (const [k, v] of detailsTable) {
     ensureSpace(16);
@@ -347,9 +347,9 @@ async function generateOfferLetterPDFBuffer(details) {
   drawParagraph(
     letterType === "full_time"
       ? (isFullTimeWithLpa
-          ? `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance evaluation and management discretion, you may be considered for confirmation with an annual package of up to ${postProbationCtc}.`
-          : `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
-        )
+        ? `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance evaluation and management discretion, you may be considered for confirmation with an annual package of up to ${postProbationCtc}.`
+        : `You shall be on a probationary period of ${probationPeriod || "four (4) months"} from the date of your joining, which includes the job training period. Upon successful completion of probation and based on performance assessment, your employment will be confirmed.`
+      )
       : `The internship is for a period of ${internshipDuration} from the date of joining, inclusive of the job training period. The Company may, at its discretion, consider you for further opportunities based on your performance.`
   );
 
@@ -678,7 +678,7 @@ async function sendOfferLetterEmail(details) {
               <span class="card-value">INR ${fixedLabel} / month (Fixed Base) + INR ${incLabel} Incentive (4-Month Probation)</span>
             </div>
             <div class="card-row">
-              <span class="card-label">Target Annual CTC:</span>
+              <span class="card-label">Annual CTC:</span>
               <span class="card-value" style="color: #4f46e5; font-size: 14px;"><strong>Up to ${postProbationCtc}</strong> (Subject to performance review post-probation)</span>
             </div>
             ` : `
