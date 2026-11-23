@@ -25,8 +25,8 @@ const hrTransporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: process.env.SMTP_HR_EMAIL || "hr@accenlearn.com",
-        pass: process.env.SMTP_HR_PASS || "cgzx nzax gkhn pwyu",
+        user: (process.env.SMTP_HR_EMAIL || "hr@accenlearn.com").trim(),
+        pass: (process.env.SMTP_HR_PASS || "cgzx nzax gkhn pwyu").replace(/^["']|["']$/g, "").trim(),
     }
 });
 

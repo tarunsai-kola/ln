@@ -330,6 +330,7 @@ const HRSendOfferLetter = () => {
     return (
       (item.candidateName || "").toLowerCase().includes(q) ||
       (item.candidateEmail || "").toLowerCase().includes(q) ||
+      (item.candidatePhone || "").toLowerCase().includes(q) ||
       (item.designation || "").toLowerCase().includes(q) ||
       (item.letterType || "").toLowerCase().includes(q)
     );
@@ -1695,7 +1696,9 @@ Date:	`;
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-50 text-slate-500 uppercase font-black tracking-wider text-[10px] border-b border-slate-200">
                     <tr>
+                      <th className="py-3 px-3 text-center w-12">#</th>
                       <th className="py-3 px-4">Candidate</th>
+                      <th className="py-3 px-4">Phone Number</th>
                       <th className="py-3 px-4">Type</th>
                       <th className="py-3 px-4">Role & Dept</th>
                       <th className="py-3 px-4">Joining Date</th>
@@ -1706,11 +1709,24 @@ Date:	`;
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {filteredHistory.map((item) => (
+                    {filteredHistory.map((item, index) => (
                       <tr key={item._id} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="py-3.5 px-3 text-center font-bold text-slate-400">
+                          {index + 1}
+                        </td>
                         <td className="py-3.5 px-4">
                           <div className="font-black text-slate-800">{item.candidateName}</div>
                           <div className="text-[11px] text-slate-400">{item.candidateEmail}</div>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          {item.candidatePhone ? (
+                            <span className="inline-flex items-center gap-1 font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px] border border-slate-200">
+                              <Phone size={11} className="text-indigo-600" />
+                              {item.candidatePhone}
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-[11px] italic">-</span>
+                          )}
                         </td>
                         <td className="py-3.5 px-4">
                           <span

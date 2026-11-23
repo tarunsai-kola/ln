@@ -210,7 +210,7 @@ exports.sendSingleTestEmail = async (req, res) => {
   try {
     const {
       email,
-      name = "Candidate",
+      name = "Candidate Name",
       subject = "HR Accenlearn - Interview Scheduled",
       messageContent,
       interviewDate,
@@ -224,7 +224,7 @@ exports.sendSingleTestEmail = async (req, res) => {
     }
 
     const data = {
-      name: name || "Candidate",
+      name,
       email,
       date: interviewDate || "",
       time: interviewTime || "",
@@ -240,7 +240,7 @@ exports.sendSingleTestEmail = async (req, res) => {
     );
 
     const html = buildHtmlEmail({
-      name: name || "Candidate",
+      name,
       email,
       date: interviewDate,
       time: interviewTime,
@@ -276,8 +276,7 @@ exports.sendSingleTestEmail = async (req, res) => {
 };
 
 /**
- * Controller: Bulk send interview reminders via BCC in a single instant dispatch
- * Eliminates request timeouts by bundling recipients into BCC chunks (up to 80 per email).
+ * Controller: Bulk send interview reminders
  */
 exports.sendBulkInterviewReminders = async (req, res) => {
   try {
@@ -298,114 +297,92 @@ exports.sendBulkInterviewReminders = async (req, res) => {
       });
     }
 
-    // Filter valid and deduplicate emails
-    const validEmails = [];
-    const invalidRecipients = [];
-    const seenEmails = new Set();
-
-    recipients.forEach((item, index) => {
-      const email = (item.email || "").trim().toLowerCase();
-      const name = (item.name || item.candidateName || item.fullName || "Candidate").trim();
-
-      if (email && email.includes("@")) {
-        if (!seenEmails.has(email)) {
-          seenEmails.add(email);
-          validEmails.push({ email, name });
-        }
-      } else {
-        invalidRecipients.push({
-          index,
-          email,
-          name,
-          status: "failed",
-          error: "Invalid email format",
-        });
-      }
-    });
-
-    if (validEmails.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: "None of the recipients have a valid email address.",
-        results: invalidRecipients,
-      });
-    }
-
     const transporter = getHrTransporter();
 
-    // Prepare universal email content for BCC delivery
-    const templateData = {
-      name: "Candidate",
-      date: defaultDate,
-      time: defaultTime,
-      link: defaultLink,
-      role: defaultRole,
-    };
-
-    const finalSubject = interpolate(subject, templateData);
-    const finalBodyText = interpolate(
-      messageContent ||
-        "We are pleased to inform you that your interview with HR Accenlearn has been scheduled for tomorrow. Please be prepared and join on time.",
-      templateData
-    );
-
-    const html = buildHtmlEmail({
-      name: "Candidate",
-      email: "hr@accenlearn.com",
-      date: defaultDate,
-      time: defaultTime,
-      link: defaultLink,
-      role: defaultRole,
-      bodyText: finalBodyText,
-    });
-
-    // Chunk valid emails into batches of 80 to comfortably stay within Gmail's BCC per-message limit
-    const CHUNK_SIZE = 80;
-    const emailChunks = [];
-    for (let i = 0; i < validEmails.length; i += CHUNK_SIZE) {
-      emailChunks.push(validEmails.slice(i, i + CHUNK_SIZE));
-    }
-
-    const results = [...invalidRecipients];
+    const results = [];
     let sentCount = 0;
-    let failedCount = invalidRecipients.length;
+    let failedCount = 0;
 
-    // Send each BCC chunk
-    for (let chunkIndex = 0; chunkIndex < emailChunks.length; chunkIndex++) {
-      const chunk = emailChunks[chunkIndex];
-      const bccList = chunk.map((c) => c.email);
+    for (let i = 0; i < recipients.length; i++) {
+      const item = recipients[i];
+      const targetEmail = (item.email || "").trim();
+      const targetName = (item.name || item.candidateName || item.fullName || "Candidate").trim();
+      const targetDate = item.date || defaultDate || "";
+      const targetTime = item.time || defaultTime || "";
+      const targetLink = item.link || defaultLink || "";
+      const targetRole = item.role || defaultRole || "";
+
+      if (!targetEmail || !targetEmail.includes("@")) {
+        results.push({
+          index: i,
+          name: targetName,
+          email: targetEmail,
+          status: "failed",
+          error: "Invalid email address",
+        });
+        failedCount++;
+        continue;
+      }
+
+      const candidateData = {
+        name: targetName,
+        email: targetEmail,
+        date: targetDate,
+        time: targetTime,
+        link: targetLink,
+        role: targetRole,
+      };
+
+      const personalizedSubject = interpolate(subject, candidateData);
+      const personalizedBody = interpolate(
+        messageContent ||
+          "We are pleased to inform you that your interview with HR Accenlearn has been scheduled for tomorrow. Please be prepared and join on time.",
+        candidateData
+      );
+
+      const html = buildHtmlEmail({
+        name: targetName,
+        email: targetEmail,
+        date: targetDate,
+        time: targetTime,
+        link: targetLink,
+        role: targetRole,
+        bodyText: personalizedBody,
+      });
 
       const mailOptions = {
         from: '"HR Accenlearn" <hr@accenlearn.com>',
-        to: '"HR Accenlearn" <hr@accenlearn.com>',
-        bcc: bccList,
+        to: targetEmail,
         replyTo: "hr@accenlearn.com",
-        subject: finalSubject,
-        text: finalBodyText,
+        subject: personalizedSubject,
+        text: personalizedBody,
         html: html,
       };
 
       try {
         await transporter.sendMail(mailOptions);
-        chunk.forEach((c) => {
-          results.push({
-            email: c.email,
-            name: c.name,
-            status: "sent",
-          });
+        results.push({
+          index: i,
+          name: targetName,
+          email: targetEmail,
+          status: "sent",
         });
-        sentCount += chunk.length;
-      } catch (chunkErr) {
-        console.error(`BCC Batch ${chunkIndex + 1} send failed:`, chunkErr.message);
-        chunk.forEach((c) => {
-          results.push({
-            email: c.email,
-            name: c.name,
-            status: "failed",
-            error: chunkErr.message,
-          });
+        sentCount++;
+      } catch (sendErr) {
+        console.error(`Failed to send email to ${targetEmail}:`, sendErr.message);
+        results.push({
+          index: i,
+          name: targetName,
+          email: targetEmail,
+          status: "failed",
+          error: sendErr.message,
         });
-        failedCount += chunk.length;
+        failedCount++;
+      }
+
+      // Small throttle delay between sends to prevent rate limits
+      if (i < recipients.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 200));
       }
     }
 
@@ -414,14 +391,13 @@ exports.sendBulkInterviewReminders = async (req, res) => {
       total: recipients.length,
       sentCount,
       failedCount,
-      isBcc: true,
       results,
     });
   } catch (err) {
-    console.error("BCC reminder send failed:", err);
+    console.error("Bulk reminder send failed:", err);
     return res.status(500).json({
       success: false,
-      error: err.message || "Failed to process interview reminders via BCC",
+      error: err.message || "Failed to process bulk interview reminders",
     });
   }
 };
