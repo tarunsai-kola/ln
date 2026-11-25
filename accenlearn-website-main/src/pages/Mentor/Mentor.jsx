@@ -55,6 +55,15 @@ const Mentor = () => {
             experience: "2+ years",
             externalProfile: "https://www.behance.net/kailashcreatio"
         },
+        {
+            image: IMAGE_HELPER.MENTOR_AKASH,
+            name: "Akash Rajendran",
+            role: "Data Analyst",
+            domainSpecialist: "Data Analyst",
+            designation: "Head Training & Development",
+            worksAt: "LENNOZ TECH",
+            experience: "2 years"
+        },
         // {
         //     image: IMAGE_HELPER.MENTOR_SAKSHI,
         //     name: "Sakshi",
@@ -65,7 +74,7 @@ const Mentor = () => {
         // },
         // 
         {
-           // image: IMAGE_HELPER.MENTOR_ANJALI,
+            // image: IMAGE_HELPER.MENTOR_ANJALI,
             name: "Tarun Sai",
             role: "MERN Stack + AI Engineer",
             domainSpecialist: "MERN Stack + AI Engineer",
@@ -75,10 +84,10 @@ const Mentor = () => {
         {
             image: IMAGE_HELPER.MENTOR_SHAMEER,
             name: "Shameer PIYARELAL and Team.",
-            role: "Data Analytics & Machine Learning",
+            role: "AI & Data Intelligence Specialist",
             domainSpecialist: "Data Analytics, Machine Learning and AI",
             // phone: "9965039335"
-            experience: "4+ years"
+            experience: "10+ Years"
         },
         // {
         //     image: IMAGE_HELPER.MENTOR_ARJUN,
@@ -107,27 +116,27 @@ const Mentor = () => {
     return (
         <div className='min-h-screen w-full pt-4 sm:pt-6 pb-20'>
             <SharedBreadcrumb to="/mentor" title="Mentors" />
-            
+
             <div className="max-w-7xl mx-auto px-4">
                 <div className="mt-20">
-                    <TitleText 
+                    <TitleText
                         align="center"
                         title="Meet Our Expert Mentors"
                         description="The driving force behind our industry-aligned training programs."
                     />
-                    
+
                     <div className="flex flex-wrap justify-center gap-x-8 gap-y-16 mt-20">
                         {mentors.map((mentor, index) => (
-                            <div 
-                                key={index} 
-                                className="flex flex-col group w-full sm:w-[calc(50%-2rem)] lg:w-[calc(33.33%-2rem)] min-w-[280px] max-w-[340px]" 
-                                data-aos="fade-up" 
+                            <div
+                                key={index}
+                                className="flex flex-col group w-full sm:w-[calc(50%-2rem)] lg:w-[calc(33.33%-2rem)] min-w-[280px] max-w-[340px]"
+                                data-aos="fade-up"
                                 data-aos-delay={index * 100}
                             >
                                 <div className="relative w-full overflow-hidden rounded-tr-[4rem] rounded-bl-[4rem] aspect-[4/5] bg-white shadow-2xl border-b-8 border-r-8 border-secondary/20 group-hover:border-secondary transition-all duration-500">
-                                    <img 
-                                        src={mentor.image} 
-                                        alt={mentor.name} 
+                                    <img
+                                        src={mentor.image}
+                                        alt={mentor.name}
                                         className="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-105"
                                     />
                                 </div>
@@ -141,6 +150,11 @@ const Mentor = () => {
                                             <p className="text-secondary font-black uppercase tracking-wider text-[10px] md:text-xs">
                                                 {mentor.domainSpecialist}
                                             </p>
+                                            {mentor.designation && (
+                                                <p className="text-primary font-bold text-[10px] md:text-xs">
+                                                    Designation: <span className="text-secondary">{mentor.designation}</span>
+                                                </p>
+                                            )}
                                             {mentor.worksAt && (
                                                 <p className="text-primary font-bold text-[10px] md:text-xs">
                                                     Working at: <span className="text-secondary">{mentor.worksAt}</span>
@@ -159,8 +173,8 @@ const Mentor = () => {
                                         </div>
                                     </div>
 
-                                     <div className="pt-2">
-                                        <button 
+                                    <div className="pt-2">
+                                        <button
                                             onClick={() => openBio(mentor)}
                                             className="w-full bg-secondary text-white font-bold py-3 rounded-xl hover:bg-primary transition-all text-sm uppercase tracking-widest shadow-lg active:scale-95"
                                         >
@@ -193,15 +207,18 @@ const Mentor = () => {
                         <div className="space-y-6">
                             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
                                 <div className="w-24 h-24 rounded-2xl overflow-hidden shadow-lg border-2 border-secondary/20 shrink-0">
-                                    <img 
-                                        src={selectedMentor.image} 
-                                        alt={selectedMentor.name} 
+                                    <img
+                                        src={selectedMentor.image}
+                                        alt={selectedMentor.name}
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     <h3 className="text-xl sm:text-2xl font-extrabold text-primary italic leading-snug break-words">{selectedMentor.name}</h3>
                                     <p className="text-secondary font-black uppercase tracking-wider text-[10px] mb-1">{selectedMentor.domainSpecialist}</p>
+                                    {selectedMentor.designation && (
+                                        <p className="text-primary font-bold text-xs">Designation: <span className="text-secondary">{selectedMentor.designation}</span></p>
+                                    )}
                                     {selectedMentor.worksAt && (
                                         <p className="text-primary font-bold text-xs">Working at: <span className="text-secondary">{selectedMentor.worksAt}</span></p>
                                     )}
@@ -215,7 +232,7 @@ const Mentor = () => {
                             </div>
                             <div className="flex flex-col gap-3 mt-4">
                                 {selectedMentor.bioFile && (
-                                    <button 
+                                    <button
                                         onClick={() => window.open(selectedMentor.bioFile, '_blank')}
                                         className="w-full bg-secondary text-white font-bold py-3 min-h-[48px] rounded-xl hover:bg-secondary/90 transition-all shadow-lg uppercase tracking-widest text-xs flex items-center justify-center"
                                     >
@@ -223,14 +240,14 @@ const Mentor = () => {
                                     </button>
                                 )}
                                 {selectedMentor.resume && (
-                                    <button 
+                                    <button
                                         onClick={() => window.open(selectedMentor.resume, '_blank')}
                                         className="w-full bg-primary text-white font-bold py-3 min-h-[48px] rounded-xl hover:bg-primary/90 transition-all shadow-lg uppercase tracking-widest text-xs flex items-center justify-center"
                                     >
                                         {selectedMentor.bioFile ? "View CV" : "View Full Resume / CV"}
                                     </button>
                                 )}
-                                <button 
+                                <button
                                     onClick={closeBio}
                                     className="w-full bg-primary/10 text-primary font-bold py-3 min-h-[48px] rounded-xl hover:bg-primary/20 transition-all text-xs uppercase tracking-widest flex items-center justify-center"
                                 >

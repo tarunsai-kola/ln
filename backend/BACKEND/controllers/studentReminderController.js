@@ -117,55 +117,50 @@ function buildHtmlEmail({ name, email, date, time, link, role, bodyText }) {
                 <tr>
                   <td style="padding: 20px;">
                     <table width="100%" cellspacing="0" cellpadding="0">
-                      ${
-                        date
-                          ? `<tr>
+                      ${date
+      ? `<tr>
                               <td width="35%" style="padding: 8px 0; font-size: 14px; color: #64748b; font-weight: 600;">📅 Date:</td>
                               <td style="padding: 8px 0; font-size: 14px; color: #0f172a; font-weight: 700;">${formattedDate} (${date})</td>
                             </tr>`
-                          : ""
-                      }
-                      ${
-                        time
-                          ? `<tr>
+      : ""
+    }
+                      ${time
+      ? `<tr>
                               <td width="35%" style="padding: 8px 0; font-size: 14px; color: #64748b; font-weight: 600;">⏰ Time:</td>
                               <td style="padding: 8px 0; font-size: 14px; color: #0f172a; font-weight: 700;">${time}</td>
                             </tr>`
-                          : ""
-                      }
-                      ${
-                        role
-                          ? `<tr>
+      : ""
+    }
+                      ${role
+      ? `<tr>
                               <td width="35%" style="padding: 8px 0; font-size: 14px; color: #64748b; font-weight: 600;">💼 Position / Role:</td>
                               <td style="padding: 8px 0; font-size: 14px; color: #0f172a; font-weight: 600;">${role}</td>
                             </tr>`
-                          : ""
-                      }
-                      ${
-                        link
-                          ? `<tr>
+      : ""
+    }
+                      ${link
+      ? `<tr>
                               <td width="35%" style="padding: 8px 0; font-size: 14px; color: #64748b; font-weight: 600;">🔗 Meeting Link / Venue:</td>
                               <td style="padding: 8px 0; font-size: 14px; color: #2563eb; font-weight: 600; word-break: break-all;">
                                 <a href="${link}" target="_blank" style="color: #2563eb; text-decoration: underline;">${link}</a>
                               </td>
                             </tr>`
-                          : ""
-                      }
+      : ""
+    }
                     </table>
                   </td>
                 </tr>
               </table>
 
-              ${
-                link
-                  ? `
+              ${link
+      ? `
               <div style="text-align: center; margin: 30px 0 20px 0;">
                 <a href="${link}" target="_blank" style="display: inline-block; background: #f97316; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 15px; padding: 13px 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);">
                   Join Interview Session
                 </a>
               </div>`
-                  : ""
-              }
+      : ""
+    }
 
               <!-- Guidelines Card -->
               <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 24px 0;">
@@ -235,7 +230,7 @@ exports.sendSingleTestEmail = async (req, res) => {
     const finalSubject = interpolate(subject, data);
     const finalBodyText = interpolate(
       messageContent ||
-        "You have your interview scheduled with HR Accenlearn. Please review the details below and ensure you are available on time.",
+      "You have your interview scheduled with HR Accenlearn. Please review the details below and ensure you are available on time.",
       data
     );
 
@@ -336,7 +331,7 @@ exports.sendBulkInterviewReminders = async (req, res) => {
       const personalizedSubject = interpolate(subject, candidateData);
       const personalizedBody = interpolate(
         messageContent ||
-          "We are pleased to inform you that your interview with HR Accenlearn has been scheduled for tomorrow. Please be prepared and join on time.",
+        "We are pleased to inform you that your interview with HR Accenlearn has been scheduled for tomorrow. Please be prepared and join on time.",
         candidateData
       );
 
