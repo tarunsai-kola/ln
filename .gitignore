@@ -8,6 +8,7 @@ dist-ssr/
 build/
 **/dist/
 **/build/
+!whitedathr/client/dist/**
 
 # Environment Variables
 .env

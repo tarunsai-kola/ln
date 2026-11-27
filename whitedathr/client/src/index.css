@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* A4 Sheet Dimensions */
+/* True A4 paper size ratio is 1:1.4142 (e.g. 794px width x 1123px height @ 96 DPI) */
+.a4-sheet {
+  width: 100%;
+  max-width: 800px;
+  min-height: 1130px;
+  margin: 0 auto;
+  position: relative;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.a4-bg {
+  background-image: url('/letterhead_a4.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .a4-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    page-break-after: always;
+  }
+}

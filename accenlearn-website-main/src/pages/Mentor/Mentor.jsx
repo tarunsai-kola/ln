@@ -83,7 +83,7 @@ const Mentor = () => {
         },
         {
             image: IMAGE_HELPER.MENTOR_SHAMEER,
-            name: "Shameer",
+            name: "Mr. Shameer Piyarelal.",
             role: "AI & Data Intelligence Specialist",
             domainSpecialist: "AI & Data Intelligence Specialist",
             designation: "Executive Manager",

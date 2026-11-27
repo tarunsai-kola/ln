@@ -1,0 +1,21 @@
+{
+  "name": "whitedat-hr-portal",
+  "version": "1.0.0",
+  "description": "White Dart HR Offer Letter Portal - Standalone, Public & Instant Delivery",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node server.js",
+    "client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "build": "cd client && npm run build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.0",
+    "jszip": "^3.10.1",
+    "nodemailer": "^6.10.0",
+    "pdf-lib": "^1.17.1"
+  }
+}
