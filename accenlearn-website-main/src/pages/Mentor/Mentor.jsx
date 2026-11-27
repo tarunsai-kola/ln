@@ -15,7 +15,7 @@ const Mentor = () => {
             role: "Cyber Security Specialist",
             domainSpecialist: "Cyber Security Specialist",
             worksAt: "Sriram Engineering College",
-            experience: "15+ years",
+            experience: "19+ years",
             resume: IMAGE_HELPER.MENTOR_CV_KUMAR,
             bioFile: IMAGE_HELPER.MENTOR_BIO_KUMAR
         },
@@ -25,7 +25,7 @@ const Mentor = () => {
             role: "VLSI",
             domainSpecialist: "VLSI",
             worksAt: "PSV college",
-            experience: "26+ years",
+            experience: "29+ years",
             resume: IMAGE_HELPER.MENTOR_CV_USHARANI
         },
         {
@@ -83,9 +83,11 @@ const Mentor = () => {
         },
         {
             image: IMAGE_HELPER.MENTOR_SHAMEER,
-            name: "Shameer PIYARELAL and Team.",
+            name: "Shameer",
             role: "AI & Data Intelligence Specialist",
-            domainSpecialist: "Data Analytics, Machine Learning and AI",
+            domainSpecialist: "AI & Data Intelligence Specialist",
+            designation: "Executive Manager",
+            worksAt: "LENNOZ TECH",
             // phone: "9965039335"
             experience: "10+ Years"
         },
