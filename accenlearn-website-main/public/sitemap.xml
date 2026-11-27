@@ -97,6 +97,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.accenlearn.com/terms</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.accenlearn.com/workshops/management/business-analytics</loc>
     <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>

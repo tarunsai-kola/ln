@@ -773,11 +773,6 @@ app.post("/api/send-offer-letter", async (req, res) => {
       sentBy = "White Dart HR Team",
     } = details;
 
-    const isFullTimeWithLpa =
-      letterType === "full_time" &&
-      (postProbationCtc || includePostProbationCtc) &&
-      postProbationCtc;
-
     if (!candidateName || !candidateEmail) {
       return res.status(400).json({
         success: false,

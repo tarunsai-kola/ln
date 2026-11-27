@@ -134,6 +134,13 @@ const Footer = () => {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                to="/terms"
+                className="text-sm text-white/60 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group"
+              >
+                <span className="w-1 h-1 rounded-full bg-blue-500/0 group-hover:bg-blue-500 transition-all shrink-0" />
+                Terms &amp; Conditions
+              </Link>
             </div>
           </div>
 
@@ -192,7 +199,16 @@ const Footer = () => {
             <span className="text-white/20 text-lg">|</span>
             <p className="text-white/30 text-xs">© {new Date().getFullYear()} Accenlearn. All rights reserved.</p>
           </div>
-          <p className="text-white/20 text-xs">Empowering Learning Worldwide.</p>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <Link
+              to="/terms"
+              className="text-xs text-white/40 hover:text-white transition-colors underline-offset-4 hover:underline"
+            >
+              Terms &amp; Conditions
+            </Link>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <p className="text-white/20 text-xs">Empowering Learning Worldwide.</p>
+          </div>
         </div>
       </div>
     </footer>

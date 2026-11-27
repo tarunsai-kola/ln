@@ -55,5 +55,10 @@ export const getStaticRoutes = () => {
       priority: "0.8",
       changefreq: "monthly",
     },
+    {
+      path: "/terms",
+      priority: "0.5",
+      changefreq: "monthly",
+    },
   ];
 };
