@@ -65,7 +65,7 @@ function xmlEscape(str) {
 
 function getSafeFilename(name, ext) {
   const clean = (name || "Candidate").replace(/[^a-zA-Z0-9_-]/g, "_");
-  return `WhiteDart_Offer_Letter_${clean}.${ext}`;
+  return `GrowMore_Offer_Letter_${clean}.${ext}`;
 }
 
 /**
@@ -114,7 +114,7 @@ async function generateOfferLetterPDFBuffer(details) {
     designation = letterType === "full_time"
       ? "Business Development Associate"
       : "Business Development Intern",
-    workLocation = "White Dart at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.",
+    workLocation = "Grow More Solutions at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.",
     fixedCompensation = letterType === "full_time" ? "15,000" : "12,500",
     incentive = "10,000",
     monthlyTargets = "target to be confirmed by management",
@@ -330,7 +330,7 @@ async function generateOfferLetterPDFBuffer(details) {
 
   drawHeading("Engagement");
   drawParagraph(
-    `You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${designation} in the ${department} department with White Dart at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.`
+    `You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${designation} in the ${department} department with Grow More Solutions at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.`
   );
 
   drawHeading("Period of Service");
@@ -465,7 +465,7 @@ async function generateOfferLetterPDFBuffer(details) {
     ],
     [
       "Effectiveness",
-      "Your employment with White Dart will be governed by the Company’s policies, as modified from time to time at the Company’s discretion. These Terms of Employment must be read as part of all of the Company’s current policies. This agreement becomes effective on the commencement of your service. The Company reserves the right to withdraw the offer even after acceptance if it becomes aware of any material information that was concealed or misrepresented by you. You are requested to abide by the guidelines and regulations of the office and to maintain the code of conduct and disciplinary rules, which may be framed or modified from time to time.",
+      "Your employment with Grow More Solutions will be governed by the Company’s policies, as modified from time to time at the Company’s discretion. These Terms of Employment must be read as part of all of the Company’s current policies. This agreement becomes effective on the commencement of your service. The Company reserves the right to withdraw the offer even after acceptance if it becomes aware of any material information that was concealed or misrepresented by you. You are requested to abide by the guidelines and regulations of the office and to maintain the code of conduct and disciplinary rules, which may be framed or modified from time to time.",
     ],
     [
       "Employee Conduct",
@@ -501,11 +501,11 @@ async function generateOfferLetterPDFBuffer(details) {
     ],
     [
       "Non-Solicitation Agreement",
-      "During the term of this agreement and for a period of four (4) months following its termination or expiration, you agree not to induce or attempt to induce any employee of White Dart to terminate employment; interfere with employee relationships; hire former employees; or solicit any customer of the Company.",
+      "During the term of this agreement and for a period of four (4) months following its termination or expiration, you agree not to induce or attempt to induce any employee of Grow More Solutions to terminate employment; interfere with employee relationships; hire former employees; or solicit any customer of the Company.",
     ],
     [
       "Intellectual Property",
-      "All work products created during your employment shall be considered “works made for hire” under applicable copyright laws. You irrevocably assign all worldwide rights, title, and interest in such work product to White Dart and its affiliates.",
+      "All work products created during your employment shall be considered “works made for hire” under applicable copyright laws. You irrevocably assign all worldwide rights, title, and interest in such work product to Grow More Solutions and its affiliates.",
     ],
   ];
 
@@ -581,12 +581,22 @@ async function generateOfferLetterDocxBuffer(details) {
 
   const templateName =
     letterType === "full_time"
-      ? "WhiteDart_Offer_Letter_Full_Time.docx"
-      : "WhiteDart_Offer_Letter_Intern.docx";
+      ? "GrowMore_Offer_Letter_Full_Time.docx"
+      : "GrowMore_Offer_Letter_Intern.docx";
 
-  const templatePath = path.join(__dirname, "templates", templateName);
-  if (!fs.existsSync(templatePath)) {
-    throw new Error(`Template file ${templateName} not found at ${templatePath}`);
+  const templatePathCandidates = [
+    path.join(__dirname, "templates", templateName),
+    path.join(
+      __dirname,
+      "templates",
+      letterType === "full_time"
+        ? "WhiteDart_Offer_Letter_Full_Time.docx"
+        : "WhiteDart_Offer_Letter_Intern.docx"
+    ),
+  ];
+  const templatePath = templatePathCandidates.find((p) => fs.existsSync(p));
+  if (!templatePath) {
+    throw new Error(`Template file ${templateName} not found`);
   }
 
   const fileData = fs.readFileSync(templatePath);
@@ -709,7 +719,9 @@ app.get("/api/config-status", (req, res) => {
   res.json({
     emailConfigured: configured,
     emailUser: masked,
-    company: "White Dart",
+    company: "Grow More Solutions",
+    phone: "+91 88923 30514",
+    website: "https://www.growmoresolutions.net/#home",
     letterheadReady: fs.existsSync(path.join(__dirname, "letterhead_a4.png")),
   });
 });
@@ -768,9 +780,9 @@ app.post("/api/send-offer-letter", async (req, res) => {
       incentive = "10,000",
       postProbationCtc = "",
       includePostProbationCtc = false,
-      ccEmail = process.env.CC_EMAIL || "hr@whitedart.in",
+      ccEmail = process.env.CC_EMAIL || "hr@growmoresolutions.net",
       customNotes = "",
-      sentBy = "White Dart HR Team",
+      sentBy = "Grow More HR Team",
     } = details;
 
     if (!candidateName || !candidateEmail) {
@@ -795,7 +807,7 @@ app.post("/api/send-offer-letter", async (req, res) => {
 
     const effectiveSubject =
       details.emailSubject ||
-      `Offer Letter - ${candidateName} - ${designation} | White Dart`;
+      `Offer Letter - ${candidateName} - ${designation} | Grow More Solutions`;
 
     const typeLabel =
       letterType === "full_time" ? "Full Time Employment" : "Internship";
@@ -808,9 +820,9 @@ app.post("/api/send-offer-letter", async (req, res) => {
         <style>
           body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-          .header { background: linear-gradient(135deg, #0f1e36 0%, #1e3a8a 100%); color: #ffffff; padding: 32px 24px; text-align: center; }
+          .header { background: linear-gradient(135deg, #0b1e36 0%, #16a34a 100%); color: #ffffff; padding: 32px 24px; text-align: center; }
           .header h1 { margin: 0 0 6px 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-          .header p { margin: 0; font-size: 13px; opacity: 0.9; color: #93c5fd; }
+          .header p { margin: 0; font-size: 13px; opacity: 0.9; color: #bbf7d0; }
           .content { padding: 30px 24px; line-height: 1.6; font-size: 14px; }
           .greeting { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 16px; }
           .card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
@@ -818,23 +830,23 @@ app.post("/api/send-offer-letter", async (req, res) => {
           .card-row:last-child { border-bottom: none; }
           .card-label { font-weight: 600; color: #64748b; }
           .card-value { font-weight: 700; color: #0f172a; text-align: right; }
-          .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 800; border-radius: 9999px; background: #e0e7ff; color: #3730a3; }
+          .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 800; border-radius: 9999px; background: #dcfce7; color: #166534; }
           .custom-notes { background-color: #fefce8; border-left: 4px solid #facc15; padding: 12px 16px; margin: 18px 0; border-radius: 4px; font-size: 13px; color: #713f12; }
-          .action-box { background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 13px; color: #1e3a8a; }
+          .action-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 13px; color: #166534; }
           .footer { background-color: #f1f5f9; padding: 20px 24px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; }
         </style>
       </head>
       <body>
         <div class="container">
           <div class="header">
-            <h1>WHITE DART</h1>
-            <p>Official Offer of Employment • Your Trust Our Responsibility</p>
+            <h1>GROW MORE SOLUTIONS</h1>
+            <p>Official Offer of Employment • Accelerating Growth & Success</p>
           </div>
           <div class="content">
             <div class="greeting">Dear ${candidateName},</div>
             <p>
               We are pleased to extend this formal offer of engagement for the position of 
-              <strong>${designation}</strong> with <strong>White Dart Solutions</strong>.
+              <strong>${designation}</strong> with <strong>Grow More Solutions</strong>.
             </p>
             <p>
               Based on your application and subsequent discussions, we believe your skills and passion will be a valuable addition to our team.
@@ -909,13 +921,13 @@ app.post("/api/send-offer-letter", async (req, res) => {
             <p style="margin-top: 24px;">
               Warm regards,<br/>
               <strong>Human Resources Department</strong><br/>
-              White Dart Solutions<br/>
+              Grow More Solutions<br/>
               <span style="color: #64748b; font-size: 12px;">5th floor, Primehub Building, JP Nagar 2nd Phase, Bengaluru – 560041</span>
             </p>
           </div>
 
           <div class="footer">
-            This is an official communication from White Dart HR Portal. Contact us at hr@whitedart.in for any questions.
+            This is an official communication from Grow More HR Portal. Contact us at hr@growmoresolutions.net or +91 88923 30514 for any questions.
           </div>
         </div>
       </body>
@@ -926,10 +938,10 @@ app.post("/api/send-offer-letter", async (req, res) => {
       process.env.EMAIL_USER ||
       process.env.GMAIL_USER ||
       process.env.SMTP_HR_EMAIL ||
-      "hr@whitedart.in";
+      "hr@growmoresolutions.net";
 
     const mailOptions = {
-      from: `"White Dart HR Team" <${senderEmail}>`,
+      from: `"Grow More HR Team" <${senderEmail}>`,
       replyTo: senderEmail,
       to: candidateEmail,
       cc: ccEmail || undefined,
@@ -949,7 +961,7 @@ app.post("/api/send-offer-letter", async (req, res) => {
 
     // Save in local sent history
     const record = {
-      id: "wd_" + Date.now(),
+      id: "gm_" + Date.now(),
       sentAt: new Date().toISOString(),
       candidateName,
       candidateEmail,
@@ -1009,7 +1021,7 @@ if (fs.existsSync(clientDist)) {
 
 app.listen(PORT, () => {
   console.log(`===============================================`);
-  console.log(` White Dart HR Offer Letter Portal Server`);
+  console.log(` Grow More Solutions HR Offer Letter Portal Server`);
   console.log(` Running on: http://localhost:${PORT}`);
   console.log(` Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`===============================================`);

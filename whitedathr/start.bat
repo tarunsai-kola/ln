@@ -1,7 +1,7 @@
 @echo off
 echo ========================================================
-echo   WHITE DART - HR OFFER LETTER PORTAL
-echo   Your Trust Our Responsibility
+echo   GROW MORE SOLUTIONS - HR OFFER LETTER PORTAL
+echo   Accelerating Growth & Success
 echo ========================================================
 echo.
 echo Starting server on http://localhost:5000 ...

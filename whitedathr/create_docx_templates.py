@@ -11,17 +11,22 @@ def convert_template(src_docx, dest_docx, logo_bytes):
             for item in zin.infolist():
                 buffer = zin.read(item.filename)
                 
-                # Replace images with White Dart logo
+                # Replace images with Grow More logo
                 if item.filename.startswith("word/media/"):
                     buffer = logo_bytes
                 
                 # Replace company text in xml files
                 if item.filename.endswith(".xml") or item.filename.endswith(".rels"):
                     text = buffer.decode("utf-8", errors="ignore")
-                    text = text.replace("Accenlearn", "White Dart")
-                    text = text.replace("accenlearn.com", "whitedart.in")
-                    text = text.replace("support@accenlearn.com", "hr@whitedart.in")
-                    text = text.replace("hr@accenlearn.com", "hr@whitedart.in")
+                    text = text.replace("Accenlearn", "Grow More Solutions")
+                    text = text.replace("White Dart", "Grow More Solutions")
+                    text = text.replace("accenlearn.com", "growmoresolutions.net")
+                    text = text.replace("whitedart.in", "growmoresolutions.net")
+                    text = text.replace("support@accenlearn.com", "hr@growmoresolutions.net")
+                    text = text.replace("hr@accenlearn.com", "hr@growmoresolutions.net")
+                    text = text.replace("hr@whitedart.in", "hr@growmoresolutions.net")
+                    text = text.replace("9344322482", "8892330514")
+                    text = text.replace("+91 93443 22482", "+91 88923 30514")
                     buffer = text.encode("utf-8")
                     
                 zout.writestr(item, buffer)
@@ -39,11 +44,16 @@ def main():
     src_intern = os.path.join(base_dir, "Accenlearn_Offer_Letter_Intern.docx")
     src_full = os.path.join(base_dir, "Accenlearn_Offer_Letter_Full_Time.docx")
     
-    dest_intern = os.path.join(templates_dir, "WhiteDart_Offer_Letter_Intern.docx")
-    dest_full = os.path.join(templates_dir, "WhiteDart_Offer_Letter_Full_Time.docx")
+    dest_intern_gm = os.path.join(templates_dir, "GrowMore_Offer_Letter_Intern.docx")
+    dest_full_gm = os.path.join(templates_dir, "GrowMore_Offer_Letter_Full_Time.docx")
+    dest_intern_wd = os.path.join(templates_dir, "WhiteDart_Offer_Letter_Intern.docx")
+    dest_full_wd = os.path.join(templates_dir, "WhiteDart_Offer_Letter_Full_Time.docx")
     
-    convert_template(src_intern, dest_intern, logo_bytes)
-    convert_template(src_full, dest_full, logo_bytes)
+    convert_template(src_intern, dest_intern_gm, logo_bytes)
+    convert_template(src_full, dest_full_gm, logo_bytes)
+    # Also write to WhiteDart aliases for backwards compatibility
+    convert_template(src_intern, dest_intern_wd, logo_bytes)
+    convert_template(src_full, dest_full_wd, logo_bytes)
 
 if __name__ == "__main__":
     main()

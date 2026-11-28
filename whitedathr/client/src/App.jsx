@@ -64,12 +64,12 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("form"); // "form" | "preview" | "history"
   const [previewSection, setPreviewSection] = useState("all"); // "all" | "letter" | "annexure"
   const [letterType, setLetterType] = useState("intern"); // "intern" | "full_time"
-  
+
   // Loading states
   const [loadingSend, setLoadingSend] = useState(false);
   const [loadingPdf, setLoadingPdf] = useState(false);
   const [loadingDocx, setLoadingDocx] = useState(false);
-  
+
   // Server status & config
   const [configStatus, setConfigStatus] = useState({
     emailConfigured: false,
@@ -77,7 +77,7 @@ export default function App() {
     letterheadReady: true,
   });
   const [showConfigModal, setShowConfigModal] = useState(false);
-  
+
   // History State
   const [historyList, setHistoryList] = useState([]);
   const [historySearch, setHistorySearch] = useState("");
@@ -103,11 +103,11 @@ export default function App() {
     postProbationCtc: "4.0 LPA",
     includePostProbationCtc: true,
     // Email specifics
-    ccEmail: "hr@whitedart.in",
+    ccEmail: "hr@growmoresolutions.net",
     customNotes: "",
     workLocation:
-      "White Dart at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.",
-    sentBy: "White Dart HR Team",
+      "Grow More Solutions at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.",
+    sentBy: "Grow More HR Team",
   });
 
   // Check backend server config on mount
@@ -199,8 +199,8 @@ export default function App() {
       ccEmail: formData.ccEmail.trim(),
       customNotes: formData.customNotes.trim(),
       workLocation: formData.workLocation.trim(),
-      sentBy: formData.sentBy.trim() || "White Dart HR Team",
-      emailSubject: `Offer Letter - ${formData.candidateName.trim() || "Candidate"} - ${formData.designation.trim()} | White Dart`,
+      sentBy: formData.sentBy.trim() || "Grow More HR Team",
+      emailSubject: `Offer Letter - ${formData.candidateName.trim() || "Candidate"} - ${formData.designation.trim()} | Grow More Solutions`,
     };
   };
 
@@ -244,7 +244,7 @@ export default function App() {
       const link = document.createElement("a");
       link.href = url;
       const cleanName = (payload.candidateName || "Candidate").replace(/[^a-zA-Z0-9_-]/g, "_");
-      link.setAttribute("download", `WhiteDart_Offer_Letter_${cleanName}.pdf`);
+      link.setAttribute("download", `GrowMore_Offer_Letter_${cleanName}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -275,7 +275,7 @@ export default function App() {
       const link = document.createElement("a");
       link.href = url;
       const cleanName = (payload.candidateName || "Candidate").replace(/[^a-zA-Z0-9_-]/g, "_");
-      link.setAttribute("download", `WhiteDart_Offer_Letter_${cleanName}.docx`);
+      link.setAttribute("download", `GrowMore_Offer_Letter_${cleanName}.docx`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -336,7 +336,7 @@ export default function App() {
     const joiningDateFormatted = formatDateToDisplay(formData.joiningDateInput) || "[DD-MMM-YYYY]";
 
     const text = `OFFER LETTER
-WHITE DART • YOUR TRUST OUR RESPONSIBILITY
+GROW MORE SOLUTIONS • ACCELERATING GROWTH & SUCCESS
 Dear ${candidateDisplay}              Date: ${offerDateFormatted}
 
 Kindly go through the below details and let us know if you have any queries and/or acknowledge your agreement to the same.
@@ -350,9 +350,9 @@ Work Location: ${formData.workLocation}
 Remuneration: INR ${formData.fixedCompensation} / month + INR ${formData.incentive} Incentive
 ${letterType === "full_time" && formData.includePostProbationCtc ? `Annual CTC: Up to ${formData.postProbationCtc}\n` : ""}
 Engagement:
-You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${formData.designation} in the ${formData.department} department with White Dart.
+You are ${letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of ${formData.designation} in the ${formData.department} department with Grow More Solutions.
 
-Full Terms and Annexure-A apply as per White Dart corporate policy.`;
+Full Terms and Annexure-A apply as per Grow More Solutions corporate policy.`;
 
     navigator.clipboard.writeText(text);
     toast.success("Offer Letter summary copied to clipboard!");
@@ -392,13 +392,13 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
       {/* ── TOP EXECUTIVE NAVBAR ── */}
       <header className="sticky top-0 z-50 bg-[#0c1c38] text-white shadow-lg border-b border-slate-700/60 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          
+
           {/* Logo & Brand Info */}
           <div className="flex items-center gap-4">
             <div className="bg-white p-1.5 rounded-xl shadow-md border border-slate-200">
               <img
                 src="/image.png"
-                alt="White Dart Logo"
+                alt="Grow More Solutions Logo"
                 className="h-12 w-auto object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -407,13 +407,13 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-black tracking-tight text-white">WHITE DART</span>
-                <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                <span className="text-xl font-black tracking-tight text-white">GROW MORE</span>
+                <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
                   HR Portal
                 </span>
               </div>
               <p className="text-xs text-slate-300 tracking-wide hidden sm:block">
-                Your Trust Our Responsibility • Public Offer Letter Generator
+                Grow More Solutions • Contact: 8892330514 • https://www.growmoresolutions.net
               </p>
             </div>
           </div>
@@ -423,11 +423,10 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
             {/* Status indicator */}
             <button
               onClick={() => setShowConfigModal(true)}
-              className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
-                configStatus.emailConfigured
-                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
-                  : "bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20"
-              }`}
+              className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition-all cursor-pointer ${configStatus.emailConfigured
+                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
+                : "bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20"
+                }`}
               title="Click to view Gmail .env configuration"
             >
               <span className={`w-2 h-2 rounded-full ${configStatus.emailConfigured ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} />
@@ -441,7 +440,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
             {/* Share Portal Link Button */}
             <button
               onClick={handleShareLink}
-              className="flex items-center gap-1.5 bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
               title="Copy shareable link"
             >
               <Share2 size={14} />
@@ -456,11 +455,11 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[11px] font-bold uppercase tracking-wider mb-1 border border-blue-200/60">
-                <Sparkles size={12} className="text-blue-600" /> Public Access • No Login Required
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold uppercase tracking-wider mb-1 border border-emerald-200/60">
+                <Sparkles size={12} className="text-emerald-600" /> Public Access • No Login Required
               </div>
               <h1 className="text-2xl font-black text-slate-800 tracking-tight">
-                White Dart Offer Letter Portal
+                Grow More Solutions Offer Letter Portal
               </h1>
               <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
                 Generate official A4 letterhead offer letters, download PDF/Word documents, and email directly to candidates.
@@ -472,33 +471,30 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
               <button
                 type="button"
                 onClick={() => setActiveTab("form")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                  activeTab === "form"
-                    ? "bg-[#0c1c38] text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${activeTab === "form"
+                  ? "bg-[#0c1c38] text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <FileText size={15} /> Editor
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("preview")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                  activeTab === "preview"
-                    ? "bg-[#0c1c38] text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${activeTab === "preview"
+                  ? "bg-[#0c1c38] text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <Eye size={15} /> A4 Sheet Preview
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("history")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                  activeTab === "history"
-                    ? "bg-[#0c1c38] text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer ${activeTab === "history"
+                  ? "bg-[#0c1c38] text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 <History size={15} /> Sent History
                 {historyList.length > 0 && (
@@ -529,18 +525,16 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                 <button
                   type="button"
                   onClick={() => handleTypeChange("intern")}
-                  className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex items-start gap-4 ${
-                    letterType === "intern"
-                      ? "border-sky-600 bg-sky-50/50 shadow-md ring-2 ring-sky-500/20"
-                      : "border-slate-200 hover:border-slate-300 bg-white"
-                  }`}
+                  className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex items-start gap-4 ${letterType === "intern"
+                    ? "border-sky-600 bg-sky-50/50 shadow-md ring-2 ring-sky-500/20"
+                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
                 >
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${
-                      letterType === "intern"
-                        ? "bg-sky-600 text-white shadow-md shadow-sky-200"
-                        : "bg-slate-100 text-slate-600"
-                    }`}
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${letterType === "intern"
+                      ? "bg-sky-600 text-white shadow-md shadow-sky-200"
+                      : "bg-slate-100 text-slate-600"
+                      }`}
                   >
                     IN
                   </div>
@@ -560,18 +554,16 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                 <button
                   type="button"
                   onClick={() => handleTypeChange("full_time")}
-                  className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex items-start gap-4 ${
-                    letterType === "full_time"
-                      ? "border-sky-600 bg-sky-50/50 shadow-md ring-2 ring-sky-500/20"
-                      : "border-slate-200 hover:border-slate-300 bg-white"
-                  }`}
+                  className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex items-start gap-4 ${letterType === "full_time"
+                    ? "border-sky-600 bg-sky-50/50 shadow-md ring-2 ring-sky-500/20"
+                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
                 >
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${
-                      letterType === "full_time"
-                        ? "bg-[#0c1c38] text-white shadow-md shadow-slate-300"
-                        : "bg-slate-100 text-slate-600"
-                    }`}
+                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${letterType === "full_time"
+                      ? "bg-[#0c1c38] text-white shadow-md shadow-slate-300"
+                      : "bg-slate-100 text-slate-600"
+                      }`}
                   >
                     FT
                   </div>
@@ -592,10 +584,10 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
 
             {/* Form + Sidebar Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Form Fields: 2 Columns */}
               <div className="lg:col-span-2 space-y-8">
-                
+
                 {/* 1. Candidate Personal Details */}
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-6">
                   <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
@@ -887,11 +879,10 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                                     key={ctc}
                                     type="button"
                                     onClick={() => setFormData((p) => ({ ...p, postProbationCtc: ctc }))}
-                                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                      formData.postProbationCtc === ctc
-                                        ? "bg-sky-600 text-white shadow-sm"
-                                        : "bg-white border border-slate-200 text-slate-700 hover:border-sky-300"
-                                    }`}
+                                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${formData.postProbationCtc === ctc
+                                      ? "bg-sky-600 text-white shadow-sm"
+                                      : "bg-white border border-slate-200 text-slate-700 hover:border-sky-300"
+                                      }`}
                                   >
                                     {ctc}
                                   </button>
@@ -925,7 +916,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                         name="ccEmail"
                         value={formData.ccEmail}
                         onChange={handleChange}
-                        placeholder="hr@whitedart.in"
+                        placeholder="hr@growmoresolutions.net"
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-sky-600 focus:ring-2 focus:ring-sky-100 outline-none transition-all font-medium text-slate-900"
                       />
                     </div>
@@ -939,7 +930,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                         name="sentBy"
                         value={formData.sentBy}
                         onChange={handleChange}
-                        placeholder="White Dart HR Team"
+                        placeholder="Grow More HR Team"
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-sky-600 focus:ring-2 focus:ring-sky-100 outline-none transition-all font-medium text-slate-900"
                       />
                     </div>
@@ -953,7 +944,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                         name="customNotes"
                         value={formData.customNotes}
                         onChange={handleChange}
-                        placeholder="e.g. We were very impressed with your interview performance and look forward to welcoming you to the White Dart family!"
+                        placeholder="e.g. We were very impressed with your interview performance and look forward to welcoming you to the Grow More family!"
                         className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-sky-600 focus:ring-2 focus:ring-sky-100 outline-none transition-all text-slate-900"
                       />
                     </div>
@@ -965,7 +956,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
               {/* Sidebar Action Panel (Sticky) */}
               <div className="space-y-6">
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sticky top-28 space-y-6">
-                  
+
                   {/* Summary Card Header */}
                   <div>
                     <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
@@ -1081,7 +1072,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
         ══════════════════════════════════════════════════════════ */}
         {activeTab === "preview" && (
           <div className="space-y-6">
-            
+
             {/* Preview Toolbar */}
             <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 no-print">
               <div className="flex items-center gap-2">
@@ -1090,33 +1081,30 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                   <button
                     type="button"
                     onClick={() => setPreviewSection("all")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      previewSection === "all"
-                        ? "bg-[#0c1c38] text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${previewSection === "all"
+                      ? "bg-[#0c1c38] text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                      }`}
                   >
                     Entire Document (Page 1 & 2)
                   </button>
                   <button
                     type="button"
                     onClick={() => setPreviewSection("letter")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      previewSection === "letter"
-                        ? "bg-[#0c1c38] text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${previewSection === "letter"
+                      ? "bg-[#0c1c38] text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                      }`}
                   >
                     Page 1: Offer Letter
                   </button>
                   <button
                     type="button"
                     onClick={() => setPreviewSection("annexure")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      previewSection === "annexure"
-                        ? "bg-[#0c1c38] text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${previewSection === "annexure"
+                      ? "bg-[#0c1c38] text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                      }`}
                   >
                     Page 2: Annexure-A
                   </button>
@@ -1168,7 +1156,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
               {/* ── PAGE 1: MAIN OFFER LETTER ── */}
               {(previewSection === "all" || previewSection === "letter") && (
                 <div className="a4-sheet a4-bg rounded-lg border border-slate-300 p-8 sm:p-12 font-serif text-slate-800 text-[13px] leading-relaxed select-text">
-                  
+
                   {/* Space reserved for Top Header Letterhead (120px) */}
                   <div className="h-[95px]" />
 
@@ -1246,7 +1234,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                       Engagement
                     </h4>
                     <p className="text-xs">
-                      You are {letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of <strong>{formData.designation}</strong> in the <span className="bg-blue-50 font-bold px-1 py-0.5 rounded border border-blue-100 text-[#0c1c38]">{formData.department}</span> department with White Dart at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.
+                      You are {letterType === "full_time" ? "employed" : "engaged"} by the Company in the role of <strong>{formData.designation}</strong> in the <span className="bg-blue-50 font-bold px-1 py-0.5 rounded border border-blue-100 text-[#0c1c38]">{formData.department}</span> department with Grow More Solutions at 5th floor, Primehub Building, JP Nagar 2nd Phase, 2nd Stage, Near Ragigudda Metro Station, Bengaluru – 560041.
                     </p>
                   </div>
 
@@ -1379,7 +1367,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
               {/* ── PAGE 2: ANNEXURE-A (TERMS OF EMPLOYMENT) ── */}
               {(previewSection === "all" || previewSection === "annexure") && (
                 <div className="a4-sheet a4-bg rounded-lg border border-slate-300 p-8 sm:p-12 font-serif text-slate-800 text-[12.5px] leading-relaxed select-text">
-                  
+
                   {/* Space reserved for Top Header Letterhead */}
                   <div className="h-[95px]" />
 
@@ -1393,7 +1381,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
 
                   <div className="space-y-3.5 text-xs">
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">1. Employment:</strong> Your employment with the Company will commence from the date of joining mentioned in this letter and will be governed by White Dart policies.
+                      <strong className="text-[#0c1c38] font-sans">1. Employment:</strong> Your employment with the Company will commence from the date of joining mentioned in this letter and will be governed by Grow More Solutions policies.
                     </div>
 
                     <div>
@@ -1409,7 +1397,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                     </div>
 
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">Effectiveness:</strong> Your employment with White Dart will be governed by the Company’s policies, as modified from time to time. This agreement becomes effective on the commencement of your service.
+                      <strong className="text-[#0c1c38] font-sans">Effectiveness:</strong> Your employment with Grow More Solutions will be governed by the Company’s policies, as modified from time to time. This agreement becomes effective on the commencement of your service.
                     </div>
 
                     <div>
@@ -1421,19 +1409,19 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                     </div>
 
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">Non-Disclosure & Confidentiality:</strong> You agree to maintain strict confidentiality of all source code, graphical assets, databases, leads, client lists, and intellectual property belonging to White Dart.
+                      <strong className="text-[#0c1c38] font-sans">Non-Disclosure & Confidentiality:</strong> You agree to maintain strict confidentiality of all source code, graphical assets, databases, leads, client lists, and intellectual property belonging to Grow More Solutions.
                     </div>
 
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">Non-Compete Agreement:</strong> For a period of four (4) months following termination, you agree not to engage in any employment or activity that competes directly or indirectly with White Dart's business.
+                      <strong className="text-[#0c1c38] font-sans">Non-Compete Agreement:</strong> For a period of four (4) months following termination, you agree not to engage in any employment or activity that competes directly or indirectly with Grow More Solutions' business.
                     </div>
 
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">Non-Solicitation Agreement:</strong> During service and for four (4) months following, you agree not to induce any employee to leave White Dart or solicit any customer of the Company.
+                      <strong className="text-[#0c1c38] font-sans">Non-Solicitation Agreement:</strong> During service and for four (4) months following, you agree not to induce any employee to leave Grow More Solutions or solicit any customer of the Company.
                     </div>
 
                     <div>
-                      <strong className="text-[#0c1c38] font-sans">Intellectual Property:</strong> All work products created during your employment shall be considered “works made for hire” and all worldwide rights, title, and interest belong exclusively to White Dart.
+                      <strong className="text-[#0c1c38] font-sans">Intellectual Property:</strong> All work products created during your employment shall be considered “works made for hire” and all worldwide rights, title, and interest belong exclusively to Grow More Solutions.
                     </div>
                   </div>
 
@@ -1452,7 +1440,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                       <div>
                         <span className="text-slate-500 block">HR Authorized Signatory:</span>
                         <div className="border-b border-slate-400 mt-8" />
-                        <span className="text-slate-900 font-bold mt-1 block">White Dart HR Department</span>
+                        <span className="text-slate-900 font-bold mt-1 block">Grow More HR Department</span>
                       </div>
                     </div>
                   </div>
@@ -1622,7 +1610,7 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
                     <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noreferrer" className="text-sky-600 font-bold underline inline-flex items-center gap-0.5">
                       myaccount.google.com/apppasswords <ExternalLink size={10} />
                     </a>
-                    ) and create an App Password named <strong>WhiteDart HR</strong>.
+                    ) and create an App Password named <strong>GrowMore HR</strong>.
                   </li>
                   <li>Copy the 16-character generated password (e.g. <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-mono font-bold">abcd efgh ijkl mnop</code>).</li>
                   <li>
@@ -1657,10 +1645,10 @@ Full Terms and Annexure-A apply as per White Dart corporate policy.`;
       <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 no-print mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p>
-            © {new Date().getFullYear()} <strong>White Dart Solutions</strong> • Your Trust Our Responsibility. All rights reserved.
+            © {new Date().getFullYear()} <strong>Grow More Solutions</strong> • All rights reserved.
           </p>
           <p className="text-slate-500">
-            White Dart HR Offer Letter Portal • Bangalore, India
+            Grow More Solutions HR Offer Letter Portal • Tel: 8892330514 • <a href="https://www.growmoresolutions.net/#home" target="_blank" rel="noreferrer" className="text-emerald-600 hover:underline">growmoresolutions.net</a>
           </p>
         </div>
       </footer>
